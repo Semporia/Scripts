@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
-import urllib2,json,pymongo
+import urllib2,json,pymongo,ssl
 from pymongo import MongoClient
 
 print('连接到Mongo服务器...')
@@ -8,6 +8,7 @@ print('连接到Mongo服务器...')
 connection = MongoClient('localhost', 27017)
 print('连接上了!')
 
+ssl._create_default_https_context = ssl._create_unverified_context
 tdb = connection.myBlog
 YiYanTable = tdb.yiYan
 
