@@ -8,7 +8,7 @@ print('连接到Mongo服务器...')
 connection = MongoClient('localhost', 27017)
 print('连接上了!')
 
-ssl._create_default_https_context = ssl._create_unverified_context
+context = ssl._create_unverified_context()
 tdb = connection.myBlog
 YiYanTable = tdb.yiYan
 
@@ -16,7 +16,7 @@ header = {'User-Agent':'Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKit/537.
 
 url = "https://sslapi.hitokoto.cn?encode=json"
 
-html = urllib2.urlopen(url)
+html = urllib2.urlopen(url, context=context)
 
 jsonContent = json.loads(html.read())
 
