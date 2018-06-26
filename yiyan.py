@@ -43,4 +43,4 @@ YiYanTable.insert_one(YiYan)
 for data in YiYanTable.find():  
     print (data) 
 
-print '爬取数据并插入mysql数据库完成...'
+print ('爬取数据并插入mysql数据库完成...')
