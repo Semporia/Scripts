@@ -5,16 +5,16 @@ from pymongo import MongoClient
 
 print('连接到Mongo服务器...')
 
-connection = MongoClient('localhost', 27017)
+connection = MongoClient('mongodb://myblog:526900@23.83.242.217:27017/myBlog')
 print('连接上了!')
 
 context = ssl._create_unverified_context()
 tdb = connection.myBlog
-YiYanTable = tdb.yiYan
+YiYanTable = tdb.yiyans
 
 header = {'User-Agent':'Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)'}
 
-url = "https://v1.hitokoto.cn"
+url = "https://sslapi.hitokoto.cn?encode=json"
 
 html = urllib2.urlopen(url, context=context)
 
