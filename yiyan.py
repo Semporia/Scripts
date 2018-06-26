@@ -14,7 +14,7 @@ YiYanTable = tdb.yiYan
 
 header = {'User-Agent':'Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)'}
 
-url = "https://sslapi.hitokoto.cn?encode=json"
+url = "https://v1.hitokoto.cn"
 
 html = urllib2.urlopen(url, context=context)
 
