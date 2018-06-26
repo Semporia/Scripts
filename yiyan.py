@@ -28,9 +28,9 @@ YiYan['created_at'] = jsonContent['created_at']
 print YiYan
 
 oneContent = jsonContent['hitokoto'].encode('utf-8')
-oneType = jsonContent['type'].decode('utf-8')
+oneType = jsonContent['type'].encode('utf-8')
 oneOrigin = jsonContent['from'].encode('utf-8')
-oneCreator = jsonContent['creator'].decode('utf-8')
+oneCreator = jsonContent['creator'].encode('utf-8')
 oneCreatedAt = jsonContent['created_at'].encode('latin-1','ignore')
 print oneContent
 print oneType
