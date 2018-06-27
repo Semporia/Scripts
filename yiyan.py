@@ -16,10 +16,10 @@ tdb = connection.myBlog
 YiYanTable = tdb.yiyans
 
 url = "https://sslapi.hitokoto.cn?encode=json"
-# req = urllib2.Request(url)
-# req.add_header('User-Agent', 'Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)')
+req = urllib2.Request(url)
+req.add_header('User-Agent', 'Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)')
 
-html = urllib2.urlopen(url, context=ctx)
+html = urllib2.urlopen(req, context=ctx)
 
 jsonContent = json.loads(html.read())
 
