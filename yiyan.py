@@ -38,7 +38,10 @@ print (oneType)
 print (oneCreator)
 print (oneCreatedAt)
 
-YiYanTable.insert_one(YiYan)
+temp = YiYanTable.find_one({'content': oneContent})
+if not temp:   
+    YiYanTable.insert_one(YiYan)
+
 
 for data in YiYanTable.find():  
     print (data) 
