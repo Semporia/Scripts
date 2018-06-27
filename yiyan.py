@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
-import urllib2,json,pymongo,ssl
+import urllib2,json,pymongo,ssl,requests
 from pymongo import MongoClient
 
 print('连接到Mongo服务器...')
@@ -20,9 +20,11 @@ req.add_header('User-Agent', 'Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKi
 req.add_header('upgrade-insecure-requests', 1)
 req.add_header('cookie', '_ga=GA1.2.837638223.1516867233')
 
-html = urllib2.urlopen(req, context=ctx)
+# html = urllib2.urlopen(req, context=ctx)
 
-jsonContent = json.loads(html.read())
+# jsonContent = json.loads(html.read())
+html = requests.get(url)
+jsonContent = html.json()
 
 YiYan = {}
 YiYan['content'] = jsonContent['hitokoto']
