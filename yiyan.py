@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
-import urllib,json,pymongo,ssl
+import urllib2,json,pymongo,ssl
 from pymongo import MongoClient
 
 print('连接到Mongo服务器...')
@@ -19,7 +19,7 @@ url = "https://sslapi.hitokoto.cn?encode=json"
 # req = urllib2.Request(url)
 # req.add_header('User-Agent', 'Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)')
 
-html = urllib.request.urlopen(url, context=ctx)
+html = urllib2.urlopen(url, context=ctx)
 
 jsonContent = json.loads(html.read())
 
