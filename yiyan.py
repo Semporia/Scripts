@@ -17,6 +17,8 @@ YiYanTable = tdb.yiyans
 url = "https://sslapi.hitokoto.cn?encode=json"
 req = urllib2.Request(url)
 req.add_header('User-Agent', 'Mozilla/5.0 (X11; Fedora; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko)')
+req.add_header('upgrade-insecure-requests', 1)
+req.add_header('cookie', '_ga=GA1.2.837638223.1516867233')
 
 html = urllib2.urlopen(req, context=ctx)
 
