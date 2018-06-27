@@ -8,7 +8,6 @@ print('连接到Mongo服务器...')
 connection = MongoClient('mongodb://myblog:526900@23.83.242.217:27017/myBlog')
 print('连接上了!')
 
-ctx = ssl._create_unverified_context()
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
