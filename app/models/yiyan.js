@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// 使用 module.exports 导出 User 模块
 module.exports = mongoose.model('yiYan', new Schema({
     content: String,
     from: String,

@@ -3,14 +3,9 @@ var app = express();
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var mongoose = require('mongoose');
-var util = require("util");
 
-var jwt = require('jsonwebtoken');//用来创建和确认用户信息摘要
 var config = require('./config'); //读取配置文件config.js信息
-var User = require('./app/models/yiyan'); //获取 User model 信息
-// =======================
-// 配置 =========
-// =======================
+var User = require('./app/models/yiyan'); //获取 yiyan model 信息
 var port = process.env.PORT || 8080; // 设置启动端口
 mongoose.connect(config.database); // 连接数据库
 app.set('superSecret', config.secret); // 设置app 的超级密码--用来生成摘要的密码
@@ -21,16 +16,10 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'https://ninesix.cc');
 
     // Request methods you wish to allow
-    //res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-    // Request headers you wish to allow
-    //res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
 
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    //res.setHeader('Access-Control-Allow-Credentials', true);
-
-    // Pass to next layer of middleware
     next();
 });
 
@@ -41,10 +30,6 @@ app.use(bodyParser.json());
 // 使用 morgan 将请求日志打印到控制台
 app.use(morgan('dev'));
 
-// =======================
-// 路由 ================
-// =======================
-// 基础路由
 app.get('/', function (req, res) {
     res.send('Hello! The API is at http://localhost:' + port + '/api');
 });
@@ -75,8 +60,5 @@ app.get('/yi', function (req, res) {
 
 });
 
-// =======================
-// 启动服务 ======
-// =======================
 app.listen(port);
 console.log('Magic happens at http://localhost:' + port);

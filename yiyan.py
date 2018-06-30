@@ -5,7 +5,7 @@ from pymongo import MongoClient
 
 print('连接到Mongo服务器...')
 
-connection = MongoClient('mongodb://myblog:526900@23.83.242.217:27017/myBlog')
+connection = MongoClient('mongodb连接字符串')
 print('连接上了!')
 
 context = ssl._create_unverified_context()
