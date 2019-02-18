@@ -60,5 +60,12 @@ app.get('/yi', function (req, res) {
 
 });
 
+app.post('/worktile', function (req, res) {
+
+    console.log('req.body', req.body);
+
+    res.send({ code: 290 });
+});
+
 app.listen(port);
 console.log('Magic happens at http://localhost:' + port);
