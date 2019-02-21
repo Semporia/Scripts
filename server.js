@@ -114,11 +114,12 @@ app.get('/worktile', function (req, res) {
     const timestamp = query.timestamp;
     const nonce = query.nonce;
     const echostr = query.echostr;
+      const AESKey = Buffer.from(echostr, 'base64')      
     console.log('timestamp: ', timestamp);
     console.log('nonce: ', nonce);
     console.log('signature: ', signature);
     // 将 token/timestamp/nonce 三个参数进行字典序排序
-    const tmpArr = [token, timestamp, nonce];
+    const tmpArr = [token, timestamp, nonce, AESKey.toString()];
     const tmpStr = sha1(tmpArr.sort().join(''));
     console.log('Sha1 String: ', tmpStr);
     // 验证排序并加密后的字符串与 signature 是否相等
