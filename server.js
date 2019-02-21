@@ -77,6 +77,13 @@ app.get('/worktile', function (req, res) {
     // res.send({ code: 290 });
 });
 
+app.post('/worktile', function (req, res) {
+
+    console.log('req.body', req.body);
+
+    res.send('success');
+});
+
 // function sha1(str) {
 //     const md5sum = crypto.createHash('sha1');
 //     md5sum.update(str);
@@ -85,36 +92,8 @@ app.get('/worktile', function (req, res) {
 //   }
   
   function _decode(data) {
-    // const AESKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe', 'base64')
-    // const iv = AESKey.slice(0, 16)
-    // const decipher = crypto.createDecipheriv('aes-256-cbc', AESKey, iv)
-    // decipher.setAutoPadding(false)
-    // return decodePkcs(
-    //   Buffer.concat([
-    //     decipher.update(data, 'base64'),
-    //     decipher.final()
-    //   ])
-    // )
-      
-//       let aesKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe' + '=', 'base64');
-//       const cipherEncoding = 'base64';
-//       const clearEncoding = 'utf8';
-//       const cipher = crypto.createDecipheriv('aes-256-cbc', aesKey, aesKey.slice(0, 16));
-//       cipher.setAutoPadding(false); // 是否取消自动填充 不取消
-//       let this_text = cipher.update(data, cipherEncoding, clearEncoding) + cipher.final(clearEncoding);
-//       /*
-// 26         密文的构成
-// 27             Base64_Encode(AES_Encrypt[random(16B) + msg_len(4B) + msg + $appId])
-// 28         但是由于部分消息是不满足那个 32 位的，所以导致上面那个 cipher.final() 函数报错，所以修改为了自动填充，所以 appId后面还跟着一些字符
-// 29             就无法正常解析了，所以就不返回 corpid 了，然后返回我们想要的东西。
-// 30      */
-//       return {
-//           noncestr: this_text.substring(0, 16),
-//           msg_len: this_text.substring(16, 20),
-//           msg: this_text.substring(20, this_text.lastIndexOf("}") + 1)
-//       };
-      let aesKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe' + '=', 'base64');      
-      var aesCipher = crypto.createDecipheriv("aes-256-cbc", aesKey, aesKey.slice(0, 16));
+    let aesKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe' + '=', 'base64');      
+    let aesCipher = crypto.createDecipheriv("aes-256-cbc", aesKey, aesKey.slice(0, 16));
     aesCipher.setAutoPadding(false);
     var decipheredBuff = Buffer.concat([aesCipher.update(data, 'base64'), aesCipher.final()]);
     decipheredBuff = PKCS7Decoder(decipheredBuff);
@@ -131,13 +110,6 @@ app.get('/worktile', function (req, res) {
       pad = 0;
     }
     return buff.slice(0, buff.length - pad);
-  }
-  function decodePkcs(buf) {
-    blockSize = 32;
-    let padLen = buf[buf.length - 1]
-    if (padLen < 1 || padLen > blockSize)
-      padLen = 0
-    return buf.slice(0, buf.length - padLen)
   }
 
   function checkSignature(req, res) {
