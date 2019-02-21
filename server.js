@@ -109,7 +109,7 @@ function sha1(str) {
     
     const query = req.query;
     console.log('Request URL: ', req.url);
-    const signature = query.signature;
+    const signature = query.msg_signature;
     const timestamp = query.timestamp;
     const nonce = query.nonce;
     const echostr = query.echostr;
