@@ -85,16 +85,34 @@ app.get('/worktile', function (req, res) {
 //   }
   
   function _decode(data) {
-    const AESKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe', 'base64')
-    const iv = AESKey.slice(0, 16)
-    const decipher = crypto.createDecipheriv('aes-256-cbc', AESKey, iv)
-    decipher.setAutoPadding(false)
-    return decodePkcs(
-      Buffer.concat([
-        decipher.update(data, 'base64'),
-        decipher.final()
-      ])
-    )
+    // const AESKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe', 'base64')
+    // const iv = AESKey.slice(0, 16)
+    // const decipher = crypto.createDecipheriv('aes-256-cbc', AESKey, iv)
+    // decipher.setAutoPadding(false)
+    // return decodePkcs(
+    //   Buffer.concat([
+    //     decipher.update(data, 'base64'),
+    //     decipher.final()
+    //   ])
+    // )
+      
+      let aesKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe' + '=', 'base64');
+      const cipherEncoding = 'base64';
+      const clearEncoding = 'utf8';
+      const cipher = crypto.createDecipheriv('aes-256-cbc', aesKey, aesKey.slice(0, 16));
+      cipher.setAutoPadding(false); // 是否取消自动填充 不取消
+      let this_text = cipher.update(data, cipherEncoding, clearEncoding) + cipher.final(clearEncoding);
+      /*
+26         密文的构成
+27             Base64_Encode(AES_Encrypt[random(16B) + msg_len(4B) + msg + $appId])
+28         但是由于部分消息是不满足那个 32 位的，所以导致上面那个 cipher.final() 函数报错，所以修改为了自动填充，所以 appId后面还跟着一些字符
+29             就无法正常解析了，所以就不返回 corpid 了，然后返回我们想要的东西。
+30      */
+      return {
+          noncestr: this_text.substring(0, 16),
+          msg_len: this_text.substring(16, 20),
+          msg: this_text.substring(20, this_text.lastIndexOf("}") + 1)
+     };
   }
   
   function decodePkcs(buf) {
@@ -114,7 +132,6 @@ app.get('/worktile', function (req, res) {
     const timestamp = query.timestamp;
     const nonce = query.nonce;
     const echostr = query.echostr;
-      const AESKey = Buffer.from(echostr, 'base64')      
     console.log('timestamp: ', timestamp);
     console.log('nonce: ', nonce);
     console.log('signature: ', signature);
@@ -125,10 +142,10 @@ app.get('/worktile', function (req, res) {
     // 验证排序并加密后的字符串与 signature 是否相等
     if (tmpStr === signature) {
       // 原样返回echostr参数内容
-      const last = _decode(echostr);
-      console.log('yes');
+        const last = _decode(echostr);
+        console.log('last', last);
       
-      res.end(last);
+      res.send('success');
       console.log('Check Success');
     } else {
       res.end('failed');
