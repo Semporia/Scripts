@@ -145,7 +145,7 @@ app.get('/worktile', function (req, res) {
         const last = _decode(echostr);
         console.log('last', last);
       
-      res.send(echostr);
+      res.end(echostr);
       console.log('Check Success');
     } else {
       res.end('failed');
