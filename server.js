@@ -68,7 +68,7 @@ app.get('/yi', function (req, res) {
 
 });
 
-app.post('/worktile', function (req, res) {
+app.get('/worktile', function (req, res) {
     checkSignature(req, res);
 
     console.log('req.body', req.body);
@@ -107,7 +107,7 @@ function sha1(str) {
   function checkSignature(req, res) {
     console.log('hhh');
     
-    const query = url.parse(req.url, true).query;
+    const query = req.query;
     console.log('Request URL: ', req.url);
     const signature = query.signature;
     const timestamp = query.timestamp;
