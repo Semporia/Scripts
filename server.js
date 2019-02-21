@@ -6,6 +6,7 @@ var mongoose = require('mongoose');
 
 const url = require('url');
 const crypto = require('crypto');
+const sha1 = require('sha1');
 
 
 // Web 服务器端口
@@ -76,12 +77,12 @@ app.get('/worktile', function (req, res) {
     // res.send({ code: 290 });
 });
 
-function sha1(str) {
-    const md5sum = crypto.createHash('sha1');
-    md5sum.update(str);
-    const ciphertext = md5sum.digest('hex');
-    return ciphertext;
-  }
+// function sha1(str) {
+//     const md5sum = crypto.createHash('sha1');
+//     md5sum.update(str);
+//     const ciphertext = md5sum.digest('hex');
+//     return ciphertext;
+//   }
   
   function _decode(data) {
     const AESKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe', 'base64')
