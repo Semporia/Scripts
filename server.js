@@ -116,7 +116,7 @@ app.get('/worktile', function (req, res) {
       let aesKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe' + '=', 'base64');      
       var aesCipher = crypto.createDecipheriv("aes-256-cbc", aesKey, aesKey.slice(0, 16));
     aesCipher.setAutoPadding(false);
-    var decipheredBuff = Buffer.concat([aesCipher.update(echostr, 'base64'), aesCipher.final()]);
+    var decipheredBuff = Buffer.concat([aesCipher.update(data, 'base64'), aesCipher.final()]);
     decipheredBuff = PKCS7Decoder(decipheredBuff);
     var len_netOrder_corpid = decipheredBuff.slice(16);
     var msg_len = len_netOrder_corpid.slice(0, 4).readUInt32BE(0);
