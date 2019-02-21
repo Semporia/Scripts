@@ -113,8 +113,8 @@ app.get('/worktile', function (req, res) {
 //           msg_len: this_text.substring(16, 20),
 //           msg: this_text.substring(20, this_text.lastIndexOf("}") + 1)
 //       };
-      
-      var aesCipher = crypto.createDecipheriv("aes-256-cbc", this.aesKey, this.iv);
+      let aesKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe' + '=', 'base64');      
+      var aesCipher = crypto.createDecipheriv("aes-256-cbc", aesKey, aesKey.slice(0, 16));
     aesCipher.setAutoPadding(false);
     var decipheredBuff = Buffer.concat([aesCipher.update(echostr, 'base64'), aesCipher.final()]);
     decipheredBuff = PKCS7Decoder(decipheredBuff);
