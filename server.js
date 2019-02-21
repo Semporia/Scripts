@@ -162,7 +162,7 @@ app.get('/worktile', function (req, res) {
         const result = _decode(echostr);
         console.log('last', result);
       
-      res.end(echostr);
+      res.end(result);
       console.log('Check Success');
     } else {
       res.end('failed');
