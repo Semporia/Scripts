@@ -117,7 +117,7 @@ app.get('/worktile', function (req, res) {
       var aesCipher = crypto.createDecipheriv("aes-256-cbc", this.aesKey, this.iv);
     aesCipher.setAutoPadding(false);
     var decipheredBuff = Buffer.concat([aesCipher.update(echostr, 'base64'), aesCipher.final()]);
-    decipheredBuff = this.PKCS7Decoder(decipheredBuff);
+    decipheredBuff = PKCS7Decoder(decipheredBuff);
     var len_netOrder_corpid = decipheredBuff.slice(16);
     var msg_len = len_netOrder_corpid.slice(0, 4).readUInt32BE(0);
     var result = len_netOrder_corpid.slice(4, msg_len + 4).toString();
@@ -125,6 +125,13 @@ app.get('/worktile', function (req, res) {
     return result; // 返回一个解密后的明文
   }
   
+  function PKCS7Decoder (buff) {
+    var pad = buff[buff.length - 1];
+    if (pad < 1 || pad > 32) {
+      pad = 0;
+    }
+    return buff.slice(0, buff.length - pad);
+  }
   function decodePkcs(buf) {
     blockSize = 32;
     let padLen = buf[buf.length - 1]
