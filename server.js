@@ -80,6 +80,7 @@ app.get('/worktile', function (req, res) {
 app.post('/worktile', function (req, res) {
 
     console.log('req.body', req.body);
+    console.log('req.query', req.query);
 
     res.send('success');
 });
