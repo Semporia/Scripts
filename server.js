@@ -9,6 +9,7 @@ const crypto = require('crypto');
 const sha1 = require('sha1');
 const xmlparser = require('express-xml-bodyparser');
 
+var utils = require('express/node_modules/connect/lib/utils'), xml2js = require('xml2js');
 
 // Web 服务器端口
 // 微信公众平台服务器配置中的 Token
@@ -36,7 +37,7 @@ app.use(function (req, res, next) {
 //用body parser 来解析post和url信息中的参数
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(xmlparser());
+app.use(xmlBodyParser);
 
 // 使用 morgan 将请求日志打印到控制台
 app.use(morgan('dev'));
@@ -144,6 +145,37 @@ app.post('/worktile', function (req, res) {
       console.log('Check Failed');
     }
   }
+
+function xmlBodyParser(req, res, next) {
+  if (req._body) return next();
+  req.body = req.body || {};
+
+  // ignore GET
+  if ('GET' == req.method || 'HEAD' == req.method) return next();
+
+  // check Content-Type
+  if ('text/xml' != utils.mime(req)) return next();
+
+  // flag as parsed
+  req._body = true;
+
+  // parse
+  var buf = '';
+  req.setEncoding('utf8');
+  req.on('data', function (chunk) { buf += chunk });
+  req.on('end', function () {
+    var parseString = xml2js.parseString;
+    parseString(buf, function (err, json) {
+      if (err) {
+        err.status = 400;
+        next(err);
+      } else {
+        req.body = json;
+        next();
+      }
+    });
+  });
+};
 
 app.listen(port);
 console.log('Magic happens at http://localhost:' + port);
