@@ -105,10 +105,10 @@ function _decode(data) {
   let aesKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe' + '=', 'base64');
   let aesCipher = crypto.createDecipheriv("aes-256-cbc", aesKey, aesKey.slice(0, 16));
   aesCipher.setAutoPadding(false);
-  const decipheredBuff = Buffer.concat([aesCipher.update(data, 'base64'), aesCipher.final()]);
+  let decipheredBuff = Buffer.concat([aesCipher.update(data, 'base64'), aesCipher.final()]);
   decipheredBuff = PKCS7Decoder(decipheredBuff);
-  const len_netOrder_corpid = decipheredBuff.slice(16);
-  const msg_len = len_netOrder_corpid.slice(0, 4).readUInt32BE(0);
+  let len_netOrder_corpid = decipheredBuff.slice(16);
+  let msg_len = len_netOrder_corpid.slice(0, 4).readUInt32BE(0);
   const result = len_netOrder_corpid.slice(4, msg_len + 4).toString();
 
   return result; // 返回一个解密后的明文
