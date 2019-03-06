@@ -79,7 +79,10 @@ app.get('/worktile', function (req, res) {
 });
 
 app.post('/worktile', function (req, res) {
-  const result = checkSignature(req, res, req.body.xml.Encrypt[0]);
+  if (req.body.xml.Encrypt && req.body.xml.Encrypt[0]) {
+    const result = checkSignature(req, res, req.body.xml.Encrypt[0]);
+    console.log('result', result);  
+  }
   console.log('req.body', req.body);
   console.log('req.query', req.query);
 
