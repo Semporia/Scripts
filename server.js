@@ -35,7 +35,7 @@ app.use(function (req, res, next) {
 //用body parser 来解析post和url信息中的参数
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(xmlBodyParser);
+app.use(xmlparser());
 
 // 使用 morgan 将请求日志打印到控制台
 app.use(morgan('dev'));
