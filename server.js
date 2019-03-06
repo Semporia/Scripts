@@ -6,7 +6,6 @@ var mongoose = require('mongoose');
 
 const url = require('url');
 const crypto = require('crypto');
-// const sha1 = require('sha1');
 const xmlparser = require('express-xml-bodyparser');
 const parseString = require('xml2js').parseString;
 
@@ -75,8 +74,6 @@ app.get('/worktile', function (req, res) {
   const result = checkSignature(req, res);
   res.send(result);
   console.log('req.body', req.body);
-
-  // res.send({ code: 290 });
 });
 
 app.post('/worktile', function (req, res) {
@@ -84,8 +81,7 @@ app.post('/worktile', function (req, res) {
   if (str) {
     const xmlResult = checkSignature(req, res, str);
     parseString(xmlResult, { trim: true, explicitArray: false }, (err, result) => {
-      console.log('parseResult', result);
-      console.log('result', JSON.parse(result));  
+      console.log('result', result.xml);
     })
   }
   console.log('req.body', req.body);
