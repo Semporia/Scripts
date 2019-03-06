@@ -6,8 +6,9 @@ var mongoose = require('mongoose');
 
 const url = require('url');
 const crypto = require('crypto');
-const sha1 = require('sha1');
+// const sha1 = require('sha1');
 const xmlparser = require('express-xml-bodyparser');
+const parseString = require('xml2js').parseString;
 
 // Web 服务器端口
 // 微信公众平台服务器配置中的 Token
@@ -35,7 +36,7 @@ app.use(function (req, res, next) {
 //用body parser 来解析post和url信息中的参数
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(xmlparser());
+app.use(xmlparser({trim: false, explicitArray: false}));
 
 // 使用 morgan 将请求日志打印到控制台
 app.use(morgan('dev'));
@@ -79,9 +80,12 @@ app.get('/worktile', function (req, res) {
 });
 
 app.post('/worktile', function (req, res) {
-  if (req.body.xml.encrypt && req.body.xml.encrypt[0]) {
-    const result = checkSignature(req, res, req.body.xml.encrypt[0]);
-    console.log('result', result);  
+  const str = req.body.xml.encrypt || req.body.xml.Encrypt || '';
+  if (str) {
+    const xmlResult = checkSignature(req, res, str);
+    parseString(xmlResult, {trim: true, explicitArray: false}, (err, result) => {
+      console.log('result', JSON.parse(result));  
+    })
   }
   console.log('req.body', req.body);
   console.log('req.query', req.query);
@@ -90,28 +94,28 @@ app.post('/worktile', function (req, res) {
 
 });
 
-// function sha1(str) {
-//     const md5sum = crypto.createHash('sha1');
-//     md5sum.update(str);
-//     const ciphertext = md5sum.digest('hex');
-//     return ciphertext;
-//   }
+function sha1(str) {
+    const md5sum = crypto.createHash('sha1');
+    md5sum.update(str);
+    const ciphertext = md5sum.digest('hex');
+    return ciphertext;
+  }
 
 function _decode(data) {
   let aesKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe' + '=', 'base64');
   let aesCipher = crypto.createDecipheriv("aes-256-cbc", aesKey, aesKey.slice(0, 16));
   aesCipher.setAutoPadding(false);
-  var decipheredBuff = Buffer.concat([aesCipher.update(data, 'base64'), aesCipher.final()]);
+  const decipheredBuff = Buffer.concat([aesCipher.update(data, 'base64'), aesCipher.final()]);
   decipheredBuff = PKCS7Decoder(decipheredBuff);
-  var len_netOrder_corpid = decipheredBuff.slice(16);
-  var msg_len = len_netOrder_corpid.slice(0, 4).readUInt32BE(0);
-  var result = len_netOrder_corpid.slice(4, msg_len + 4).toString();
+  const len_netOrder_corpid = decipheredBuff.slice(16);
+  const msg_len = len_netOrder_corpid.slice(0, 4).readUInt32BE(0);
+  const result = len_netOrder_corpid.slice(4, msg_len + 4).toString();
 
   return result; // 返回一个解密后的明文
 }
 
 function PKCS7Decoder(buff) {
-  var pad = buff[buff.length - 1];
+  let pad = buff[buff.length - 1];
   if (pad < 1 || pad > 32) {
     pad = 0;
   }
