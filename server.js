@@ -81,7 +81,9 @@ app.post('/worktile', function (req, res) {
   if (str) {
     const xmlResult = checkSignature(req, res, str);
     parseString(xmlResult, { trim: true, explicitArray: false }, (err, result) => {
-      console.log('result', result.xml);
+      if (result && result.xml) {
+        console.log('result', result.xml);        
+      }
     })
   }
   console.log('req.body', req.body);
@@ -92,11 +94,11 @@ app.post('/worktile', function (req, res) {
 });
 
 function sha1(str) {
-    const md5sum = crypto.createHash('sha1');
-    md5sum.update(str);
-    const ciphertext = md5sum.digest('hex');
-    return ciphertext;
-  }
+  const md5sum = crypto.createHash('sha1');
+  md5sum.update(str);
+  const ciphertext = md5sum.digest('hex');
+  return ciphertext;
+}
 
 function _decode(data) {
   let aesKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe' + '=', 'base64');
@@ -120,8 +122,6 @@ function PKCS7Decoder(buff) {
 }
 
 function checkSignature(req, res, encrypt) {
-  console.log('hhh');
-
   const query = req.query;
   console.log('Request URL: ', req.url);
   const signature = query.msg_signature;
