@@ -9,9 +9,6 @@ const crypto = require('crypto');
 const sha1 = require('sha1');
 const xmlparser = require('express-xml-bodyparser');
 
-var utils = require('express/node_modules/connect/lib/utils'), xml2js = require('xml2js');
-const parseString = require('xml2js').parseString;
-
 // Web 服务器端口
 // 微信公众平台服务器配置中的 Token
 const token = '8dI6rx4iBtPqRWmEjE8h';
@@ -74,31 +71,19 @@ app.get('/yi', function (req, res) {
 });
 
 app.get('/worktile', function (req, res) {
-    checkSignature(req, res);
-
+    const result = checkSignature(req, res);
+    res.send(result);
     console.log('req.body', req.body);
 
     // res.send({ code: 290 });
 });
 
 app.post('/worktile', function (req, res) {
-  req.rawBody = '';//添加接收变量
-  var json={};
-  req.setEncoding('utf8');
-  req.on('data', function(chunk) { 
-    req.rawBody += chunk;
-  });
-  req.on('end', function() {
-    json1 = parseString(req.rawBody);
-    json2 = xml2json.toJson(req.rawBody);
-    console.log('json1',json1);
-    console.log('json2',json2);
+    const result = checkSignature(req, res, req.body.xml.Encrypt);
     console.log('req.body', req.body);
     console.log('req.query', req.query);
 
     res.send('success');
-  });
-
     
 });
 
@@ -130,7 +115,7 @@ app.post('/worktile', function (req, res) {
     return buff.slice(0, buff.length - pad);
   }
 
-  function checkSignature(req, res) {
+  function checkSignature(req, res, encrypt) {
     console.log('hhh');
     
     const query = req.query;
@@ -138,7 +123,12 @@ app.post('/worktile', function (req, res) {
     const signature = query.msg_signature;
     const timestamp = query.timestamp;
     const nonce = query.nonce;
-    const echostr = query.echostr;
+    let echostr;
+    if (!encrypt) {
+      echostr = query.echostr;      
+    } else {
+      echostr = encrypt;      
+    }
     console.log('timestamp: ', timestamp);
     console.log('nonce: ', nonce);
     console.log('signature: ', signature);
@@ -152,44 +142,13 @@ app.post('/worktile', function (req, res) {
         const result = _decode(echostr);
         console.log('last', result);
       
-      res.end(result);
+      return result;
       console.log('Check Success');
     } else {
-      res.end('failed');
+      return 'failed';
       console.log('Check Failed');
     }
   }
-
-function xmlBodyParser(req, res, next) {
-  if (req._body) return next();
-  req.body = req.body || {};
-
-  // ignore GET
-  if ('GET' == req.method || 'HEAD' == req.method) return next();
-
-  // check Content-Type
-  if ('text/xml' != utils.mime(req)) return next();
-
-  // flag as parsed
-  req._body = true;
-
-  // parse
-  var buf = '';
-  req.setEncoding('utf8');
-  req.on('data', function (chunk) { buf += chunk });
-  req.on('end', function () {
-    var parseString = xml2js.parseString;
-    parseString(buf, function (err, json) {
-      if (err) {
-        err.status = 400;
-        next(err);
-      } else {
-        req.body = json;
-        next();
-      }
-    });
-  });
-};
 
 app.listen(port);
 console.log('Magic happens at http://localhost:' + port);
