@@ -10,6 +10,7 @@ const sha1 = require('sha1');
 const xmlparser = require('express-xml-bodyparser');
 
 var utils = require('express/node_modules/connect/lib/utils'), xml2js = require('xml2js');
+const parseString = require('xml2js').parseString;
 
 // Web 服务器端口
 // 微信公众平台服务器配置中的 Token
@@ -81,11 +82,24 @@ app.get('/worktile', function (req, res) {
 });
 
 app.post('/worktile', function (req, res) {
-
+  req.rawBody = '';//添加接收变量
+  var json={};
+  req.setEncoding('utf8');
+  req.on('data', function(chunk) { 
+    req.rawBody += chunk;
+  });
+  req.on('end', function() {
+    json1 = parseString(req.rawBody);
+    json2 = xml2json.toJson(req.rawBody);
+    console.log('json1',json1);
+    console.log('json2',json2);
     console.log('req.body', req.body);
     console.log('req.query', req.query);
 
     res.send('success');
+  });
+
+    
 });
 
 // function sha1(str) {
