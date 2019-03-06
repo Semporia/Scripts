@@ -83,7 +83,8 @@ app.post('/worktile', function (req, res) {
   const str = req.body.xml.encrypt || req.body.xml.Encrypt || '';
   if (str) {
     const xmlResult = checkSignature(req, res, str);
-    parseString(xmlResult, {trim: true, explicitArray: false}, (err, result) => {
+    parseString(xmlResult, { trim: true, explicitArray: false }, (err, result) => {
+      console.log('parseResult', result);
       console.log('result', JSON.parse(result));  
     })
   }
