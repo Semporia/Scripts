@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 const url = require('url');
 const crypto = require('crypto');
 const sha1 = require('sha1');
+const xmlparser = require('express-xml-bodyparser');
 
 
 // Web 服务器端口
@@ -35,6 +36,7 @@ app.use(function (req, res, next) {
 //用body parser 来解析post和url信息中的参数
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(xmlparser());
 
 // 使用 morgan 将请求日志打印到控制台
 app.use(morgan('dev'));
