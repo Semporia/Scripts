@@ -93,13 +93,6 @@ app.post('/worktile', function (req, res) {
 
 });
 
-function sha1(str) {
-  const md5sum = crypto.createHash('sha1');
-  md5sum.update(str);
-  const ciphertext = md5sum.digest('hex');
-  return ciphertext;
-}
-
 function _decode(data) {
   let aesKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe' + '=', 'base64');
   let aesCipher = crypto.createDecipheriv("aes-256-cbc", aesKey, aesKey.slice(0, 16));
@@ -121,6 +114,13 @@ function PKCS7Decoder(buff) {
   return buff.slice(0, buff.length - pad);
 }
 
+function sha1(str) {
+  const md5sum = crypto.createHash('sha1');
+  md5sum.update(str);
+  const ciphertext = md5sum.digest('hex');
+  return ciphertext;
+}
+
 function checkSignature(req, res, encrypt) {
   const query = req.query;
   console.log('Request URL: ', req.url);
@@ -137,7 +137,7 @@ function checkSignature(req, res, encrypt) {
   console.log('timestamp: ', timestamp);
   console.log('nonce: ', nonce);
   console.log('signature: ', signature);
-  // 将 token/timestamp/nonce 三个参数进行字典序排序
+  // 将 token/timestamp/nonce/echostr 四个参数组成数组进行排序
   const tmpArr = [token, timestamp, nonce, echostr];
   const tmpStr = sha1(tmpArr.sort().join(''));
   console.log('Sha1 String: ', tmpStr);
