@@ -18,11 +18,15 @@ var User = require('./app/models/yiyan'); //获取 yiyan model 信息
 var port = process.env.PORT || 8080; // 设置启动端口
 mongoose.connect(config.database); // 连接数据库
 app.set('superSecret', config.secret); // 设置app 的超级密码--用来生成摘要的密码
+const whiteList = ['https://ninesix.cc', 'https://whyour.cn'];
 // Add headers
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'https://ninesix.cc');
+  const origin = req.get('origin');
+  if (origin && whiteList.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);    
+  }
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -82,7 +86,7 @@ app.post('/worktile', function (req, res) {
     const xmlResult = checkSignature(req, res, str);
     parseString(xmlResult, { trim: true, explicitArray: false }, (err, result) => {
       if (result && result.xml) {
-        console.log('result', result.xml);        
+        console.log('result', result.xml);
       }
     })
   }
@@ -92,6 +96,13 @@ app.post('/worktile', function (req, res) {
   res.send('success');
 
 });
+
+function sha1(str) {
+  const md5sum = crypto.createHash('sha1');
+  md5sum.update(str);
+  const ciphertext = md5sum.digest('hex');
+  return ciphertext;
+}
 
 function _decode(data) {
   let aesKey = Buffer.from('21IpFqj8qolJbaqPqe1rVTAK5sgkaQ3GQmUKiUQLwRe' + '=', 'base64');
@@ -114,13 +125,6 @@ function PKCS7Decoder(buff) {
   return buff.slice(0, buff.length - pad);
 }
 
-function sha1(str) {
-  const md5sum = crypto.createHash('sha1');
-  md5sum.update(str);
-  const ciphertext = md5sum.digest('hex');
-  return ciphertext;
-}
-
 function checkSignature(req, res, encrypt) {
   const query = req.query;
   console.log('Request URL: ', req.url);
@@ -137,7 +141,7 @@ function checkSignature(req, res, encrypt) {
   console.log('timestamp: ', timestamp);
   console.log('nonce: ', nonce);
   console.log('signature: ', signature);
-  // 将 token/timestamp/nonce/echostr 四个参数组成数组进行排序
+  // 将 token/timestamp/nonce 三个参数进行字典序排序
   const tmpArr = [token, timestamp, nonce, echostr];
   const tmpStr = sha1(tmpArr.sort().join(''));
   console.log('Sha1 String: ', tmpStr);
