@@ -8,6 +8,7 @@ const url = require('url');
 const crypto = require('crypto');
 const xmlparser = require('express-xml-bodyparser');
 const parseString = require('xml2js').parseString;
+const fetch = require("node-fetch");
 
 // Web 服务器端口
 // 微信公众平台服务器配置中的 Token
@@ -72,6 +73,14 @@ app.get('/yi', function (req, res) {
     res.send(data);
   });
 
+});
+
+app.get('/calendar', async function (req, res) {
+  console.log(req.query)
+  const text = await fetch(`https://wannianrili.51240.com/ajax/?q=${req.query.q}`, {
+        method: "get",
+      }).then((res) => res.text());
+  res.send(text);
 });
 
 app.get('/worktile', function (req, res) {
