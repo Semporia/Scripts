@@ -25,7 +25,7 @@ app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
   const origin = req.get('origin');
-  if (origin && whiteList.includes(origin)) {
+  if (origin && (whiteList.includes(origin) || origin.includes('chrome-extension://'))) {
     res.setHeader('Access-Control-Allow-Origin', origin);    
   }
 
