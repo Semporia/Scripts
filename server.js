@@ -16,8 +16,11 @@ const token = '8dI6rx4iBtPqRWmEjE8h';
 
 var config = require('./config'); //读取配置文件config.js信息
 var User = require('./app/models/yiyan'); //获取 yiyan model 信息
+var Shi = require('./app/models/shi'); //获取 yiyan model 信息
+var Ci = require('./app/models/ci'); //获取 yiyan model 信息
+var LunYu = require('./app/models/lunyu'); //获取 yiyan model 信息
+var ShiJing = require('./app/models/shijing'); //获取 yiyan model 信息
 var port = process.env.PORT || 8080; // 设置启动端口
-mongoose.connect(config.database); // 连接数据库
 app.set('superSecret', config.secret); // 设置app 的超级密码--用来生成摘要的密码
 const whiteList = ['https://ninesix.cc', 'https://whyour.cn', 'http://localhost:8080'];
 // Add headers
@@ -53,6 +56,22 @@ app.get('/', function (req, res) {
 app.get('/yiyan', function (req, res) {
 
   User.aggregate([{ $sample: { size: 1 } }], function (err, data) {
+    if (err) throw err;
+    res.send({ code: 200, data: data[0] });
+  });
+
+});
+
+app.get('/shici', function (req, res) {
+  const obj = {
+    0: Shi,
+    1: Ci,
+    2: ShiJing,
+    3: LunYu
+  }
+
+  const random = Math.floor(Math.random() * 4);
+  Ci.aggregate([{ $sample: { size: 1 } }], function (err, data) {
     if (err) throw err;
     res.send({ code: 200, data: data[0] });
   });
