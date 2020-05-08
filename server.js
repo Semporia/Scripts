@@ -19,7 +19,7 @@ var User = require('./app/models/yiyan'); //获取 yiyan model 信息
 var port = process.env.PORT || 8080; // 设置启动端口
 mongoose.connect(config.database); // 连接数据库
 app.set('superSecret', config.secret); // 设置app 的超级密码--用来生成摘要的密码
-const whiteList = ['https://ninesix.cc', 'https://whyour.cn'];
+const whiteList = ['https://ninesix.cc', 'https://whyour.cn', 'http://localhost:8080'];
 // Add headers
 app.use(function (req, res, next) {
 
