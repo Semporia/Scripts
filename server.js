@@ -71,7 +71,7 @@ app.get('/shici', function (req, res) {
   }
 
   const random = Math.floor(Math.random() * 4);
-  Ci.aggregate([{ $sample: { size: 1 } }], function (err, data) {
+  obj[random].aggregate([{ $sample: { size: 1 } }], function (err, data) {
     if (err) throw err;
     res.send({ code: 200, data: data[0] });
   });
