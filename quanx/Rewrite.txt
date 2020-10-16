@@ -567,3 +567,9 @@ hostname = *.amemv.com, *.iydsj.com, *.k.sohu.com, *.kakamobi.cn, *.kingsoft-off
 ^https?+:\/\/ih2\.ireader\.com\/zyapi\/bookstore\/ad\/ url reject-200
 ^https?+:\/\/ih2\.ireader\.com\/zyapi\/self\/screen\/ad url reject-200
 ^https?+:\/\/ih2\.ireader\.com\/zycl\/api\/ad\/ url reject-200
+
+
+
+# 获取cookie
+
+https:\/\/nebula\.kuaishou\.com\/nebula\/task\/earning\? url script-request-header https://raw.githubusercontent.com/Sunert/Scripts/master/Task/kuaishou.js
