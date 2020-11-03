@@ -27,11 +27,16 @@ function getHolidays() {
     const url = { url: `https://timor.tech/api/holiday/year/${year}/` }
     $.get(url, (err, resp, data) => {
       try {
+        $.log(resp)
+        $.log(data)
+        console.log(resp)
         const _data = JSON.parse(data)
+        $.log(_data)
         console.log($.lodash_get(_data, 'data.holiday'))
         formatHolidays($.lodash_get(_data, 'data.holiday'))
         resolve()
       } catch (e) {
+        $.log(1)
         $.logErr(e, resp)
         resolve()
       } finally {
