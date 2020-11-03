@@ -4,7 +4,7 @@ $.nextHolidayKey = "nextHoliday";
 $.content = "";
 $.holidays = {}
 $.nextHolidays = {}
-$.recentHolidayIndex = 0
+$.recentHolidayIndex = -1
 
 !(async () => {
   await getHolidays();
@@ -103,24 +103,26 @@ function valCal(days) {
 
 function day() {
   return new Promise((resolve) => {
-    var now = new Date();
-    let content = [];
-    const dayArr = Object.values($.holidays)
+    const content = [];
+    const _dayArr = Object.values($.holidays)
     const nextDayArr = Object.values($.nextHolidays)
-    dayArr.concat(nextDayArr)
+    const dayArr = _dayArr.concat(nextDayArr)
     for (var i in dayArr) {
       var d = dateDiff(dayArr[i][1]);
       if (isNaN(d)) continue;
       var u = valCal(d);
-      if (u >= 0) {
+      if (u >= 0 && $.recentHolidayIndex < 0) {
         $.recentHolidayIndex = i;
       }
       content.push(dayArr[i][0] + " • " + u);
     }
+    const result = [];
     if ($.recentHolidayIndex >= 2) {
-      content = content.slice($.recentHolidayIndex - 2, $.recentHolidayIndex + 3)
+      result = content.slice($.recentHolidayIndex - 2, $.recentHolidayIndex + 3)
+    } else {
+      result = content.slice($.recentHolidayIndex, $.recentHolidayIndex + 5)
     }
-    $.content = content.join('\n');
+    $.content = result.join('\n');
     resolve();
   });
 }
