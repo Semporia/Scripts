@@ -24,10 +24,11 @@ function dateDiff(startDate, endDate) {
 function getHolidays() {
   return new Promise((resolve) => {
     const year = new Date().getFullYear();
-    const url = { url: `https://timor.tech/api/holiday/year/${year}` }
+    const url = { url: `https://timor.tech/api/holiday/year/${year}/` }
     $.get(url, (err, resp, data) => {
       try {
         const _data = JSON.parse(data)
+        console.log($.lodash_get(_data, 'data.holiday'))
         formatHolidays($.lodash_get(_data, 'data.holiday'))
         resolve()
       } catch (e) {
