@@ -29,7 +29,12 @@ function getHolidays() {
       try {
         if (data) {
           const _data = JSON.parse(data)
-          formatHolidays($.lodash_get(_data, 'data.holiday'))
+          const _holidays = $.lodash_get(_data, 'data.holiday')
+          $.log(JSON.stringify(_holidays))
+          $.log(JSON.stringify(_data))
+          if (_holidays) {
+            formatHolidays(_holidays)
+          }
         }
         resolve()
       } catch (e) {
