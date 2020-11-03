@@ -104,8 +104,8 @@ function valCal(days) {
 function day() {
   return new Promise((resolve) => {
     const content = [];
-    const _dayArr = Object.values($.holidays)
-    const nextDayArr = Object.values($.nextHolidays)
+    let _dayArr = Object.values($.holidays)
+    let nextDayArr = Object.values($.nextHolidays)
     const dayArr = _dayArr.concat(nextDayArr)
     for (var i in dayArr) {
       var d = dateDiff(dayArr[i][1]);
