@@ -1,9 +1,14 @@
 const $ = new Env("倒数日");
+$.holidayKey = "holiday";
+$.nextHolidayKey = "nextHoliday";
 $.content = "";
 $.holidays = {}
+$.nextHolidays = {}
+$.recentHolidayIndex = 0
 
 !(async () => {
   await getHolidays();
+  await getNextHolidays();
   await day();
   await showMsg();
 })()
@@ -11,35 +16,61 @@ $.holidays = {}
   .finally(() => $.done());
 
 //倒数日计算
-function dateDiff(startDate, endDate) {
-  //2002-12-18格式
+function dateDiff(startDate) {
   let sDate, eDate, days;
   sDate = new Date(startDate);
-  eDate = new Date(endDate);
-  //把相差的毫秒数转换为天数
-  days = parseInt((sDate - eDate) / 1000 / 60 / 60 / 24);
+  days = parseInt((sDate - new Date()) / 1000 / 60 / 60 / 24);
   return days;
 }
 
 function getHolidays() {
   return new Promise((resolve) => {
     const year = new Date().getFullYear();
+    const storageHoliday = $.getval($.holidayKey)
+    const storageYear = storageHoliday && parseInt(Object.values(storageHoliday)[0][1].slice(0,4))
+    if (storageYear === year) {
+      resolve()
+    }
     const url = { url: `https://timor.tech/api/holiday/year/${year}/` }
     $.get(url, (err, resp, data) => {
       try {
         if (data) {
           const _data = JSON.parse(data)
-          $.log(typeof data === 'string')
-          $.log(JSON.stringify(_data))
-          $.log('===================')
-          $.log(JSON.stringify(_data.holiday))
-          $.log('===================')
-
           const _holidays = $.lodash_get(_data, 'holiday')
-          $.log(JSON.stringify(_holidays))
           if (_holidays) {
-            formatHolidays(_holidays)
+            formatHolidays(_holidays, $.holidays)
           }
+        }
+        $.setval($.holidays, $.holidayKey)
+        resolve()
+      } catch (e) {
+        $.logErr(e, resp)
+        resolve()
+      } finally {
+        resolve()
+      }
+    })
+  })
+}
+
+function getNextHolidays() {
+  return new Promise((resolve) => {
+    const year = new Date().getFullYear();
+    const urlNext = { url: `https://timor.tech/api/holiday/year/${year + 1}/` }
+    const storageHoliday = $.getval($.nextHolidayKey)
+    const storageYear = storageHoliday && parseInt(Object.values(storageHoliday)[0][1].slice(0,4))
+    if (storageYear === year) {
+      resolve()
+    }
+    $.get(urlNext, (err, resp, data) => {
+      try {
+        if (data) {
+          const _data = JSON.parse(data)
+          const _holidays = $.lodash_get(_data, 'holiday')
+          if (_holidays) {
+            formatHolidays(_holidays, $.nextHolidays)
+          }
+          $.setval($.nextHolidays, $.nextHolidayKey)
         }
         resolve()
       } catch (e) {
@@ -52,11 +83,14 @@ function getHolidays() {
   })
 }
 
-function formatHolidays(days) {
+function formatHolidays(days, holidays) {
   Object.values(days).map(day => {
+    if (day.name === '初一') {
+      day.name === '春节'
+    }
     const key =day.name.slice(0, 1)
-    if (day.holiday && !$.holidays[key]) {
-      $.holidays[key] = [day.name, day.date];
+    if (day.holiday && !holidays[key]) {
+      holidays[key] = [day.name, day.date];
     }
   })
 }
@@ -70,21 +104,23 @@ function valCal(days) {
 function day() {
   return new Promise((resolve) => {
     var now = new Date();
-    var nowStr = `date=${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`
-    var content = "";
-    const rest = [
-      ["今年     ", `${now.getFullYear()}-01-01`],
-      ["今年     ", `${now.getFullYear()}-12-31`],
-    ];
+    let content = [];
     const dayArr = Object.values($.holidays)
-    dayArr.concat(rest)
+    const nextDayArr = Object.values($.nextHolidays)
+    dayArr.concat(nextDayArr)
     for (var i in dayArr) {
-      var d = dateDiff(dayArr[i][1], nowStr);
+      var d = dateDiff(dayArr[i][1]);
       if (isNaN(d)) continue;
       var u = valCal(d);
-      content += dayArr[i][0] + "• " + u + "\n";
+      if (u >= 0) {
+        $.recentHolidayIndex = i;
+      }
+      content.push(dayArr[i][0] + " • " + u);
     }
-    $.content = content;
+    if ($.recentHolidayIndex >= 2) {
+      content = content.slice($.recentHolidayIndex - 2, $.recentHolidayIndex + 3)
+    }
+    $.content = content.join('\n');
     resolve();
   });
 }
