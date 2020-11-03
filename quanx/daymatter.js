@@ -106,22 +106,21 @@ function day() {
     const content = [];
     let _dayArr = Object.values($.holidays)
     let nextDayArr = Object.values($.nextHolidays)
-    const dayArr = _dayArr.concat(nextDayArr)
+    let dayArr = _dayArr.concat(nextDayArr)
     for (var i in dayArr) {
       var d = dateDiff(dayArr[i][1]);
       if (isNaN(d)) continue;
       var u = valCal(d);
-      if (u >= 0 && $.recentHolidayIndex < 0) {
+      if (d >= 0 && $.recentHolidayIndex < 0) {
         $.recentHolidayIndex = i;
       }
       content.push(dayArr[i][0] + " • " + u);
     }
-    const result = [];
-    if ($.recentHolidayIndex >= 2) {
-      result = content.slice($.recentHolidayIndex - 2, $.recentHolidayIndex + 3)
-    } else {
-      result = content.slice($.recentHolidayIndex, $.recentHolidayIndex + 5)
-    }
+    const start = $.recentHolidayIndex >= 2 ? $.recentHolidayIndex - 2 : $.recentHolidayIndex
+    const end = $.recentHolidayIndex >= 2 ? $.recentHolidayIndex + 3 : $.recentHolidayIndex + 5
+    $.log(start)
+    $.log(end)
+    const result = content.slice(start, end)
     $.content = result.join('\n');
     resolve();
   });
