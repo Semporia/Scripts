@@ -112,12 +112,12 @@ function day() {
       if (isNaN(d)) continue;
       var u = valCal(d);
       if (d >= 0 && $.recentHolidayIndex < 0) {
-        $.recentHolidayIndex = i;
+        $.recentHolidayIndex = parseInt(i);
       }
       content.push(dayArr[i][0] + " • " + u);
     }
     const start = $.recentHolidayIndex >= 2 ? $.recentHolidayIndex - 2 : $.recentHolidayIndex
-    const end = $.recentHolidayIndex >= 2 ? $.recentHolidayIndex + 3 : $.recentHolidayIndex + 5
+    const end = $.recentHolidayIndex >= 2 ? $.recentHolidayIndex + 4 : $.recentHolidayIndex + 6
     $.log(start)
     $.log(end)
     const result = content.slice(start, end)
