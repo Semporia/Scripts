@@ -1,30 +1,42 @@
 const $ = new Env('互助码')
-const zd_shareCode = $.getdata('zd_shareCode') || 'qu73szyyke7tv4sgpjojpyiq6u';
-const nc_shareCode = $.getdata('nc_shareCode') || 'a1bc1602151a42d68fb8cf0ee93cc43d';
-const mc_shareCode = $.getdata('mc_shareCode') || 'MTAxODc2NTEzNDAwMDAwMDAyNzkyNjM4Mw==';
+const shareCodes = [
+  {
+    zd: $.getdata("zd_shareCode1") || "qu73szyyke7tv4sgpjojpyiq6u",
+    nc: $.getdata("nc_shareCode1") || "qu73szyyke7tv4sgpjojpyiq6u",
+    mc: $.getdata("mc_shareCode1") || "qu73szyyke7tv4sgpjojpyiq6u",
+  },
+  {
+    zd: $.getdata("zd_shareCode2") || "",
+    nc: $.getdata("nc_shareCode2") || "",
+    mc: $.getdata("mc_shareCode2") || "",
+  },
+];
 $.zdUrl = `http://api.turinglabs.net/api/v1/jd/bean/create/${zd_shareCode}/`
 $.ncUrl = `http://api.turinglabs.net/api/v1/jd/farm/create/${nc_shareCode}/`
 $.mcUrl = `http://api.turinglabs.net/api/v1/jd/pet/create/${mc_shareCode}/`
 $.result = []
 
 !(async () => {
-  await createZd()
-  await createNc()
-  await createMc()
+  for (let i = 0; i < shareCodes.length; i++) {
+    const { zd, nc, mc } = shareCodes[i];
+    zd && await createZd(zd)
+    nc && await createNc(nc)
+    mc && await createMc(mc)
+  }
   await showMsg()
 })()
   .catch((e) => $.logErr(e))
   .finally(() => $.done())
 
 // 种豆得豆
-function createZd() {
+function createZd(zdUrl) {
   return new Promise((resolve) => {
-    const url = { url: $.zdUrl }
+    const url = { url: zdUrl }
     $.get(url, (err, resp, data) => {
       try {
         const _data = JSON.parse(data)
         if (_data) {
-          $.result.push(_data.message)
+          $.result.push(`种豆：${_data.message}`)
         }
       } catch (e) {
         $.logErr(e, resp)
@@ -36,14 +48,14 @@ function createZd() {
 }
 
 // 京东农场
-function createNc() {
+function createNc(ncUrl) {
   return new Promise((resolve) => {
-    const url = { url: $.ncUrl }
+    const url = { url: ncUrl }
     $.get(url, (err, resp, data) => {
       try {
         const _data = JSON.parse(data)
         if (_data) {
-          $.result.push(_data.message)
+          $.result.push(`农场：${_data.message}`)
         }
       } catch (e) {
         $.logErr(e, resp)
@@ -55,14 +67,14 @@ function createNc() {
 }
 
 // 京东萌宠
-function createMc() {
+function createMc(mcUrl) {
   return new Promise((resolve) => {
-    const url = { url: $.mcUrl }
+    const url = { url: mcUrl }
     $.get(url, (err, resp, data) => {
       try {
         const _data = JSON.parse(data)
         if (_data) {
-          $.result.push(_data.message)
+          $.result.push(`萌宠：${_data.message}`)
         }
       } catch (e) {
         $.logErr(e, resp)
