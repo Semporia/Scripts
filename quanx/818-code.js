@@ -15,7 +15,7 @@ $.cookieArr = [];
       const userName = decodeURIComponent(
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
       );
-      console.log(`\n开始【京东账号${index + 1}】${userName}\n`);
+      console.log(`\n开始【京东账号${i + 1}】${userName}\n`);
       await getHelp(cookie);
       for (const link of $.shareCodeLinks) {
         await goShareCode(link, userName);
@@ -33,7 +33,7 @@ function getCookies() {
   } else {
     $.cookieArr = [$.getdata("CookieJD") || '', $.getdata("CookieJD2") || '']
   }
-  if ($.cookieArr[0]) {
+  if (!$.cookieArr[0]) {
     $.msg(
       $.name,
       "【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取",
