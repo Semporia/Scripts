@@ -16,9 +16,9 @@ $.result = []
 !(async () => {
   for (let i = 0; i < shareCodes.length; i++) {
     const { zd, nc, mc } = shareCodes[i];
-    zd && await createZd(zd)
-    nc && await createNc(nc)
-    mc && await createMc(mc)
+    zd && await createZd(`http://api.turinglabs.net/api/v1/jd/bean/create/${zd}/`)
+    nc && await createNc(`http://api.turinglabs.net/api/v1/jd/farm/create/${nc}/`)
+    mc && await createMc(`http://api.turinglabs.net/api/v1/jd/pet/create/${mc}/`)
   }
   await showMsg()
 })()
