@@ -11,9 +11,6 @@ const shareCodes = [
     mc: $.getdata("mc_shareCode2") || "",
   },
 ];
-$.zdUrl = `http://api.turinglabs.net/api/v1/jd/bean/create/${zd_shareCode}/`
-$.ncUrl = `http://api.turinglabs.net/api/v1/jd/farm/create/${nc_shareCode}/`
-$.mcUrl = `http://api.turinglabs.net/api/v1/jd/pet/create/${mc_shareCode}/`
 $.result = []
 
 !(async () => {
