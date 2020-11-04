@@ -12,42 +12,42 @@
       "settings": [
         {
           "id": "zd_shareCode1",
-          "name": "种豆得豆互助码",
+          "name": "种豆得豆互助码1",
           "val": "",
           "type": "text",
           "desc": "种豆得豆互助码.你自己的互助码."
         },
         {
           "id": "nc_shareCode1",
-          "name": "京东农场互助码",
+          "name": "京东农场互助码1",
           "val": "",
           "type": "text",
           "desc": "京东农场互助码.你自己的互助码."
         },
         {
           "id": "mc_shareCode1",
-          "name": "京东萌宠互助码",
+          "name": "京东萌宠互助码1",
           "val": "",
           "type": "text",
           "desc": "京东萌宠互助码.你自己的互助码."
         },
         {
           "id": "zd_shareCode2",
-          "name": "种豆得豆互助码",
+          "name": "种豆得豆互助码2",
           "val": "",
           "type": "text",
           "desc": "种豆得豆互助码.你自己的互助码."
         },
         {
           "id": "nc_shareCode2",
-          "name": "京东农场互助码",
+          "name": "京东农场互助码2",
           "val": "",
           "type": "text",
           "desc": "京东农场互助码.你自己的互助码."
         },
         {
           "id": "mc_shareCode2",
-          "name": "京东萌宠互助码",
+          "name": "京东萌宠互助码2",
           "val": "",
           "type": "text",
           "desc": "京东萌宠互助码.你自己的互助码."
