@@ -1,0 +1,41 @@
+{
+  "id": "whyour.app.sub",
+  "name": "whyour应用订阅",
+  "author": "@whyour",
+  "icon": "https://avatars2.githubusercontent.com/u/22700758?s=88&u=26d911ccb8345dac955238c2ed6c572892ef924a&v=4",
+  "repo": "https://github.com/whyour/hundun",
+  "apps": [
+    {
+      "id": "shareCode",
+      "name": "互助码",
+      "keys": ["zd_shareCode","nc_shareCode","mc_shareCode"],
+      "settings": [
+        {
+          "id": "zd_shareCode",
+          "name": "种豆得豆互助码",
+          "val": "",
+          "type": "text",
+          "desc": "种豆得豆互助码.你自己的互助码."
+        },
+        {
+          "id": "nc_shareCode",
+          "name": "京东农场互助码",
+          "val": "",
+          "type": "text",
+          "desc": "京东农场互助码.你自己的互助码."
+        },
+        {
+          "id": "mc_shareCode",
+          "name": "京东萌宠互助码",
+          "val": "",
+          "type": "text",
+          "desc": "京东萌宠互助码.你自己的互助码."
+        }
+      ],
+      "author": "@whyour",
+      "repo": "https://github.com/whyour/hundun/blob/master/quanx/shareCode-auto.js",
+      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/shareCode-auto.js",
+      "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/Github.png", "https://raw.githubusercontent.com/58xinian/icon/master/Github_mini.png"]
+    }
+  ]
+}

@@ -1,7 +1,10 @@
 const $ = new Env('互助码')
-$.zdUrl = 'http://api.turinglabs.net/api/v1/jd/bean/create/qu73szyyke7tv4sgpjojpyiq6u/'
-$.ncUrl = 'http://api.turinglabs.net/api/v1/jd/farm/create/a1bc1602151a42d68fb8cf0ee93cc43d/'
-$.mcUrl = 'http://api.turinglabs.net/api/v1/jd/pet/create/MTAxODc2NTEzNDAwMDAwMDAyNzkyNjM4Mw==/'
+const zd_shareCode = $.getdata('zd_shareCode') || 'qu73szyyke7tv4sgpjojpyiq6u';
+const nc_shareCode = $.getdata('nc_shareCode') || 'a1bc1602151a42d68fb8cf0ee93cc43d';
+const mc_shareCode = $.getdata('mc_shareCode') || 'MTAxODc2NTEzNDAwMDAwMDAyNzkyNjM4Mw==';
+$.zdUrl = `http://api.turinglabs.net/api/v1/jd/bean/create/${zd_shareCode}/`
+$.ncUrl = `http://api.turinglabs.net/api/v1/jd/farm/create/${nc_shareCode}/`
+$.mcUrl = `http://api.turinglabs.net/api/v1/jd/pet/create/${mc_shareCode}/`
 $.result = []
 
 !(async () => {
