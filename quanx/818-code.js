@@ -79,9 +79,13 @@ function goShareCode(url, userName) {
   return new Promise((resolve) => {
     $.get({ url }, (err, resp, data) => {
       try {
-        const _data = JSON.parse(data);
-        if (_data) {
-          $.result.push(`${userName}：${_data.message}`);
+        if (isJsonString(data)) {
+          const _data = JSON.parse(data);
+          if (_data) {
+            $.result.push(`${userName}：${_data.message}`);
+          }
+        } else {
+          $.result.push(`${userName}：${data}`);
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -97,6 +101,15 @@ function showMsg() {
     $.msg($.name, "", $.result.join("\n"));
     resolve();
   });
+}
+
+function isJsonString(str) {
+  try {
+    if (typeof JSON.parse(str) == "object") {
+      return true;
+    }
+  } catch (e) {}
+  return false;
 }
 
 // prettier-ignore
