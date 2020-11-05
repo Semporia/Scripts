@@ -17,10 +17,8 @@ $.cookieArr = [];
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}\n`);
       await getHelp(cookie);
-      for (const link of $.shareCodeLinks) {
-        await goShareCode(link, userName);
-      }
-      await showMsg();
+      
+      run();
     }
   }
 })()
@@ -73,6 +71,16 @@ function getHelp(cookie) {
       }
     });
   });
+}
+
+function run() {
+  $.msg($.name, "", "此任务异步执行，10s后注意通知");
+  setTimeout(async () => {
+    for (const link of $.shareCodeLinks) {
+      await goShareCode(link, userName);
+    }
+    await showMsg();
+  }, 10000);
 }
 
 function goShareCode(url, userName) {
