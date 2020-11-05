@@ -18,11 +18,9 @@ $.random = Math.floor(Math.random()*300);
   console.log(`\n此脚本延迟${$.random}秒执行\n`);
   for (let i = 0; i < shareCodes.length; i++) {
     const { zd, nc, mc } = shareCodes[i];
-    setTimeout(() => {
-      zd && await createZd(`http://api.turinglabs.net/api/v1/jd/bean/create/${zd}/`)
-      nc && await createNc(`http://api.turinglabs.net/api/v1/jd/farm/create/${nc}/`)
-      mc && await createMc(`http://api.turinglabs.net/api/v1/jd/pet/create/${mc}/`)
-    }, $.random*1000);
+    zd && await createZd(`http://api.turinglabs.net/api/v1/jd/bean/create/${zd}/`)
+    nc && await createNc(`http://api.turinglabs.net/api/v1/jd/farm/create/${nc}/`)
+    mc && await createMc(`http://api.turinglabs.net/api/v1/jd/pet/create/${mc}/`)
   }
   await showMsg()
 })()
@@ -33,18 +31,20 @@ $.random = Math.floor(Math.random()*300);
 function createZd(zdUrl) {
   return new Promise((resolve) => {
     const url = { url: zdUrl }
-    $.get(url, (err, resp, data) => {
-      try {
-        const _data = JSON.parse(data)
-        if (_data) {
-          $.result.push(`种豆：${_data.message}`)
+    setTimeout(() => { 
+      $.get(url, (err, resp, data) => {
+        try {
+          const _data = JSON.parse(data)
+          if (_data) {
+            $.result.push(`种豆：${_data.message}`)
+          }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve()
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve()
-      }
-    })
+      })
+    }, $.random*1000);
   })
 }
 
@@ -52,18 +52,20 @@ function createZd(zdUrl) {
 function createNc(ncUrl) {
   return new Promise((resolve) => {
     const url = { url: ncUrl }
-    $.get(url, (err, resp, data) => {
-      try {
-        const _data = JSON.parse(data)
-        if (_data) {
-          $.result.push(`农场：${_data.message}`)
+    setTimeout(() => { 
+      $.get(url, (err, resp, data) => {
+        try {
+          const _data = JSON.parse(data)
+          if (_data) {
+            $.result.push(`农场：${_data.message}`)
+          }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve()
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve()
-      }
-    })
+      })
+    }, $.random*1000);
 })
 }
 
@@ -71,18 +73,20 @@ function createNc(ncUrl) {
 function createMc(mcUrl) {
   return new Promise((resolve) => {
     const url = { url: mcUrl }
-    $.get(url, (err, resp, data) => {
-      try {
-        const _data = JSON.parse(data)
-        if (_data) {
-          $.result.push(`萌宠：${_data.message}`)
+    setTimeout(() => { 
+      $.get(url, (err, resp, data) => {
+        try {
+          const _data = JSON.parse(data)
+          if (_data) {
+            $.result.push(`萌宠：${_data.message}`)
+          }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve()
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve()
-      }
-    })
+      })
+    }, $.random*1000);
   })
 }
 
