@@ -18,6 +18,7 @@ $.random = Math.floor(Math.random()*900);
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}\n`);
       await getHelp(cookie);
+      console.log(`\n此脚本延迟${$.random}秒执行\n`);
       for (const link of $.shareCodeLinks) {
         await goShareCode(link, userName);
       }

@@ -15,11 +15,14 @@ $.result = []
 $.random = Math.floor(Math.random()*300);
 
 !(async () => {
+  console.log(`\n此脚本延迟${$.random}秒执行\n`);
   for (let i = 0; i < shareCodes.length; i++) {
     const { zd, nc, mc } = shareCodes[i];
-    zd && await createZd(`http://api.turinglabs.net/api/v1/jd/bean/create/${zd}/`)
-    nc && await createNc(`http://api.turinglabs.net/api/v1/jd/farm/create/${nc}/`)
-    mc && await createMc(`http://api.turinglabs.net/api/v1/jd/pet/create/${mc}/`)
+    setTimeout(() => {
+      zd && await createZd(`http://api.turinglabs.net/api/v1/jd/bean/create/${zd}/`)
+      nc && await createNc(`http://api.turinglabs.net/api/v1/jd/farm/create/${nc}/`)
+      mc && await createMc(`http://api.turinglabs.net/api/v1/jd/pet/create/${mc}/`)
+    }, $.random*1000);
   }
   await showMsg()
 })()
@@ -47,23 +50,21 @@ function createZd(zdUrl) {
 
 // 京东农场
 function createNc(ncUrl) {
-  setTimeout(() => {
-    return new Promise((resolve) => {
-      const url = { url: ncUrl }
-      $.get(url, (err, resp, data) => {
-        try {
-          const _data = JSON.parse(data)
-          if (_data) {
-            $.result.push(`农场：${_data.message}`)
-          }
-        } catch (e) {
-          $.logErr(e, resp)
-        } finally {
-          resolve()
+  return new Promise((resolve) => {
+    const url = { url: ncUrl }
+    $.get(url, (err, resp, data) => {
+      try {
+        const _data = JSON.parse(data)
+        if (_data) {
+          $.result.push(`农场：${_data.message}`)
         }
-      })
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve()
+      }
     })
-  }, $.random * 1000)
+})
 }
 
 // 京东萌宠
