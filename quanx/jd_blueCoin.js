@@ -55,20 +55,12 @@ function smtg_receiveCoin(cookie, timeout = 0) {
           const {
             data: { bizCode, bizMsg, result },
           } = JSON.parse(data);
-          if (bizCode === 300) {
-            $.msg(
-              $.name,
-              "【提示】cookie已过期！请先获取cookie\n直接使用NobyDa的京东签到获取",
-              "https://bean.m.jd.com/",
-              { "open-url": "https://bean.m.jd.com/" }
-            );
-          } else if (bizCode === 810) {
-            $.msg($.name, bizMsg);
-          } else if (bizCode !== 0 && bizCode !== 809) {
-            return;
-          } else if (bizCode === 0) {
+          if (bizCode === 0) {
             $.coincount += result.receivedBlue;
             if (!result.isNextReceived) return;
+          } else {
+            $.msg($.name, bizMsg);
+            return;
           }
           await smtg_receiveCoin(cookie, 3000);
         } catch (e) {
