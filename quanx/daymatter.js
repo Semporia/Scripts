@@ -86,7 +86,7 @@ function getNextHolidays() {
 function formatHolidays(days, holidays) {
   Object.values(days).map(day => {
     if (day.name === '初一') {
-      day.name === '春节'
+      day.name = '春节'
     }
     const key =day.name.slice(0, 1)
     if (day.holiday && !holidays[key]) {
