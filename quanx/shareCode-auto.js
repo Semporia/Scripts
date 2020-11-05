@@ -12,6 +12,7 @@ const shareCodes = [
   },
 ];
 $.result = []
+$.random = Math.floor(Math.random()*300);
 
 !(async () => {
   for (let i = 0; i < shareCodes.length; i++) {
@@ -46,21 +47,23 @@ function createZd(zdUrl) {
 
 // 京东农场
 function createNc(ncUrl) {
-  return new Promise((resolve) => {
-    const url = { url: ncUrl }
-    $.get(url, (err, resp, data) => {
-      try {
-        const _data = JSON.parse(data)
-        if (_data) {
-          $.result.push(`农场：${_data.message}`)
+  setTimeout(() => {
+    return new Promise((resolve) => {
+      const url = { url: ncUrl }
+      $.get(url, (err, resp, data) => {
+        try {
+          const _data = JSON.parse(data)
+          if (_data) {
+            $.result.push(`农场：${_data.message}`)
+          }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve()
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve()
-      }
+      })
     })
-  })
+  }, $.random * 1000)
 }
 
 // 京东萌宠

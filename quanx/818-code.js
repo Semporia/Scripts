@@ -6,6 +6,7 @@ const addUrl = "http://jd.turinglabs.net/helpcode/create/";
 $.shareCodeLinks = [];
 $.result = [];
 $.cookieArr = [];
+$.random = Math.floor(Math.random()*900);
 
 !(async () => {
   getCookies();
@@ -77,22 +78,24 @@ function getHelp(cookie) {
 
 function goShareCode(url, userName) {
   return new Promise((resolve) => {
-    $.get({ url }, (err, resp, data) => {
-      try {
-        if (isJsonString(data)) {
-          const _data = JSON.parse(data);
-          if (_data) {
-            $.result.push(`${userName}：${_data.message}`);
+    setTimeout(() => {
+      $.get({ url }, (err, resp, data) => {
+        try {
+          if (isJsonString(data)) {
+            const _data = JSON.parse(data);
+            if (_data) {
+              $.result.push(`${userName}：${_data.message}`);
+            }
+          } else {
+            $.result.push(`${userName}：${data}`);
           }
-        } else {
-          $.result.push(`${userName}：${data}`);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    });
+      });
+    }, $.random * 1000)
   });
 }
 
