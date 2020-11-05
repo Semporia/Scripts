@@ -2,17 +2,19 @@
 const JD_API_HOST = `https://api.m.jd.com/api?appid=jdsupermarket&functionId=smtg_receiveCoin&clientVersion=8.0.0&client=m&body=%7B%22type%22:2%7D&t=${Date.now()}`;
 const $ = new Env("京小超领蓝币");
 $.cookieArr = [];
-$.coincount = 0;
+$.coinCount = 0;
+$.result = [];
 
 !(async () => {
-  getCookies();
+  if(!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
     const cookie = $.cookieArr[i];
     if (cookie) {
       await smtg_receiveCoin(cookie);
-      await msgShow();
     }
   }
+  $.result.push(`共收取蓝币【${$.coinCount}】个`);
+  await showMsg();
 })()
   .catch((e) => $.logErr(e))
   .finally(() => $.done());
@@ -30,8 +32,9 @@ function getCookies() {
       "https://bean.m.jd.com/",
       { "open-url": "https://bean.m.jd.com/" }
     );
-    return;
+    return false;
   }
+  return true;
 }
 
 function smtg_receiveCoin(cookie, timeout = 0) {
@@ -56,10 +59,10 @@ function smtg_receiveCoin(cookie, timeout = 0) {
             data: { bizCode, bizMsg, result },
           } = JSON.parse(data);
           if (bizCode === 0) {
-            $.coincount += result.receivedBlue;
+            $.coinCount += result.receivedBlue;
             if (!result.isNextReceived) return;
           } else {
-            $.msg($.name, bizMsg);
+            $.result.push(bizMsg);
             return;
           }
           await smtg_receiveCoin(cookie, 3000);
@@ -73,9 +76,8 @@ function smtg_receiveCoin(cookie, timeout = 0) {
   });
 }
 
-//通知
-function msgShow() {
-  $.msg($.name, "", `共收取蓝币【${$.coincount}】个`);
+function showMsg() {
+  $.msg($.name, "", $.result.join('\n'));
 }
 
 // prettier-ignore

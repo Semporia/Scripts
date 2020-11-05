@@ -9,7 +9,7 @@ $.cookieArr = [];
 $.random = Math.floor(Math.random()*900);
 
 !(async () => {
-  getCookies();
+  if(!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
     const cookie = $.cookieArr[i];
     if (cookie) {
@@ -42,8 +42,9 @@ function getCookies() {
       "https://bean.m.jd.com/",
       { "open-url": "https://bean.m.jd.com/" }
     );
-    return;
+    return false;
   }
+  return true;
 }
 
 function getHelp(cookie) {
