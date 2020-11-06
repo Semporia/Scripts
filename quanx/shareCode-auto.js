@@ -39,6 +39,7 @@ function run({ zd, nc, mc }) {
         (await createMc(
           `http://api.turinglabs.net/api/v1/jd/pet/create/${mc}/`
         ));
+      resolve();
     }, $.random * 1000);
   });
 }
