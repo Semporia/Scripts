@@ -17,7 +17,15 @@ $.random = Math.floor(Math.random() * 300);
 !(async () => {
   console.log(`\n此脚本延迟${$.random}秒执行\n`);
   for (let i = 0; i < shareCodes.length; i++) {
-    const { zd, nc, mc } = shareCodes[i];
+    await run(shareCodes[i]);
+  }
+  await showMsg();
+})()
+  .catch((e) => $.logErr(e))
+  .finally(() => $.done());
+
+function run({ zd, nc, mc }) {
+  return new Promise((resolve) => {
     setTimeout(async () => {
       zd &&
         (await createZd(
@@ -32,11 +40,8 @@ $.random = Math.floor(Math.random() * 300);
           `http://api.turinglabs.net/api/v1/jd/pet/create/${mc}/`
         ));
     }, $.random * 1000);
-  }
-  await showMsg();
-})()
-  .catch((e) => $.logErr(e))
-  .finally(() => $.done());
+  });
+}
 
 // 种豆得豆
 function createZd(zdUrl) {
