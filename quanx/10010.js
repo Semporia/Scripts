@@ -2,12 +2,12 @@ const chavy = init()
 const cookieName = '中国联通'
 const KEY_loginurl = 'chavy_tokenurl_10010'
 const KEY_loginheader = 'chavy_tokenheader_10010'
-const KEY_signurl = 'chavy_signurl_10010'
-const KEY_signheader = 'chavy_signheader_10010'
-const KEY_loginlotteryurl = 'chavy_loginlotteryurl_10010'
-const KEY_loginlotteryheader = 'chavy_loginlotteryheader_10010'
-const KEY_findlotteryurl = 'chavy_findlotteryurl_10010'
-const KEY_findlotteryheader = 'chavy_findlotteryheader_10010'
+// const KEY_signurl = 'chavy_signurl_10010'
+// const KEY_signheader = 'chavy_signheader_10010'
+// const KEY_loginlotteryurl = 'chavy_loginlotteryurl_10010'
+// const KEY_loginlotteryheader = 'chavy_loginlotteryheader_10010'
+// const KEY_findlotteryurl = 'chavy_findlotteryurl_10010'
+// const KEY_findlotteryheader = 'chavy_findlotteryheader_10010'
 const chavygolottery = true
 const chavygosign = true
 
@@ -16,30 +16,32 @@ let VAL_loginurl = chavy.getdata(KEY_loginurl)
 let VAL_loginheader = chavy.getdata(KEY_loginheader)
 let VAL_signurl = chavy.getdata(KEY_signurl)
 let VAL_signheader = chavy.getdata(KEY_signheader)
-let VAL_loginlotteryurl = chavy.getdata(KEY_loginlotteryurl)
-let VAL_loginlotteryheader = chavy.getdata(KEY_loginlotteryheader)
-let VAL_findlotteryurl = chavy.getdata(KEY_findlotteryurl)
-let VAL_findlotteryheader = chavy.getdata(KEY_findlotteryheader)
-let golottery = JSON.parse(chavy.getdata("chavy_golottery_10010")||chavygolottery)
-let gosign = JSON.parse(chavy.getdata("chavy_gosign_10010")||chavygosign)
+// let VAL_loginlotteryurl = chavy.getdata(KEY_loginlotteryurl)
+// let VAL_loginlotteryheader = chavy.getdata(KEY_loginlotteryheader)
+// let VAL_findlotteryurl = chavy.getdata(KEY_findlotteryurl)
+// let VAL_findlotteryheader = chavy.getdata(KEY_findlotteryheader)
+// let golottery = JSON.parse(chavy.getdata("chavy_golottery_10010")||chavygolottery)
+// let gosign = JSON.parse(chavy.getdata("chavy_gosign_10010")||chavygosign)
+
+let newHeaders = '';
 
 ;(sign = async () => {
     chavy.log(`🔔 ${cookieName}`)
     await loginapp()
-    if (gosign == true) await signapp()
-    if (golottery == true) {
-      if (VAL_loginlotteryurl && VAL_findlotteryurl) await loginlottery()
-      if (signinfo.encryptmobile) {
-        await findlottery()
-        if (signinfo.findlottery && signinfo.findlottery.acFrequency && signinfo.findlottery.acFrequency.usableAcFreq) {
-            for (let i = 0; i < signinfo.findlottery.acFrequency.usableAcFreq; i++) {
-                await lottery()
-            }
-        }
-      }
-    }
-    await getinfo()
-    showmsg()
+    // if (gosign == true) await signapp()
+    // if (golottery == true) {
+    //   if (VAL_loginlotteryurl && VAL_findlotteryurl) await loginlottery()
+    //   if (signinfo.encryptmobile) {
+    //     await findlottery()
+    //     if (signinfo.findlottery && signinfo.findlottery.acFrequency && signinfo.findlottery.acFrequency.usableAcFreq) {
+    //         for (let i = 0; i < signinfo.findlottery.acFrequency.usableAcFreq; i++) {
+    //             await lottery()
+    //         }
+    //     }
+    //   }
+    // }
+    // await getinfo()
+    // showmsg()
     chavy.done()
 })().catch((e) => chavy.log(`❌ ${cookieName} 签到失败: ${e}`), chavy.done())
 
@@ -48,6 +50,12 @@ function loginapp() {
         const url = { url: VAL_loginurl, headers: JSON.parse(VAL_loginheader) }
         chavy.post(url, (error, response, data) => {
             try {
+                console.log(response.headers['Set-Cookie'], '\n\n')
+                const responseCookies = response.headers['Set-Cookie'].split(',');
+                const newCookie = responseCookies.map(x => x.split(';')[0]).join(';');
+                console.log(newCookie,'\n\n')
+                newHeaders = VAL_loginheader['Cookie'] + ';' + newCookie;
+                console.log(newHeaders['Cookie'])
                 resolve()
             } catch (e) {
                 chavy.msg(cookieName, `登录结果: 失败`, `说明: ${e}`)
@@ -61,10 +69,10 @@ function loginapp() {
 
 function signapp() {
     return new Promise((resolve, reject) => {
-        if (VAL_signurl.endsWith('.do')) VAL_signurl = VAL_signurl.replace('.do', '')
-        const url = { url: 'https://act.10010.com/SigninApp/signin/daySign', headers: JSON.parse(VAL_signheader) }
+        const url = { url: 'https://act.10010.com/SigninApp/signin/daySign', headers: JSON.parse(newHeaders) }
         chavy.post(url, (error, response, data) => {
             try {
+                console.log(data,'\n\n')
                 signinfo.signapp = JSON.parse(data)
                 resolve()
             } catch (e) {

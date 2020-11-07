@@ -9,32 +9,40 @@ const findlotteryurlKey = 'chavy_findlotteryurl_10010'
 const findlotteryheaderKey = 'chavy_findlotteryheader_10010'
 const $ = new Env('联通cookie')
 
-if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('querySigninActivity.htm') >= 0) {
+if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('onLine.htm') >= 0) {
   const tokenurlVal = $request.url
   const tokenheaderVal = JSON.stringify($request.headers)
   if (tokenurlVal) chavy.setdata(tokenurlVal, tokenurlKey)
   if (tokenheaderVal) chavy.setdata(tokenheaderVal, tokenheaderKey)
   $.msg(cookieName, `获取刷新链接: 成功`, ``)
-} else if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('daySign') >= 0) {
-  $.log(JSON.stringify($request))
-  const signurlVal = $request.url
-  const signheaderVal = JSON.stringify($request.headers)
-  if (signurlVal) chavy.setdata(signurlVal, signurlKey)
-  if (signheaderVal) chavy.setdata(signheaderVal, signheaderKey)
-  $.msg(cookieName, `获取Cookie: 成功 (每日签到)`, ``)
-} else if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('userLogin') >= 0) {
-  const loginlotteryurlVal = $request.url
-  const loginlotteryheaderVal = JSON.stringify($request.headers)
-  if (loginlotteryurlVal) chavy.setdata(loginlotteryurlVal, loginlotteryurlKey)
-  if (loginlotteryheaderVal) chavy.setdata(loginlotteryheaderVal, loginlotteryheaderKey)
-  $.msg(cookieName, `获取Cookie: 成功 (登录抽奖)`, ``)
-} else if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('findActivityInfo') >= 0) {
-  const findlotteryurlVal = $request.url
-  const findlotteryheaderVal = JSON.stringify($request.headers)
-  if (findlotteryurlVal) chavy.setdata(findlotteryurlVal, findlotteryurlKey)
-  if (findlotteryheaderVal) chavy.setdata(findlotteryheaderVal, findlotteryheaderKey)
-  $.msg(cookieName, `获取Cookie: 成功 (抽奖次数)`, ``)
-}
+} 
+
+// if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('querySigninActivity.htm') >= 0) {
+//   const tokenurlVal = $request.url
+//   const tokenheaderVal = JSON.stringify($request.headers)
+//   if (tokenurlVal) chavy.setdata(tokenurlVal, tokenurlKey)
+//   if (tokenheaderVal) chavy.setdata(tokenheaderVal, tokenheaderKey)
+//   $.msg(cookieName, `获取刷新链接: 成功`, ``)
+// } else if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('daySign') >= 0) {
+//   $.log(JSON.stringify($request))
+//   const signurlVal = $request.url
+//   // const signheaderVal = JSON.stringify($request.headers)
+//   if (signurlVal) chavy.setdata(signurlVal, signurlKey)
+//   // if (signheaderVal) chavy.setdata(signheaderVal, signheaderKey)
+//   $.msg(cookieName, `获取Cookie: 成功 (每日签到)`, ``)
+// } else if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('userLogin') >= 0) {
+//   const loginlotteryurlVal = $request.url
+//   const loginlotteryheaderVal = JSON.stringify($request.headers)
+//   if (loginlotteryurlVal) chavy.setdata(loginlotteryurlVal, loginlotteryurlKey)
+//   if (loginlotteryheaderVal) chavy.setdata(loginlotteryheaderVal, loginlotteryheaderKey)
+//   $.msg(cookieName, `获取Cookie: 成功 (登录抽奖)`, ``)
+// } else if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('findActivityInfo') >= 0) {
+//   const findlotteryurlVal = $request.url
+//   const findlotteryheaderVal = JSON.stringify($request.headers)
+//   if (findlotteryurlVal) chavy.setdata(findlotteryurlVal, findlotteryurlKey)
+//   if (findlotteryheaderVal) chavy.setdata(findlotteryheaderVal, findlotteryheaderKey)
+//   $.msg(cookieName, `获取Cookie: 成功 (抽奖次数)`, ``)
+// }
 
 $.done()
 
