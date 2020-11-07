@@ -28,7 +28,7 @@ let newHeaders = '';
 ;(sign = async () => {
     chavy.log(`🔔 ${cookieName}`)
     await loginapp()
-    // if (gosign == true) await signapp()
+    if (gosign == true) await signapp()
     // if (golottery == true) {
     //   if (VAL_loginlotteryurl && VAL_findlotteryurl) await loginlottery()
     //   if (signinfo.encryptmobile) {
@@ -54,7 +54,7 @@ function loginapp() {
                 const responseCookies = response.headers['Set-Cookie'].split(',');
                 const newCookie = responseCookies.map(x => x.split(';')[0]).join(';');
                 console.log(newCookie,'\n\n')
-                newHeaders = VAL_loginheader['Cookie'] + ';' + newCookie;
+                newHeaders = JSON.parse(VAL_signheader)['Cookie'] + ';' + newCookie;
                 console.log(newHeaders['Cookie'])
                 resolve()
             } catch (e) {

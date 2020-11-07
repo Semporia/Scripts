@@ -9,13 +9,30 @@ const findlotteryurlKey = 'chavy_findlotteryurl_10010'
 const findlotteryheaderKey = 'chavy_findlotteryheader_10010'
 const $ = new Env('联通cookie')
 
-if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('onLine.htm') >= 0) {
+// if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('onLine.htm') >= 0) {
+//   const tokenurlVal = $request.url
+//   const tokenheaderVal = JSON.stringify($request.headers)
+//   if (tokenurlVal) chavy.setdata(tokenurlVal, tokenurlKey)
+//   if (tokenheaderVal) chavy.setdata(tokenheaderVal, tokenheaderKey)
+//   $.msg(cookieName, `获取刷新链接: 成功`, ``)
+// } 
+
+if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('querySigninActivity.htm') >= 0) {
   const tokenurlVal = $request.url
   const tokenheaderVal = JSON.stringify($request.headers)
   if (tokenurlVal) chavy.setdata(tokenurlVal, tokenurlKey)
   if (tokenheaderVal) chavy.setdata(tokenheaderVal, tokenheaderKey)
   $.msg(cookieName, `获取刷新链接: 成功`, ``)
-} 
+}
+
+if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('daySign') >= 0) {
+    $.log(JSON.stringify($request))
+    const signurlVal = $request.url
+    // const signheaderVal = JSON.stringify($request.headers)
+    if (signurlVal) chavy.setdata(signurlVal, signurlKey)
+    // if (signheaderVal) chavy.setdata(signheaderVal, signheaderKey)
+    $.msg(cookieName, `获取Cookie: 成功 (每日签到)`, ``)
+  } 
 
 // if ($request && $request.method != 'OPTIONS' && $request.url.indexOf('querySigninActivity.htm') >= 0) {
 //   const tokenurlVal = $request.url
