@@ -1,3 +1,5 @@
+const { resolve } = require("path");
+
 const $ = new Env("互助码");
 const shareCodes = [
   {
@@ -39,8 +41,10 @@ $.random = Math.floor(Math.random() * 300);
 function createZd(zdUrl) {
   return new Promise((resolve) => {
     const url = { url: zdUrl };
-    $.get(url, (err, resp, data) => {
+    $.get(url, async (err, resp, data) => {
       try {
+        const needAgain = await checkWhetherNeedAgain(resp, createZd, url);
+        if (needAgain) return;
         const _data = JSON.parse(data);
         if (_data) {
           $.result.push(`种豆：${_data.message}`);
@@ -58,8 +62,10 @@ function createZd(zdUrl) {
 function createNc(ncUrl) {
   return new Promise((resolve) => {
     const url = { url: ncUrl };
-    $.get(url, (err, resp, data) => {
+    $.get(url, async (err, resp, data) => {
       try {
+        const needAgain = await checkWhetherNeedAgain(resp, createNc, url);
+        if (needAgain) return;
         const _data = JSON.parse(data);
         if (_data) {
           $.result.push(`农场：${_data.message}`);
@@ -77,8 +83,10 @@ function createNc(ncUrl) {
 function createMc(mcUrl) {
   return new Promise((resolve) => {
     const url = { url: mcUrl };
-    $.get(url, (err, resp, data) => {
+    $.get(url, async (err, resp, data) => {
       try {
+        const needAgain = await checkWhetherNeedAgain(resp, createMc, url);
+        if (needAgain) return;
         const _data = JSON.parse(data);
         if (_data) {
           $.result.push(`萌宠：${_data.message}`);
@@ -90,6 +98,18 @@ function createMc(mcUrl) {
       }
     });
   });
+}
+
+function checkWhetherNeedAgain(resp, fun, url) {
+  return new Promise(async (resolve) => {
+    if (resp && resp.statusCode !== 200) {
+      await $.wait($.random);
+      await fun(url);
+      resolve(true);
+    } else {
+      resolve(false);
+    }
+  })
 }
 
 function showMsg() {

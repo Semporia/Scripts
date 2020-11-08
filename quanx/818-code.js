@@ -81,8 +81,13 @@ function getHelp(cookie) {
 
 function goShareCode(url, userName) {
   return new Promise((resolve) => {
-    $.get({ url }, (err, resp, data) => {
+    $.get({ url }, async (err, resp, data) => {
       try {
+        if (resp && resp.statusCode !== 200) {
+          await $.wait($.random);
+          await goShareCode(url, userName);
+          return;
+        }
         if (isJsonString(data)) {
           const _data = JSON.parse(data);
           if (_data) {
