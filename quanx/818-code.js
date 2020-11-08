@@ -83,7 +83,9 @@ function goShareCode(url, userName) {
   return new Promise((resolve) => {
     $.get({ url }, async (err, resp, data) => {
       try {
-        if (resp && resp.statusCode !== 200) {
+        const _resp = JSON.parse(resp);
+        $.log(`\n${_resp.body}\n`);
+        if ((_resp && _resp.statusCode !== 200) || !_resp.body) {
           await $.wait($.random);
           await goShareCode(url, userName);
           return;
