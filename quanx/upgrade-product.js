@@ -1,4 +1,5 @@
 const $ = new Env("京东超市升级商品");
+const JD_API_HOST = 'https://api.m.jd.com/api';
 $.result = [];
 $.cookieArr = [];
 $.unlockGolds = 0;
