@@ -1,5 +1,3 @@
-const { resolve } = require("path");
-
 const $ = new Env("互助码");
 const shareCodes = [
   {
