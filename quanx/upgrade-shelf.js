@@ -23,15 +23,15 @@ async function upgrade(cookie) {
     data: { bizCode, result = [] },
   } = await getShelfList(cookie);
   if (bizCode === 0) {
-    const canUpgradeShelves = result.shelfList.map(
+    const canUpgradeShelves = result.shelfList.filter(
       (x) => x.upgradeStatus === 1
     );
-    const canUnlockShelves = result.shelfList.map((x) => x.unlockStatus === 1);
+    const canUnlockShelves = result.shelfList.filter((x) => x.unlockStatus === 1);
     console.log(`\n待解锁货架数量${canUnlockShelves.length}个\n`);
     for (let item of canUpgradeShelves) {
       const { name, shelfId } = item;
       console.log(`\n开始解锁 [${name}]`);
-      const gold = await unlockShelf(shelfId, cookie);
+      const gold = await unlockShelf(shelfId, cookie) || '0';
       $.unlockGolds += parseInt(gold);
     }
     $.result.push(`解锁货架${canUnlockShelves.length}个，总花费 ${$.unlockGolds}`);
