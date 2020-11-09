@@ -28,6 +28,7 @@ const RESULT_WT = {
 function getLocation() {
   return new Promise((resolve) => {
     if ($.isRequest) {
+      $.log(`\n ${JSON.stringify($request)}`);
       if (USER_REGEX.test($request.url) && $request.body) {
         try {
           let obj = JSON.parse($request.body);
@@ -45,7 +46,6 @@ function getLocation() {
       }
       if (GEO_REGEX.test($request.url)) {
         try {
-          $.log(`\n ${JSON.stringify($request)}`);
           $.setdata($request.url, "caiyun_location");
         } catch (e) {
           $.logErr(e, $request.response);
