@@ -38,7 +38,7 @@ function getLocation() {
           $.setdata(JSON.stringify(obj.result.wt), 'caiyun_svip')
           $.done({body});
         }
-        catch(err){
+        catch(e){
           $.logErr(e, $request.response)
         }
         finally {
@@ -52,7 +52,7 @@ function getLocation() {
           $.setdata(obj.regeocode.roads[0].location, 'caiyun_location')
           $.done({body});
         }
-        catch(err){
+        catch(e){
           $.logErr(e, $request.response)
         }
         finally {
