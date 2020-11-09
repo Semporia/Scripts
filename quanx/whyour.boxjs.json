@@ -82,6 +82,15 @@
       "repo": "https://github.com/whyour/hundun/blob/master/quanx/shareCode-auto.js",
       "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/shareCode-auto.js",
       "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/jxc.png", "https://raw.githubusercontent.com/58xinian/icon/master/jxc_mini.png"]
+    },
+    {
+      "id": "caiyun",
+      "name": "彩云天气",
+      "keys": ["caiyun_svip", "caiyun_location"],
+      "author": "@whyour",
+      "repo": "https://github.com/whyour/hundun/blob/master/quanx/caiyun.js",
+      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js",
+      "icons": ["https://raw.githubusercontent.com/Orz-3/task/master/caiyun.png"]
     }
   ]
 }
