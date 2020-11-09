@@ -3,7 +3,7 @@ const $ = new Env("狂欢城互助码");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://rdcseason.m.jd.com/api/";
 const addUrl = "http://jd.turinglabs.net/helpcode/create/";
-$.shareCodeLinks = [];
+$.shareCodeLink = [];
 $.result = [];
 $.cookieArr = [];
 $.random = Math.floor(Math.random()*900);
@@ -18,11 +18,9 @@ $.random = Math.floor(Math.random()*900);
       const userName = decodeURIComponent(
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
       );
-      console.log(`\n开始【京东账号${i + 1}】${userName}\n`);
+      console.log(`\n开始【京东账号${i + 1}】${userName}`);
       await getHelp(cookie);
-      for (const link of $.shareCodeLinks) {
-        await goShareCode(link, userName);
-      }
+      await goShareCode(userName);
     }
   }
   await showMsg();
@@ -68,7 +66,7 @@ function getHelp(cookie) {
       try {
         const { data: resData } = JSON.parse(data);
         if (resData) {
-          $.shareCodeLinks.push(`${addUrl}${resData.shareId}`);
+          $.shareCodeLink = `${addUrl}${resData.shareId}`;
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -79,21 +77,23 @@ function getHelp(cookie) {
   });
 }
 
-function goShareCode(url, userName) {
+function goShareCode(userName) {
   return new Promise((resolve) => {
-    $.get({ url }, async (err, resp, data) => {
+    $.get({ url: $.shareCodeLink }, async (err, resp, data) => {
       try {
         if ((resp && resp.statusCode !== 200) || !resp.body) {
           await $.wait($.random);
-          await goShareCode(url, userName);
+          await goShareCode(userName);
           return;
         }
         if (isJsonString(data)) {
           const _data = JSON.parse(data);
           if (_data) {
+            console.log(`\n${_data.message}`);
             $.result.push(`${userName}：${_data.message}`);
           }
         } else {
+          console.log(`\n${data}`);
           $.result.push(`${userName}：${data}`);
         }
       } catch (e) {
