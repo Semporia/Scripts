@@ -1,6 +1,6 @@
 const $ = new Env("彩云天气");
 $.result = [];
-$.isRequest = typeof $request != "undefined"
+$.isRequest = typeof $request != "undefined";
 const USER_REGEX = /https?:\/\/biz\.caiyunapp\.com\/v2\/user/;
 const GEO_REGEX = /https?:\/\/restapi\.amap\.com\/v3\/geocode/;
 const RESULT = {
@@ -9,17 +9,17 @@ const RESULT = {
   svip_expired_at: 4096483190,
   vip_expired_at: 4096483190,
   xy_vip_expired: 4096483190,
-}
+};
 const RESULT_WT = {
   vip: {
     enable: true,
     expired_at: 4096483190,
-    svip_expired_at: 4096483190
-  }
-}
+    svip_expired_at: 4096483190,
+  },
+};
 
 !(async () => {
-  await getLocation()
+  await getLocation();
   await showMsg();
 })()
   .catch((e) => $.logErr(e))
@@ -28,41 +28,35 @@ const RESULT_WT = {
 function getLocation() {
   return new Promise((resolve) => {
     if ($.isRequest && $request.body) {
-      if (USER_REGEX.test($request.url)){
-        try{
+      $.log($request.body + '\n');
+      if (USER_REGEX.test($request.url)) {
+        try {
           let obj = JSON.parse($request.body);
-          Object.assign(obj['result'], RESULT)
-          Object.assign(obj['result']['wt'], RESULT_WT)
+          Object.assign(obj["result"], RESULT);
+          Object.assign(obj["result"]["wt"], RESULT_WT);
           let body = JSON.stringify(obj);
           $.log(`\n解锁SVIP成功`);
-          $.setdata(JSON.stringify(obj.result.wt), 'caiyun_svip')
-          $.done({body});
-        }
-        catch(e){
-          $.logErr(e, $request.response)
-        }
-        finally {
+          $.setdata(JSON.stringify(obj.result.wt), "caiyun_svip");
+          $.done({ body });
+        } catch (e) {
+          $.logErr(e, $request.response);
+        } finally {
           $.done();
         }
       } else if (GEO_REGEX.test($request.url)) {
-        try{
-          let obj = JSON.parse($request.body);
-          let body = JSON.stringify(obj);
-          $.log(`\n ${$request.body}`);
-          $.setdata(obj.regeocode.roads[0].location, 'caiyun_location')
-          $.done({body});
-        }
-        catch(e){
-          $.logErr(e, $request.response)
-        }
-        finally {
+        try {
+          $.log(`\n ${$request.url}`);
+          $.setdata($request.url, "caiyun_location");
+        } catch (e) {
+          $.logErr(e, $request.response);
+        } finally {
           $.done();
         }
       }
     } else {
-      resolve()
+      resolve();
     }
-  })    
+  });
 }
 
 function showMsg() {
