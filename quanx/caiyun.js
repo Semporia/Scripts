@@ -30,7 +30,7 @@ function getLocation() {
     if ($.isRequest) {
       if (USER_REGEX.test($request.url)){
         try{
-          let obj = JSON.parse($request.response.body);
+          let obj = JSON.parse($request.body);
           Object.assign(obj['result'], RESULT)
           Object.assign(obj['result']['wt'], RESULT_WT)
           let body = JSON.stringify(obj);
@@ -46,9 +46,9 @@ function getLocation() {
         }
       } else if (GEO_REGEX.test($request.url)) {
         try{
-          let obj = JSON.parse($request.response.body);
+          let obj = JSON.parse($request.body);
           let body = JSON.stringify(obj);
-          $.log(`\n ${$request.response.body}`);
+          $.log(`\n ${$request.body}`);
           $.setdata(obj.regeocode.roads[0].location, 'caiyun_location')
           $.done({body});
         }
