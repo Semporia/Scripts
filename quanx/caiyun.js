@@ -27,7 +27,7 @@ const RESULT_WT = {
 
 function getLocation() {
   return new Promise((resolve) => {
-    if ($.isRequest) {
+    if ($.isRequest && $request.body) {
       if (USER_REGEX.test($request.url)){
         try{
           let obj = JSON.parse($request.body);
