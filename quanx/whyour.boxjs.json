@@ -56,7 +56,32 @@
       "author": "@whyour",
       "repo": "https://github.com/whyour/hundun/blob/master/quanx/shareCode-auto.js",
       "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/shareCode-auto.js",
-      "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/Github.png", "https://raw.githubusercontent.com/58xinian/icon/master/Github_mini.png"]
+      "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/jxc.png", "https://raw.githubusercontent.com/58xinian/icon/master/jxc_mini.png"]
+    },
+    {
+      "id": "supermarket",
+      "name": "京东超市",
+      "keys": ["zd_shelf_level", "zd_product_level"],
+      "settings": [
+        {
+          "id": "zd_shelf_level",
+          "name": "升级货架等级",
+          "val": "",
+          "type": "text",
+          "desc": "填写每次需要自动升级的货架的等级，默认自动升一级."
+        },
+        {
+          "id": "zd_product_level",
+          "name": "升级商品等级",
+          "val": "",
+          "type": "text",
+          "desc": "填写每次需要自动升级的商品的等级，默认自动升一级."
+        }
+      ],
+      "author": "@whyour",
+      "repo": "https://github.com/whyour/hundun/blob/master/quanx/shareCode-auto.js",
+      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/shareCode-auto.js",
+      "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/jxc.png", "https://raw.githubusercontent.com/58xinian/icon/master/jxc_mini.png"]
     }
   ]
 }

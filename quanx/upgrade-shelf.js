@@ -1,9 +1,10 @@
 const $ = new Env("京东超市升级货架");
 const JD_API_HOST = 'https://api.m.jd.com/api';
+$.level = parseInt($.getdata("zd_shelf_level") || "1");
 $.result = [];
 $.cookieArr = [];
 $.unlockGolds = 0;
-$.upgradeGolds = 0;
+$.upgradeGolds = [];
 
 !(async () => {
   if (!getCookies()) return;
@@ -11,9 +12,9 @@ $.upgradeGolds = 0;
     const cookie = $.cookieArr[i];
     if (cookie) {
       await upgrade(cookie);
-      await showMsg();
     }
   }
+  await showMsg();
 })()
   .catch((e) => $.logErr(e))
   .finally(() => $.done());
@@ -23,12 +24,12 @@ async function upgrade(cookie) {
     data: { bizCode, result = [] },
   } = await getShelfList(cookie);
   if (bizCode === 0) {
+    const canUnlockShelves = result.shelfList.filter((x) => x.unlockStatus === 1);
     const canUpgradeShelves = result.shelfList.filter(
       (x) => x.upgradeStatus === 1
     );
-    const canUnlockShelves = result.shelfList.filter((x) => x.unlockStatus === 1);
     console.log(`\n待解锁货架数量${canUnlockShelves.length}个\n`);
-    for (let item of canUpgradeShelves) {
+    for (let item of canUnlockShelves) {
       const { name, shelfId } = item;
       console.log(`\n开始解锁 [${name}]`);
       const gold = await unlockShelf(shelfId, cookie) || '0';
@@ -41,10 +42,9 @@ async function upgrade(cookie) {
       console.log(
         `\n开始升级 [${name}]，当前 ${level} 级，升级花费 ${upgradeCostGold}，最大升级到 ${maxLevel} 级`
       );
-      const gold = await upgradeShelf(shelfId, cookie);
-      $.upgradeGolds += parseInt(gold);
+      await upgradeShelf(shelfId, cookie, $.level);
     }
-    $.result.push(`升级货架${canUpgradeShelves.length}个，总花费 ${$.upgradeGolds}`);
+    $.result.push(`升级货架${canUpgradeShelves.length}个 ${$.level} 级，总花费 ${$.upgradeGolds.reduce((prev, curr) => prev + curr)}`);
   }
 }
 
@@ -63,17 +63,20 @@ function getShelfList(cookie) {
   });
 }
 
-function upgradeShelf(shelfId, cookie) {
+function upgradeShelf(shelfId, cookie, level) {
   return new Promise((resolve) => {
     $.get(
       taskUrl("smtg_upgradeShelf", { shelfId }, cookie),
-      (err, resp, data) => {
+      async (err, resp, data) => {
         try {
           const {
             data: { bizCode, bizMsg, result },
           } = JSON.parse(data);
           console.log(`\n${bizMsg}`);
-          resolve(result.costGold)
+          $.upgradeGolds.push(parseInt(result.costGold))
+          if (level > 1) {
+            await upgrade(shelfId, cookie, level - 1);
+          }
         } catch (e) {
           $.logErr(e, resp);
         } finally {

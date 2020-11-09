@@ -1,9 +1,10 @@
 const $ = new Env("京东超市升级商品");
 const JD_API_HOST = 'https://api.m.jd.com/api';
+$.level = parseInt($.getdata("zd_product_level") || "1");
 $.result = [];
 $.cookieArr = [];
 $.unlockGolds = 0;
-$.upgradeGolds = 0;
+$.upgradeGolds = [];
 
 !(async () => {
   if (!getCookies()) return;
@@ -43,11 +44,10 @@ async function upgrade(cookie) {
       console.log(
         `\n开始升级 [${name}]，当前 ${level} 级，升级花费 ${upgradeCostGold}，最大升级到 ${maxLevel} 级`
       );
-      const gold = await upgradeProduct(productId, cookie);
-      $.upgradeGolds += parseInt(gold);
+      const gold = await upgradeProduct(productId, cookie, $.level);
     }
     $.result.push(
-      `升级商品${canUpgradeProducts.length}个，总花费 ${$.upgradeGolds}`
+      `升级商品${canUpgradeProducts.length}个 ${$.level}级，总花费 ${$.upgradeGolds.reduce((prev, curr) => prev + curr)}`
     );
   }
 }
@@ -67,7 +67,7 @@ function getProductList(cookie) {
   });
 }
 
-function upgradeProduct(productId, cookie) {
+function upgradeProduct(productId, cookie, level) {
   return new Promise((resolve) => {
     $.get(
       taskUrl("smtg_upgradeProduct", { productId }, cookie),
@@ -77,7 +77,10 @@ function upgradeProduct(productId, cookie) {
             data: { bizCode, bizMsg, result },
           } = JSON.parse(data);
           console.log(`\n${bizMsg}`);
-          resolve(result.costGold);
+          $.upgradeGolds.push(parseInt(result.costGold))
+          if (level > 1) {
+            await upgrade(shelfId, cookie, level - 1);
+          }
         } catch (e) {
           $.logErr(e, resp);
         } finally {
