@@ -28,8 +28,7 @@ const RESULT_WT = {
 function getLocation() {
   return new Promise((resolve) => {
     if ($.isRequest) {
-      $.log($request.body + '\n');
-      if (USER_REGEX.test($request.url)) {
+      if (USER_REGEX.test($request.url) && $request.body) {
         try {
           let obj = JSON.parse($request.body);
           Object.assign(obj["result"], RESULT);
@@ -39,13 +38,14 @@ function getLocation() {
           $.setdata(JSON.stringify(obj.result.wt), "caiyun_svip");
           $.done({ body });
         } catch (e) {
-          $.logErr(e, $request.response);
+          $.logErr(e, JSON.stringify($request));
         } finally {
           $.done();
         }
-      } else if (GEO_REGEX.test($request.url)) {
+      }
+      if (GEO_REGEX.test($request.url)) {
         try {
-          $.log(`\n ${$request.url}`);
+          $.log(`\n ${JSON.stringify($request)}`);
           $.setdata($request.url, "caiyun_location");
         } catch (e) {
           $.logErr(e, $request.response);
