@@ -23,9 +23,9 @@ $.random = Math.floor(Math.random()*900);
       for (const link of $.shareCodeLinks) {
         await goShareCode(link, userName);
       }
-      await showMsg();
     }
   }
+  await showMsg();
 })()
   .catch((e) => $.logErr(e))
   .finally(() => $.done());
