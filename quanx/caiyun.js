@@ -1,7 +1,7 @@
 const $ = new Env("彩云天气");
 $.result = [];
 $.isRequest = typeof $request != "undefined";
-const USER_REGEX = /https?:\/\/biz\.caiyunapp\.com\/v2\/user;
+const USER_REGEX = /https?:\/\/biz\.caiyunapp\.com\/v2\/user/;
 const GEO_REGEX = /https?:\/\/restapi\.amap\.com\/v3\/geocode/;
 const RESULT = {
   is_vip: true,
@@ -44,7 +44,7 @@ function getLocation() {
           $.done();
         }
       }
-      if (GEO_REGEX.test($request.url)) {
+      if (GEO_REGEX.test($request.url) && $request.body) {
         try {
           const location = $request.body.match(/location=(\S*)&/)[1];
           $.setdata(location, "caiyun_location");
