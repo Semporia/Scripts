@@ -35,7 +35,7 @@ async function upgrade(cookie) {
     $.result.push(
       `解锁商品${canUnlockProducts.length}个，总花费 ${$.unlockGolds}`
     );
-    
+
     const canUpgradeProducts = productList.filter(
       (x) => x.upgradeStatus === 1
     );
@@ -72,7 +72,7 @@ function upgradeProduct(productId, cookie, level) {
   return new Promise((resolve) => {
     $.get(
       taskUrl("smtg_upgradeProduct", { productId }, cookie),
-      (err, resp, data) => {
+      async (err, resp, data) => {
         try {
           const {
             data: { bizCode, bizMsg, result },
@@ -80,7 +80,7 @@ function upgradeProduct(productId, cookie, level) {
           console.log(`\n${bizMsg}`);
           $.upgradeGolds.push(parseInt(result.costGold))
           if (level > 1) {
-            await upgrade(shelfId, cookie, level - 1);
+            await upgradeProduct(shelfId, cookie, level - 1);
           }
         } catch (e) {
           $.logErr(e, resp);

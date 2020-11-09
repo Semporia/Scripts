@@ -33,7 +33,7 @@ async function upgrade(cookie) {
       $.unlockGolds += parseInt(gold);
     }
     $.result.push(`解锁货架${canUnlockShelves.length}个，总花费 ${$.unlockGolds}`);
-    
+
     const canUpgradeShelves = shelfList.filter(
       (x) => x.upgradeStatus === 1
     );
@@ -76,7 +76,7 @@ function upgradeShelf(shelfId, cookie, level) {
           console.log(`\n${bizMsg}`);
           $.upgradeGolds.push(parseInt(result.costGold))
           if (level > 1) {
-            await upgrade(shelfId, cookie, level - 1);
+            await upgradeShelf(shelfId, cookie, level - 1);
           }
         } catch (e) {
           $.logErr(e, resp);
