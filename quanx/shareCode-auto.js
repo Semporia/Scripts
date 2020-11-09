@@ -100,9 +100,7 @@ function createMc(mcUrl) {
 
 function checkWhetherNeedAgain(resp, fun, url) {
   return new Promise(async (resolve) => {
-    const _resp = JSON.parse(resp);
-    $.log(`\n${_resp.body}\n`)
-    if ((_resp && _resp.statusCode !== 200) || !_resp.body) {
+    if ((resp && resp.statusCode !== 200) || !resp.body) {
       await $.wait($.random);
       await fun(url);
       resolve(true);

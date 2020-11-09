@@ -123,6 +123,13 @@ function getCookies() {
   return true;
 }
 
+function showMsg() {
+  return new Promise((resolve) => {
+    $.msg($.name, "", $.result.join("\n"));
+    resolve();
+  });
+}
+
 function taskUrl(function_id, body = {}, cookie) {
   return {
     url: `${JD_API_HOST}?functionId=${function_id}&appid=jdsupermarket&clientVersion=8.0.0&client=m&body=${escape(
