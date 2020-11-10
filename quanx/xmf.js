@@ -51,9 +51,7 @@ function xmf(cookie) {
       };
       $.get(url, async (err, resp, data) => {
         try {
-          const {
-            data: { msg },
-          } = JSON.parse(data);
+          const { msg } = JSON.parse(data);
           console.log(`\n${msg}\n`);
           $.result.push(msg);
         } catch (e) {
