@@ -8,10 +8,10 @@ $.result = [];
   for (let i = 0; i < $.cookieArr.length; i++) {
     const cookie = $.cookieArr[i];
     if (cookie) {
-      await test(cookie);
+      await xmf(cookie);
     }
   }
-  await showMsg();
+  // await showMsg();
 })()
   .catch((e) => $.logErr(e))
   .finally(() => $.done());
@@ -34,7 +34,7 @@ function getCookies() {
   return true;
 }
 
-function test(cookie) {
+function xmf(cookie) {
   return new Promise((resolve) => {
       let url = {
         url: JD_API_HOST,
@@ -51,11 +51,11 @@ function test(cookie) {
       };
       $.get(url, async (err, resp, data) => {
         try {
-          console.log(`\n${data}`);
           const {
-            data: { bizCode, bizMsg, result },
+            data: { msg },
           } = JSON.parse(data);
-          $.result.push(bizMsg);
+          console.log(`\n${msg}\n`);
+          $.result.push(msg);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
