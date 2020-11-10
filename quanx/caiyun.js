@@ -16,8 +16,9 @@ function getLocation() {
     if ($.isRequest) {
       if (GEO_REGEX.test($request.url) && $request.body) {
         try {
-          const location = $request.body.match(/location=(\S*)&extensions=/)[1];
+          const location = $request.body.match(/location=(\S*)&radius=/)[1];
           $.setdata(location, "caiyun_location");
+          $.msg($.name, '', '获取位置信息成功');
         } catch (e) {
           $.logErr(e, $request.response);
         } finally {
