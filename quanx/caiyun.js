@@ -57,14 +57,14 @@ function getWeather() {
         result.currentFeelsLike = current.feels_like
         result.currentCondition = current.weather[0].icon
         result.currentDescription = current.weather[0].description
+        result.todaySunrise = current.sunrise
+        result.todaySunset = current.sunset
         result.todayHigh = today.temp.max
         result.todayLow = today.temp.min
-        result.todaySunrise = today.sunrise
-        result.todaySunset = today.sunset
       
         result.nextHourTemp = nextHour.temp
         result.nextHourFeelsLike = nextHour.feels_like
-        result.nextHourCondition = nextHour.current.weather[0].icon
+        result.nextHourCondition = nextHour.weather[0].icon
         result.nextHourDescription = nextHour.weather[0].description
       
         result.tomorrowHigh = tomorrow.temp.max
@@ -75,10 +75,12 @@ function getWeather() {
         result.tomorrowSunset = tomorrow.sunset
 
         $.msg(
-          `[当前天气] ${result.currentDescription} ${result.currentTemp} ℃ 🌡体感 ${result.currentFeelsLike} ℃`,
-          `[一小时后] ${result.nextHourDescription} ${result.nextHourTemp} ℃ 🌡体感 ${result.nextHourFeelsLike} ℃`,
-          `[今天] ${result.todayLow} ℃ - ${result.todayHigh} ℃ 日出 ${getTime(current.todaySunrise)} 日落 ${getTime(current.todaySunset)}
-           [明天] ${result.tomorrowDescription} ${result.tomorrowLow} ℃ - ${result.tomorrowHigh} ℃ 日出 ${getTime(tomorrow.tomorrowSunrise)} 日落 ${getTime(tomorrow.tomorrowSunset)}`
+          `[当前天气] ${result.currentDescription}  ${result.currentTemp} ℃  🌡体感 ${result.currentFeelsLike} ℃`,
+          `[一小时后] ${result.nextHourDescription}  ${result.nextHourTemp} ℃  🌡体感 ${result.nextHourFeelsLike} ℃`,
+          `[今天] ${result.todayLow} ℃ - ${result.todayHigh} ℃ 
+           日出 ${getTime(result.todaySunrise)} 日落 ${getTime(result.todaySunset)}
+           [明天] ${result.tomorrowDescription} ${result.tomorrowLow} ℃ - ${result.tomorrowHigh} ℃
+           日出 ${getTime(result.tomorrowSunrise)} 日落 ${getTime(result.tomorrowSunset)}`
           ,
           {
             "media-url": `http://openweathermap.org/img/wn/${result.currentCondition}@2x.png`,
