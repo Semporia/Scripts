@@ -1,25 +1,11 @@
 const $ = new Env("彩云天气");
 $.result = [];
 $.isRequest = typeof $request != "undefined";
-const USER_REGEX = /https?:\/\/biz\.caiyunapp\.com\/v2\/user/;
 const GEO_REGEX = /https?:\/\/restapi\.amap\.com\/v3\/geocode/;
-const RESULT = {
-  is_vip: true,
-  vip_type: "s",
-  svip_expired_at: 4096483190,
-  vip_expired_at: 4096483190,
-  xy_vip_expired: 4096483190,
-};
-const RESULT_WT = {
-  vip: {
-    enable: true,
-    expired_at: 4096483190,
-    svip_expired_at: 4096483190,
-  },
-};
 
 !(async () => {
   await getLocation();
+  await getWeather();
   await showMsg();
 })()
   .catch((e) => $.logErr(e))
@@ -28,25 +14,9 @@ const RESULT_WT = {
 function getLocation() {
   return new Promise((resolve) => {
     if ($.isRequest) {
-      $.log(`\n ${JSON.stringify($request)}`);
-      if (USER_REGEX.test($request.url) && $request.body) {
-        try {
-          let obj = JSON.parse($request.body);
-          Object.assign(obj["result"], RESULT);
-          Object.assign(obj["result"]["wt"], RESULT_WT);
-          let body = JSON.stringify(obj);
-          $.log(`\n解锁SVIP成功`);
-          $.setdata(JSON.stringify(obj.result.wt), "caiyun_svip");
-          $.done({ body });
-        } catch (e) {
-          $.logErr(e, JSON.stringify($request));
-        } finally {
-          $.done();
-        }
-      }
       if (GEO_REGEX.test($request.url) && $request.body) {
         try {
-          const location = $request.body.match(/location=(\S*)&/)[1];
+          const location = $request.body.match(/location=(\S*)&extensions=/)[1];
           $.setdata(location, "caiyun_location");
         } catch (e) {
           $.logErr(e, $request.response);
@@ -58,6 +28,31 @@ function getLocation() {
       resolve();
     }
   });
+}
+
+function getWeather() {
+  return new Promise((resolve) => {
+    const locationData = $.getdata('caiyun_location')
+    if (!locationData) {
+      $.msg(
+        $.name,
+        "",
+        "【提示】请先打开彩云天气获取一次位置信息",
+        {"open-url": ``}
+      );
+    }
+    const [latitude,longitude] = locationData;
+    const weatherReq = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&exclude=minutely,alerts&units=metric&lang=zh_cn&appid=16b236cf5334d422d365bf95b4c32136";
+    $.get({ url: weatherReq }, async (err, resp, data) => { 
+      try {
+        console.log(`\n${data}`)
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve(data);
+      }
+    })
+  })
 }
 
 function showMsg() {
