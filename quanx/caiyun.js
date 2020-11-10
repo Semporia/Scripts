@@ -16,7 +16,7 @@ function getLocation() {
     if ($.isRequest) {
       if (GEO_REGEX.test($request.url) && $request.body) {
         try {
-          const location = $request.body.match(/location=(\S*)&radius=/)[1];
+          const location = decodeURIComponent($request.body.match(/location=(\S*)&radius=/)[1]);
           $.setdata(location, "caiyun_location");
           $.msg($.name, '', '获取位置信息成功');
         } catch (e) {
@@ -42,7 +42,7 @@ function getWeather() {
         {"open-url": ``}
       );
     }
-    const [latitude,longitude] = locationData;
+    const [latitude, longitude] = locationData.split(',');
     const weatherReq = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&exclude=minutely,alerts&units=metric&lang=zh_cn&appid=16b236cf5334d422d365bf95b4c32136";
     $.get({ url: weatherReq }, async (err, resp, data) => { 
       try {
