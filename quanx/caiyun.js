@@ -77,7 +77,7 @@ function getWeather() {
         $.msg(
           `[当前天气] ${result.currentDescription}  ${result.currentTemp} ℃  🌡体感 ${result.currentFeelsLike} ℃`,
           `[一小时后] ${result.nextHourDescription}  ${result.nextHourTemp} ℃  🌡体感 ${result.nextHourFeelsLike} ℃`,
-          `[今天] ${result.todayLow} ℃ - ${result.todayHigh} ℃\n🌄日出 ${getTime(result.todaySunrise)} 🌅日落 ${getTime(result.todaySunset)}\n[明天] ${result.tomorrowDescription} ${result.tomorrowLow} ℃ - ${result.tomorrowHigh} ℃\n🌄日出 ${getTime(result.tomorrowSunrise)} 🌅日落 ${getTime(result.tomorrowSunset)}`
+          `[今天] ${result.currentDescription} ${result.todayLow} ℃ - ${result.todayHigh} ℃\n🌄日出 ${getTime(result.todaySunrise)} 🌅日落 ${getTime(result.todaySunset)}\n[明天] ${result.tomorrowDescription} ${result.tomorrowLow} ℃ - ${result.tomorrowHigh} ℃\n🌄日出 ${getTime(result.tomorrowSunrise)} 🌅日落 ${getTime(result.tomorrowSunset)}`
           ,
           {
             "media-url": `http://openweathermap.org/img/wn/${result.currentCondition}@4x.png`,
