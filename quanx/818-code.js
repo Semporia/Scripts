@@ -81,7 +81,7 @@ function goShareCode(userName) {
   return new Promise((resolve) => {
     $.get({ url: $.shareCodeLink }, async (err, resp, data) => {
       try {
-        if ((resp && resp.statusCode !== 200) || !resp.body) {
+        if (!resp || !resp.body || resp.statusCode !== 200) {
           await $.wait($.random);
           await goShareCode(userName);
           return;
