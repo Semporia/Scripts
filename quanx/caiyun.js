@@ -77,8 +77,7 @@ function getWeather() {
         $.msg(
           `[当前天气] ${result.currentDescription}  ${result.currentTemp} ℃  🌡体感 ${result.currentFeelsLike} ℃`,
           `[一小时后] ${result.nextHourDescription}  ${result.nextHourTemp} ℃  🌡体感 ${result.nextHourFeelsLike} ℃`,
-          `[今天] ${result.todayLow} ℃ - ${result.todayHigh} ℃\n🌄日出 ${getTime(result.todaySunrise)} 🌅日落 ${getTime(result.todaySunset)}
-           [明天] ${result.tomorrowDescription} ${result.tomorrowLow} ℃ - ${result.tomorrowHigh} ℃\n🌄日出 ${getTime(result.tomorrowSunrise)} 🌅日落 ${getTime(result.tomorrowSunset)}`
+          `[今天] ${result.todayLow} ℃ - ${result.todayHigh} ℃\n🌄日出 ${getTime(result.todaySunrise)} 🌅日落 ${getTime(result.todaySunset)}\n[明天] ${result.tomorrowDescription} ${result.tomorrowLow} ℃ - ${result.tomorrowHigh} ℃\n🌄日出 ${getTime(result.tomorrowSunrise)} 🌅日落 ${getTime(result.tomorrowSunset)}`
           ,
           {
             "media-url": `http://openweathermap.org/img/wn/${result.currentCondition}@4x.png`,
@@ -94,8 +93,13 @@ function getWeather() {
 }
 
 function getTime(number) {
-  const date = new Date(number * 1000)
-  return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+  const date = new Date(number * 1000);
+  const hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+  const minutes =
+    date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+  const seconds =
+    date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+  return `${hour}:${minutes}:${seconds}`;
 }
 
 // prettier-ignore
