@@ -42,7 +42,7 @@ function getWeather() {
         {"open-url": ``}
       );
     }
-    const [latitude, longitude] = locationData.split(',');
+    const [longitude, latitude] = locationData.split(',');
     const weatherReq = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&exclude=minutely,alerts&units=metric&lang=zh_cn&appid=16b236cf5334d422d365bf95b4c32136";
     $.get({ url: weatherReq }, async (err, resp, data) => { 
       try {
