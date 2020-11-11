@@ -53,31 +53,31 @@ function getWeather() {
           resolve();
         }
 
-        result.currentTemp = current.temp
-        result.currentFeelsLike = current.feels_like
+        result.currentTemp = current.temp.toFixed(1)
+        result.currentFeelsLike = current.feels_like.toFixed(1)
         result.currentCondition = current.weather[0].icon
-        result.currentDescription = current.weather[0].description
+        result.currentDescription = current.weather[0].description.replace('，', '转')
         result.todaySunrise = current.sunrise
         result.todaySunset = current.sunset
-        result.todayHigh = today.temp.max
-        result.todayLow = today.temp.min
+        result.todayHigh = today.temp.max.toFixed(1)
+        result.todayLow = today.temp.min.toFixed(1)
       
-        result.nextHourTemp = nextHour.temp
-        result.nextHourFeelsLike = nextHour.feels_like
+        result.nextHourTemp = nextHour.temp.toFixed(1)
+        result.nextHourFeelsLike = nextHour.feels_like.toFixed(1)
         result.nextHourCondition = nextHour.weather[0].icon
-        result.nextHourDescription = nextHour.weather[0].description
+        result.nextHourDescription = nextHour.weather[0].description.replace('，', '转')
       
-        result.tomorrowHigh = tomorrow.temp.max
-        result.tomorrowLow = tomorrow.temp.min
+        result.tomorrowHigh = tomorrow.temp.max.toFixed(1)
+        result.tomorrowLow = tomorrow.temp.min.toFixed(1)
         result.tomorrowCondition = tomorrow.weather[0].icon
-        result.tomorrowDescription = tomorrow.weather[0].description
+        result.tomorrowDescription = tomorrow.weather[0].description.replace('，', '转')
         result.tomorrowSunrise = tomorrow.sunrise
         result.tomorrowSunset = tomorrow.sunset
 
         $.msg(
-          `[当前天气] ${result.currentDescription}  ${result.currentTemp} ℃  🌡体感 ${result.currentFeelsLike} ℃`,
-          `[一小时后] ${result.nextHourDescription}  ${result.nextHourTemp} ℃  🌡体感 ${result.nextHourFeelsLike} ℃`,
-          `[今天] ${result.currentDescription} ${result.todayLow} ℃ - ${result.todayHigh} ℃\n🌄日出 ${getTime(result.todaySunrise)} 🌅日落 ${getTime(result.todaySunset)}\n[明天] ${result.tomorrowDescription} ${result.tomorrowLow} ℃ - ${result.tomorrowHigh} ℃\n🌄日出 ${getTime(result.tomorrowSunrise)} 🌅日落 ${getTime(result.tomorrowSunset)}`
+          `[当前天气] ${result.currentDescription} ${result.currentTemp}° 🌡体感 ${result.currentFeelsLike}°`,
+          `[一小时后] ${result.nextHourDescription} ${result.nextHourTemp}° 🌡体感 ${result.nextHourFeelsLike}°`,
+          `[今天] ${result.currentDescription} ${result.todayLow}°~${result.todayHigh}°\n🌄日出 ${getTime(result.todaySunrise)} 🌅日落 ${getTime(result.todaySunset)}\n[明天] ${result.tomorrowDescription} ${result.tomorrowLow}°~${result.tomorrowHigh}°\n🌄日出 ${getTime(result.tomorrowSunrise)} 🌅日落 ${getTime(result.tomorrowSunset)}`
           ,
           {
             "media-url": `http://openweathermap.org/img/wn/${result.currentCondition}@4x.png`,
