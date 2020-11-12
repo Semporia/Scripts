@@ -14,6 +14,7 @@ function getLocation() {
   return new Promise((resolve) => {
     if ($.isRequest) {
       if (GEO_REGEX.test($request.url) && $request.body) {
+        console.log('\n' + $request.body + '\n');
         try {
           const location = decodeURIComponent($request.body.match(/location=(\S*)&radius=/)[1]);
           $.setdata(location, "caiyun_location");
