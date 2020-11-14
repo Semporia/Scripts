@@ -42,7 +42,7 @@ async function upgrade(cookie) {
       (x) => x.upgradeStatus === 1
     ).sort((a, b) => a.level - b.level);
     console.log(`\n待升级商品数量${canUpgradeProducts.length}个, 优先升级等级低的商品\n`);
-    const upgradeProductNumber = 0;
+    let upgradeProductNumber = 0;
     for (let item of canUpgradeProducts) {
       const { name, level, maxLevel, upgradeCostGold, productId } = item;
       console.log(
