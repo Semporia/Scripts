@@ -26,29 +26,34 @@ async function upgrade(cookie) {
   if (bizCode === 0) {
     const canUnlockProducts = productList.filter((x) => x.unlockStatus === 1);
     console.log(`\n待解锁商品数量${canUnlockProducts.length}个\n`);
-    for (let item of canUnlockProducts) {
-      const { name, productId } = item;
-      console.log(`\n开始解锁 [${name}]`);
-      const gold = await unlockProduct(productId, cookie);
-      $.unlockGolds += parseInt(gold);
+    if (canUnlockProducts.length > 0) {
+      for (let item of canUnlockProducts) {
+        const { name, productId } = item;
+        console.log(`\n开始解锁 [${name}]`);
+        const gold = await unlockProduct(productId, cookie);
+        $.unlockGolds += parseInt(gold);
+      }
+      $.result.push(
+        `解锁商品${canUnlockProducts.length}个，总花费 ${$.unlockGolds}`
+      );
     }
-    $.result.push(
-      `解锁商品${canUnlockProducts.length}个，总花费 ${$.unlockGolds}`
-    );
 
     const canUpgradeProducts = productList.filter(
       (x) => x.upgradeStatus === 1
-    );
-    console.log(`\n待升级商品数量${canUpgradeProducts.length}个\n`);
+    ).sort((a, b) => a.level - b.level);
+    console.log(`\n待升级商品数量${canUpgradeProducts.length}个, 优先升级等级低的商品\n`);
+    const upgradeProductNumber = 0;
     for (let item of canUpgradeProducts) {
       const { name, level, maxLevel, upgradeCostGold, productId } = item;
       console.log(
         `\n开始升级 [${name}]，当前 ${level} 级，升级花费 ${upgradeCostGold}，最大升级到 ${maxLevel} 级`
       );
-      const gold = await upgradeProduct(productId, cookie, $.level);
+      const result = await upgradeProduct(productId, cookie, $.level);
+      if (!result) break;
+      upgradeProductNumber++;
     }
     $.result.push(
-      `升级商品${canUpgradeProducts.length}个 ${$.level}级，总花费 ${$.upgradeGolds.reduce((prev, curr) => prev + curr)}`
+      `升级商品${upgradeProductNumber}个 ${$.level}级，总花费 ${$.upgradeGolds.reduce((prev, curr) => prev + curr)}`
     );
   }
 }
@@ -78,14 +83,18 @@ function upgradeProduct(productId, cookie, level) {
             data: { bizCode, bizMsg, result },
           } = JSON.parse(data);
           console.log(`\n${bizMsg}`);
-          $.upgradeGolds.push(parseInt(result.costGold))
+          if (bizMsg === 'success') {
+            $.upgradeGolds.push(parseInt(result.costGold))
+          } else {
+            resolve(false);
+          }
           if (level > 1) {
             await upgradeProduct(shelfId, cookie, level - 1);
           }
         } catch (e) {
           $.logErr(e, resp);
         } finally {
-          resolve();
+          resolve(true);
         }
       }
     );
