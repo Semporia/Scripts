@@ -21,7 +21,7 @@ if (getTokenRegex.test(url) || getTokenRegex2.test(url)) {
     }
     let cityId = arr[1];
     let token = arr[2];
-    let hisToken = magicJS.read(didiTokenKey);
+    let hisToken = $.getdata(didiTokenKey);
     $.log(`city：${cityId}，token：${token}`);
     $.setdata(cityId, didiCityIdKey);
     if (token !== hisToken) {
@@ -41,7 +41,7 @@ if (getTokenRegex.test(url) || getTokenRegex2.test(url)) {
   try {
     let arr = url.match(getLidRegex);
     let lid = arr[1];
-    let hisLid = magicJS.read(didiLidKey);
+    let hisLid = $.getdata(didiLidKey);
     $.log(`新的lid：${lid}，旧的lid：${hisLid}`);
     if (lid !== hisLid) {
       $.setdata(lid, didiLidKey);
