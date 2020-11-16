@@ -10,8 +10,8 @@ const getLidRegex = /^https?:\/\/bosp-api\.xiaojukeji\.com\/bosp-api\/lottery\/i
 const getActivityIdRegex = /^https?:\/\/manhattan\.webapp\.xiaojukeji\.com\/marvel\/api\/manhattan\-signin\-task\/signIn\/execute/;
 const $ = new Env("滴滴出行Cookie");
 
-var body = $response.body;
-var url = $request.url;
+const body = $request.body;
+const url = $request.url;
 
 if (getTokenRegex.test(url) || getTokenRegex2.test(url)) {
   try {
