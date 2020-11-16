@@ -17,13 +17,14 @@ const _0xe0e0 = [
 if (url.indexOf(vip) != -1) {
   var body = $response[_0xe0e0[0]];
   var obj = JSON[_0xe0e0[1]](body);
-  obj[_0xe0e0[3]][_0xe0e0[2]] = 4096483190;
-  obj[_0xe0e0[3]]['xy_svip_expire'] = 4096483190;
-  obj[_0xe0e0[3]]['svip_expired_at'] = 4096483190;
+  obj[_0xe0e0[3]][_0xe0e0[2]] = 1835312949;
+  obj[_0xe0e0[3]]['xy_svip_expire'] = 1835312949;
+  obj[_0xe0e0[3]]['svip_expired_at'] = 1835312949;
+  obj[_0xe0e0[3]]['vip_type'] = "s";
   obj[_0xe0e0[3]][_0xe0e0[4]] = true;
-  obj[_0xe0e0[3]][_0xe0e0[5]] = 4096483190;
+  obj[_0xe0e0[3]][_0xe0e0[5]] = 1835312949;
   obj[_0xe0e0[3]][_0xe0e0[6]] = true;
-  obj[_0xe0e0[3]]['wt']['vip']['svip_expired_at'] = 4096483190;
+  obj[_0xe0e0[3]]['wt']['vip']['svip_expired_at'] = 1835312949;
   body = JSON[_0xe0e0[7]](obj);
 }
 
