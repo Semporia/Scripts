@@ -5,6 +5,7 @@ const didiLidKey = "didi_lid";
 const didiMySourceIdKey = "didi_my_source_id";
 const didiActivityIdKey = "didi_activity_id";
 const didiChannelIdKey = "didi_channel_id";
+const sourceIdConf = {'7mO4XP93fb84VMSC8Xk5vg%3D%3D': 7, 'pDmWW7HoWUkNu2nmJ3HJEQ%3D%3D': 3};
 $.cityId = $.getdata(didiCityIdKey);
 $.token = $.getdata(didiTokenKey);
 $.lid = $.getdata(didiLidKey);
@@ -37,10 +38,12 @@ function getCookies() {
 
 function checkIn() {
   return new Promise((resolve) => {
+    const source_id = getSourceId();
+    const sourceStr = source_id ? `&share_source_id=${source_id}` : '';
     const url = `https://bosp-api.xiaojukeji.com/wechat/benefit/public/index?city_id=${
       $.cityId
-    }&share_date=${$.time("yyyy-MM-dd")}`;
-    $.log(`当前使用的source_id：${sourceId}`);
+    }${sourceStr}&share_date=${$.time("yyyy-MM-dd")}`;
+    $.log(`当前使用的source_id：${source_id}`);
     const options = {
       url: url,
       headers: {
@@ -80,6 +83,21 @@ function checkIn() {
       }
     });
   });
+}
+
+// 随机获取SourceId
+function getSourceId(){
+  let mySourceId = $.getdata(didiMySourceIdKey);
+  if (!!mySourceId){
+    delete sourceIdConf[mySourceId];
+  }
+  sourceIdList = Object.keys(sourceIdConf);
+  let newSourceIdList = [];
+  for (sourceId in sourceIdConf){
+    let sourceIdArray = new Array(sourceIdConf[sourceId]).fill(sourceId);
+    newSourceIdList = newSourceIdList.concat(sourceIdArray);
+  } 
+  return newSourceIdList[Math.round(Math.random() * (newSourceIdList.length - 1))]; 
 }
 
 function collectPoint() {
@@ -217,7 +235,7 @@ function dayLottery() {
           // await DailyLotteryRestart(token, activityId, clientId);
           // }
           else {
-            $.logErr(`天天有奖签到失败，响应异常：${obj.errorMsg}`);
+            $.log(`天天有奖签到失败，响应异常：${obj.errorMsg}`);
             $.result.push(`天天有奖签到失败，响应异常：${obj.errorMsg}`);
           }
         } catch (e) {
@@ -254,11 +272,16 @@ function getOrderList() {
     let url = `https://api.udache.com/gulfstream/passenger/v2/other/pListReward?token=${$.token}`;
     $.get(url, (err, resp, data) => {
       $.log(`获取待领取的福利金，接口响应：${data}`);
-      let obj = JSON.parse(data);
-      if (obj.errno == 0) {
-        resolve(obj.data);
+      try {
+        let obj = JSON.parse(data);
+        if (obj.errno == 0) {
+          resolve(obj.data);
+        }
+      } catch (e) {
+  $.logErr(e, resp)        
+      } finally {
+        resolve([]);
       }
-      resolve([]);
     });
   });
 }

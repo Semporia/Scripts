@@ -4,7 +4,7 @@ const didiLidKey = "didi_lid";
 const didiActivityIdKey = "didi_activity_id";
 const didiChannelIdKey = "didi_channel_id";
 const getTokenRegex = /^https?:\/\/api\.didialift\.com\/beatles\/userapi\/user\/user\/getuserinfo?.*city_id=(\d+).*&token=([^&]*)/;
-const getTokenRegex2 = /^https?:\/\/as\.xiaojukeji\.com\/ep\/as\/toggles\?.*location_cityid=(\d+).*&ticket=([^&]*)/;
+const getTokenRegex2 = /^https:\/\/as\.xiaojukeji\.com\/ep\/as\/toggles\?.*city=(\d*)&.*ticket=(.*)&/;
 const getLidRegex = /^https?:\/\/bosp-api\.xiaojukeji\.com\/bosp-api\/lottery\/info?.*lid=([^&]*)/;
 const getActivityIdRegex = /^https?:\/\/manhattan\.webapp\.xiaojukeji\.com\/marvel\/api\/manhattan\-signin\-task\/signIn\/execute/;
 const $ = new Env("滴滴出行Cookie");
