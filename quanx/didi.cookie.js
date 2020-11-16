@@ -1,7 +1,6 @@
 const didiTokenKey = "didi_token";
 const didiCityIdKey = "didi_city_id";
 const didiLidKey = "didi_lid";
-const didiMySourceIdKey = "didi_my_source_id";
 const didiActivityIdKey = "didi_activity_id";
 const didiChannelIdKey = "didi_channel_id";
 const getTokenRegex = /^https?:\/\/api\.didialift\.com\/beatles\/userapi\/user\/user\/getuserinfo?.*city_id=(\d+).*&token=([^&]*)/;

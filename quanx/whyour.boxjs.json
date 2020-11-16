@@ -8,7 +8,14 @@
     {
       "id": "shareCode",
       "name": "互助码",
-      "keys": ["zd_shareCode1","nc_shareCode1","mc_shareCode1","zd_shareCode2","nc_shareCode2","mc_shareCode2"],
+      "keys": [
+        "zd_shareCode1",
+        "nc_shareCode1",
+        "mc_shareCode1",
+        "zd_shareCode2",
+        "nc_shareCode2",
+        "mc_shareCode2"
+      ],
       "settings": [
         {
           "id": "zd_shareCode1",
@@ -56,7 +63,10 @@
       "author": "@whyour",
       "repo": "https://github.com/whyour/hundun/blob/master/quanx/shareCode-auto.js",
       "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/shareCode-auto.js",
-      "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/jxc.png", "https://raw.githubusercontent.com/58xinian/icon/master/jxc_mini.png"]
+      "icons": [
+        "https://raw.githubusercontent.com/58xinian/icon/master/jdnc_mini.png",
+        "https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png"
+      ]
     },
     {
       "id": "supermarket",
@@ -81,7 +91,10 @@
       "author": "@whyour",
       "repo": "https://github.com/whyour/hundun/blob/master/quanx/shareCode-auto.js",
       "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/shareCode-auto.js",
-      "icons": ["https://raw.githubusercontent.com/58xinian/icon/master/jxc.png", "https://raw.githubusercontent.com/58xinian/icon/master/jxc_mini.png"]
+      "icons": [
+        "https://raw.githubusercontent.com/58xinian/icon/master/jxc_mini.png",
+        "https://raw.githubusercontent.com/58xinian/icon/master/jxc.png"
+      ]
     },
     {
       "id": "caiyun",
@@ -90,7 +103,28 @@
       "author": "@whyour",
       "repo": "https://github.com/whyour/hundun/blob/master/quanx/caiyun.js",
       "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js",
-      "icons": ["https://raw.githubusercontent.com/Orz-3/task/master/caiyun.png"]
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/caiyun.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/caiyun.png"
+      ]
+    },
+    {
+      "id": "didi",
+      "name": "滴滴出行",
+      "keys": [
+        "didi_city_id",
+        "didi_token",
+        "didi_lid",
+        "didi_activity_id",
+        "didi_channel_id"
+      ],
+      "author": "@whyour",
+      "repo": "https://github.com/whyour/hundun/blob/master/quanx/didi.js",
+      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js",
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/didi.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/didi.png"
+      ]
     }
   ]
 }
