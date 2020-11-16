@@ -10,6 +10,7 @@ $.token = $.getdata(didiTokenKey);
 $.lid = $.getdata(didiLidKey);
 $.channelId = $.getdata(didiChannelIdKey);
 $.activityId = $.getdata(didiActivityIdKey);
+$.sourceId = $.getdata(didiMySourceIdKey);
 $.clientId = 1;
 $.result = [];
 
@@ -27,7 +28,7 @@ $.result = [];
   .finally(() => $.done());
 
 function getCookies() {
-  if (!$.token || $.cityId) {
+  if (!$.token || !$.cityId) {
     $.msg($.name, "【提示】请先获取滴滴Token");
     return false;
   }
@@ -39,7 +40,7 @@ function checkIn() {
     const url = `https://bosp-api.xiaojukeji.com/wechat/benefit/public/index?city_id=${
       $.cityId
     }&share_date=${$.time("yyyy-MM-dd")}`;
-    $.log(`当前使用的source_id：${source_id}`);
+    $.log(`当前使用的source_id：${sourceId}`);
     const options = {
       url: url,
       headers: {
@@ -201,6 +202,7 @@ function dayLottery() {
       $.post(options, (err, resp, data) => {
         try {
           $.log(`天天有奖，接口响应：${data}`);
+          const obj = JSON.parse(data);
           if (obj.errorCode === 0) {
             obj.data.giftDetail.forEach((gift) => {
               $.log(
@@ -292,7 +294,10 @@ function getUserInfo() {
 }
 
 function showMsg() {
-  $.msg($.name, "", $.result.join("\n"));
+  return new Promise((resolve) => {
+    $.msg($.name, "", $.result.join("\n"));
+    resolve();
+  });
 }
 
 // prettier-ignore
