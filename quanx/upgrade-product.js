@@ -39,14 +39,14 @@ async function upgrade(cookie) {
       );
     }
 
-    const canUpgradeProducts = productList.filter(
+    let canUpgradeProducts = productList.filter(
       (x) => x.upgradeStatus === 1
     ).sort((a, b) => a.level - b.level);
     console.log(`\n待升级商品数量${canUpgradeProducts.length}个, 优先升级等级低的商品\n`);
     let upgradeProductNumber = 0;
 
-    if ($.onlyUpgradeCheapestProduct && canUpgradeProducts[0].upgradeCostGold <= 2000000) {
-      canUpgradeProducts = [canUpgradeProducts[0]];
+    if ($.onlyUpgradeCheapestProduct && canUpgradeProducts.length > 0 && canUpgradeProducts[0].upgradeCostGold <= 2000000) {
+      canUpgradeProducts = [{ ...canUpgradeProducts[0] }];
     }
     
     for (let item of canUpgradeProducts) {
