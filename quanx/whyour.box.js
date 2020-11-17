@@ -600,9 +600,13 @@ function reloadAppSubCache(url) {
   return $.http.get(requrl).then((resp) => {
     try {
       const subcaches = getAppSubCaches()
-      $.log(`更新订阅, ${JSON.stringify(subcaches)}`)
-      $.log(`更新订阅, ${resp.body}`)
+      $.log(`\n====更新订阅url, ${url}`)
+      $.log(`\n====更新订阅caches, ${subcaches}`)
+      $.log(`\n====更新订阅stringcaches, ${JSON.stringify(subcaches)}`)
+      $.log(`\n====更新订阅body, ${resp.body}`)
       subcaches[url] = $.toObj(resp.body)
+      $.log(`\n====更新订阅JSONbody, ${JSON.stringify(JSON.parse(resp.body))}`)
+      $.log(`\n====更新订阅toObjbody, ${$.toObj(resp.body)}`)
       subcaches[url].updateTime = new Date()
       $.setjson(subcaches, $.KEY_app_subCaches)
       $.log(`更新订阅, 成功! ${url}`)
