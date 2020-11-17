@@ -1,7 +1,7 @@
 const $ = new Env("京东超市升级商品");
 const JD_API_HOST = 'https://api.m.jd.com/api';
 $.level = parseInt($.getdata("zd_product_level") || "1");
-$.onlyUpgradeCheapestProduct = !!$.getdata("zd_upgrade_cheapest_product");
+$.onlyUpgradeCheapestProduct = $.getdata("zd_upgrade_cheapest_product") ? $.getdata("zd_upgrade_cheapest_product") === 'true' : true;
 $.result = [];
 $.cookieArr = [];
 $.unlockGolds = 0;
