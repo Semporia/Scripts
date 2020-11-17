@@ -132,6 +132,21 @@
         "https://raw.githubusercontent.com/Orz-3/mini/master/didi.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/didi.png"
       ]
+    },
+    ,
+    {
+      "id": "test",
+      "name": "测试box更新",
+      "keys": [
+        "test"
+      ],
+      "author": "@whyour",
+      "repo": "https://raw.githubusercontent.com/chavyleung/scripts/master/box/chavy.boxjs.js",
+      "script": "https://raw.githubusercontent.com/chavyleung/scripts/master/box/chavy.boxjs.js",
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/box.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/box.png"
+      ]
     }
   ]
 }
