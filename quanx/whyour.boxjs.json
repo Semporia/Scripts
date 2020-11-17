@@ -71,7 +71,7 @@
     {
       "id": "supermarket",
       "name": "京东超市",
-      "keys": ["zd_shelf_level", "zd_product_level", "zd_upgrade_cheapest_product"],
+      "keys": ["zd_upgrade_cheapest_product", "zd_shelf_level", "zd_product_level"],
       "settings": [
         {
           "id": "zd_upgrade_cheapest_product",
