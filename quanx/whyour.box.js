@@ -604,9 +604,12 @@ function reloadAppSubCache(url) {
       $.log(`\n====更新订阅caches, ${subcaches}`)
       $.log(`\n====更新订阅stringcaches, ${JSON.stringify(subcaches)}`)
       $.log(`\n====更新订阅body, ${resp.body}`)
-      subcaches[url] = $.toObj(resp.body)
       $.log(`\n====更新订阅JSONbody, ${JSON.stringify(JSON.parse(resp.body))}`)
       $.log(`\n====更新订阅toObjbody, ${$.toObj(resp.body)}`)
+      if (isJsonString(resp.body)) {
+        subcaches[url] = JSON.parse(resp.body)
+        // subcaches[url] = $.toObj(resp.body)
+      }
       subcaches[url].updateTime = new Date()
       $.setjson(subcaches, $.KEY_app_subCaches)
       $.log(`更新订阅, 成功! ${url}`)
@@ -615,6 +618,15 @@ function reloadAppSubCache(url) {
       $.logErr(JSON.stringify(e, resp))
     }
   })
+}
+
+function isJsonString(str) {
+  try {
+    if (typeof JSON.parse(str) == "object") {
+      return true;
+    }
+  } catch (e) {}
+  return false;
 }
 
 async function reloadAppSubCaches() {
