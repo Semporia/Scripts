@@ -70,9 +70,13 @@ function checkIn() {
               sign.sign.subsidy_state.subsidy_amount +
                 sign.sign.subsidy_state.extra_subsidy_amount
             );
-            $.result.push(`🚕[签到] 签到成功！获得${subsidy}福利金！账户共${welfare.balance}福利金`);
+            $.result.push(
+              `🚕[签到] 签到成功！获得${subsidy}福利金！账户共${welfare.balance}福利金`
+            );
           } else {
-            $.result.push(`🚕[签到] 今天已经签到过了。账户共${welfare.balance}福利金`);
+            $.result.push(
+              `🚕[签到] 今天已经签到过了。账户共${welfare.balance}福利金`
+            );
           }
         } else {
           $.result.push(`🚕[签到] 签到失败，${obj.errmsg}`);
@@ -122,14 +126,23 @@ function collectPoint() {
       },
       body: `app_id=common&token=${$.token}`,
     };
-    $.post(options, (err, resp, data) => {
+    $.post(options, async (err, resp, data) => {
       try {
         $.log(`领取积分接口响应：${data}`);
         let obj = JSON.parse(data);
+        const {
+          account: {
+            dcoin: { coin, expire_balance, expire_date },
+          },
+        } = await getUserInfo();
         if (obj.errno === 0) {
-          $.result.push("🚕[积分] 领取成功");
+          $.result.push(
+            `🚕[积分] 领取成功, 账户共有积分${coin}, ${expire_balance}积分在${expire_date}过期`
+          );
         } else {
-          $.result.push(`🚕[积分] 领取失败`);
+          $.result.push(
+            `🚕[积分] 领取失败, 账户共有积分${coin}, ${expire_balance}积分在${expire_date}过期`
+          );
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -206,7 +219,7 @@ function dayLottery() {
         url:
           "https://manhattan.webapp.xiaojukeji.com/marvel/api/manhattan-signin-task/signIn/execute",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           token: $.token,
@@ -273,7 +286,7 @@ function getOrderGold() {
 function getOrderList() {
   return new Promise((resolve) => {
     let url = `https://api.udache.com/gulfstream/passenger/v2/other/pListReward?token=${$.token}`;
-    $.get(url, (err, resp, data) => {
+    $.get({ url }, (err, resp, data) => {
       $.log(`获取待领取的福利金，接口响应：${data}`);
       try {
         let obj = JSON.parse(data);
@@ -295,6 +308,27 @@ function getRewards(orderId) {
     $.get(url, (err, resp, data) => {
       $.log(`领取福利金，接口响应：${data}`);
       resolve();
+    });
+  });
+}
+
+function getUserInfo() {
+  return new Promise((resolve) => {
+    let url = `https://quartz.xiaojukeji.com/volcano/quartz/user/info?ts=${new Date().getTime()}&app_id=common&token=${
+      $.token
+    }&source_id=wdcn_1000&partition_id=1007`;
+    $.get({ url }, (err, resp, data) => {
+      $.log(`获取用户信息，接口响应：${data}`);
+      try {
+        let obj = JSON.parse(data);
+        if (obj.errno === 0) {
+          resolve(userInfo.data);
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
     });
   });
 }
