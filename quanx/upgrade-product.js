@@ -1,6 +1,7 @@
 const $ = new Env("京东超市升级商品");
 const JD_API_HOST = 'https://api.m.jd.com/api';
 $.level = parseInt($.getdata("zd_product_level") || "1");
+$.onlyUpgradeCheapestProduct = !!$.getdata("zd_upgrade_cheapest_product");
 $.result = [];
 $.cookieArr = [];
 $.unlockGolds = 0;
@@ -43,6 +44,11 @@ async function upgrade(cookie) {
     ).sort((a, b) => a.level - b.level);
     console.log(`\n待升级商品数量${canUpgradeProducts.length}个, 优先升级等级低的商品\n`);
     let upgradeProductNumber = 0;
+
+    if ($.onlyUpgradeCheapestProduct && canUpgradeProducts[0].upgradeCostGold <= 2000000) {
+      canUpgradeProducts = [canUpgradeProducts[0]];
+    }
+    
     for (let item of canUpgradeProducts) {
       const { name, level, maxLevel, upgradeCostGold, productId } = item;
       console.log(
