@@ -137,11 +137,11 @@ function collectPoint() {
         } = await getUserInfo();
         if (obj.errno === 0) {
           $.result.push(
-            `🚕[积分] 领取成功, 账户共有积分${coin}, ${expire_balance}积分在${expire_date}过期`
+            `🚕[积分] 领取成功, 账户共有积分${coin}\n${expire_balance}积分在${expire_date}过期`
           );
         } else {
           $.result.push(
-            `🚕[积分] 领取失败, 账户共有积分${coin}, ${expire_balance}积分在${expire_date}过期`
+            `🚕[积分] 领取失败, 账户共有积分${coin}\n${expire_balance}积分在${expire_date}过期`
           );
         }
       } catch (e) {
@@ -291,7 +291,7 @@ function getOrderList() {
       try {
         let obj = JSON.parse(data);
         if (obj.errno == 0) {
-          resolve(obj.data);
+          resolve(obj.data || []);
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -322,7 +322,7 @@ function getUserInfo() {
       try {
         let obj = JSON.parse(data);
         if (obj.errno === 0) {
-          resolve(userInfo.data);
+          resolve(obj.data);
         }
       } catch (e) {
         $.logErr(e, resp);
