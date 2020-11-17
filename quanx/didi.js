@@ -5,7 +5,10 @@ const didiLidKey = "didi_lid";
 const didiMySourceIdKey = "didi_my_source_id";
 const didiActivityIdKey = "didi_activity_id";
 const didiChannelIdKey = "didi_channel_id";
-const sourceIdConf = {'7mO4XP93fb84VMSC8Xk5vg%3D%3D': 7, 'pDmWW7HoWUkNu2nmJ3HJEQ%3D%3D': 3};
+const sourceIdConf = {
+  "7mO4XP93fb84VMSC8Xk5vg%3D%3D": 7,
+  "pDmWW7HoWUkNu2nmJ3HJEQ%3D%3D": 3,
+};
 $.cityId = $.getdata(didiCityIdKey);
 $.token = $.getdata(didiTokenKey);
 $.lid = $.getdata(didiLidKey);
@@ -39,7 +42,7 @@ function getCookies() {
 function checkIn() {
   return new Promise((resolve) => {
     const source_id = getSourceId();
-    const sourceStr = source_id ? `&share_source_id=${source_id}` : '';
+    const sourceStr = source_id ? `&share_source_id=${source_id}` : "";
     const url = `https://bosp-api.xiaojukeji.com/wechat/benefit/public/index?city_id=${
       $.cityId
     }${sourceStr}&share_date=${$.time("yyyy-MM-dd")}`;
@@ -86,18 +89,20 @@ function checkIn() {
 }
 
 // 随机获取SourceId
-function getSourceId(){
+function getSourceId() {
   let mySourceId = $.getdata(didiMySourceIdKey);
-  if (!!mySourceId){
+  if (!!mySourceId) {
     delete sourceIdConf[mySourceId];
   }
   sourceIdList = Object.keys(sourceIdConf);
   let newSourceIdList = [];
-  for (sourceId in sourceIdConf){
+  for (sourceId in sourceIdConf) {
     let sourceIdArray = new Array(sourceIdConf[sourceId]).fill(sourceId);
     newSourceIdList = newSourceIdList.concat(sourceIdArray);
-  } 
-  return newSourceIdList[Math.round(Math.random() * (newSourceIdList.length - 1))]; 
+  }
+  return newSourceIdList[
+    Math.round(Math.random() * (newSourceIdList.length - 1))
+  ];
 }
 
 function collectPoint() {
@@ -204,11 +209,7 @@ function dayLottery() {
         url:
           "https://manhattan.webapp.xiaojukeji.com/marvel/api/manhattan-signin-task/signIn/execute",
         headers: {
-          Accept: "*/*",
-          "Accept-Encoding": "gzip, deflate, br",
-          "Accept-Language": "zh-Hans;q=1",
-          "Content-Type": "application/json",
-          "X-Surge-Skip-Scripting": true,
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           token: $.token,
@@ -278,7 +279,7 @@ function getOrderList() {
           resolve(obj.data);
         }
       } catch (e) {
-  $.logErr(e, resp)        
+        $.logErr(e, resp);
       } finally {
         resolve([]);
       }
@@ -304,14 +305,19 @@ function getUserInfo() {
     }&source_id=wdcn_1000&partition_id=1007`;
     $.get(url, (err, resp, data) => {
       $.log(`获取用户信息，接口响应：${data}`);
-      let obj = JSON.parse(data);
-      if (obj.errno === 0) {
-        $.result.push(`💡账户共有积分${userInfo.data.account.dcoin.coin}`);
-        $.result.push(
-          `${userInfo.data.account.dcoin.expire_balance}积分在${userInfo.data.account.dcoin.expire_date}过期`
-        );
+      try {
+        let obj = JSON.parse(data);
+        if (obj.errno === 0) {
+          $.result.push(`💡账户共有积分${userInfo.data.account.dcoin.coin}`);
+          $.result.push(
+            `${userInfo.data.account.dcoin.expire_balance}积分在${userInfo.data.account.dcoin.expire_date}过期`
+          );
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
       }
-      resolve();
     });
   });
 }
