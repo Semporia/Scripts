@@ -3,7 +3,7 @@ const ddxwTokenKey2 = "jd_ddxw_token2";
 const getTokenRegex = /^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login/;
 const $ = new Env("东东小窝Cookie");
 
-const body = $request.body;
+const body = $response.body;
 const url = $request.url;
 
 if (getTokenRegex.test(url) && body) {
