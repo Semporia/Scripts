@@ -60,7 +60,6 @@ function getAllTask(token) {
         try {
           const { body } = JSON.parse(data);
           $.allTask = body;
-          console.log($.allTask);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -82,8 +81,8 @@ function followShops(token) {
       ),
       (err, resp, data) => {
         try {
-          const { head } = JSON.parse(data);
-          $.log(`\n${head.msg}`);
+          const { head = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -105,8 +104,8 @@ function followChannels(token) {
       ),
       (err, resp, data) => {
         try {
-          const { head } = JSON.parse(data);
-          $.log(`\n${head.msg}`);
+          const { head = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -181,8 +180,8 @@ function browseShopFun(token) {
       ),
       (err, resp, data) => {
         try {
-          const { head } = JSON.parse(data);
-          $.log(`\n${head.msg}`);
+          const { head = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -207,8 +206,8 @@ function browseChannelFun(token) {
       ),
       (err, resp, data) => {
         try {
-          const { head } = JSON.parse(data);
-          $.log(`\n${head.msg}`);
+          const { head = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -235,8 +234,8 @@ function browseCommodityFun(token) {
       ),
       (err, resp, data) => {
         try {
-          const { head } = JSON.parse(data);
-          $.log(`\n${head.msg}`);
+          const { head = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -261,8 +260,8 @@ function browseMeetingFun(token) {
       ),
       (err, resp, data) => {
         try {
-          const { head } = JSON.parse(data);
-          $.log(`\n${head.msg}`);
+          const { head = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
