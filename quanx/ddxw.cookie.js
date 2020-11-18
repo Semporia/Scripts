@@ -6,9 +6,10 @@ const $ = new Env("东东小窝Cookie");
 const body = $request.body;
 const url = $request.url;
 
-if (getTokenRegex.test(url)) {
+if (getTokenRegex.test(url) && body) {
   try {
-    const { head: { token } } = body;
+    $.log('东东小窝token响应', body)
+    const { head: { token } } = JSON.parse(body);
     const token1 = $.getdata(ddxwTokenKey1)
     if (!token1) {
       $.setdata(token, ddxwTokenKey1);
