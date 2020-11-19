@@ -23,7 +23,7 @@ const $ = new Env("东东小窝");
 
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://lkyl.dianpusoft.cn/api/";
-$.testTaskId = "1318106976846299138"; // 测试邀请任务
+$.testTaskId = "1329223012752433153"; // 测试邀请任务
 $.token = [
   $.getdata("jd_ddxw_token1") || "",
   $.getdata("jd_ddxw_token2") || "",
@@ -45,7 +45,8 @@ $.allTask = [];
       await getAllTask($.token[i]);
       await signIn($.token[i]);
       await browseTasks($.token[i]);
-      await createInviteUser($.token[i]);
+      await getInviteId($.token[i]);
+      await createAssistUser($.token[i]);
       const endHomeInfo = await getHomeInfo($.token[i]);
       $.result.push(
         `任务前窝币：${startHomeInfo.woB}`,
@@ -138,11 +139,12 @@ function signIn(token) {
   });
 }
 
-function createAssistUser(userId, token) {
+function createAssistUser(token) {
+  const invite = $.allTask.find((x) => x.ssjjTaskInfo.type === 1);
   return new Promise((resolve) => {
     $.get(
       taskUrl(
-        `ssjj-task-record/createAssistUser/${userId}/${$.testTaskId}`,
+        `ssjj-task-record/createAssistUser/${$.testTaskId}/${invite.ssjjTaskInfo.id}`,
         {},
         token
       ),
@@ -160,7 +162,7 @@ function createAssistUser(userId, token) {
   });
 }
 
-function createInviteUser(token) {
+function getInviteId(token) {
   const clock = $.allTask.find((x) => x.ssjjTaskInfo.type === 2);
   return new Promise((resolve) => {
     $.get(
@@ -169,7 +171,7 @@ function createInviteUser(token) {
         try {
           const { body = {}, head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
-          await createAssistUser(body.id, token);
+          $.log(`\n你的shareID：${body.id}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
