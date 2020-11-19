@@ -167,7 +167,7 @@ function createInviteUser(token) {
       taskUrl(`ssjj-task-record/createInviteUser`, {}, token),
       async (err, resp, data) => {
         try {
-          const { body = {} } = JSON.parse(data);
+          const { body = {}, head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
           await createAssistUser(body.id, token);
         } catch (e) {
@@ -255,24 +255,50 @@ function browseTasks(token) {
     let channelDone = false;
     let commodityDone = false;
     let meetingDone = false;
-    while (!shopDone) {
-      shopDone = await browseShopFun(token);
-      await getAllTask(token);
-    }
-    while (!channelDone) {
-      channelDone = await browseChannelFun(token);
-      await getAllTask(token);
-    }
-    while (!commodityDone) {
-      commodityDone = await browseCommodityFun(token);
-      await getAllTask(token);
-    }
-    while (!meetingDone) {
-      meetingDone = await browseMeetingFun(token);
-      await getAllTask(token);
+    const browseShop = $.allTask.find((x) => x.ssjjTaskInfo.type === 5);
+    const browseChannel = $.allTask.find((x) => x.ssjjTaskInfo.type === 7);
+    const browseCommodity = $.allTask.find((x) => x.ssjjTaskInfo.type === 10);
+    const browseMeeting = $.allTask.find((x) => x.ssjjTaskInfo.type === 11);
+    const times = Math.max(
+      browseShop.ssjjTaskInfo.awardOfDayNum,
+      browseChannel.ssjjTaskInfo.awardOfDayNum,
+      browseCommodity.ssjjTaskInfo.awardOfDayNum,
+      browseMeeting.ssjjTaskInfo.awardOfDayNum
+    );
+    for (let i = 0; i < times; i++) {
+      if (!shopDone) {
+        shopDone = await browseShopFun(token);
+        await getAllTask(token);
+      }
+      if (!channelDone) {
+        channelDone = await browseChannelFun(token);
+        await getAllTask(token);
+      }
+      if (!commodityDone) {
+        commodityDone = await browseCommodityFun(token);
+        await getAllTask(token);
+      }
+      if (!meetingDone) {
+        meetingDone = await browseMeetingFun(token);
+        await getAllTask(token);
+      }
     }
     resolve();
   });
+}
+
+function checkDependency() {
+  return new Promise(resolve => {
+    param = await browseShopFun(token);
+  });
+}
+
+function isReady() {
+  if (!dependency) {
+    return checkDependency().then(isReady);
+  }
+
+  return Promise.resolve(true);
 }
 
 function browseShopFun(token) {
