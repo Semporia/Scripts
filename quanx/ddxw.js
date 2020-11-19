@@ -31,10 +31,6 @@ $.token = [
 $.result = [];
 $.cookieArr = [];
 $.allTask = [];
-$.shopDone = false;
-$.channelDone = false;
-$.commodityDone = false;
-$.meetingDone = false;
 
 !(async () => {
   if (!getCookies()) return;
@@ -265,23 +261,29 @@ function browseTasks(token) {
       browseCommodity.ssjjTaskInfo.awardOfDayNum,
       browseMeeting.ssjjTaskInfo.awardOfDayNum
     );
+    let doneConfig = {
+      shopDone: false,
+      channelDone: false,
+      commodityDone: false,
+      meetingDone: false
+    };
     for (let i = 0; i < times; i++) {
-      if (!$.shopDone) {
-        $.log($.shopDone)
-        $.shopDone = await browseShopFun(token);
-        $.log($.shopDone)
+      if (!doneConfig.shopDone) {
+        $.log($.doneConfig.shopDone)
+        doneConfig.shopDone = await browseShopFun(token);
+        $.log($.doneConfig.shopDone)
         await getAllTask(token);
       }
-      if (!$.channelDone) {
-        $.channelDone = await browseChannelFun(token);
+      if (!doneConfig.channelDone) {
+        doneConfig.channelDone = await browseChannelFun(token);
         await getAllTask(token);
       }
-      if (!$.commodityDone) {
-        $.commodityDone = await browseCommodityFun(token);
+      if (!doneConfig.commodityDone) {
+        doneConfig.commodityDone = await browseCommodityFun(token);
         await getAllTask(token);
       }
-      if (!$.meetingDone) {
-        $.meetingDone = await browseMeetingFun(token);
+      if (!doneConfig.meetingDone) {
+        doneConfig.meetingDone = await browseMeetingFun(token);
         await getAllTask(token);
       }
     }
@@ -305,6 +307,7 @@ function browseShopFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.code !== 200}`);
           resolve(head.code !== 200);
         } catch (e) {
           $.logErr(e, resp);
