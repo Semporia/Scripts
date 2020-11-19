@@ -31,6 +31,10 @@ $.token = [
 $.result = [];
 $.cookieArr = [];
 $.allTask = [];
+$.shopDone = false;
+$.channelDone = false;
+$.commodityDone = false;
+$.meetingDone = false;
 
 !(async () => {
   if (!getCookies()) return;
@@ -251,10 +255,6 @@ function addCommodityToCart() {
 
 function browseTasks(token) {
   return new Promise(async (resolve) => {
-    let shopDone = false;
-    let channelDone = false;
-    let commodityDone = false;
-    let meetingDone = false;
     const browseShop = $.allTask.find((x) => x.ssjjTaskInfo.type === 5);
     const browseChannel = $.allTask.find((x) => x.ssjjTaskInfo.type === 7);
     const browseCommodity = $.allTask.find((x) => x.ssjjTaskInfo.type === 10);
@@ -267,38 +267,26 @@ function browseTasks(token) {
     );
     for (let i = 0; i < times; i++) {
       if (!shopDone) {
-        shopDone = await browseShopFun(token);
+        $.log($.shopDone)
+        $.shopDone = await browseShopFun(token);
+        $.log($.shopDone)
         await getAllTask(token);
       }
       if (!channelDone) {
-        channelDone = await browseChannelFun(token);
+        $.channelDone = await browseChannelFun(token);
         await getAllTask(token);
       }
       if (!commodityDone) {
-        commodityDone = await browseCommodityFun(token);
+        $.commodityDone = await browseCommodityFun(token);
         await getAllTask(token);
       }
       if (!meetingDone) {
-        meetingDone = await browseMeetingFun(token);
+        $.meetingDone = await browseMeetingFun(token);
         await getAllTask(token);
       }
     }
     resolve();
   });
-}
-
-function checkDependency() {
-  return new Promise(resolve => {
-    param = await browseShopFun(token);
-  });
-}
-
-function isReady() {
-  if (!dependency) {
-    return checkDependency().then(isReady);
-  }
-
-  return Promise.resolve(true);
 }
 
 function browseShopFun(token) {
