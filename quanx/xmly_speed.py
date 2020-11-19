@@ -14,7 +14,7 @@ import os
 
 ###################################################
 # 对应方案2: 下载到本地,需要此处填写
-cookies1 = ""  
+cookies1 = "1&_device=iPhone&023CA700-5417-4341-94D9-E738DD94D6BE&1.1.13; 1&_token=177476793&439B6410240C9CE1A29CDEC2670B265EF15C07F3CC8CB351259B3AC07A854D6E43FCD5AB0FAC111M307478B89CA740E_; NSUP=; XD=6w0FgETqIKDt3tw4EOvUOVZcbNb09rkY4053nwwUnU2qsPX2l8Eu86swWJKOwnk4Gl0HvB/4x/S8bZyEH9rtFw==; XUM=023CA700-5417-4341-94D9-E738DD94D6BE; _xmLog=h5&696b07d3-f78f-47b8-b411-97d428ca935c&2.2.5; ainr=0; c-oper=%E8%81%94%E9%80%9A; channel=ios-b1; device_model=iPhone 12; idfa=00000000-0000-0000-0000-000000000000; impl=com.ximalaya.tingLite; ip=10.82.141.188; net-mode=3G; res=1170%2C2532"  
 cookies2 = "" 
 
 cookiesList = [cookies1,]   # 多账号准备
@@ -22,10 +22,10 @@ cookiesList = [cookies1,]   # 多账号准备
 # 通知服务
 BARK = ''                   # bark服务,自行搜索; secrets可填;形如jfjqxDx3xxxxxxxxSaK的字符串
 SCKEY = ''                  # Server酱的SCKEY; secrets可填
-TG_BOT_TOKEN = ''           # tg机器人的TG_BOT_TOKEN; secrets可填
-TG_USER_ID = ''             # tg机器人的TG_USER_ID; secrets可填
-TG_PROXY_IP = ''            # tg机器人的TG_PROXY_IP; secrets可填
-TG_PROXY_PORT = ''          # tg机器人的TG_PROXY_PORT; secrets可填
+TG_BOT_TOKEN = '1442183667:AAGpCyx8IxeIXdCFEWp97iAIFN0AIQg5ZPk'           # tg机器人的TG_BOT_TOKEN; secrets可填
+TG_USER_ID = '995467420'             # tg机器人的TG_USER_ID; secrets可填
+TG_PROXY_IP = '127.0.0.1'            # tg机器人的TG_PROXY_IP; secrets可填
+TG_PROXY_PORT = '7890'               # tg机器人的TG_PROXY_PORT; secrets可填
 
 ###################################################
 # 对应方案1:  GitHub action自动运行,此处无需填写;
@@ -951,7 +951,8 @@ def telegram(title, content):
     url=f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage"
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     payload = {'chat_id': str(TG_USER_ID), 'text': f"""{title}\n\n{content}""", 'disable_web_page_preview': 'true'}
-    proxies = {"http": f""http://{TG_PROXY_IP}:{TG_PROXY_PORT}"", "https": f""http://{TG_PROXY_IP}:{TG_PROXY_PORT}"" } 
+    proxyStr = "http://{}:{}".format(TG_PROXY_IP, TG_PROXY_PORT)
+    proxies = {"http": proxyStr, "https": proxyStr } 
     response = requests.post(url=url,headers=headers, params=payload,proxies=proxies)
     print(response.text)
 
