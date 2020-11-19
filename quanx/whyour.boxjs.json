@@ -136,15 +136,25 @@
     {
       "id": "test",
       "name": "测试box更新",
-      "keys": [
-        "test"
-      ],
+      "keys": ["test"],
       "author": "@whyour",
       "repo": "https://raw.githubusercontent.com/chavyleung/scripts/master/box/chavy.boxjs.js",
       "script": "https://raw.githubusercontent.com/chavyleung/scripts/master/box/chavy.boxjs.js",
       "icons": [
         "https://raw.githubusercontent.com/Orz-3/mini/master/box.png",
         "https://raw.githubusercontent.com/Orz-3/task/master/box.png"
+      ]
+    },
+    {
+      "id": "jd_ddxw",
+      "name": "东东小窝",
+      "keys": ["jd_ddxw_token1", "jd_ddxw_token2"],
+      "author": "@whyour",
+      "repo": "https://github.com/whyour/hundun/blob/master/quanx/ddxw.js",
+      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddwx.js",
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/jd.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/jd.png"
       ]
     }
   ]
