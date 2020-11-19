@@ -266,21 +266,21 @@ function browseTasks(token) {
       browseMeeting.ssjjTaskInfo.awardOfDayNum
     );
     for (let i = 0; i < times; i++) {
-      if (!shopDone) {
+      if (!$.shopDone) {
         $.log($.shopDone)
         $.shopDone = await browseShopFun(token);
         $.log($.shopDone)
         await getAllTask(token);
       }
-      if (!channelDone) {
+      if (!$.channelDone) {
         $.channelDone = await browseChannelFun(token);
         await getAllTask(token);
       }
-      if (!commodityDone) {
+      if (!$.commodityDone) {
         $.commodityDone = await browseCommodityFun(token);
         await getAllTask(token);
       }
-      if (!meetingDone) {
+      if (!$.meetingDone) {
         $.meetingDone = await browseMeetingFun(token);
         await getAllTask(token);
       }
