@@ -24,10 +24,11 @@ const $ = new Env("东东小窝");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://lkyl.dianpusoft.cn/api/";
 $.testTaskId = "1329223012752433153"; // 测试邀请任务
-$.token = [
+$.userNames = [
   $.getdata("jd_ddxw_token1") || "",
   $.getdata("jd_ddxw_token2") || "",
-];
+]
+$.tokens = [];
 $.woBLottery = $.getdata("jd_wob_lottery")
   ? $.getdata("jd_wob_lottery") === "true"
   : false;
@@ -38,6 +39,7 @@ $.drawCenterInfo = {};
 
 !(async () => {
   if (!getCookies()) return;
+  await getTokens();
   for (let i = 0; i < $.cookieArr.length; i++) {
     const cookie = $.cookieArr[i];
     if (cookie) {
@@ -88,6 +90,35 @@ function getCookies() {
     return false;
   }
   return true;
+}
+
+async function getTokens() {
+  const userNames = Array.from(new Set($.userNames));
+  const result = [];
+  for (const name of userNames) {
+    const token = await getToken(name);
+    result.push(token);
+  }
+  $.tokens = result;
+}
+
+function getToken(name) {
+  return new Promise((resolve) => {
+    $.get(
+      taskUrl("user-info/login", {body: {client:2,userName: name}}),
+      (err, resp, data) => {
+        try {
+          const { head = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
+          resolve(head.token);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
 }
 
 function getHomeInfo(token) {

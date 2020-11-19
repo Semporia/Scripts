@@ -25,20 +25,20 @@ const ddxwTokenKey2 = "jd_ddxw_token2";
 const getTokenRegex = /^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login/;
 const $ = new Env("东东小窝Cookie");
 
-const body = $response.body;
+const body = $request.body;
 const url = $request.url;
 
 if (getTokenRegex.test(url) && body) {
   try {
     $.log('东东小窝token响应', body)
-    const { head: { token } } = JSON.parse(body);
+    const { body = {} } = JSON.parse(body);
     const token1 = $.getdata(ddxwTokenKey1)
     if (!token1) {
-      $.setdata(token, ddxwTokenKey1);
-      $.log(`新的Token1：\n${token}，Token已更新。`);
+      $.setdata(body.userName, ddxwTokenKey1);
+      $.log(`新的Token1：\n${body.userName}，Token已更新。`);
     } else {
-      $.setdata(token, ddxwTokenKey2);
-      $.log(`新的Token2：\n${token}，Token已更新。`);
+      $.setdata(body.userName, ddxwTokenKey2);
+      $.log(`新的Token2：\n${body.userName}，Token已更新。`);
     }
     $.msg($.name, "🎉东东小窝写入Token成功！！");
   } catch (err) {
