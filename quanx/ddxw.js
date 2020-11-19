@@ -1,8 +1,29 @@
+/**
+ *
+  hostname = lkyl.dianpusoft.cn
+
+  quanx:
+  [task_local]
+  0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js, tag=京东小窝, enabled=true
+  [rewrite_local]
+  ^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login url script-response-body https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.cookie.js
+
+  loon:
+  http-response ^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.cookie.js, requires-body=true, timeout=10, tag=京东小窝cookie
+  cron "0 9 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js, tag=京东小窝
+
+  surge:
+  [Script]
+  京东小窝 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js,
+  京东小窝cookie = type=http-response,pattern=^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.cookie.js
+ *
+ *  
+ **/
 const $ = new Env("东东小窝");
 
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://lkyl.dianpusoft.cn/api/";
-$.testTaskId = '1318106976846299138' // 测试邀请任务
+$.testTaskId = "1318106976846299138"; // 测试邀请任务
 $.token = [
   $.getdata("jd_ddxw_token1") || "",
   $.getdata("jd_ddxw_token2") || "",
@@ -24,9 +45,13 @@ $.allTask = [];
       await getAllTask($.token[i]);
       await signIn($.token[i]);
       await browseTasks($.token[i]);
-      await createInviteUser($.token[i])
+      await createInviteUser($.token[i]);
       const endHomeInfo = await getHomeInfo($.token[i]);
-      $.result.concat([`任务前窝币：${startHomeInfo.woB}`, `任务后窝币：${endHomeInfo.woB}`, `获得窝币：${endHomeInfo.woB - startHomeInfo.woB}`]);
+      $.result.concat([
+        `任务前窝币：${startHomeInfo.woB}`,
+        `任务后窝币：${endHomeInfo.woB}`,
+        `获得窝币：${endHomeInfo.woB - startHomeInfo.woB}`,
+      ]);
       // await followShops($.token[i]);
       // await followChannels($.token[i]);
     }
@@ -98,11 +123,7 @@ function signIn(token) {
   const clock = $.allTask.find((x) => x.ssjjTaskInfo.type === 2);
   return new Promise((resolve) => {
     $.get(
-      taskUrl(
-        `ssjj-task-record/clock/${clock.ssjjTaskInfo.id}`,
-        {},
-        token
-      ),
+      taskUrl(`ssjj-task-record/clock/${clock.ssjjTaskInfo.id}`, {}, token),
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
@@ -143,11 +164,7 @@ function createInviteUser(token) {
   const clock = $.allTask.find((x) => x.ssjjTaskInfo.type === 2);
   return new Promise((resolve) => {
     $.get(
-      taskUrl(
-        `ssjj-task-record/createInviteUser`,
-        {},
-        token
-      ),
+      taskUrl(`ssjj-task-record/createInviteUser`, {}, token),
       async (err, resp, data) => {
         try {
           const { body = {} } = JSON.parse(data);
@@ -274,7 +291,7 @@ function browseShopFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
-          resolve(head.code === 200)
+          resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -301,7 +318,7 @@ function browseChannelFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
-          resolve(head.code === 200)
+          resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -330,7 +347,7 @@ function browseCommodityFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
-          resolve(head.code === 200)
+          resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -357,7 +374,7 @@ function browseMeetingFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
-          resolve(head.code === 200)
+          resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -370,7 +387,9 @@ function browseMeetingFun(token) {
 
 function showMsg() {
   return new Promise((resolve) => {
-    $.result.push('[小窝] 关注频道，关注店铺，加购商品只能执行一次，建议手动执行')
+    $.result.push(
+      "关注频道，关注店铺，加购商品任务只能执行一次，建议手动执行"
+    );
     $.msg($.name, "", $.result.join("\n"));
     resolve();
   });
