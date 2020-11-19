@@ -9,7 +9,7 @@
 
   surge:
   [Script]
-  倒数日 = type=cron,cronexp=0 *\/1 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/daymatter.js,
+  倒数日 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/daymatter.js,
  *  
  **/
 

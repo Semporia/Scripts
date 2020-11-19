@@ -1,3 +1,25 @@
+/**
+ *
+  hostname = restapi.amap.com
+
+  quanx:
+  [task_local]
+  0 *\/1 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js, tag=彩云天气, enabled=true
+  [rewrite_local]
+  https:\/\/restapi\.amap\.com\/v3\/geocode url script-request-body https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js
+
+  loon:
+  http-request https:\/\/restapi\.amap\.com\/v3\/geocode script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js, requires-body=true, timeout=10, tag=彩云天气cookie
+  cron "0 *\/1 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js, tag=彩云天气
+
+  surge:
+  [Script]
+  彩云天气 = type=cron,cronexp=0 *\/1 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js,
+  彩云天气cookie = type=http-request,pattern=https:\/\/restapi\.amap\.com\/v3\/geocode,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js
+ *
+ *  
+ **/
+
 const $ = new Env("彩云天气");
 $.result = [];
 $.isRequest = typeof $request != "undefined";
