@@ -291,7 +291,7 @@ function browseShopFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
-          resolve(head.code === 200);
+          resolve(head.code !== 200);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -318,7 +318,7 @@ function browseChannelFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
-          resolve(head.code === 200);
+          resolve(head.code !== 200);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -347,7 +347,7 @@ function browseCommodityFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
-          resolve(head.code === 200);
+          resolve(head.code !== 200);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -374,7 +374,7 @@ function browseMeetingFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
-          resolve(head.code === 200);
+          resolve(head.code !== 200);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
