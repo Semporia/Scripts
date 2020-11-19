@@ -2,6 +2,7 @@ const $ = new Env("东东小窝");
 
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://lkyl.dianpusoft.cn/api/";
+$.testTaskId = '1318106976846299138' // 测试邀请任务
 $.token = [
   $.getdata("jd_ddxw_token1") || "",
   $.getdata("jd_ddxw_token2") || "",
@@ -19,10 +20,15 @@ $.allTask = [];
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
+      const startHomeInfo = await getHomeInfo($.token[i]);
       await getAllTask($.token[i]);
+      await signIn($.token[i]);
       await browseTasks($.token[i]);
-      await followShops($.token[i]);
-      await followChannels($.token[i]);
+      await createInviteUser($.token[i])
+      const endHomeInfo = await getHomeInfo($.token[i]);
+      $.result.concat([`任务前窝币：${startHomeInfo.woB}`, `任务后窝币：${endHomeInfo.woB}`, `获得窝币：${endHomeInfo.woB - startHomeInfo.woB}`]);
+      // await followShops($.token[i]);
+      // await followChannels($.token[i]);
     }
   }
   await showMsg();
@@ -52,6 +58,24 @@ function getCookies() {
   return true;
 }
 
+function getHomeInfo(token) {
+  return new Promise((resolve) => {
+    $.get(
+      taskUrl("ssjj-wo-home-info/queryByUserId/2", {}, token),
+      (err, resp, data) => {
+        try {
+          const { body } = JSON.parse(data);
+          resolve(body);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
 function getAllTask(token) {
   return new Promise((resolve) => {
     $.get(
@@ -60,6 +84,75 @@ function getAllTask(token) {
         try {
           const { body } = JSON.parse(data);
           $.allTask = body;
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function signIn(token) {
+  const clock = $.allTask.find((x) => x.ssjjTaskInfo.type === 2);
+  return new Promise((resolve) => {
+    $.get(
+      taskUrl(
+        `ssjj-task-record/clock/${clock.ssjjTaskInfo.id}`,
+        {},
+        token
+      ),
+      (err, resp, data) => {
+        try {
+          const { head = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function createAssistUser(userId, token) {
+  return new Promise((resolve) => {
+    $.get(
+      taskUrl(
+        `ssjj-task-record/createAssistUser/${userId}/${$.testTaskId}`,
+        {},
+        token
+      ),
+      (err, resp, data) => {
+        try {
+          const { head = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function createInviteUser(token) {
+  const clock = $.allTask.find((x) => x.ssjjTaskInfo.type === 2);
+  return new Promise((resolve) => {
+    $.get(
+      taskUrl(
+        `ssjj-task-record/createInviteUser`,
+        {},
+        token
+      ),
+      async (err, resp, data) => {
+        try {
+          const { body = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
+          await createAssistUser(body.id, token);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -117,7 +210,6 @@ function followChannels(token) {
 }
 
 function addCommodityToCart() {
-  // TODO:
   const browseChannel = $.allTask.find((x) => x.ssjjTaskInfo.type === 7);
   return new Promise((resolve) => {
     $.get(
@@ -142,24 +234,24 @@ function addCommodityToCart() {
 
 function browseTasks(token) {
   return new Promise(async (resolve) => {
-    const browseShop = $.allTask.find((x) => x.ssjjTaskInfo.type === 5);
-    const browseChannel = $.allTask.find((x) => x.ssjjTaskInfo.type === 7);
-    const browseCommodity = $.allTask.find((x) => x.ssjjTaskInfo.type === 10);
-    const browseMeeting = $.allTask.find((x) => x.ssjjTaskInfo.type === 11);
-    const times = Math.max(
-      browseShop.ssjjTaskInfo.awardOfDayNum,
-      browseChannel.ssjjTaskInfo.awardOfDayNum,
-      browseCommodity.ssjjTaskInfo.awardOfDayNum,
-      browseMeeting.ssjjTaskInfo.awardOfDayNum
-    );
-    for (let i = 0; i < times; i++) {
-      await browseShopFun(token);
+    let shopDone = false;
+    let channelDone = false;
+    let commodityDone = false;
+    let meetingDone = false;
+    while (!shopDone) {
+      shopDone = await browseShopFun(token);
       await getAllTask(token);
-      await browseChannelFun(token);
+    }
+    while (!channelDone) {
+      channelDone = await browseChannelFun(token);
       await getAllTask(token);
-      await browseCommodityFun(token);
+    }
+    while (!commodityDone) {
+      commodityDone = await browseCommodityFun(token);
       await getAllTask(token);
-      await browseMeetingFun(token);
+    }
+    while (!meetingDone) {
+      meetingDone = await browseMeetingFun(token);
       await getAllTask(token);
     }
     resolve();
@@ -182,6 +274,7 @@ function browseShopFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
+          resolve(head.code === 200)
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -208,6 +301,7 @@ function browseChannelFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
+          resolve(head.code === 200)
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -236,6 +330,7 @@ function browseCommodityFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
+          resolve(head.code === 200)
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -262,6 +357,7 @@ function browseMeetingFun(token) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
+          resolve(head.code === 200)
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -274,6 +370,7 @@ function browseMeetingFun(token) {
 
 function showMsg() {
   return new Promise((resolve) => {
+    $.result.push('[小窝] 关注频道，关注店铺，加购商品只能执行一次，建议手动执行')
     $.msg($.name, "", $.result.join("\n"));
     resolve();
   });
