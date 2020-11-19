@@ -47,11 +47,11 @@ $.allTask = [];
       await browseTasks($.token[i]);
       await createInviteUser($.token[i]);
       const endHomeInfo = await getHomeInfo($.token[i]);
-      $.result.concat([
+      $.result.push(
         `任务前窝币：${startHomeInfo.woB}`,
         `任务后窝币：${endHomeInfo.woB}`,
         `获得窝币：${endHomeInfo.woB - startHomeInfo.woB}`,
-      ]);
+      );
       // await followShops($.token[i]);
       // await followChannels($.token[i]);
     }
@@ -261,31 +261,15 @@ function browseTasks(token) {
       browseCommodity.ssjjTaskInfo.awardOfDayNum,
       browseMeeting.ssjjTaskInfo.awardOfDayNum
     );
-    let doneConfig = {
-      shopDone: false,
-      channelDone: false,
-      commodityDone: false,
-      meetingDone: false
-    };
     for (let i = 0; i < times; i++) {
-      if (!doneConfig.shopDone) {
-        $.log($.doneConfig.shopDone)
-        doneConfig.shopDone = await browseShopFun(token);
-        $.log($.doneConfig.shopDone)
-        await getAllTask(token);
-      }
-      if (!doneConfig.channelDone) {
-        doneConfig.channelDone = await browseChannelFun(token);
-        await getAllTask(token);
-      }
-      if (!doneConfig.commodityDone) {
-        doneConfig.commodityDone = await browseCommodityFun(token);
-        await getAllTask(token);
-      }
-      if (!doneConfig.meetingDone) {
-        doneConfig.meetingDone = await browseMeetingFun(token);
-        await getAllTask(token);
-      }
+      await browseShopFun(token);
+      await getAllTask(token);
+      await browseChannelFun(token);
+      await getAllTask(token);
+      await browseCommodityFun(token);
+      await getAllTask(token);
+      await browseMeetingFun(token);
+      await getAllTask(token);
     }
     resolve();
   });
