@@ -38,8 +38,8 @@ $.allTask = [];
 $.drawCenterInfo = {};
 
 !(async () => {
-  if (!getCookies()) return;
-  await getTokens();
+  const hasToken = await getCookies();
+  if (!hasToken) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
     const cookie = $.cookieArr[i];
     if (cookie) {
@@ -70,7 +70,7 @@ $.drawCenterInfo = {};
   .catch((e) => $.logErr(e))
   .finally(() => $.done());
 
-function getCookies() {
+async function getCookies() {
   if ($.isNode()) {
     $.cookieArr = Object.values(jdCookieNode);
   } else {
@@ -85,6 +85,7 @@ function getCookies() {
     );
     return false;
   }
+  await getTokens();
   if (!$.token[0]) {
     $.msg($.name, "【提示】请先去东东小窝获取token");
     return false;
