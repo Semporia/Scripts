@@ -148,7 +148,16 @@
     {
       "id": "jd_ddxw",
       "name": "东东小窝",
-      "keys": ["jd_ddxw_token1", "jd_ddxw_token2"],
+      "keys": ["jd_ddxw_token1", "jd_ddxw_token2", "jd_wob_lottery"],
+      "settings": [
+        {
+          "id": "jd_wob_lottery",
+          "name": "窝币抽奖",
+          "val": false,
+          "type": "boolean",
+          "desc": "是否消耗200窝币进行抽奖，默认不进行付费抽奖，只进行免费抽奖"
+        }
+      ],
       "author": "@whyour",
       "repo": "https://github.com/whyour/hundun/blob/master/quanx/ddxw.js",
       "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddwx.js",

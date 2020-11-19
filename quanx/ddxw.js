@@ -28,9 +28,11 @@ $.token = [
   $.getdata("jd_ddxw_token1") || "",
   $.getdata("jd_ddxw_token2") || "",
 ];
+$.woBLottery = $.getdata("jd_wob_lottery") ? $.getdata("jd_wob_lottery") === 'true' : false;
 $.result = [];
 $.cookieArr = [];
 $.allTask = [];
+$.drawCenterInfo = {};
 
 !(async () => {
   if (!getCookies()) return;
@@ -47,6 +49,8 @@ $.allTask = [];
       await browseTasks($.token[i]);
       await getInviteId($.token[i]);
       await createAssistUser($.token[i]);
+      await getDrawCenter($.token[i]);
+      await drawTask($.token[i]);
       const endHomeInfo = await getHomeInfo($.token[i]);
       $.result.push(
         `任务前窝币：${startHomeInfo.woB}`,
@@ -110,6 +114,55 @@ function getAllTask(token) {
         try {
           const { body } = JSON.parse(data);
           $.allTask = body;
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+async function drawTask(token) {
+  const { freeDrawNum, paidDrawNum } = $.drawCenterInfo;
+  for (let i = 0; i < freeDrawNum; i++) {
+    await draw(token, i)
+  }
+  if ($.woBLottery) {
+    for (let j = 0; j < paidDrawNum; j++) {
+      await draw(token, (freeDrawNum + j - 1));
+    }
+  }
+}
+
+function draw(token, i) {
+  return new Promise((resolve) => {
+    $.get(
+      taskUrl(`ssjj-draw-record/draw/${$.drawCenterInfo.id}`, {}, token),
+      (err, resp, data) => {
+        try {
+          const { head = {}, body = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
+          $.result.push(`第${i}次抽奖：${body.name ? body.name : head.msg}`);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function getDrawCenter(token) {
+  return new Promise((resolve) => {
+    $.get(
+      taskUrl("ssjj-draw-center/queryDraw", {}, token),
+      (err, resp, data) => {
+        try {
+          const { body = {} } = JSON.parse(data);
+          $.drawCenterInfo = body.center;
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -391,7 +444,7 @@ function browseMeetingFun(token) {
 function showMsg() {
   return new Promise((resolve) => {
     $.result.push(
-      "关注频道，关注店铺，加购商品任务只能执行一次，建议手动执行"
+      "关注频道，关注店铺，加购商品任务\n只能执行一次，建议手动执行"
     );
     $.msg($.name, "", $.result.join("\n"));
     resolve();
