@@ -1,3 +1,18 @@
+/**
+ *
+  quanx:
+  [task_local]
+  0 18 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/donate-step.js, tag=捐步数, enabled=true
+
+  loon:
+  cron "0 18 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/donate-step.js, tag=捐步数
+
+  surge:
+  [Script]
+  捐步数 = type=cron,cronexp=0 18 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/donate-step.js,
+ *  
+ **/
+
 const $ = new compatibility();
 const donate =
   "alipays://platformapi/startapp?appId=10000009&url=/www/stepDonate.htm?chInfo=antsports&sourceName=antsports";

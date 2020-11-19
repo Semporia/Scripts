@@ -147,7 +147,7 @@ function draw(token, i) {
         try {
           const { head = {}, body = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
-          $.result.push(`第${i}次抽奖：${body.name ? body.name : head.msg}`);
+          $.result.push(`第${i + 1}次抽奖：${body.name ? body.name : head.msg}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -324,18 +324,22 @@ function browseTasks(token) {
       if (status[0]) {
         status[0] = await browseShopFun(token);
         await getAllTask(token);
+        await $.wait(300);
       }
       if (status[1]) {
         status[1] = await browseChannelFun(token);
         await getAllTask(token);
+        await $.wait(300);
       }
       if (status[2]) {
         status[2] = await browseCommodityFun(token);
         await getAllTask(token);
+        await $.wait(300);
       }
       if (status[3]) {
         status[3] = await browseMeetingFun(token);
         await getAllTask(token);
+        await $.wait(300);
       }
     }
     resolve();
@@ -458,7 +462,7 @@ function showMsg() {
     $.result.push(
       "关注频道，关注店铺，加购商品任务\n只能执行一次，建议手动执行"
     );
-    $.msg($.name, "", $.result.join("\n"));
+    $.msg($.name, "", `\n${$.result.join("\n")}`);
     resolve();
   });
 }

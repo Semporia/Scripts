@@ -1,3 +1,18 @@
+/**
+ *
+  quanx:
+  [task_local]
+  0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/daymatter.js, tag=倒数日, enabled=true
+
+  loon:
+  cron "0 9 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/daymatter.js, tag=倒数日
+
+  surge:
+  [Script]
+  倒数日 = type=cron,cronexp=0 *\/1 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/daymatter.js,
+ *  
+ **/
+
 const $ = new Env("倒数日");
 $.holidayKey = "holiday";
 $.nextHolidayKey = "nextHoliday";
