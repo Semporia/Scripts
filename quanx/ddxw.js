@@ -127,8 +127,9 @@ function getAllTask(token) {
 }
 
 async function drawTask(token) {
-  const { freeDrawNum, paidDrawNum } = $.drawCenterInfo;
-  for (let i = 0; i < freeDrawNum; i++) {
+  const { freeDrawNum, paidDrawNum, freeDrawCount } = $.drawCenterInfo;
+  const freeCount = Math.min(freeDrawNum, freeDrawCount);
+  for (let i = 0; i < freeCount; i++) {
     await draw(token, i);
   }
   if ($.woBLottery) {
@@ -164,7 +165,7 @@ function getDrawCenter(token) {
       (err, resp, data) => {
         try {
           const { body = {} } = JSON.parse(data);
-          $.drawCenterInfo = body.center;
+          $.drawCenterInfo = { ...body.center, freeDrawCount: body.freeDrawCount };
         } catch (e) {
           $.logErr(e, resp);
         } finally {
