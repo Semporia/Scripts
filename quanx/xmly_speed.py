@@ -22,10 +22,10 @@ cookiesList = [cookies1,]   # 多账号准备
 # 通知服务
 BARK = ''                   # bark服务,自行搜索; secrets可填;形如jfjqxDx3xxxxxxxxSaK的字符串
 SCKEY = ''                  # Server酱的SCKEY; secrets可填
-TG_BOT_TOKEN = '1442183667:AAGpCyx8IxeIXdCFEWp97iAIFN0AIQg5ZPk'           # tg机器人的TG_BOT_TOKEN; secrets可填
-TG_USER_ID = '995467420'             # tg机器人的TG_USER_ID; secrets可填
-TG_PROXY_IP = '127.0.0.1'            # tg机器人的TG_PROXY_IP; secrets可填
-TG_PROXY_PORT = '7890'               # tg机器人的TG_PROXY_PORT; secrets可填
+TG_BOT_TOKEN = ''           # tg机器人的TG_BOT_TOKEN; secrets可填
+TG_USER_ID = ''             # tg机器人的TG_USER_ID; secrets可填
+TG_PROXY_IP = ''            # tg机器人的TG_PROXY_IP; secrets可填
+TG_PROXY_PORT = ''               # tg机器人的TG_PROXY_PORT; secrets可填
 
 ###################################################
 # 对应方案1:  GitHub action自动运行,此处无需填写;
