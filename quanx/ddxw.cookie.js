@@ -15,7 +15,7 @@
   surge:
   [Script]
   京东小窝 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js,
-  京东小窝cookie = type=http-request,pattern=^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.cookie.js
+  京东小窝cookie = type=http-response,pattern=^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.cookie.js
  *
  *  
  **/
