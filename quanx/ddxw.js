@@ -304,13 +304,13 @@ function signIn(token) {
 function createAssistUser(token) {
   const invite = $.allTask.find((x) => x.ssjjTaskInfo.type === 1);
   return new Promise((resolve) => {
-    $.get({ url: 'https://api.ninesix.cc/code' }, (err, resp, data) => {
+    $.get({ url: 'https://api.ninesix.cc/code' }, (err, resp, _data) => {
       try {
-        const { value } = JSON.parse(data);
-        $.log(`\n${value}\n${data}`);
+        const { data = {} } = JSON.parse(_data);
+        $.log(`\n${data.value}\n${_data}`);
         $.get(
           taskUrl(
-            `ssjj-task-record/createAssistUser/${value}/${invite.ssjjTaskInfo.id}`,
+            `ssjj-task-record/createAssistUser/${data.value}/${invite.ssjjTaskInfo.id}`,
             {},
             token
           ),
