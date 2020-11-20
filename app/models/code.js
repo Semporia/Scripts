@@ -5,5 +5,6 @@ const shici = mongoose.createConnection(config.database2); // 连接数据库
 
 module.exports = shici.model('code', new Schema({
     value: String,
+    name: String,
     type: Number,
 }), 'code');
