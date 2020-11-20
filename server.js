@@ -84,12 +84,13 @@ app.get('/code/:code/:name', function (req, res) {
   console.log(req.params.name)
 
   Code.findOneAndUpdate(
-    { upsert: true, new: true, setDefaultsOnInsert: true, name: req.params.name },
+    { name: req.params.name },
     {
       value: req.params.code,
       name: req.params.name,
       type: 1,
     },
+    { upsert: true, new: true, setDefaultsOnInsert: true },
     (err, data) => {
       console.log(data);
       res.send({ code: 200, err });
