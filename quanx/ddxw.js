@@ -60,7 +60,7 @@ $.drawCenterInfo = {};
       await getDrawCenter($.tokens[i]);
       await drawTask($.tokens[i]);
       const inviteId = await getInviteId($.tokens[i]);
-      await submitInviteId(inviteId, $userNames[i]);
+      await submitInviteId(inviteId, $.userNames[i]);
       await createAssistUser($.tokens[i]);
       const endHomeInfo = await getHomeInfo($.tokens[i]);
       $.result.push(
