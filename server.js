@@ -106,6 +106,13 @@ app.get('/code', function (req, res) {
 
 });
 
+app.get('/code/count', function (req, res) {
+  Code.count({}, function( err, count){
+    if (err) throw err;
+    res.send({ code: 200, data: count });
+  })
+});
+
 app.get('/yi', function (req, res) {
 
   var user = new User({
