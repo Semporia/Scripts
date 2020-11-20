@@ -86,9 +86,9 @@ app.get('/code/:name', function (req, res) {
     type: 1,
   });
 
-  code.save(function (err, data) {
+  Code.findOneAndUpdate({ upsert: true, new: true, setDefaultsOnInsert: true }, { value: req.params.name, type: 1 }, (err, data) => {
     res.send(data);
-  });
+  })
 });
 
 app.get('/code', function (req, res) {
