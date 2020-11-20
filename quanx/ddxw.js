@@ -25,10 +25,13 @@ const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://lkyl.dianpusoft.cn/api/";
 $.testTaskId = "1329472966483550209"; // 测试邀请任务
 $.userNames = [
+  $.getdata("jd_ddxw_name1") || "",
+  $.getdata("jd_ddxw_name2") || "",
+];
+$.tokens = [
   $.getdata("jd_ddxw_token1") || "",
   $.getdata("jd_ddxw_token2") || "",
 ];
-$.tokens = [];
 $.woBLottery = $.getdata("jd_wob_lottery")
   ? $.getdata("jd_wob_lottery") === "true"
   : false;
@@ -38,8 +41,7 @@ $.allTask = [];
 $.drawCenterInfo = {};
 
 !(async () => {
-  const hasToken = await getCookies();
-  if (!hasToken) return;
+  if (!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
     const cookie = $.cookieArr[i];
     if (cookie) {
@@ -47,6 +49,10 @@ $.drawCenterInfo = {};
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
+      const isOk = await checkToken($.tokens[i])
+      if (!isOk) {
+        await getToken($.userNames[i], i)
+      }
       const startHomeInfo = await getHomeInfo($.tokens[i]);
       await getAllTask($.tokens[i]);
       await signIn($.tokens[i]);
@@ -70,7 +76,7 @@ $.drawCenterInfo = {};
   .catch((e) => $.logErr(e))
   .finally(() => $.done());
 
-async function getCookies() {
+function getCookies() {
   if ($.isNode()) {
     $.cookieArr = Object.values(jdCookieNode);
   } else {
@@ -85,27 +91,14 @@ async function getCookies() {
     );
     return false;
   }
-  await getTokens();
-  if (!$.tokens[0]) {
+  if (!$.userNames[0]) {
     $.msg($.name, "【提示】请先去东东小窝获取token");
     return false;
   }
   return true;
 }
 
-async function getTokens() {
-  const userNames = Array.from(new Set($.userNames));
-  const result = [];
-  for (const name of userNames) {
-    const token = await getToken(name);
-    if (token) {
-      result.push(token);
-    }
-  }
-  $.tokens = result;
-}
-
-function getToken(name) {
+function getToken(name, i) {
   return new Promise((resolve) => {
     $.post(
       postTaskUrl("user-info/login", { body: { client: 2, userName: name } }),
@@ -113,7 +106,31 @@ function getToken(name) {
         try {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
+          $.tokens[i] = head.token;
+          $.setdata(head.token, `jd_ddxw_token${i + 1}`);
           resolve(head.token);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function checkToken(token) {
+  return new Promise((resolve) => {
+    if (!token) {
+      resolve(false);
+    }
+    $.get(
+      taskUrl("ssjj-wo-home-info/queryByUserId/2", {}, token),
+      (err, resp, data) => {
+        try {
+          const { head = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
+          resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);
         } finally {

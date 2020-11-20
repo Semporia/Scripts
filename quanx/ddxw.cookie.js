@@ -20,8 +20,8 @@
  *  
  **/
 
-const ddxwTokenKey1 = "jd_ddxw_token1";
-const ddxwTokenKey2 = "jd_ddxw_token2";
+const ddxwTokenKey1 = "jd_ddxw_name1";
+const ddxwTokenKey2 = "jd_ddxw_name2";
 const getTokenRegex = /^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login/;
 const $ = new Env("东东小窝Cookie");
 
