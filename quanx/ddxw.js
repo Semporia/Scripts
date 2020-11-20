@@ -4,7 +4,7 @@
 
   quanx:
   [task_local]
-  0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js, tag=京东小窝, enabled=true
+  0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js, tag=京东小窝, img-url=https://raw.githubusercontent.com/58xinian/icon/master/ddxw.png enabled=true
   [rewrite_local]
   ^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login url script-request-body https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.cookie.js
 
