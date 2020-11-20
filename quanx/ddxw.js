@@ -23,7 +23,7 @@ const $ = new Env("东东小窝");
 
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://lkyl.dianpusoft.cn/api/";
-$.testTaskId = "1329223012752433153"; // 测试邀请任务
+$.testTaskId = "1329472966483550209"; // 测试邀请任务
 $.userNames = [
   $.getdata("jd_ddxw_token1") || "",
   $.getdata("jd_ddxw_token2") || "",
