@@ -116,7 +116,7 @@ function submitInviteId(inviteId, userName) {
 function getToken(name, i, cookie) {
   return new Promise(async (resolve) => {
     if (!name) {
-      name = await getUserName(cookie);
+      name = await getUserName(cookie, i);
     }
     $.post(
       postTaskUrl("user-info/login", { body: { client: 2, userName: name } }),
@@ -160,7 +160,7 @@ function checkToken(token) {
 }
 
 // @fork from https://github.com/yangtingxiao
-function getUserName(cookie) {
+function getUserName(cookie, i) {
   return new Promise((resolve) => {
     let url = {
       url: `https://jdhome.m.jd.com/saas/framework/encrypt/pin?appId=6d28460967bda11b78e077b66751d2b0`,
