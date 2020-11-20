@@ -97,11 +97,11 @@ function getCookies() {
 
 function submitInviteId(inviteId, userName) {
   return new Promise((resolve) => {
-    $.get({ url: `https://api.ninesix.cc/code/${inviteId}/${userName}` }, (err, resp, data) => {
+    $.get({ url: `https://api.ninesix.cc/code/${inviteId}/${userName}` }, (err, resp, _data) => {
       try {
-        const { value } = JSON.parse(data);
-        $.log(`\n${value}\n${data}`);
-        if (value) {
+        const { data = {} } = JSON.parse(_data);
+        $.log(`\n${data.value}\n${_data}`);
+        if (data.value) {
           $.result.push('邀请码提交成功！')
         }
       } catch (e) {
