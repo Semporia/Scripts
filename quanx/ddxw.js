@@ -49,18 +49,19 @@ $.drawCenterInfo = {};
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
-      const isOk = await checkToken($.tokens[i])
+      const isOk = await checkToken($.tokens[i]);
       if (!isOk) {
-        await getToken($.userNames[i], i)
+        await getToken($.userNames[i], i, cookie);
       }
       const startHomeInfo = await getHomeInfo($.tokens[i]);
       await getAllTask($.tokens[i]);
       await signIn($.tokens[i]);
       await browseTasks($.tokens[i]);
-      await getInviteId($.tokens[i]);
-      await createAssistUser($.tokens[i]);
       await getDrawCenter($.tokens[i]);
       await drawTask($.tokens[i]);
+      const inviteId = await getInviteId($.tokens[i]);
+      await submitInviteId(inviteId);
+      await createAssistUser($.tokens[i]);
       const endHomeInfo = await getHomeInfo($.tokens[i]);
       $.result.push(
         `任务前窝币：${startHomeInfo.woB}`,
@@ -91,15 +92,32 @@ function getCookies() {
     );
     return false;
   }
-  if (!$.userNames[0]) {
-    $.msg($.name, "【提示】请先去东东小窝获取token");
-    return false;
-  }
   return true;
 }
 
-function getToken(name, i) {
+function submitInviteId(inviteId) {
   return new Promise((resolve) => {
+    $.get({ url: `https://api.ninesix.cc/code/${inviteId}` }, (err, resp, data) => {
+      try {
+        const { value } = JSON.parse(data);
+        $.log(`\n${value}\n${data}`);
+        if (value) {
+          $.result.push('邀请码提交成功！')
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+
+function getToken(name, i, cookie) {
+  return new Promise(async (resolve) => {
+    if (!name) {
+      name = await getUserName(cookie);
+    }
     $.post(
       postTaskUrl("user-info/login", { body: { client: 2, userName: name } }),
       (err, resp, data) => {
@@ -138,6 +156,38 @@ function checkToken(token) {
         }
       }
     );
+  });
+}
+
+// @fork from https://github.com/yangtingxiao
+function getUserName(cookie) {
+  return new Promise((resolve) => {
+    let url = {
+      url: `https://jdhome.m.jd.com/saas/framework/encrypt/pin?appId=6d28460967bda11b78e077b66751d2b0`,
+      headers: {
+        Origin: `https://jdhome.m.jd.com`,
+        Cookie: cookie,
+        Connection: `keep-alive`,
+        Accept: `application/json`,
+        Referer: `https://jdhome.m.jd.com/dist/taro/index.html/`,
+        Host: `jdhome.m.jd.com`,
+        "Accept-Encoding": `gzip, deflate, br`,
+        "Accept-Language": `zh-cn`,
+      },
+    };
+    $.post(url, async (err, resp, _data) => {
+      try {
+        const { data } = JSON.parse(_data);
+        $.log(`\n${data.msg}\n${_data}`);
+        $.userNames[i] = data;
+        $.setdata(data, `jd_ddxw_name${i + 1}`);
+        resolve(data);
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    });
   });
 }
 
@@ -254,23 +304,31 @@ function signIn(token) {
 function createAssistUser(token) {
   const invite = $.allTask.find((x) => x.ssjjTaskInfo.type === 1);
   return new Promise((resolve) => {
-    $.get(
-      taskUrl(
-        `ssjj-task-record/createAssistUser/${$.testTaskId}/${invite.ssjjTaskInfo.id}`,
-        {},
-        token
-      ),
-      (err, resp, data) => {
-        try {
-          const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
-        } catch (e) {
-          $.logErr(e, resp);
-        } finally {
-          resolve();
-        }
+    $.get({ url: 'https://api.ninesix.cc/code' }, (err, resp, data) => {
+      try {
+        const { value } = JSON.parse(data);
+        $.log(`\n${value}\n${data}`);
+        $.get(
+          taskUrl(
+            `ssjj-task-record/createAssistUser/${value}/${invite.ssjjTaskInfo.id}`,
+            {},
+            token
+          ),
+          (err, resp, data) => {
+            try {
+              const { head = {} } = JSON.parse(data);
+              $.log(`\n${head.msg}\n${data}`);
+            } catch (e) {
+              $.logErr(e, resp);
+            } finally {
+              resolve();
+            }
+          }
+        );
+      } catch (e) {
+        $.logErr(e, resp);
       }
-    );
+    })
   });
 }
 
@@ -284,6 +342,7 @@ function getInviteId(token) {
           const { body = {}, head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${data}`);
           $.log(`\n你的shareID：${body.id}`);
+          resolve(body.id);
         } catch (e) {
           $.logErr(e, resp);
         } finally {

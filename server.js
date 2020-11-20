@@ -20,6 +20,7 @@ var Shi = require('./app/models/shi'); //获取 yiyan model 信息
 var Ci = require('./app/models/ci'); //获取 yiyan model 信息
 var LunYu = require('./app/models/lunyu'); //获取 yiyan model 信息
 var ShiJing = require('./app/models/shijing'); //获取 yiyan model 信息
+var Code = require('./app/models/code'); //获取 share code
 var port = process.env.PORT || 8080; // 设置启动端口
 app.set('superSecret', config.secret); // 设置app 的超级密码--用来生成摘要的密码
 const whiteList = ['https://ninesix.cc', 'https://whyour.cn', 'http://localhost:8080'];
@@ -72,6 +73,26 @@ app.get('/shici', function (req, res) {
 
   const random = Math.floor(Math.random() * 4);
   obj[random].aggregate([{ $sample: { size: 1 } }], function (err, data) {
+    if (err) throw err;
+    res.send({ code: 200, data: data[0] });
+  });
+
+});
+
+app.get('/code/:name', function (req, res) {
+  console.log(req.params.name)
+  var code = new Code({
+    value: req.params.name,
+    type: 1,
+  });
+
+  code.save(function (err, data) {
+    res.send(data);
+  });
+});
+
+app.get('/code', function (req, res) {
+  Code.aggregate([{ $sample: { size: 1 } }], function (err, data) {
     if (err) throw err;
     res.send({ code: 200, data: data[0] });
   });
