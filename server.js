@@ -79,16 +79,22 @@ app.get('/shici', function (req, res) {
 
 });
 
-app.get('/code/:name', function (req, res) {
+app.get('/code/:code/:name', function (req, res) {
+  console.log(req.params.code)
   console.log(req.params.name)
-  var code = new Code({
-    value: req.params.name,
-    type: 1,
-  });
 
-  Code.findOneAndUpdate({ upsert: true, new: true, setDefaultsOnInsert: true }, { value: req.params.name, type: 1 }, (err, data) => {
-    res.send(data);
-  })
+  Code.findOneAndUpdate(
+    { upsert: true, new: true, setDefaultsOnInsert: true, name: req.params.name },
+    {
+      value: req.params.code,
+      name: req.params.name,
+      type: 1,
+    },
+    (err, data) => {
+      console.log(data);
+      res.send({ code: 200, err });
+    }
+  );
 });
 
 app.get('/code', function (req, res) {

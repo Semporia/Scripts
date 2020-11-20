@@ -60,7 +60,7 @@ $.drawCenterInfo = {};
       await getDrawCenter($.tokens[i]);
       await drawTask($.tokens[i]);
       const inviteId = await getInviteId($.tokens[i]);
-      await submitInviteId(inviteId);
+      await submitInviteId(inviteId, $userNames[i]);
       await createAssistUser($.tokens[i]);
       const endHomeInfo = await getHomeInfo($.tokens[i]);
       $.result.push(
@@ -95,9 +95,9 @@ function getCookies() {
   return true;
 }
 
-function submitInviteId(inviteId) {
+function submitInviteId(inviteId, userName) {
   return new Promise((resolve) => {
-    $.get({ url: `https://api.ninesix.cc/code/${inviteId}` }, (err, resp, data) => {
+    $.get({ url: `https://api.ninesix.cc/code/${inviteId}/${userName}` }, (err, resp, data) => {
       try {
         const { value } = JSON.parse(data);
         $.log(`\n${value}\n${data}`);
