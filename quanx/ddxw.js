@@ -59,6 +59,7 @@ $.drawCenterInfo = {};
       await browseTasks($.tokens[i]);
       await getDrawCenter($.tokens[i]);
       await drawTask($.tokens[i]);
+      await gameTask($.tokens[i]);
       const inviteId = await getInviteId($.tokens[i]);
       await submitInviteId(inviteId, $.userNames[i]);
       // 没人只能助力一次，全凭天意，每天0点清库
@@ -273,6 +274,32 @@ function getDrawCenter(token) {
             ...body.center,
             freeDrawCount: body.freeDrawCount,
           };
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+async function gameTask(token) {
+  const game = $.allTask.find((x) => x.ssjjTaskInfo.type === 3);
+  const count = game.ssjjTaskInfo.awardOfDayNum - game.doneNum;
+  for (let i = 0; i < count; i++) {
+    await game(token, i, game.ssjjTaskInfo.id);
+  }
+}
+
+function game(token, i, id) {
+  return new Promise((resolve) => {
+    $.get(
+      taskUrl(`ssjj-task-record/game/${i+1}/${id}`, {}, token),
+      (err, resp, data) => {
+        try {
+          const { head = {} } = JSON.parse(data);
+          $.log(`\n${head.msg}\n${data}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
