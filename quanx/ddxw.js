@@ -289,6 +289,7 @@ async function gameTask(token) {
   const count = _game.ssjjTaskInfo.awardOfDayNum - _game.doneNum;
   for (let i = 0; i < count; i++) {
     await game(token, i, _game.ssjjTaskInfo.id);
+    await $.wait(5000);
   }
 }
 
