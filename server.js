@@ -113,6 +113,13 @@ app.get('/code/count', function (req, res) {
   })
 });
 
+app.get('/code/remove', function (req, res) {
+  Code.remove({}, function( err ){
+    if (err) throw err;
+    res.send({ code: 200 });
+  })
+});
+
 app.get('/yi', function (req, res) {
 
   var user = new User({
