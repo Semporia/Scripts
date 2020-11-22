@@ -285,10 +285,10 @@ function getDrawCenter(token) {
 }
 
 async function gameTask(token) {
-  const game = $.allTask.find((x) => x.ssjjTaskInfo.type === 3);
-  const count = game.ssjjTaskInfo.awardOfDayNum - game.doneNum;
+  const _game = $.allTask.find((x) => x.ssjjTaskInfo.type === 3);
+  const count = _game.ssjjTaskInfo.awardOfDayNum - _game.doneNum;
   for (let i = 0; i < count; i++) {
-    await game(token, i, game.ssjjTaskInfo.id);
+    await game(token, i, _game.ssjjTaskInfo.id);
   }
 }
 
