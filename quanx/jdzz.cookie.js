@@ -29,10 +29,13 @@ const headers = $request.headers;
 if (getTokenRegex.test(url)) {
   try {
     $.log('京东赚赚token响应', headers)
+    if (!headers['Cookie']) {
+      $.logErr(`京东赚赚写入Token失败，请先手动登录小程序点击赚好礼签到，然后点击重新进入小程序或者清除微信后台`);
+    }
     let token = headers['Cookie'].match(/wq_auth_token\=(\S*)\;/)[1];
     token = token.split(';')[0];
     if (!/^[0-9A-Z]+$/.test(token)) {
-      $.logErr(`京东赚赚写入Token失败，请先手动登录小程序点击赚好礼签到`);
+      $.logErr(`京东赚赚写入Token失败，请先手动登录小程序点击赚好礼签到，然后点击重新进入小程序或者清除微信后台`);
     }
     const token1 = $.getdata(jdzzTokenKey1)
     if (!token1) {
