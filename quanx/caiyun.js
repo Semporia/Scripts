@@ -36,14 +36,6 @@ const GEO_REGEX = /https?:\/\/restapi\.amap\.com\/v3\/geocode/;
 
 function getLocation() {
   return new Promise((resolve) => {
-    const url = $request.url;
-    const res =
-        url.match(/weather\/.*?\/(.*)\/(.*)\?/) ||
-        url.match(/geocode\/([0-9.]*)\/([0-9.]*)\//) ||
-        url.match(/geocode=([0-9.]*),([0-9.]*)/);
-    const latitude = res[1];
-    const longitude = res[2];
-    $.log(`当前位置：纬度${latitude}，经度${longitude}`);
     if ($.isRequest) {
       if (GEO_REGEX.test($request.url) && $request.body) {
         console.log('\n' + $request.body + '\n');
