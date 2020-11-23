@@ -2,18 +2,18 @@
  *
   quanx:
   [task_local]
-  0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js, tag=京东转转, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdzz.png enabled=true
+  0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js, tag=京东赚赚, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdzz.png, enabled=true
   [rewrite_local]
   ^https\:\/\/api\.m\.jd\.com\/client\.action\?functionId\=interactIndex url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.cookie.js
 
   loon:
-  http-request ^https\:\/\/api\.m\.jd\.com\/client\.action\?functionId\=interactIndex script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.cookie.js, requires-body=false, timeout=10, tag=京东转转cookie
-  cron "0 9 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js, tag=京东转转
+  http-request ^https\:\/\/api\.m\.jd\.com\/client\.action\?functionId\=interactIndex script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.cookie.js, requires-body=false, timeout=10, tag=京东赚赚cookie
+  cron "0 9 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js, tag=京东赚赚
 
   surge:
   [Script]
-  京东转转 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js,
-  京东转转cookie = type=http-request,pattern=^https\:\/\/api\.m\.jd\.com\/client\.action\?functionId\=interactIndex,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.cookie.js
+  京东赚赚 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js,
+  京东赚赚cookie = type=http-request,pattern=^https\:\/\/api\.m\.jd\.com\/client\.action\?functionId\=interactIndex,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.cookie.js
  *
  *  
  **/
@@ -21,7 +21,7 @@
 const jdzzTokenKey1 = "jdzz_token1";
 const jdzzTokenKey2 = "jdzz_token2";
 const getTokenRegex = /^https\:\/\/api\.m\.jd\.com\/client\.action\?functionId\=interactIndex/;
-const $ = new Env("京东转转Cookie");
+const $ = new Env("京东赚赚Cookie");
 
 const url = $request.url;
 const headers = $request.headers;
@@ -38,10 +38,10 @@ if (getTokenRegex.test(url)) {
       $.setdata(token, jdzzTokenKey2);
       $.log(`新的Token2：\n${token}，Token已更新。`);
     }
-    $.msg($.name, "🎉京东转转写入Token成功！！");
+    $.msg($.name, "🎉京东赚赚写入Token成功！！");
   } catch (err) {
     $.logErr(`东东小窝写入Token失败，执行异常：${err}。`);
-    $.msg($.name, "❌京东转转写入Token失败");
+    $.msg($.name, "❌京东赚赚写入Token失败");
   }
 }
 

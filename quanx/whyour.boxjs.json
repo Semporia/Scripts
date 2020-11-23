@@ -156,14 +156,14 @@
     },
     {
       "id": "jdzz",
-      "name": "京东转转小程序",
+      "name": "京东赚赚小程序",
       "keys": ["jdzz_token1", "jdzz_token2"],
       "author": "@whyour",
       "repo": "https://github.com/whyour/hundun/blob/master/quanx/jdzz.js",
       "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js",
       "icons": [
-        "https://raw.githubusercontent.com/58xinian/icon/master/jd1111.png",
-        "https://raw.githubusercontent.com/58xinian/icon/master/jd1111.png"
+        "https://raw.githubusercontent.com/58xinian/icon/master/jdzz_mini.png",
+        "https://raw.githubusercontent.com/58xinian/icon/master/jdzz.png"
       ]
     }
   ]
