@@ -19,12 +19,9 @@
  **/
 const $ = new Env("京东转转");
 
-// const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
+const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://api.m.jd.com";
-$.tokens = [
-  $.getdata("jdzz_token1") || "",
-  $.getdata("jdzz_token2") || "",
-];
+$.tokens = [$.getdata("jdzz_token1") || "", $.getdata("jdzz_token2") || ""];
 $.result = [];
 $.cookieArr = [];
 $.allTask = [];
@@ -34,13 +31,18 @@ $.allTask = [];
   for (let i = 0; i < $.cookieArr.length; i++) {
     const cookie = $.cookieArr[i];
     if (cookie) {
-  const userName = decodeURIComponent(
-    cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
-  );
-  console.log(`\n开始【京东账号${i + 1}】${userName}`);
-  await getAllTask($.tokens[0]);
-  await doTasks($.tokens[0]);
-  await signIn($.tokens[0]);
+      const userName = decodeURIComponent(
+        cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
+      );
+      console.log(`\n开始【京东账号${i + 1}】${userName}`);
+      const startHomeInfo = await getHomeInfo($.tokens[0])
+      await getAllTask($.tokens[0]);
+      await doTasks($.tokens[0]);
+      const endHomeInfo = await getHomeInfo($.tokens[0])
+      $.result.push(
+        `获得金币：${endHomeInfo.totalNum - startHomeInfo.totalNum}`,
+        `获得京豆：${endHomeInfo.totalBeanNum - startHomeInfo.totalBeanNum}`
+      );
     }
   }
   await showMsg();
@@ -77,8 +79,25 @@ function getAllTask(token) {
       (err, resp, _data) => {
         try {
           const { data = {} } = JSON.parse(_data);
-          $.allTask = data.taskDetailResList.filter(x => x.taskId !== 3);
-          console.log(data.taskDetailResList)
+          $.allTask = data.taskDetailResList.filter((x) => x.taskId !== 3);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function getHomeInfo(token) {
+  return new Promise((resolve) => {
+    $.get(
+      taskUrl("interactTaskIndex", { mpVersion: "3.0.6" }, token),
+      (err, resp, _data) => {
+        try {
+          const { data = {} } = JSON.parse(_data);
+          resolve({ totalBeanNum: data.totalBeanNum, totalNum: data.totalNum });
         } catch (e) {
           $.logErr(e, resp);
         } finally {
