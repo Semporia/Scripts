@@ -67,7 +67,7 @@ function getCookies() {
     return false;
   }
   if (!$.tokens[0]) {
-    $.msg($.name, "【提示】请先去京东转转小程序获取token");
+    $.msg($.name, "【提示】请先去京东转转小程序获取token", "微信搜索'京东转转'小程序\n即可获取Token");
     return false;
   }
   return true;
