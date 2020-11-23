@@ -1,5 +1,7 @@
 /**
  *
+  拷贝定时任务时删掉 *\/1 中的 \
+  
   hostname = restapi.amap.com
 
   quanx:
