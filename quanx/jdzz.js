@@ -28,22 +28,21 @@ $.tokens = [
 $.result = [];
 $.cookieArr = [];
 $.allTask = [];
-$.drawCenterInfo = {};
 
 !(async () => {
-  // if (!getCookies()) return;
-  // for (let i = 0; i < $.cookieArr.length; i++) {
-  //   const cookie = $.cookieArr[i];
-  //   if (cookie) {
-  // const userName = decodeURIComponent(
-  //   cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
-  // );
-  // console.log(`\n开始【京东账号${i + 1}】${userName}`);
+  if (!getCookies()) return;
+  for (let i = 0; i < $.cookieArr.length; i++) {
+    const cookie = $.cookieArr[i];
+    if (cookie) {
+  const userName = decodeURIComponent(
+    cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
+  );
+  console.log(`\n开始【京东账号${i + 1}】${userName}`);
   await getAllTask($.tokens[0]);
   await doTasks($.tokens[0]);
-  // await signIn($.tokens[0]);
-  //   }
-  // }
+  await signIn($.tokens[0]);
+    }
+  }
   await showMsg();
 })()
   .catch((e) => $.logErr(e))
