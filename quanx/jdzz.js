@@ -40,8 +40,9 @@ $.allTask = [];
       await doTasks($.tokens[0]);
       const endHomeInfo = await getHomeInfo($.tokens[0])
       $.result.push(
+        `获得京豆：${endHomeInfo.totalBeanNum - startHomeInfo.totalBeanNum}`,
         `获得金币：${endHomeInfo.totalNum - startHomeInfo.totalNum}`,
-        `获得京豆：${endHomeInfo.totalBeanNum - startHomeInfo.totalBeanNum}`
+        `账号总金币：${endHomeInfo.totalNum}`
       );
     }
   }
@@ -145,7 +146,7 @@ function doTask(task, token) {
 
 function showMsg() {
   return new Promise((resolve) => {
-    $.msg($.name, "", `\n${$.result.join("\n")}`);
+    $.msg($.name, "", `${$.result.join("\n")}`);
     resolve();
   });
 }
