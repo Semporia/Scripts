@@ -35,10 +35,10 @@ $.allTask = [];
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
-      const startHomeInfo = await getHomeInfo($.tokens[0])
-      await getAllTask($.tokens[0]);
-      await doTasks($.tokens[0]);
-      const endHomeInfo = await getHomeInfo($.tokens[0])
+      const startHomeInfo = await getHomeInfo($.tokens[i])
+      await getAllTask($.tokens[i]);
+      await doTasks($.tokens[i]);
+      const endHomeInfo = await getHomeInfo($.tokens[i])
       $.result.push(
         `获得京豆：${endHomeInfo.totalBeanNum - startHomeInfo.totalBeanNum}`,
         `获得金币：${endHomeInfo.totalNum - startHomeInfo.totalNum}`,
