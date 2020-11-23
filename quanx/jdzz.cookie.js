@@ -31,7 +31,7 @@ if (getTokenRegex.test(url)) {
     $.log('京东赚赚token响应', headers)
     const token = headers['Cookie'].match(/wq_auth_token\=(\S*)\;cartLastOpTime=/)[1];
     if (!/^[0-9A-Z]+$/.test(token)) {
-      $.logErr(`京东赚赚写入Token失败，请先手动登录签到一次小程序`);
+      $.logErr(`京东赚赚写入Token失败，请先手动登录小程序点击赚好礼签到`);
     }
     const token1 = $.getdata(jdzzTokenKey1)
     if (!token1) {
