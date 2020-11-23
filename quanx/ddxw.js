@@ -453,33 +453,33 @@ function addCommodityToCart() {
 
 function browseTasks(token) {
   return new Promise(async (resolve) => {
-    // const browseShop = $.allTask.find((x) => x.ssjjTaskInfo.type === 5);
+    const browseShop = $.allTask.find((x) => x.ssjjTaskInfo.type === 5);
     const browseChannel = $.allTask.find((x) => x.ssjjTaskInfo.type === 7);
-    // const browseCommodity = $.allTask.find((x) => x.ssjjTaskInfo.type === 10);
+    const browseCommodity = $.allTask.find((x) => x.ssjjTaskInfo.type === 10);
     const browseMeeting = $.allTask.find((x) => x.ssjjTaskInfo.type === 11);
     const times = Math.max(
-      // browseShop.ssjjTaskInfo.awardOfDayNum,
+      browseShop.ssjjTaskInfo.awardOfDayNum,
       browseChannel.ssjjTaskInfo.awardOfDayNum,
-      // browseCommodity.ssjjTaskInfo.awardOfDayNum,
+      browseCommodity.ssjjTaskInfo.awardOfDayNum,
       browseMeeting.ssjjTaskInfo.awardOfDayNum
     );
     const status = [true, true, true, true];
     for (let i = 0; i < times; i++) {
-      // if (status[0]) {
-      //   status[0] = await browseShopFun(token);
-      //   await getAllTask(token);
-      //   await $.wait(300);
-      // }
+      if (status[0]) {
+        status[0] = await browseShopFun(token);
+        await getAllTask(token);
+        await $.wait(300);
+      }
       if (status[1]) {
         status[1] = await browseChannelFun(token);
         await getAllTask(token);
         await $.wait(300);
       }
-      // if (status[2]) {
-      //   status[2] = await browseCommodityFun(token);
-      //   await getAllTask(token);
-      //   await $.wait(300);
-      // }
+      if (status[2]) {
+        status[2] = await browseCommodityFun(token);
+        await getAllTask(token);
+        await $.wait(300);
+      }
       if (status[3]) {
         status[3] = await browseMeetingFun(token);
         await getAllTask(token);
