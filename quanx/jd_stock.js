@@ -1,5 +1,3 @@
-const { resolve } = require("path");
-
 /**
  *
   ## 获取商品id
