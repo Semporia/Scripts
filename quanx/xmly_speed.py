@@ -1030,8 +1030,7 @@ def run():
 
         print("###"*20)
         print("\n"*4)
-        print(_notify_time)
-    if _notify_time.split()[0] == str(notify_time) and int(_notify_time.split()[1]) >= 30:
+    if int(_notify_time.split()[0]) == notify_time and int(_notify_time.split()[1]) >= 30:
         # if 1:
         message = ''
         for i in table:
@@ -1039,7 +1038,7 @@ def run():
             message += f"当前剩余：{i[1]:<6.2f}\n"
             message += f"今天：＋{i[2]:<4.2f}\n"
             message += f"历史：{i[3]:<7.2f}\n"
-            message += f"连续签到：{i[4]}\/30\n"
+            message += f"连续签到：{i[4]}/30\n"
         
         bark("⏰ 喜马拉雅极速版", message)
         serverJ("⏰ 喜马拉雅极速版", message)
