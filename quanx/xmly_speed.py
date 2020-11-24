@@ -7,6 +7,7 @@ from itertools import groupby
 import hashlib
 from datetime import datetime, timedelta
 import os
+import re
 
 
 # 喜马拉雅极速版
@@ -47,6 +48,10 @@ if "XMLY_SPEED_COOKIE" in os.environ:
     if "SCKEY" in os.environ and os.environ["SCKEY"]:
         BARK = os.environ["SCKEY"]
         print("serverJ 推送打开")
+    if "TG_BOT_TOKEN" in os.environ and os.environ["TG_BOT_TOKEN"] and "TG_USER_ID" in os.environ and os.environ["TG_USER_ID"]:
+        TG_BOT_TOKEN = os.environ["TG_BOT_TOKEN"]
+        TG_USER_ID = os.environ["TG_USER_ID"]
+        print("Telegram 推送打开")
 
 
 ###################################################
@@ -72,7 +77,11 @@ def str2dict(str_cookie):
             dict_cookie[j[0].strip()] = j[1].strip()
 
         assert dict_cookie["1&_token"].split("&")[0]
-        assert dict_cookie['device_model']
+        regex = r"&\d\.\d\.\d+"
+        appid = "&1.1.9"
+        dict_cookie["1&_device"] = re.sub(
+            regex, appid, dict_cookie["1&_device"], 0, re.MULTILINE)
+        print(dict_cookie["1&_device"])
 
     except (IndexError, KeyError):
         print("cookie填写出错 ❌,仔细查看说明")
@@ -140,7 +149,7 @@ def read(cookies):
         # print("无法阅读,尝试从安卓端手动开启")
         return
     # print(result["completeList"])
-    if result["isComplete"] or result["count_finish"]==9:
+    if result["isComplete"] or result["count_finish"] == 9:
         print("今日完成阅读")
         return
     headers = {
@@ -543,7 +552,7 @@ def bubble(cookies):
 
         tmp = receive(cookies, i["id"])
         if "errorCode" in tmp:
-            print("❌ 进入app相关页面手动领取 反复几次即可")
+            print("❌ 每天手动收听一段时间，暂无其他方法")
             return
         time.sleep(1)
         ad_score(cookies, 7, i["id"])
@@ -676,11 +685,13 @@ def answer(cookies):
         if paperId == 0:
             return
         tmp = ans_receive(cookies, paperId, lastTopicId, 1)
-        if "errorCode" in tmp :
-            print("❌ 进入app相关页面手动领取 反复几次即可")
+        print(tmp)
+        if "errorCode" in tmp:
+            print("❌ 每天手动收听一段时间，暂无其他方法")
             return
         time.sleep(1)
         tmp = ans_receive(cookies, paperId, lastTopicId, 2)
+        print(tmp)
         if tmp == 0:
             return
         time.sleep(1)
@@ -693,11 +704,16 @@ def answer(cookies):
             paperId, _, lastTopicId = ans_start(cookies)
             if paperId == 0:
                 return
-            if "errorCode" in tmp :
-                print("❌ 进入app相关页面手动领取 反复几次即可")
+            tmp = ans_receive(cookies, paperId, lastTopicId, 1)
+            print(tmp)
+            if "errorCode" in tmp:
+                print("❌ 每天手动收听一段时间，暂无其他方法")
                 return
             time.sleep(1)
-            ans_receive(cookies, paperId, lastTopicId, 2)
+            tmp = ans_receive(cookies, paperId, lastTopicId, 2)
+            print(tmp)
+            if tmp == 0:
+                return
             time.sleep(1)
 
 
@@ -723,12 +739,12 @@ def saveListenTime(cookies, date_stamp):
         'uid': uid
     }
     try:
-        requests.post('http://mobile.ximalaya.com/pizza-category/ball/saveListenTime',
-                      headers=headers, cookies=cookies, data=data)
+        response = requests.post('http://mobile.ximalaya.com/pizza-category/ball/saveListenTime',
+                                 headers=headers, cookies=cookies, data=data)
     except:
         print("网络请求异常,为避免GitHub action报错,直接跳过")
         return
-    # print(response.text)
+    print(response.text)
 
 
 def listenData(cookies, date_stamp):
@@ -751,12 +767,12 @@ def listenData(cookies, date_stamp):
         'uid': uid
     }
     try:
-        requests.post('http://m.ximalaya.com/speed/web-earn/listen/client/data',
-                      headers=headers, cookies=cookies, data=json.dumps(data))
+        response = requests.post('http://m.ximalaya.com/speed/web-earn/listen/client/data',
+                                 headers=headers, cookies=cookies, data=json.dumps(data))
     except:
         print("网络请求异常,为避免GitHub action报错,直接跳过")
         return
-    # print(response.text)
+    print(response.text)
 
 
 def card_exchangeCoin(cookies, themeId, cardIdList, _datatime):
@@ -1014,7 +1030,8 @@ def run():
 
         print("###"*20)
         print("\n"*4)
-    if _notify_time.split()[0] == str(notify_time) and int(_notify_time.split()[1]) > 30:
+        print(_notify_time)
+    if _notify_time.split()[0] == str(notify_time) and int(_notify_time.split()[1]) >= 30:
         # if 1:
         message = ''
         for i in table:
