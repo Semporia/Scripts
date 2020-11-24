@@ -167,7 +167,7 @@
       ]
     },
     {
-      "id": "jdku",
+      "id": "jdkc",
       "name": "京东库存查询",
       "keys": ["jd_skuIds", "jd_areaId"],
       "settings": [
