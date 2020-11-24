@@ -165,6 +165,34 @@
         "https://raw.githubusercontent.com/58xinian/icon/master/jdzz_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jdzz.png"
       ]
+    },
+    {
+      "id": "jdzz",
+      "name": "京东库存查询",
+      "keys": ["jd_skuIds", "jd_areaId"],
+      "settings": [
+        {
+          "id": "jd_skuIds",
+          "name": "商品id",
+          "val": "",
+          "type": "text",
+          "desc": "填写商品id，多个商品以英文逗号分隔，获取方法参考脚本头部说明."
+        },
+        {
+          "id": "jd_areaId",
+          "name": "地区id",
+          "val": "",
+          "type": "text",
+          "desc": "填写收货地址id，获取方法参考脚本头部说明."
+        }
+      ],
+      "author": "@whyour",
+      "repo": "https://github.com/whyour/hundun/blob/master/quanx/jd_stock.js",
+      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_stock.js",
+      "icons": [
+        "https://raw.githubusercontent.com/58xinian/icon/master/jddj.png",
+        "https://raw.githubusercontent.com/58xinian/icon/master/jddj.png"
+      ]
     }
   ]
 }

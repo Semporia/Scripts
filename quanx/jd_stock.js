@@ -1,43 +1,110 @@
-const url = `https://wq.jd.com/activep3/family/family_task?activeid=10073670&token=92602dfb7b63776469a06deef1a45021&sceneval=2&taskid=5ec895514ac1fa004b09abaf&callback=CheckParamsq&_=1606189794436`;
-const headers = {
-  Cookie: `__jd_ref_cls=opensvc_sns_act_1590455090617_1590455090811%7C2%7C3; mba_muid=16050269448401183060230.57.1606189791436; mba_sid=57.46; RT="z=1&dm=jd.com&si=1ftojpsqxpf&ss=khvf5jk1&sl=a&tt=9zj&ld=qmh5"; unpl=V2_ZzNtbUMCExYiCEcHL0kJUWJUG1URUEEcIQhDBH5MXAZgCxYNclRCFnQURlRnGFUUZgIZXkZcRxRFCEZkexhdBG4BGl9DU3MlfQAoVzYZMgYJAF8QD2dAFUUJdlR8GF4NYQEVXkNURBR1CURceRlYDG4DIm1CUXMlLl0oUi5OCVZhARBZSlVKEUUJdlVLGGxOCQJfXUVWQR1zCkFXehpbBGcCEFVAV0ccfAh2VUsa%7CV2_ZzNtbUUCREB0CRFQLxkIV2ICQFQSUxQSdF9CXXsaXVdiVhFUclRCFnQURlRnGVUUZgIZX0ZcQBdFCEJkexhdBGQCE1xGVnMVcg1AU3gpVWtkABBbQ1JKE3RmRlV6dx1BJVp8DhIIFUotQx8KJE8OVTkzEV1yVnMdd1pHVXNLWQNnVhAIQFUUQSFcEVcsHAsHN1cbXEsFRBAnXRNReEpfNVcKE21CVkIUdAFEVH8RWQZX277%252bltTpwfSznuTZKV01ZjMTbRQ5QxR0CUZVexBUByoLEA9DVktHcA5GAXlMXgcwV0YJFVQUECIKFgByGFVXYAZACBdSQEZ2OEdkew%253d%253d; __jda=7130726.16050269448401183060230.1605026944.1606147837.1606188480.82; __jdb=7130726.15.16050269448401183060230|82.1606188480; __jdc=7130726; __jdv=7130726%7Candroidapp%7Ct_335139774%7Cappshare%7CQRCode%7C1606011068087; pre_seq=1; pre_session=93c009c471d3d33feeef2f4f3ae808c64cdd42b2|328; wxa_level=1; pt_key=app_openAAJfqsUoADCjnZA7kBgTvHgsWf23icjvdGmKv1ZOHHwK8iLUcQdNhKkCaEeVwKPTBiXHQUWCIHw; pt_pin=CCDreamm; pwdt_id=CCDreamm; sid=0c8bb35d3e7e2f0822432b0fbeb2833w; 3AB9D23F7A4B3C9B=REXKFWQQ3KBANI54JV5ADW44HP4VTOURHDQ6CR2BV3XIFHC4VZWXMDGJJHLDS6PIQJODYFKU2KIRXDAYSO5XGCZGOQ; PPRD_P=CT.138912.3.30-UUID.16050269448401183060230; __wga=1606188737577.1606188737577.1606147936997.1605368813531.1.11; _tj_rvurl=https%3A//wq.jd.com/cube/front/activePublish/dream_factory_report/380556.html%3Fptag%3D138912.3.30%26lng%3D116.357092%26lat%3D40.046527%26sid%3D0c8bb35d3e7e2f0822432b0fbeb2833w%26un_area%3D1_2800_55833_0; cid=8; jxsid_s_t=1606188737610; jxsid_s_u=https%3A//wqsd.jd.com/pingou/dream_factory/; retina=1; shshshfp=0060000038c56367da889bb2dcf9b1b9; shshshfpa=79fccf3a-c85e-f98c-a3c2-686ae03e1b60-1605056615; shshshfpb=tD%201IIzh212eaRZ6F%20te3ow%3D%3D; shshshsID=f80780b180f1b33021c8e5cb4a107059_3_1606188737717; wq_area=1_2901_0%7C2; wqmnx1=MDEyNjM3NTouLy9mLzEzZzVhNGliZTRlJmEwXzQ3OGk5NDM3ZjQ4NHRnclBhL0NtUCxlMzdvUHAvO3RwZHRkL2FmYzt0MmFjYSUla3pvN25tZy4lMzZzYzM4MDNuMzBfMztjMWVmYzI7YWEzNGFvNjA2O3BjcDAyLjFNL1BDbzFsYyBlMCAsR00xc0oxcjRhNFZVSEZI; BATQW722QTLYVCRD={"tk":"jdd017IS3GQOLFR23CJBOTVUJHOCJU73L4ELDSCD6IZUSSUWNMZYTCKALBQCZFV3LSSG7SQTUV5PTOGOQVL4AY6PKX3P6V5BXDJACTZ2SZXQ01234567","t":1606188623651}; qd_ad=-%7C-%7Cdirect%7C-%7C0; qd_fs=1606188592083; qd_ls=1606188592083; qd_sid=KHVF7TG3-TINLFT37PZQLUJXLUOA3-1; qd_sq=1; qd_ts=1606188592083; qd_uid=KHVF7TG3-TINLFT37PZQLUJXLUOA3; jxsid=16061479368132402768; __jdu=16050269448401183060230; _dy_tk=dGswMXc4ZDk2MWIxN2E4blNIWXZSSGR3UVRSUU5SWFh4aTkvYytrNEEvR0pnVDRwQ2FuTTROM0Rhb05YM2RVcWlRQk5VWFdLR0JTN2cxeThQNWpTbTFlcEVHOXE%3D; sc_width=375; visitkey=10404407279482518; webp=1`,
-  Accept: `*/*`,
-  Connection: `keep-alive`,
-  Referer: `https://lgame.jd.com/babelDiy/Zeus/2dJDkTg31SrzZDAS74ozoKArg7hu/index.html?lng=116.357092&lat=40.046527&sid=0c8bb35d3e7e2f0822432b0fbeb2833w&un_area=1_2800_55833_0`,
-  "Accept-Encoding": `gzip, deflate, br`,
-  Host: `wq.jd.com`,
-  "User-Agent": `jdapp;iPhone;9.2.4;14.2.1;93c009c471d3d33feeef2f4f3ae808c64cdd42b2;network/4g;supportApplePay/0;hasUPPay/0;hasOCPay/0;model/iPhone13,2;addressid/2340668675;supportBestPay/0;appBuild/167432;pushNoticeIsOpen/0;jdSupportDarkMode/0;pv/57.45;apprpd/JingDou_Detail;ref/https%3A%2F%2Flgame.jd.com%2FbabelDiy%2FZeus%2F2dJDkTg31SrzZDAS74ozoKArg7hu%2Findex.html%3Flng%3D116.357092%26lat%3D40.046527%26sid%3D0c8bb35d3e7e2f0822432b0fbeb2833w%26un_area%3D1_2800_55833_0;psq/1;ads/;psn/93c009c471d3d33feeef2f4f3ae808c64cdd42b2|328;jdv/0|androidapp|t_335139774|appshare|QRCode|1606011068087|1606029915;adk/;app_device/IOS;pap/JA2015_311210|9.2.4|IOS 14.2.1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
-  "Accept-Language": `zh-cn`,
-};
-const body = ``;
+const { resolve } = require("path");
 
-const myRequest = {
-  url: url,
-  headers: headers,
-  body: body,
-};
+/**
+ *
+  ## 获取商品id
+  例如：某个商品的网页url为 https://item.jd.com/1178879.html ，那么商品id就是 1178879，多个商品id之间用英文逗号分隔
 
-const $ = new Env("测试脚本");
+  ## 获取地区id
+  在商品页面(例如 https://item.jd.com/1178879.html) 打开开发者工具，选择好收货地址，在 Console 中执行以下 Javascript 代码：
+
+  var el = document.getElementsByClassName("ui-area-text")[0]
+  var area_name = el.getAttribute("title")
+  var area_id = el.getAttribute("data-id").replace(/-/g, "_")
+  console.log(area_name)
+  console.log(area_id)
+
+  quanx:
+  [task_local]
+  0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_stock.js, tag=京东库存, enabled=true
+
+  loon:
+  cron "0 9 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_stock.js, tag=京东库存
+
+  surge:
+  [Script]
+  京东库存 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_stock.js,
+ *
+ *  
+ **/
+const $ = new Env("京东库存");
+
+$.skuIds = $.getdata("jd_skuIds");
+$.areaId = $.getdata("jd_areaId");
+$.result = [];
+$.commoditiesStock = {};
+$.commoditiesName = {};
 
 !(async () => {
-  await test();
+  if (!checkParams()) return;
+  await getStockState();
+  await getCommoditiesName();
+  await showMsg();
 })()
   .catch((e) => $.logErr(e))
   .finally(() => $.done());
 
-function test() {
+function checkParams() {
+    if (!$.skuIds || !$.areaId || !$.skuIds.split(',')[0]) {
+      $.msg($.name, '请先去box里面填写商品id和地区id')
+      return false;
+    }
+  return true;
+}
+
+function getStockState(token) {
   return new Promise((resolve) => {
-    $.get(myRequest, async (err, resp, data) => {
-      try {
-        $.log(`\n${data}`);
-        await test();
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
+    $.get(
+      {url: `http://c0.3.cn/stocks?type=getstocks&skuIds=${$.skuIds}&area=${$.areaId}`},
+      (err, resp, _data) => {
+        try {
+          const data = JSON.parse(_data);
+          $.commoditiesStock = data;
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
       }
-    });
+    );
   });
+}
+
+function getCommoditiesName() {
+  return new Promise((resolve) => {
+    $.get(
+      {url: `https://yx.3.cn/service/info.action?ids=${$.skuIds}`},
+      (err, resp, _data) => {
+        try {
+          const data = JSON.parse(_data);
+          $.commoditiesName = data;
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function showMsg() {
+  return new Promise((resolve) => {
+    const skuIds = $.skuIds.split(',');
+    for (const id of skuIds) {
+      $.result.push(`${getCommodityName($.commoditiesName[id].name)}：${$.commoditiesStock[id].StockStateName}`)
+    }
+    $.msg($.name, "", `${$.result.join("\n")}`);
+    resolve();
+  })
+}
+
+function getCommodityName(name) {
+  if (name.length < 10) {
+    return name;
+  } else {
+    return name.slice(0, 8) + '...';
+  }
 }
 
 // prettier-ignore
