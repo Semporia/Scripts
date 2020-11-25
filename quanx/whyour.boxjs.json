@@ -193,6 +193,26 @@
         "https://raw.githubusercontent.com/58xinian/icon/master/jddj.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jddj.png"
       ]
+    },
+    {
+      "id": "jd_ddgc",
+      "name": "东东工厂",
+      "settings": [
+        {
+          "id": "jd_autoCharge",
+          "name": "自动充电",
+          "val": false,
+          "type": "boolean",
+          "desc": "当电量足够充满当前商品是，是否自动充电，默认不自动充电"
+        }
+      ],
+      "author": "@whyour",
+      "repo": "https://github.com/whyour/hundun/blob/master/quanx/dd_factory.js",
+      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/dd_factory.js",
+      "icons": [
+        "https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png",
+        "https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png"
+      ]
     }
   ]
 }
