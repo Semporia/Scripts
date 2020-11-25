@@ -48,14 +48,15 @@ $.factoryInfo = {};
       await $.wait(500)
       const endHomeInfo = await getFactoryInfo(cookie);
       await $.wait(500)
-      await submitInviteId();
+      await submitInviteId(userName);
       await $.wait(500)
       await createAssistUser(cookie);
       $.result.push(
+        `[产品名称] ${startHomeInfo.name}  剩余:${startHomeInfo.couponCount}`,
         `任务前电量：${startHomeInfo.remainScore}`,
         `任务后电量：${endHomeInfo.remainScore}`,
         `获得电量：${endHomeInfo.remainScore - startHomeInfo.remainScore}`,
-        `还需电量：${endHomeInfo.totalScore - endHomeInfo.remainScore}`
+        `还需电量：${endHomeInfo.totalScore - endHomeInfo.remainScore}`,
       );
     }
   }
@@ -98,9 +99,6 @@ function getFactoryInfo(cookie) {
         } = JSON.parse(data);
         $.log(`\n${bizMsg}`);
         $.factoryInfo = factoryInfo;
-        $.result.push(
-          `[产品名称] ${factoryInfo.name}  剩余:${factoryInfo.couponCount}`
-        );
         resolve(factoryInfo)
       } catch (e) {
         $.logErr(e, resp);
@@ -123,7 +121,6 @@ function getAllTask(cookie) {
               bizMsg,
             },
           } = JSON.parse(_data);
-          $.log(`${bizMsg}\n`);
           $.allTask = taskVos;
         } catch (e) {
           $.logErr(e, resp);
@@ -148,20 +145,22 @@ async function browserTask(cookie) {
       lookCommodity.maxTimes,
       followShop.maxTimes
     );
-    await browserMeetingFun(signIn.simpleRecordInfoVo.taskToken, cookie);
+    await browserMeetingFun(signIn.simpleRecordInfoVo.taskToken, cookie, signIn);
     await $.wait(500)
     await browserMeetingFun(
       digitalAppliance.simpleRecordInfoVo.taskToken,
-      cookie
+      cookie,
+      digitalAppliance
     );
     await $.wait(500)
-    await browserMeetingFun(patrolFactory.threeMealInfoVos.taskToken, cookie);
+    await browserMeetingFun(patrolFactory.threeMealInfoVos.taskToken, cookie, patrolFactory);
     await $.wait(500)
     const status = [true, true, true];
     for (let i = 0; i < times; i++) {
       if (status[0]) {
         status[0] = await browserMeetingFun(
           browserMeeting.shoppingActivityVos[i].taskToken,
+          browserMeeting,
           cookie
         );
         await $.wait(500)
@@ -171,6 +170,7 @@ async function browserTask(cookie) {
       if (status[1]) {
         status[1] = await browserMeetingFun(
           lookCommodity.productInfoVos[i].taskToken,
+          lookCommodity,
           cookie
         );
         await $.wait(500)
@@ -178,10 +178,11 @@ async function browserTask(cookie) {
         await $.wait(500);
       }
       if (status[2]) {
-        await followShopFun(followShop.followShopVo[i].shopId);
+        await followShopFun(followShop.followShopVo[i].shopId, followShop);
         await $.wait(500)
         status[2] = await browserMeetingFun(
           followShop.followShopVo[i].taskToken,
+          followShop,
           cookie
         );
         await $.wait(500)
@@ -248,8 +249,13 @@ function createAssistUser(cookie) {
   });
 }
 
-function browserMeetingFun(token, cookie) {
+function browserMeetingFun(token, cookie, task) {
   return new Promise((resolve) => {
+    if (
+      parseInt(task.times) >= parseInt(task.maxTimes)
+    ) { 
+      resolve();
+    }
     $.post(
       taskPostUrl("jdfactory_collectScore", { taskToken: token }, cookie),
       (err, resp, _data) => {
@@ -267,8 +273,13 @@ function browserMeetingFun(token, cookie) {
   });
 }
 
-function followShopFun(shopId) {
+function followShopFun(shopId, shopTask) {
   return new Promise((resolve) => {
+    if (
+      parseInt(shopTask.times) >= parseInt(shopTask.maxTimes)
+    ) { 
+      resolve();
+    }
     $.post(
       taskPostUrl("followShop", {
         follow: "true",
@@ -294,7 +305,7 @@ function addEnergy(cookie) {
   return new Promise((resolve) => {
     if (
       $.autoCharge &&
-      parseInt($.factoryInfo.totalScore) <= parseInt($.homeData.userScore)
+      parseInt($.factoryInfo.totalScore) <= parseInt($.factoryInfo.remainScore)
     ) {
       $.get(
         taskUrl("jdfactory_addEnergy", {}, cookie),
