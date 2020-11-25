@@ -41,20 +41,22 @@ $.factoryInfo = {};
       const startHomeInfo = await getFactoryInfo(cookie);
       await getAllTask(cookie);
       await browserTask(cookie);
-      await $.wait(500)
+      await $.wait(500);
       await collectElectricity(cookie);
-      await $.wait(500)
+      await $.wait(500);
       await addEnergy(cookie);
-      await $.wait(500)
+      await $.wait(500);
       const endHomeInfo = await getFactoryInfo(cookie);
-      await $.wait(500)
+      await $.wait(500);
       await submitInviteId(userName);
-      await $.wait(500)
+      await $.wait(500);
       await createAssistUser(cookie);
       $.result.push(
         `名称：${startHomeInfo.name}  剩余:${startHomeInfo.couponCount}`,
         `任务前电量：${startHomeInfo.remainScore} 任务后电量：${endHomeInfo.remainScore}`,
-        `获得电量：${endHomeInfo.remainScore - startHomeInfo.remainScore} 还需电量：${endHomeInfo.totalScore - endHomeInfo.remainScore}`,
+        `获得电量：${
+          endHomeInfo.remainScore - startHomeInfo.remainScore
+        } 还需电量：${endHomeInfo.totalScore - endHomeInfo.remainScore}`
       );
     }
   }
@@ -93,11 +95,14 @@ function getFactoryInfo(cookie) {
     $.get(taskUrl("jdfactory_getHomeData", {}, cookie), (err, resp, data) => {
       try {
         const {
-          data: { result: {factoryInfo}, bizMsg },
+          data: {
+            result: { factoryInfo },
+            bizMsg,
+          },
         } = JSON.parse(data);
         $.log(`\n${bizMsg}`);
         $.factoryInfo = factoryInfo;
-        resolve(factoryInfo)
+        resolve(factoryInfo);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -143,47 +148,55 @@ async function browserTask(cookie) {
       lookCommodity.maxTimes,
       followShop.maxTimes
     );
-    await browserMeetingFun(signIn.simpleRecordInfoVo.taskToken, cookie, signIn);
-    await $.wait(500)
+    await browserMeetingFun(
+      signIn.simpleRecordInfoVo.taskToken,
+      cookie,
+      signIn
+    );
+    await $.wait(500);
     await browserMeetingFun(
       digitalAppliance.simpleRecordInfoVo.taskToken,
       cookie,
       digitalAppliance
     );
-    await $.wait(500)
-    await browserMeetingFun(patrolFactory.threeMealInfoVos.taskToken, cookie, patrolFactory);
-    await $.wait(500)
+    await $.wait(500);
+    await browserMeetingFun(
+      patrolFactory.threeMealInfoVos.taskToken,
+      cookie,
+      patrolFactory
+    );
+    await $.wait(500);
     const status = [true, true, true];
     for (let i = 0; i < times; i++) {
       if (status[0]) {
         status[0] = await browserMeetingFun(
           browserMeeting.shoppingActivityVos[i].taskToken,
-          browserMeeting,
-          cookie
+          cookie,
+          browserMeeting
         );
-        await $.wait(500)
+        await $.wait(500);
         await getAllTask(cookie);
         await $.wait(500);
       }
       if (status[1]) {
         status[1] = await browserMeetingFun(
           lookCommodity.productInfoVos[i].taskToken,
-          lookCommodity,
-          cookie
+          cookie,
+          lookCommodity
         );
-        await $.wait(500)
+        await $.wait(500);
         await getAllTask(cookie);
         await $.wait(500);
       }
       if (status[2]) {
         await followShopFun(followShop.followShopVo[i].shopId, followShop);
-        await $.wait(500)
+        await $.wait(500);
         status[2] = await browserMeetingFun(
           followShop.followShopVo[i].taskToken,
-          followShop,
-          cookie
+          cookie,
+          followShop
         );
-        await $.wait(500)
+        await $.wait(500);
         await getAllTask(cookie);
         await $.wait(300);
       }
@@ -231,7 +244,7 @@ function createAssistUser(cookie) {
           ),
           (err, resp, _data) => {
             try {
-              const { data: { bizMsg }, msg } = JSON.parse(_data);
+              const { data: { bizMsg } = {}, msg } = JSON.parse(_data);
               $.log(`\n${bizMsg || msg}\n${_data}`);
             } catch (e) {
               $.logErr(e, resp);
@@ -249,9 +262,7 @@ function createAssistUser(cookie) {
 
 function browserMeetingFun(token, cookie, task) {
   return new Promise((resolve) => {
-    if (
-      parseInt(task.times) >= parseInt(task.maxTimes)
-    ) { 
+    if (parseInt(task.times) >= parseInt(task.maxTimes)) {
       resolve();
     }
     $.post(
@@ -260,7 +271,7 @@ function browserMeetingFun(token, cookie, task) {
         try {
           const { data: { bizCode, bizMsg } = {}, msg } = JSON.parse(_data);
           $.log(`\n${task.taskName}  ${bizMsg || msg}\n${_data}`);
-          resolve(bizCode === 0)
+          resolve(bizCode === 0);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -273,9 +284,7 @@ function browserMeetingFun(token, cookie, task) {
 
 function followShopFun(shopId, shopTask) {
   return new Promise((resolve) => {
-    if (
-      parseInt(shopTask.times) >= parseInt(shopTask.maxTimes)
-    ) { 
+    if (parseInt(shopTask.times) >= parseInt(shopTask.maxTimes)) {
       resolve();
     }
     $.post(
@@ -287,7 +296,7 @@ function followShopFun(shopId, shopTask) {
       }),
       (err, resp, _data) => {
         try {
-          const { data: { bizMsg }, msg } = JSON.parse(_data);
+          const { data: { bizMsg } = {}, msg } = JSON.parse(_data);
           $.log(`\n${shopTask.taskName}  ${bizMsg || msg}\n${_data}`);
         } catch (e) {
           $.logErr(e, resp);
@@ -309,7 +318,10 @@ function addEnergy(cookie) {
         taskUrl("jdfactory_addEnergy", {}, cookie),
         async (err, resp, _data) => {
           try {
-            const { data: { bizMsg }, msg } = JSON.parse(_data);
+            const {
+              data: { bizMsg },
+              msg,
+            } = JSON.parse(_data);
             $.log(`\n${bizMsg || msg}\n${_data}`);
           } catch (e) {
             $.logErr(e, resp);
@@ -329,7 +341,10 @@ function collectElectricity(cookie) {
       taskUrl("jdfactory_collectElectricity", {}, cookie),
       async (err, resp, _data) => {
         try {
-          const { data: { bizMsg }, msg } = JSON.parse(_data);
+          const {
+            data: { bizMsg },
+            msg,
+          } = JSON.parse(_data);
           $.log(`\n${bizMsg || msg}\n${_data}`);
         } catch (e) {
           $.logErr(e, resp);
@@ -343,20 +358,20 @@ function collectElectricity(cookie) {
 
 function taskUrl(function_id, body = {}, cookie) {
   return {
-    url: `${JD_API_HOST}?functionId=${function_id}&body=${escape(
-      JSON.stringify(body)
-    )}&clientVersion=1.0.0&client=wh5`,
+    url: `${JD_API_HOST}?functionId=${function_id}&body=${JSON.stringify(
+      body
+    )}&client=wh5&clientVersion=1.0.0`,
     headers: {
+      Accept: `application/json, text/plain, */*`,
       Origin: `https://h5.m.jd.com`,
-      Cookie: cookie,
-      Connection: `keep-alive`,
-      Referer: `https://h5.m.jd.com/babelDiy/Zeus/2uSsV2wHEkySvompfjB43nuKkcHp/index.html`,
-      Host: "api.m.jd.com",
       "Accept-Encoding": `gzip, deflate, br`,
-      "Accept-Language": `zh-cn`,
+      Cookie: cookie,
       "Content-Type": `application/x-www-form-urlencoded`,
-      "User-Agent":
-        "jdapp;iPhone;9.2.2;14.2;93c009c471d3d33feeef2f4f3ae808c64cdd42b2;network/wifi;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;model/iPhone13,2;hasOCPay/0;appBuild/167422;supportBestPay/0;jdSupportDarkMode/0;addressid/2352393936;pv/28.77;apprpd/MyJD_MyActivity;ref/MyJdGameToolController;psq/7;ads/;psn/93c009c471d3d33feeef2f4f3ae808c64cdd42b2|147;jdv/0|androidapp|t_335139774|appshare|CopyURL|1605671136013|1605671137;adk/;app_device/IOS;pap/JA2015_311210|9.2.2|IOS 14.2;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1",
+      Host: `api.m.jd.com`,
+      Connection: `keep-alive`,
+      "User-Agent": `jdapp;iPhone;9.2.4;14.2.1;93c009c471d3d33feeef2f4f3ae808c64cdd42b2;network/wifi;supportApplePay/0;hasUPPay/0;hasOCPay/0;model/iPhone13,2;addressid/2340668675;supportBestPay/0;appBuild/167432;pushNoticeIsOpen/0;jdSupportDarkMode/0;pv/60.15;apprpd/Search_ProductList;ref/FinalSearchListViewController;psq/5;ads/;psn/93c009c471d3d33feeef2f4f3ae808c64cdd42b2|380;jdv/0|iosapp|t_335139774|appshare|CopyURL|1606278176973|1606278183;adk/;app_device/IOS;pap/JA2015_311210|9.2.4|IOS 14.2.1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
+      Referer: `https://h5.m.jd.com/babelDiy/Zeus/2uSsV2wHEkySvompfjB43nuKkcHp/index.html?babelChannel=ttt10&lng=116.356219&lat=40.046567&sid=0c8bb35d3e7e2f0822432b0fbeb2833w&un_area=1_2800_55833_0`,
+      "Accept-Language": `zh-cn`,
     },
   };
 }
@@ -365,18 +380,20 @@ function taskPostUrl(functionId, body, cookie) {
   return {
     url: `${JD_API_HOST}?functionId=${functionId}`,
     headers: {
+      Accept: `application/json, text/plain, */*`,
       Origin: `https://h5.m.jd.com`,
-      Cookie: cookie,
-      Connection: `keep-alive`,
-      Referer: `https://h5.m.jd.com/babelDiy/Zeus/2uSsV2wHEkySvompfjB43nuKkcHp/index.html`,
-      Host: "api.m.jd.com",
       "Accept-Encoding": `gzip, deflate, br`,
+      Cookie: cookie,
+      "Content-Type": `application/x-www-form-urlencoded`,
+      Host: `api.m.jd.com`,
+      Connection: `keep-alive`,
+      "User-Agent": `jdapp;iPhone;9.2.4;14.2.1;93c009c471d3d33feeef2f4f3ae808c64cdd42b2;network/wifi;supportApplePay/0;hasUPPay/0;hasOCPay/0;model/iPhone13,2;addressid/2340668675;supportBestPay/0;appBuild/167432;pushNoticeIsOpen/0;jdSupportDarkMode/0;pv/60.15;apprpd/Search_ProductList;ref/FinalSearchListViewController;psq/5;ads/;psn/93c009c471d3d33feeef2f4f3ae808c64cdd42b2|380;jdv/0|iosapp|t_335139774|appshare|CopyURL|1606278176973|1606278183;adk/;app_device/IOS;pap/JA2015_311210|9.2.4|IOS 14.2.1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
+      Referer: `https://h5.m.jd.com/babelDiy/Zeus/2uSsV2wHEkySvompfjB43nuKkcHp/index.html?babelChannel=ttt10&lng=116.356219&lat=40.046567&sid=0c8bb35d3e7e2f0822432b0fbeb2833w&un_area=1_2800_55833_0`,
       "Accept-Language": `zh-cn`,
-      "Content-Type": "application/x-www-form-urlencoded",
-      "User-Agent":
-        "jdapp;iPhone;9.2.2;14.2;93c009c471d3d33feeef2f4f3ae808c64cdd42b2;network/wifi;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;model/iPhone13,2;hasOCPay/0;appBuild/167422;supportBestPay/0;jdSupportDarkMode/0;addressid/2352393936;pv/28.77;apprpd/MyJD_MyActivity;ref/MyJdGameToolController;psq/7;ads/;psn/93c009c471d3d33feeef2f4f3ae808c64cdd42b2|147;jdv/0|androidapp|t_335139774|appshare|CopyURL|1605671136013|1605671137;adk/;app_device/IOS;pap/JA2015_311210|9.2.2|IOS 14.2;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1",
     },
-    body: `functionId=${functionId}&body={${body}}&client=wh5&clientVersion=1.0.0`,
+    body: `functionId=${functionId}&body=${JSON.stringify(
+      body
+    )}&client=wh5&clientVersion=1.0.0`,
   };
 }
 
