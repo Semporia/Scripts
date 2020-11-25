@@ -52,10 +52,10 @@ $.factoryInfo = {};
       await $.wait(500)
       await createAssistUser(cookie);
       $.result.push(
-        `任务前电量：${startHomeInfo.userScore}`,
-        `任务前电量：${endHomeInfo.userScore}`,
-        `获得电量：${endHomeInfo.userScore - startHomeInfo.userScore}`,
-        `还需电量：${endHomeInfo.totalScore - endHomeInfo.userScore}`
+        `任务前电量：${startHomeInfo.remainScore}`,
+        `任务后电量：${endHomeInfo.remainScore}`,
+        `获得电量：${endHomeInfo.remainScore - startHomeInfo.remainScore}`,
+        `还需电量：${endHomeInfo.totalScore - endHomeInfo.remainScore}`
       );
     }
   }
@@ -101,6 +101,7 @@ function getFactoryInfo(cookie) {
         $.result.push(
           `[产品名称] ${factoryInfo.name}  剩余:${factoryInfo.couponCount}`
         );
+        resolve(factoryInfo)
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -231,8 +232,8 @@ function createAssistUser(cookie) {
           ),
           (err, resp, _data) => {
             try {
-              const { bizMsg } = JSON.parse(_data);
-              $.log(`\n${bizMsg}\n${_data}`);
+              const { data: { bizMsg }, msg } = JSON.parse(_data);
+              $.log(`\n${bizMsg || msg}\n${_data}`);
             } catch (e) {
               $.logErr(e, resp);
             } finally {
@@ -253,8 +254,8 @@ function browserMeetingFun(token, cookie) {
       taskPostUrl("jdfactory_collectScore", { taskToken: token }, cookie),
       (err, resp, _data) => {
         try {
-          const { data: { bizCode, bizMsg } = {} } = JSON.parse(_data);
-          $.log(`\n${bizMsg}\n${_data}`);
+          const { data: { bizCode, bizMsg } = {}, msg } = JSON.parse(_data);
+          $.log(`\n${bizMsg || msg}\n${_data}`);
           resolve(bizCode === 0)
         } catch (e) {
           $.logErr(e, resp);
@@ -277,8 +278,8 @@ function followShopFun(shopId) {
       }),
       (err, resp, _data) => {
         try {
-          const { bizMsg } = JSON.parse(_data);
-          $.log(`\n${bizMsg}\n${_data}`);
+          const { data: { bizMsg }, msg } = JSON.parse(_data);
+          $.log(`\n${bizMsg || msg}\n${_data}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -299,8 +300,8 @@ function addEnergy(cookie) {
         taskUrl("jdfactory_addEnergy", {}, cookie),
         async (err, resp, _data) => {
           try {
-            const { bizMsg } = JSON.parse(_data);
-            $.log(`\n${bizMsg}\n${_data}`);
+            const { data: { bizMsg }, msg } = JSON.parse(_data);
+            $.log(`\n${bizMsg || msg}\n${_data}`);
           } catch (e) {
             $.logErr(e, resp);
           } finally {
@@ -319,8 +320,8 @@ function collectElectricity(cookie) {
       taskUrl("jdfactory_collectElectricity", {}, cookie),
       async (err, resp, _data) => {
         try {
-          const { bizMsg } = JSON.parse(_data);
-          $.log(`\n${bizMsg}\n${_data}`);
+          const { data: { bizMsg }, msg } = JSON.parse(_data);
+          $.log(`\n${bizMsg || msg}\n${_data}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
