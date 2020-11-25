@@ -52,11 +52,9 @@ $.factoryInfo = {};
       await $.wait(500)
       await createAssistUser(cookie);
       $.result.push(
-        `[产品名称] ${startHomeInfo.name}  剩余:${startHomeInfo.couponCount}`,
-        `任务前电量：${startHomeInfo.remainScore}`,
-        `任务后电量：${endHomeInfo.remainScore}`,
-        `获得电量：${endHomeInfo.remainScore - startHomeInfo.remainScore}`,
-        `还需电量：${endHomeInfo.totalScore - endHomeInfo.remainScore}`,
+        `名称：${startHomeInfo.name}  剩余:${startHomeInfo.couponCount}`,
+        `任务前电量：${startHomeInfo.remainScore} 任务后电量：${endHomeInfo.remainScore}`,
+        `获得电量：${endHomeInfo.remainScore - startHomeInfo.remainScore} 还需电量：${endHomeInfo.totalScore - endHomeInfo.remainScore}`,
       );
     }
   }
@@ -261,7 +259,7 @@ function browserMeetingFun(token, cookie, task) {
       (err, resp, _data) => {
         try {
           const { data: { bizCode, bizMsg } = {}, msg } = JSON.parse(_data);
-          $.log(`\n${bizMsg || msg}\n${_data}`);
+          $.log(`\n${task.taskName}  ${bizMsg || msg}\n${_data}`);
           resolve(bizCode === 0)
         } catch (e) {
           $.logErr(e, resp);
@@ -290,7 +288,7 @@ function followShopFun(shopId, shopTask) {
       (err, resp, _data) => {
         try {
           const { data: { bizMsg }, msg } = JSON.parse(_data);
-          $.log(`\n${bizMsg || msg}\n${_data}`);
+          $.log(`\n${shopTask.taskName}  ${bizMsg || msg}\n${_data}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
