@@ -32,19 +32,30 @@ $.factoryInfo = {};
 !(async () => {
   if (!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
-    const cookie = $.cookieArr[i];
     if (cookie) {
       const userName = decodeURIComponent(
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
       );
-      console.log(`\n开始【京东账号${i + 1}】${userName}`);
-      await getFactoryInfo(cookie);
+      $.log(`\n开始【京东账号${i + 1}】${userName}`);
+      const startHomeInfo = await getFactoryInfo(cookie);
       await getAllTask(cookie);
       await browserTask(cookie);
+      await $.wait(500)
       await collectElectricity(cookie);
+      await $.wait(500)
       await addEnergy(cookie);
+      await $.wait(500)
+      const endHomeInfo = await getFactoryInfo(cookie);
+      await $.wait(500)
       await submitInviteId();
+      await $.wait(500)
       await createAssistUser(cookie);
+      $.result.push(
+        `任务前电量：${startHomeInfo.userScore}`,
+        `任务前电量：${endHomeInfo.userScore}`,
+        `获得电量：${endHomeInfo.userScore - startHomeInfo.userScore}`,
+        `还需电量：${endHomeInfo.totalScore - endHomeInfo.userScore}`
+      );
     }
   }
   await showMsg();
@@ -71,13 +82,10 @@ function getCookies() {
 }
 
 function showMsg() {
-  if ($.isLogin) {
-    $.log(`\n${message}\n`);
-    jdNotify = $.getdata("jdfactory") ? $.getdata("jdfactory") : jdNotify;
-    if (!jdNotify || jdNotify === "false") {
-      $.msg($.name, subTitle, `【京东账号${$.index}】${UserName}\n` + message);
-    }
-  }
+  return new Promise((resolve) => {
+    $.msg($.name, "", `\n${$.result.join("\n")}`);
+    resolve();
+  });
 }
 
 function getFactoryInfo(cookie) {
@@ -85,8 +93,9 @@ function getFactoryInfo(cookie) {
     $.get(taskUrl("jdfactory_getHomeData", {}, cookie), (err, resp, data) => {
       try {
         const {
-          data: { result: factoryInfo },
+          data: { result: {factoryInfo}, bizMsg },
         } = JSON.parse(data);
+        $.log(`\n${bizMsg}`);
         $.factoryInfo = factoryInfo;
         $.result.push(
           `[产品名称] ${factoryInfo.name}  剩余:${factoryInfo.couponCount}`
@@ -104,7 +113,7 @@ function getAllTask(cookie) {
   return new Promise((resolve) => {
     $.get(
       taskUrl("jdfactory_getTaskDetail", {}, cookie),
-      async (err, resp, _data) => {
+      (err, resp, _data) => {
         try {
           const {
             data: {
@@ -112,9 +121,8 @@ function getAllTask(cookie) {
               bizMsg,
             },
           } = JSON.parse(_data);
-          $.log(`\n${bizMsg}\n${_data}`);
+          $.log(`${bizMsg}\n`);
           $.allTask = taskVos;
-          console.log("你的互助码: " + taskVos[1].assistTaskDetailVo.taskToken);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -132,18 +140,21 @@ async function browserTask(cookie) {
     const browserMeeting = $.allTask.find((x) => x.taskId === 4);
     const lookCommodity = $.allTask.find((x) => x.taskId === 5);
     const followShop = $.allTask.find((x) => x.taskId === 6);
-    const patrolFactory = $.allTask.find((x) => x.taskId === 6);
+    const patrolFactory = $.allTask.find((x) => x.taskId === 8);
     const times = Math.max(
       browserMeeting.maxTimes,
       lookCommodity.maxTimes,
       followShop.maxTimes
     );
     await browserMeetingFun(signIn.simpleRecordInfoVo.taskToken, cookie);
+    await $.wait(500)
     await browserMeetingFun(
       digitalAppliance.simpleRecordInfoVo.taskToken,
       cookie
     );
+    await $.wait(500)
     await browserMeetingFun(patrolFactory.threeMealInfoVos.taskToken, cookie);
+    await $.wait(500)
     const status = [true, true, true];
     for (let i = 0; i < times; i++) {
       if (status[0]) {
@@ -151,23 +162,27 @@ async function browserTask(cookie) {
           browserMeeting.shoppingActivityVos[i].taskToken,
           cookie
         );
+        await $.wait(500)
         await getAllTask(cookie);
-        await $.wait(300);
+        await $.wait(500);
       }
       if (status[1]) {
         status[1] = await browserMeetingFun(
-          lookCommodity.shoppingActivityVos[i].taskToken,
+          lookCommodity.productInfoVos[i].taskToken,
           cookie
         );
+        await $.wait(500)
         await getAllTask(cookie);
-        await $.wait(300);
+        await $.wait(500);
       }
       if (status[2]) {
         await followShopFun(followShop.followShopVo[i].shopId);
+        await $.wait(500)
         status[2] = await browserMeetingFun(
-          followShop.shoppingActivityVos[i].taskToken,
+          followShop.followShopVo[i].taskToken,
           cookie
         );
+        await $.wait(500)
         await getAllTask(cookie);
         await $.wait(300);
       }
@@ -178,6 +193,7 @@ async function browserTask(cookie) {
 
 function submitInviteId(userName) {
   const inviteTask = $.allTask.find((x) => x.taskId === 2);
+  $.log("你的互助码: " + inviteTask.assistTaskDetailVo.taskToken);
   return new Promise((resolve) => {
     $.get(
       {
@@ -219,7 +235,7 @@ function createAssistUser(cookie) {
             } catch (e) {
               $.logErr(e, resp);
             } finally {
-              resolve(data);
+              resolve();
             }
           }
         );
@@ -236,12 +252,13 @@ function browserMeetingFun(token, cookie) {
       taskPostUrl("jdfactory_collectScore", { taskToken: token }, cookie),
       (err, resp, _data) => {
         try {
-          const { bizMsg } = JSON.parse(_data);
+          const { data: { bizCode, bizMsg } = {} } = JSON.parse(_data);
           $.log(`\n${bizMsg}\n${_data}`);
+          resolve(bizCode === 0)
         } catch (e) {
           $.logErr(e, resp);
         } finally {
-          resolve(data);
+          resolve();
         }
       }
     );
@@ -264,7 +281,7 @@ function followShopFun(shopId) {
         } catch (e) {
           $.logErr(e, resp);
         } finally {
-          resolve(data);
+          resolve();
         }
       }
     );
