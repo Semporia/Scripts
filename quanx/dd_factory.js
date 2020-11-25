@@ -32,6 +32,7 @@ $.factoryInfo = {};
 !(async () => {
   if (!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
+    const cookie = $.cookieArr[i];
     if (cookie) {
       const userName = decodeURIComponent(
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
