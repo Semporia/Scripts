@@ -92,7 +92,7 @@ function showMsg() {
 
 function getFactoryInfo(cookie) {
   return new Promise((resolve) => {
-    $.get(taskUrl("jdfactory_getHomeData", {}, cookie), (err, resp, data) => {
+    $.post(taskPostUrl("jdfactory_getHomeData", {}, cookie), (err, resp, data) => {
       try {
         const {
           data: {
@@ -114,8 +114,8 @@ function getFactoryInfo(cookie) {
 
 function getAllTask(cookie) {
   return new Promise((resolve) => {
-    $.get(
-      taskUrl("jdfactory_getTaskDetail", {}, cookie),
+    $.post(
+      taskPostUrl("jdfactory_getTaskDetail", {}, cookie),
       (err, resp, _data) => {
         try {
           const {
@@ -337,8 +337,8 @@ function addEnergy(cookie) {
 
 function collectElectricity(cookie) {
   return new Promise((resolve) => {
-    $.get(
-      taskUrl("jdfactory_collectElectricity", {}, cookie),
+    $.post(
+      taskPostUrl("jdfactory_collectElectricity", {}, cookie),
       async (err, resp, _data) => {
         try {
           const {
