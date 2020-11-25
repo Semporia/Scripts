@@ -11,6 +11,7 @@
   https:\/\/restapi\.amap\.com\/v3\/geocode url script-request-body https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js
 
   loon:
+  [Script]
   http-request https:\/\/restapi\.amap\.com\/v3\/geocode script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js, requires-body=true, timeout=10, tag=彩云天气cookie
   cron "0 *\/1 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js, tag=彩云天气
 

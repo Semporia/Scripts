@@ -7,6 +7,7 @@
   ^https\:\/\/api\.m\.jd\.com\/client\.action\?functionId\=interactIndex url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.cookie.js
 
   loon:
+  [Script]
   http-request ^https\:\/\/api\.m\.jd\.com\/client\.action\?functionId\=interactIndex script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.cookie.js, requires-body=false, timeout=10, tag=京东赚赚cookie
   cron "0 9 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js, tag=京东赚赚
 

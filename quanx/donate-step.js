@@ -5,6 +5,7 @@
   0 18 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/donate-step.js, tag=捐步数, enabled=true
 
   loon:
+  [Script]
   cron "0 18 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/donate-step.js, tag=捐步数
 
   surge:

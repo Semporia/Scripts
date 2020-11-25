@@ -9,6 +9,7 @@
   0 *\/3 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/dd_factory.js, tag=东东工厂, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png enabled=true
 
   loon:
+  [Script]
   cron "0 *\/3 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/dd_factory.js, tag=东东工厂
 
   surge:

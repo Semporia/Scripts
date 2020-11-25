@@ -5,6 +5,7 @@
   0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/daymatter.js, tag=倒数日, enabled=true
 
   loon:
+  [Script]
   cron "0 9 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/daymatter.js, tag=倒数日
 
   surge:
