@@ -209,7 +209,7 @@ async function browserTask(cookie) {
         await $.wait(500);
       }
       if (status[3]) {
-        await browserMeetingFun(
+        status[3] = await browserMeetingFun(
           patrolFactory.threeMealInfoVos[i].taskToken,
           cookie,
           patrolFactory
