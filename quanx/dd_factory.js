@@ -267,9 +267,24 @@ function createAssistUser(cookie) {
 
 function queryVkComponent(cookie) {
   return new Promise((resolve) => {
+    const url = `https://api.m.jd.com/client.action?functionId=queryVkComponent`;
+    const headers = {
+      Cookie: cookie,
+      Accept: `*/*`,
+      Connection: `keep-alive`,
+      "Content-Type": `application/x-www-form-urlencoded`,
+      "Accept-Encoding": `gzip, deflate, br`,
+      Host: `api.m.jd.com`,
+      "User-Agent": `JD4iPhone/167432 (iPhone; iOS 14.2.1; Scale/3.00)`,
+      "Accept-Language": `zh-Hans-CN;q=1, en-CN;q=0.9`,
+    };
     const body = `area=5_224_238_51284&body=%7B%22componentId%22%3A%224f953e59a3af4b63b4d7c24f172db3c3%22%2C%22taskParam%22%3A%22%7B%5C%22actId%5C%22%3A%5C%228tHNdJLcqwqhkLNA8hqwNRaNu5f%5C%22%7D%22%2C%22cpUid%22%3A%228tHNdJLcqwqhkLNA8hqwNRaNu5f%22%2C%22taskSDKVersion%22%3A%221.0.3%22%2C%22businessId%22%3A%22babel%22%7D&build=167432&client=apple&clientVersion=9.2.4&d_brand=apple&d_model=iPhone13%2C2&eid=eidI1dbc812349s4S/q/ujpKSXyOXzGK5xv21kv6wS1EqYXedEuZHJTlJLIxypzPcTibwDJuaKL4WzpzGy6l9EbCHNbjrcOd4DWDBJ%2BvD5PXxaOnsmhE&isBackground=N&joycious=299&lang=zh_CN&networkType=wifi&networklibtype=JDNetworkBaseAF&openudid=93c009c471d3d33feeef2f4f3ae808c64cdd42b2&osVersion=14.2.1&partner=apple&rfs=0000&scope=10&screen=1125%2A2436&sign=e2f54520b54258b51a06749b385d25c4&st=1606351785977&sv=101&uts=0f31TVRjBSthso2NMB4UHqMG8LC7DJQ/znRGJSSaQsJgxGkOdwUtb3TN4ZLMDwHv8X7DNWY%2BdVGcDPY5S1gVW%2BpKliLjSQkOPBMF%2B0qV3phln/RHufEyY%2Be%2Bgb1VEfIZeEGahova7ztaemcsZ/smoJSi/wL7%2BTpZv1VLySww2fUX4y/EbsZ2cdg1H1zQFHAsjZmk32V0J5YWyHlJFYyDlg%3D%3D&uuid=hjudwgohxzVu96krv/T6Hg%3D%3D&wifiBssid=d73fbf335ea048d61703ce31b6ff66a7`;
     $.post(
-      taskPostUrl("queryVkComponent", body, cookie),
+      {
+        url: url,
+        headers: headers,
+        body: body,
+      },
       (err, resp, _data) => {
         try {
           const { data: { bizMsg } = {}, msg } = JSON.parse(_data);
