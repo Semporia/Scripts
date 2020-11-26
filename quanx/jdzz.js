@@ -23,9 +23,11 @@ const $ = new Env("京东赚赚");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://api.m.jd.com";
 $.tokens = [$.getdata("jdzz_token1") || "", $.getdata("jdzz_token2") || ""];
+$.exchangePrize = parseInt($.getdata("jd_zzExchangePrize"));
 $.result = [];
 $.cookieArr = [];
 $.allTask = [];
+$.allExchangeList = [];
 
 !(async () => {
   if (!getCookies()) return;
@@ -36,6 +38,8 @@ $.allTask = [];
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
+      await getExchangePrizeList($.tokens[i]);
+      await exchangePrize($.tokens[i]);
       const startHomeInfo = await getHomeInfo($.tokens[i])
       await getAllTask($.tokens[i]);
       await doTasks($.tokens[i]);
@@ -147,6 +151,48 @@ function doTask(task, token) {
   });
 }
 
+function getExchangePrizeList(token) {
+  return new Promise((resolve) => {
+    $.post(
+      taskPostUrl("getExchangePrizeList", {}, token),
+      (err, resp, _data) => {
+        try {
+          const { data = {}, message } = JSON.parse(_data);
+          $.log(`\n${message}\n${_data}`);
+          $.allExchangeList = data.ExchangePrizeList;
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function exchangePrize(token) {
+  return new Promise((resolve) => {
+    if ($.exchangePrize === 0) {
+      resolve()
+    }
+    const {prizeId} = $.allExchangeList[$.exchangePrize - 1];
+    $.post(
+      taskPostUrl("exchangePrize", { prizeId }, token),
+      (err, resp, _data) => {
+        try {
+          const { data = {}, message } = JSON.parse(_data);
+          $.log(`\n${message}\n${_data}`);
+          $.allExchangeList = data.ExchangePrizeList;
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
 function showMsg() {
   return new Promise((resolve) => {
     $.msg($.name, "", `${$.result.join("\n")}`);
@@ -169,6 +215,23 @@ function taskUrl(function_path, body = {}, token) {
       "Accept-Language": `zh-cn`,
       "Accept-Encoding": `gzip, deflate, br`,
     },
+  };
+}
+
+function taskPostUrl(function_path, body = {}, token) {
+  return {
+    url: `${JD_API_HOST}/client.action?functionIdTest=${function_path}`,
+    headers: {
+      Cookie: `buildtime=20201120;wxapp_type=14;wxapp_version=6.9.130;province=Guangdong;city=Shenzhen;country=China;wq_auth_token=${token};network=wifi`,
+      wqreferer: `http://wq.jd.com/wxapp/pages/hd-interaction/index/index`,
+      "Content-Type": `application/json`,
+      Host: `api.m.jd.com`,
+      "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/7.0.18(0x1700122c) NetType/WIFI Language/zh_CN`,
+      Referer: `https://servicewechat.com/wx8830763b00c18ac3/53/page-frame.html`,
+      "Accept-Language": `zh-cn`,
+      "Accept-Encoding": `gzip, deflate, br`,
+    },
+    body: `functionId=${function_path}&body=${JSON.stringify(body)}&client=wh5&clientVersion=1.0.0&loginType=1&loginWQBiz=returnMoney`
   };
 }
 
