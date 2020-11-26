@@ -3,6 +3,7 @@ const shareCodes = [
   {
     zd: $.getdata("zd_shareCode1") || "qu73szyyke7tv4sgpjojpyiq6u",
     nc: $.getdata("nc_shareCode1") || "a1bc1602151a42d68fb8cf0ee93cc43d",
+    mc: $.getdata("mc_shareCode1") || "MTAxODc2NTEzNDAwMDAwMDAyNzkyNjM4Mw==",
     ddgc: $.getdata("dd_shareCode1") || "P04z54XCjVWnYaS5kZ7fCKtjCEX",
     jxgc: $.getdata("jx_shareCode1") || "k3XRgh9SqTEODDhQVrfL1A==",
   },
@@ -64,10 +65,9 @@ function create(path, name) {
       try {
         const needAgain = await checkWhetherNeedAgain(resp, create, path, name);
         if (needAgain) return;
-        const _data = JSON.parse(data);
-        if (_data) {
-          $.result.push(`${name}： ${_data.message}`);
-        }
+        const { message } = JSON.parse(data);
+        $.log(`\n${message}\n${data}`);
+        $.result.push(`${name}： ${_data.message}`);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
