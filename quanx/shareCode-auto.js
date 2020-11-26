@@ -3,12 +3,15 @@ const shareCodes = [
   {
     zd: $.getdata("zd_shareCode1") || "qu73szyyke7tv4sgpjojpyiq6u",
     nc: $.getdata("nc_shareCode1") || "a1bc1602151a42d68fb8cf0ee93cc43d",
-    mc: $.getdata("mc_shareCode1") || "MTAxODc2NTEzNDAwMDAwMDAyNzkyNjM4Mw==",
+    ddgc: $.getdata("dd_shareCode1") || "P04z54XCjVWnYaS5kZ7fCKtjCEX",
+    jxgc: $.getdata("jx_shareCode1") || "k3XRgh9SqTEODDhQVrfL1A==",
   },
   {
     zd: $.getdata("zd_shareCode2") || "",
     nc: $.getdata("nc_shareCode2") || "",
     mc: $.getdata("mc_shareCode2") || "",
+    ddgc: $.getdata("dd_shareCode2") || "",
+    jxgc: $.getdata("jx_shareCode2") || "",
   },
 ];
 $.result = [];
@@ -18,34 +21,48 @@ $.random = Math.floor(Math.random() * 300);
   console.log(`\n此脚本延迟${$.random}秒执行\n`);
   await $.wait($.random);
   for (let i = 0; i < shareCodes.length; i++) {
-    const { zd, nc, mc } = shareCodes[i];
+    const { zd, nc, mc, ddgc, jxgc } = shareCodes[i];
     zd &&
-      (await createZd(
-        `http://api.turinglabs.net/api/v1/jd/bean/create/${zd}/`
+      (await create(
+        `http://api.turinglabs.net/api/v1/jd/bean/create/${zd}/`,
+        "种豆得豆"
       ));
     nc &&
-      (await createNc(
-        `http://api.turinglabs.net/api/v1/jd/farm/create/${nc}/`
+      (await create(
+        `http://api.turinglabs.net/api/v1/jd/farm/create/${nc}/`,
+        "东东农场"
       ));
     mc &&
-      (await createMc(`http://api.turinglabs.net/api/v1/jd/pet/create/${mc}/`));
+      (await create(
+        `http://api.turinglabs.net/api/v1/jd/pet/create/${mc}/`,
+        "东东萌宠"
+      ));
+    ddgc &&
+      (await create(
+        `http://api.turinglabs.net/api/v1/jd/ddfactory/create/${ddgc}/`,
+        "东东工厂"
+      ));
+    jxgc &&
+      (await create(
+        `http://api.turinglabs.net/api/v1/jd/jxfactory/create/${jxgc}/`,
+        "京喜工厂"
+      ));
   }
   await showMsg();
 })()
   .catch((e) => $.logErr(e))
   .finally(() => $.done());
 
-// 种豆得豆
-function createZd(zdUrl) {
+function create(path, name) {
   return new Promise((resolve) => {
-    const url = { url: zdUrl };
+    const url = { url: path };
     $.get(url, async (err, resp, data) => {
       try {
-        const needAgain = await checkWhetherNeedAgain(resp, createZd, url);
+        const needAgain = await checkWhetherNeedAgain(resp, create, path, name);
         if (needAgain) return;
         const _data = JSON.parse(data);
         if (_data) {
-          $.result.push(`种豆：${_data.message}`);
+          $.result.push(`${name}： ${_data.message}`);
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -56,53 +73,11 @@ function createZd(zdUrl) {
   });
 }
 
-// 京东农场
-function createNc(ncUrl) {
-  return new Promise((resolve) => {
-    const url = { url: ncUrl };
-    $.get(url, async (err, resp, data) => {
-      try {
-        const needAgain = await checkWhetherNeedAgain(resp, createNc, url);
-        if (needAgain) return;
-        const _data = JSON.parse(data);
-        if (_data) {
-          $.result.push(`农场：${_data.message}`);
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
-      }
-    });
-  });
-}
-
-// 京东萌宠
-function createMc(mcUrl) {
-  return new Promise((resolve) => {
-    const url = { url: mcUrl };
-    $.get(url, async (err, resp, data) => {
-      try {
-        const needAgain = await checkWhetherNeedAgain(resp, createMc, url);
-        if (needAgain) return;
-        const _data = JSON.parse(data);
-        if (_data) {
-          $.result.push(`萌宠：${_data.message}`);
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
-      }
-    });
-  });
-}
-
-function checkWhetherNeedAgain(resp, fun, url) {
+function checkWhetherNeedAgain(resp, fun, url, name) {
   return new Promise(async (resolve) => {
     if ((resp && resp.statusCode !== 200) || !resp.body) {
       await $.wait($.random);
-      await fun(url);
+      await fun(url, name);
       resolve(true);
     } else {
       resolve(false);
