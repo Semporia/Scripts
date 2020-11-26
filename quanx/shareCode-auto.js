@@ -15,33 +15,37 @@ const shareCodes = [
   },
 ];
 $.result = [];
-$.random = Math.floor(Math.random() * 300);
+$.random = Math.floor(Math.random() * 60);
 
 !(async () => {
   console.log(`\n此脚本延迟${$.random}秒执行\n`);
-  await $.wait($.random);
   for (let i = 0; i < shareCodes.length; i++) {
     const { zd, nc, mc, ddgc, jxgc } = shareCodes[i];
+    await $.wait($.random);
     zd &&
       (await create(
         `http://api.turinglabs.net/api/v1/jd/bean/create/${zd}/`,
         "种豆得豆"
       ));
+    await $.wait($.random);
     nc &&
       (await create(
         `http://api.turinglabs.net/api/v1/jd/farm/create/${nc}/`,
         "东东农场"
       ));
+    await $.wait($.random);
     mc &&
       (await create(
         `http://api.turinglabs.net/api/v1/jd/pet/create/${mc}/`,
         "东东萌宠"
       ));
+    await $.wait($.random);
     ddgc &&
       (await create(
         `http://api.turinglabs.net/api/v1/jd/ddfactory/create/${ddgc}/`,
         "东东工厂"
       ));
+    await $.wait($.random);
     jxgc &&
       (await create(
         `http://api.turinglabs.net/api/v1/jd/jxfactory/create/${jxgc}/`,
@@ -82,7 +86,7 @@ function checkWhetherNeedAgain(resp, fun, url, name) {
     } else {
       resolve(false);
     }
-  })
+  });
 }
 
 function showMsg() {

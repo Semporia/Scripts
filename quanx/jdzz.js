@@ -80,7 +80,8 @@ function getAllTask(token) {
       taskUrl("interactTaskIndex", { mpVersion: "3.0.6" }, token),
       (err, resp, _data) => {
         try {
-          const { data = {} } = JSON.parse(_data);
+          const { data = {}, message } = JSON.parse(_data);
+          $.log(`\n${message}\n${_data}`);
           $.allTask = data.taskDetailResList.filter((x) => x.taskId !== 3);
         } catch (e) {
           $.logErr(e, resp);
@@ -98,7 +99,8 @@ function getHomeInfo(token) {
       taskUrl("interactTaskIndex", { mpVersion: "3.0.6" }, token),
       (err, resp, _data) => {
         try {
-          const { data = {} } = JSON.parse(_data);
+          const { data = {}, message } = JSON.parse(_data);
+          $.log(`\n${message}\n${_data}`);
           resolve({ totalBeanNum: data.totalBeanNum, totalNum: data.totalNum });
         } catch (e) {
           $.logErr(e, resp);
