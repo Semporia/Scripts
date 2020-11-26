@@ -1,4 +1,4 @@
-## 混沌(hundun)
+## 混沌
 
 1. 中国古代和古希腊都有混沌的神，古希腊神话中的神为[卡俄斯](https://zh.wikipedia.org/wiki/%E5%8D%A1%E4%BF%84%E6%96%AF)，中国《[庄子](https://zh.wikipedia.org/wiki/%E5%BA%84%E5%AD%90_(%E4%B9%A6))》中记载了[浑沌](https://zh.wikipedia.org/wiki/%E6%B7%B7%E6%B2%8C_(%E7%A5%9E%E8%A9%B1%E7%94%9F%E7%89%A9))的故事。
 2. **混沌**，又写作**浑沌**，指混乱而没有秩序的状态。在哲学中，混沌指虚空，或者没有结构的均匀状态。
