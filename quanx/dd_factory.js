@@ -25,6 +25,7 @@ const JD_API_HOST = "https://api.m.jd.com/client.action";
 $.autoCharge = $.getdata("jd_autoCharge")
   ? $.getdata("jd_autoCharge") === "true"
   : false;
+$.notifyTime = $.getdata("jd_notifyTime");
 $.result = [];
 $.cookieArr = [];
 $.allTask = [];
@@ -86,7 +87,17 @@ function getCookies() {
 
 function showMsg() {
   return new Promise((resolve) => {
-    $.msg($.name, "", `\n${$.result.join("\n")}`);
+    if ($.notifyTime) {
+      const notifyTimes = $.notifyTime.split(',').map(x => x.split(':'));
+      const now = $.time('HH:mm').split(':');
+      $.log(`\n${JSON.stringify(notifyTimes)}`);
+      $.log(`\n${JSON.stringify(now)}`);
+      if (notifyTimes.some(x => x[0] === now[0] && (!x[1] || x[1] === now[1]))) {
+        $.msg($.name, "", `\n${$.result.join("\n")}`);
+      }
+    } else {
+      $.msg($.name, "", `\n${$.result.join("\n")}`);
+    }
     resolve();
   });
 }

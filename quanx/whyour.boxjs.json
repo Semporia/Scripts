@@ -90,7 +90,7 @@
           "val": "",
           "type": "text",
           "desc": "京喜工厂互助码.你自己的互助码."
-        },
+        }
       ],
       "author": "@whyour",
       "repo": "https://github.com/whyour/hundun/blob/master/quanx/shareCode-auto.js",
@@ -236,6 +236,13 @@
           "val": false,
           "type": "boolean",
           "desc": "当电量足够充满当前商品是，是否自动充电，默认不自动充电"
+        },
+        {
+          "id": "jd_notifyTime",
+          "name": "东东工厂通知时间",
+          "val": "",
+          "type": "text",
+          "desc": "由于东东工厂每小时执行一次，防止频繁通知，可以设置通知时间，24小时制，比如 19 或者 19:30，多个时间以英文逗号隔开."
         }
       ],
       "author": "@whyour",
