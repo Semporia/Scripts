@@ -40,10 +40,10 @@ $.allExchangeList = [];
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
       await getExchangePrizeList($.tokens[i]);
       await exchangePrize($.tokens[i]);
-      const startHomeInfo = await getHomeInfo($.tokens[i])
+      const startHomeInfo = await getHomeInfo($.tokens[i]);
       await getAllTask($.tokens[i]);
       await doTasks($.tokens[i]);
-      const endHomeInfo = await getHomeInfo($.tokens[i])
+      const endHomeInfo = await getHomeInfo($.tokens[i]);
       $.result.push(
         `获得京豆：${endHomeInfo.totalBeanNum - startHomeInfo.totalBeanNum}`,
         `获得金币：${endHomeInfo.totalNum - startHomeInfo.totalNum}`,
@@ -72,7 +72,11 @@ function getCookies() {
     return false;
   }
   if (!$.tokens[0]) {
-    $.msg($.name, "【提示】请先去京东赚赚小程序获取token", "微信搜索'京东赚赚'小程序\n即可获取Token");
+    $.msg(
+      $.name,
+      "【提示】请先去京东赚赚小程序获取token",
+      "微信搜索'京东赚赚'小程序\n即可获取Token"
+    );
     return false;
   }
   return true;
@@ -173,16 +177,15 @@ function getExchangePrizeList(token) {
 function exchangePrize(token) {
   return new Promise((resolve) => {
     if ($.exchangePrize === 0) {
-      resolve()
+      resolve();
     }
-    const {prizeId} = $.allExchangeList[$.exchangePrize - 1];
+    const { prizeId } = $.allExchangeList[$.exchangePrize - 1];
     $.post(
       taskPostUrl("exchangePrize", { prizeId }, token),
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
           $.log(`\n${message}\n${_data}`);
-          $.allExchangeList = data.ExchangePrizeList;
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -231,7 +234,9 @@ function taskPostUrl(function_path, body = {}, token) {
       "Accept-Language": `zh-cn`,
       "Accept-Encoding": `gzip, deflate, br`,
     },
-    body: `functionId=${function_path}&body=${JSON.stringify(body)}&client=wh5&clientVersion=1.0.0&loginType=1&loginWQBiz=returnMoney`
+    body: `functionId=${function_path}&body=${JSON.stringify(
+      body
+    )}&client=wh5&clientVersion=1.0.0&loginType=1&loginWQBiz=returnMoney`,
   };
 }
 
