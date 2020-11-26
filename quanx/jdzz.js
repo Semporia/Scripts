@@ -163,7 +163,7 @@ function getExchangePrizeList(token) {
         try {
           const { data = {}, message } = JSON.parse(_data);
           $.log(`\n${message}\n${_data}`);
-          $.allExchangeList = data.ExchangePrizeList;
+          $.allExchangeList = data.exchangePrizeList;
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -186,6 +186,7 @@ function exchangePrize(token) {
         try {
           const { data = {}, message } = JSON.parse(_data);
           $.log(`\n${message}\n${_data}`);
+          $.result.push(`${message}`)
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -227,7 +228,6 @@ function taskPostUrl(function_path, body = {}, token) {
     headers: {
       Cookie: `buildtime=20201120;wxapp_type=14;wxapp_version=6.9.130;province=Guangdong;city=Shenzhen;country=China;wq_auth_token=${token};network=wifi`,
       wqreferer: `http://wq.jd.com/wxapp/pages/hd-interaction/index/index`,
-      "Content-Type": `application/json`,
       Host: `api.m.jd.com`,
       "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/7.0.18(0x1700122c) NetType/WIFI Language/zh_CN`,
       Referer: `https://servicewechat.com/wx8830763b00c18ac3/53/page-frame.html`,
