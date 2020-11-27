@@ -270,14 +270,14 @@
       "name": "东东工厂",
       "settings": [
         {
-          "id": "jd_autoCharge",
+          "id": "dd_autoCharge",
           "name": "自动充电",
           "val": false,
           "type": "boolean",
           "desc": "当电量足够充满当前商品是，是否自动充电，默认不自动充电"
         },
         {
-          "id": "jd_notifyTime",
+          "id": "dd_notifyTime",
           "name": "东东工厂通知时间",
           "val": "",
           "type": "text",
@@ -290,6 +290,33 @@
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/jd_factory_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png"
+      ]
+    },
+    {
+      "id": "jd_jxgc",
+      "name": "京喜工厂",
+      "settings": [
+        {
+          "id": "jx_autoCharge",
+          "name": "自动充能",
+          "val": false,
+          "type": "boolean",
+          "desc": "收取能量后自动充能，默认不自动充"
+        },
+        {
+          "id": "jx_notifyTime",
+          "name": "京喜工厂通知时间",
+          "val": "",
+          "type": "text",
+          "desc": "由于京喜工厂每小时执行一次，防止频繁通知，可以设置通知时间，24小时制，比如 19 或者 19:30，多个时间以英文逗号隔开."
+        }
+      ],
+      "author": "@whyour",
+      "repo": "https://github.com/whyour/hundun/blob/master/quanx/jx_factory.js",
+      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory.js",
+      "icons": [
+        "https://raw.githubusercontent.com/58xinian/icon/master/jdgc_mini.png",
+        "https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png"
       ]
     }
   ]

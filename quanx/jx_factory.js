@@ -16,12 +16,12 @@
 **/
 
 const $ = new Env("京喜工厂");
-const JD_API_HOST = "https://m.jingxi.com/";
+const JD_API_HOST = "https://wq.jd.com/";
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
-$.autoCharge = $.getdata("jd_autoCharge")
+$.autoCharge = $.getdata("jx_autoCharge")
   ? $.getdata("jd_autoCharge") === "true"
   : false;
-$.notifyTime = $.getdata("jd_notifyTime");
+$.notifyTime = $.getdata("jx_notifyTime");
 $.result = [];
 $.cookieArr = [];
 $.currentCookie = "";
@@ -38,7 +38,7 @@ $.info = {};
           $.currentCookie.match(/pt_pin=(.+?);/)[1]
       );
       $.log(`\n开始【京东账号${i + 1}】${userName}`);
-      await getUserInfo();
+      const beginInfo = await getUserInfo();
       await $.wait(500);
       await getCommodityDetail();
       await $.wait(500);
@@ -48,8 +48,6 @@ $.info = {};
       await $.wait(500);
       await browserTask();
       await $.wait(500);
-      await investElectric();
-      await $.wait(500);
       await hireAward();
       await $.wait(500);
       await stealFriend();
@@ -57,6 +55,16 @@ $.info = {};
       await submitInviteId(userName);
       await $.wait(500);
       await createAssistUser();
+      const endInfo = await getUserInfo();
+      await $.wait(500);
+      $.result.push(
+        `名称：${$.info.commodityInfo.name}`,
+        `任务前能量：${beginInfo.user.electric} 任务后能量：${endInfo.user.electric}`,
+        `获得能量：${
+          endInfo.user.electric - beginInfo.user.electric
+        } 还需电量：${endInfo.productionInfo.needElectric - beginInfo.productionInfo.remainScore}`
+      );
+      await investElectric();
     }
   }
   await showMsg();
@@ -97,6 +105,7 @@ function getUserInfo() {
           productionInfo: productionList[0],
           user,
         };
+        resolve($.info)
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -119,7 +128,7 @@ function getCommodityDetail() {
             data
           );
           $.log(`\n${msg}\n${data}`);
-          $.info.productionInfo = commodityList[0];
+          $.info.commodityInfo = commodityList[0];
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -203,7 +212,7 @@ function getTaskList() {
           data
         );
         $.log(`\n获取任务列表 ${msg}`);
-        $.allTask = userTaskStatusList;
+        $.allTask = userTaskStatusList.filter(x => x.completedTimes < x.configTargetTimes);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -282,6 +291,10 @@ function doTask({ taskId, completedTimes, configTargetTimes, taskName }) {
 
 function investElectric() {
   return new Promise(async (resolve) => {
+    if (!$.autoCharge) {
+      $.result.push('未打开自动投入')
+      return;
+    }
     $.get(
       taskUrl(
         "userinfo/InvestElectric",
@@ -295,6 +308,7 @@ function investElectric() {
               investElectric ? investElectric : ""
             } ${msg}\n${data}`
           );
+          $.result.push(`本次投入电力 ${investElectric}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {

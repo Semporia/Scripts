@@ -21,10 +21,10 @@
 const $ = new Env("东东工厂");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://api.m.jd.com/client.action";
-$.autoCharge = $.getdata("jd_autoCharge")
-  ? $.getdata("jd_autoCharge") === "true"
+$.autoCharge = $.getdata("dd_autoCharge")
+  ? $.getdata("dd_autoCharge") === "true"
   : false;
-$.notifyTime = $.getdata("jd_notifyTime");
+$.notifyTime = $.getdata("dd_notifyTime");
 $.result = [];
 $.cookieArr = [];
 $.allTask = [];
