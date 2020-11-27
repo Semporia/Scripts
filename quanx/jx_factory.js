@@ -62,7 +62,7 @@ $.info = {};
         `任务前能量：${beginInfo.user.electric} 任务后能量：${endInfo.user.electric}`,
         `获得能量：${
           endInfo.user.electric - beginInfo.user.electric
-        } 还需电量：${endInfo.productionInfo.needElectric - beginInfo.productionInfo.remainScore}`
+        } 还需能量：${endInfo.productionInfo.needElectric - beginInfo.productionInfo.investedElectric}`
       );
       await investElectric();
     }
