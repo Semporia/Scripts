@@ -217,7 +217,7 @@ function getTaskList() {
           data
         );
         $.log(`\n获取任务列表 ${msg}`);
-        $.allTask = userTaskStatusList.filter(x => x.completedTimes < x.configTargetTimes);
+        $.allTask = userTaskStatusList.filter(x => x.awardStatus !== 1);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -257,11 +257,6 @@ function browserTask() {
 
 function awardTask({ taskId, taskName, completedTimes, configTargetTimes }) {
   return new Promise(async (resolve) => {
-    if (parseInt(completedTimes) >= parseInt(configTargetTimes)) {
-      resolve(false);
-      $.log(`\n${taskName}[领奖励]： mission success`);
-      return;
-    }
     $.get(taskListUrl("Award", `taskId=${taskId}`), (err, resp, data) => {
       try {
         const { msg, ret } = JSON.parse(data);
