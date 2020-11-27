@@ -255,8 +255,8 @@ function browserTask() {
   });
 }
 
-function awardTask({ taskId, taskName, completedTimes, configTargetTimes }) {
-  return new Promise(async (resolve) => {
+function awardTask({ taskId, taskName }) {
+  return new Promise((resolve) => {
     $.get(taskListUrl("Award", `taskId=${taskId}`), (err, resp, data) => {
       try {
         const { msg, ret } = JSON.parse(data);
@@ -461,7 +461,7 @@ function taskUrl(function_path, body) {
 
 function taskListUrl(function_path, body) {
   return {
-    url: `${JD_API_HOST}newtasksys/newtasksys_front/${function_path}?source=dreamfactory&bizCode=dream_factory&sceneval=2&g_login_type=1${body}`,
+    url: `${JD_API_HOST}newtasksys/newtasksys_front/${function_path}?${body}&source=dreamfactory&bizCode=dream_factory&sceneval=2&g_login_type=1`,
     headers: {
       Cookie: $.currentCookie,
       Accept: `*/*`,
