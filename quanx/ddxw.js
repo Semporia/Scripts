@@ -55,11 +55,12 @@ $.drawCenterInfo = {};
         await getToken($.userNames[i], i, cookie);
       }
       const startHomeInfo = await getHomeInfo($.tokens[i]);
-      await getAllTask($.tokens[i]);
-      await signIn($.tokens[i]);
-      await browseTasks($.tokens[i]);
       await getDrawCenter($.tokens[i]);
       await drawTask($.tokens[i]);
+      await getAllTask($.tokens[i]);
+      await getValid();
+      await signIn($.tokens[i]);
+      await browseTasks($.tokens[i]);
       await gameTask($.tokens[i]);
       const inviteId = await getInviteId($.tokens[i]);
       await submitInviteId(inviteId, $.userNames[i]);
@@ -96,6 +97,13 @@ function getCookies() {
     return false;
   }
   return true;
+}
+
+function getValid() {
+  if ($.allTask.length > 0) {
+    return true;
+  }
+  return false
 }
 
 function submitInviteId(inviteId, userName) {
@@ -454,34 +462,34 @@ function addCommodityToCart() {
 
 function browseTasks(token) {
   return new Promise(async (resolve) => {
-    // const browseShop = $.allTask.find((x) => x.ssjjTaskInfo.type === 5);
+    const browseShop = $.allTask.find((x) => x.ssjjTaskInfo.type === 5);
     const browseChannel = $.allTask.find((x) => x.ssjjTaskInfo.type === 7);
-    // const browseCommodity = $.allTask.find((x) => x.ssjjTaskInfo.type === 10);
+    const browseCommodity = $.allTask.find((x) => x.ssjjTaskInfo.type === 10);
     const browseMeeting = $.allTask.find((x) => x.ssjjTaskInfo.type === 11);
     const times = Math.max(
-      // browseShop.ssjjTaskInfo.awardOfDayNum,
-      browseChannel.ssjjTaskInfo.awardOfDayNum,
-      // browseCommodity.ssjjTaskInfo.awardOfDayNum,
-      browseMeeting.ssjjTaskInfo.awardOfDayNum
+      browseShop ? browseShop.ssjjTaskInfo.awardOfDayNum : 0,
+      browseChannel ? browseChannel.ssjjTaskInfo.awardOfDayNum : 0,
+      browseCommodity ? browseCommodity.ssjjTaskInfo.awardOfDayNum : 0,
+      browseMeeting ? browseMeeting.ssjjTaskInfo.awardOfDayNum : 0
     );
     const status = [true, true, true, true];
     for (let i = 0; i < times; i++) {
-      // if (status[0]) {
-      //   status[0] = await browseShopFun(token);
-      //   await getAllTask(token);
-      //   await $.wait(300);
-      // }
-      if (status[1]) {
+      if (status[0] && browseShop) {
+        status[0] = await browseShopFun(token);
+        await getAllTask(token);
+        await $.wait(300);
+      }
+      if (status[1] && browseChannel) {
         status[1] = await browseChannelFun(token);
         await getAllTask(token);
         await $.wait(300);
       }
-      // if (status[2]) {
-      //   status[2] = await browseCommodityFun(token);
-      //   await getAllTask(token);
-      //   await $.wait(300);
-      // }
-      if (status[3]) {
+      if (status[2] && browseCommodity) {
+        status[2] = await browseCommodityFun(token);
+        await getAllTask(token);
+        await $.wait(300);
+      }
+      if (status[3] && browseMeeting) {
         status[3] = await browseMeetingFun(token);
         await getAllTask(token);
         await $.wait(300);
