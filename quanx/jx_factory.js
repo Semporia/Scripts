@@ -1,7 +1,10 @@
 /**
  *
   参考自： https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_dreamFactory.js
+  多谢贡献： https://github.com/MoPoQAQ
   * 添加随机助力
+  * box设置不自动充能
+  * 可设置每天通知时间
   quanx:
   [task_local]
   10 * * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_dreamFactory.js, tag=京喜工厂, enabled=true
@@ -438,7 +441,17 @@ function createAssistUser() {
 
 function showMsg() {
   return new Promise((resolve) => {
-    $.msg($.name, "", `${$.result.join("\n")}`);
+    if ($.notifyTime) {
+      const notifyTimes = $.notifyTime.split(',').map(x => x.split(':'));
+      const now = $.time('HH:mm').split(':');
+      $.log(`\n${JSON.stringify(notifyTimes)}`);
+      $.log(`\n${JSON.stringify(now)}`);
+      if (notifyTimes.some(x => x[0] === now[0] && (!x[1] || x[1] === now[1]))) {
+        $.msg($.name, "", `\n${$.result.join("\n")}`);
+      }
+    } else {
+      $.msg($.name, "", `\n${$.result.join("\n")}`);
+    }
     resolve();
   });
 }
