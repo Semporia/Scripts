@@ -202,7 +202,6 @@ function getTaskList() {
           data
         );
         $.log(`\n${msg}`);
-        $.log(`\n${JSON.stringify(userTaskStatusList.filter(x=>x.taskType === 5).map(x=>x.taskName))}`);
         $.allTask = userTaskStatusList.filter(x=>x.taskType !== 5);
       } catch (e) {
         $.logErr(e, resp);
@@ -285,7 +284,7 @@ function investElectric() {
     $.get(taskUrl('userinfo/InvestElectric', `productionId=${$.info.productionInfo.productionId}`), (err, resp, data) => {
       try {
         const { msg, data: {investElectric} = {} } = JSON.parse(data);
-        $.log(`\n${msg}\n投入电力${investElectric}`);
+        $.log(`\n投入电力: ${msg}\n${data}`);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -379,7 +378,7 @@ function createAssistUser() {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${_data}`);
-          $.get(taskUrl('friend/AssistFriend',`sharepin=${escape(sharepin)}`), async (err, resp, data) => {
+          $.get(taskUrl('friend/AssistFriend',`sharepin=${escape(data.value)}`), async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
               $.log(`\n${msg}\n${data}`);
