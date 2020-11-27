@@ -243,6 +243,9 @@ function browserTask() {
         if (status[1]) {
           status[1] = await awardTask(task);
         }
+        if (!status[0] && !status[1]) {
+          break;
+        }
         // await $.wait(500)
         // await getTaskList()
       }
