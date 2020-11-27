@@ -3,6 +3,7 @@
   参考自： https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_dreamFactory.js
   多谢贡献： https://github.com/MoPoQAQ
   * 添加随机助力
+  * 自动开团助力
   * box设置不自动充能
   * 可设置每天通知时间
   quanx:
@@ -30,6 +31,7 @@ $.cookieArr = [];
 $.currentCookie = "";
 $.allTask = [];
 $.info = {};
+$.userTuanInfo = {};
 
 !(async () => {
   if (!getCookies()) return;
@@ -69,8 +71,8 @@ $.info = {};
       );
       await investElectric();
       await getTuanInfo();
-      await submitTuanId();
-      await queryTuan();
+      await submitTuanId(userName);
+      await joinTuan();
     }
   }
   await showMsg();
@@ -470,7 +472,7 @@ function submitTuanId(userName) {
   return new Promise((resolve) => {
     $.get(
       {
-        url: `https://api.ninesix.cc/jx-factory-tuan/${$.info.user.encryptPin}/${userName}`,
+        url: `https://api.ninesix.cc/jx-factory-tuan/${$.userTuanInfo.tuanId}/${userName}`,
       },
       (err, resp, _data) => {
         try {
@@ -492,7 +494,7 @@ function submitTuanId(userName) {
 function createTuan() {
   return new Promise(async (resolve) => {
     $.get(
-      taskUrl("tuan/CreateTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&_time=${new Date().getTime()}`),
+      taskUrl("tuan/CreateTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&isOpenApp=1&_time=${new Date().getTime()}`),
       async (err, resp, data) => {
         try {
           const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
@@ -508,14 +510,14 @@ function createTuan() {
   });
 }
 
-function queryTuan() {
+function joinTuan() {
   return new Promise(async (resolve) => {
     $.get({ url: "https://api.ninesix.cc/jx-factory-tuan" }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${_data}`);
         $.get(
-          taskUrl("tuan/QueryTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&tuanId=${data.value}&_time=${new Date().getTime()}`),
+          taskUrl("tuan/JoinTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&tuanId=4N_bc2tVuNS77jvmoN22jg==&_time=${new Date().getTime()}`),
           async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
