@@ -68,6 +68,9 @@ $.info = {};
         } 还需能量：${endInfo.productionInfo.needElectric - beginInfo.productionInfo.investedElectric}`
       );
       await investElectric();
+      await getTuanInfo();
+      await submitTuanId();
+      await queryTuan();
     }
   }
   await showMsg();
@@ -329,7 +332,7 @@ function investElectric() {
 function hireAward() {
   return new Promise(async (resolve) => {
     $.get(
-      taskUrl("friend/HireAward", `date=${$.time("yyyyMMdd")}`),
+      taskUrl("friend/HireAward", `_time=${new Date().getTime()}`),
       async (err, resp, data) => {
         try {
           const { msg, data: { investElectric } = {} } = JSON.parse(data);
@@ -425,6 +428,98 @@ function createAssistUser() {
             try {
               const { msg } = JSON.parse(data);
               $.log(`\n${msg}\n${data}`);
+            } catch (e) {
+              $.logErr(e, resp);
+            } finally {
+              resolve();
+            }
+          }
+        );
+      } catch (e) {
+        $.logErr(e, resp);
+      }
+    });
+  });
+}
+
+function getTuanInfo() {
+  return new Promise(async (resolve) => {
+    $.get(
+      taskUrl("tuan/QueryActiveConfig", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&_time=${new Date().getTime()}`),
+      async (err, resp, data) => {
+        try {
+          const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
+          $.log(`\n${msg}\n开团信息${data}`);
+          if (!userTuanInfo.tuanId) {
+            await createTuan();
+          } else {
+            $.userTuanInfo = userTuanInfo;
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function submitTuanId(userName) {
+  $.log("你的团码: " + $.userTuanInfo.tuanId);
+  return new Promise((resolve) => {
+    $.get(
+      {
+        url: `https://api.ninesix.cc/jx-factory-tuan/${$.info.user.encryptPin}/${userName}`,
+      },
+      (err, resp, _data) => {
+        try {
+          const { data = {} } = JSON.parse(_data);
+          $.log(`\n${data.value}\n${_data}`);
+          if (data.value) {
+            $.result.push("团码提交成功！");
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function createTuan() {
+  return new Promise(async (resolve) => {
+    $.get(
+      taskUrl("tuan/CreateTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&_time=${new Date().getTime()}`),
+      async (err, resp, data) => {
+        try {
+          const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
+          $.log(`\n${msg}\n开团信息${data}`);
+          $.userTuanInfo = userTuanInfo;
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function queryTuan() {
+  return new Promise(async (resolve) => {
+    $.get({ url: "https://api.ninesix.cc/jx-factory-tuan" }, (err, resp, _data) => {
+      try {
+        const { data = {} } = JSON.parse(_data);
+        $.log(`\n${data.value}\n${_data}`);
+        $.get(
+          taskUrl("tuan/QueryTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&tuanId=${data.value}&_time=${new Date().getTime()}`),
+          async (err, resp, data) => {
+            try {
+              const { msg } = JSON.parse(data);
+              $.log(`\n参团：${msg}\n${data}`);
             } catch (e) {
               $.logErr(e, resp);
             } finally {

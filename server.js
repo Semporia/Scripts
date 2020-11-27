@@ -23,6 +23,7 @@ var ShiJing = require('./app/models/shijing'); //获取 yiyan model 信息
 var Code = require('./app/models/code'); //获取 share code
 var Factory = require('./app/models/factory'); //获取 share code
 var JxFactory = require('./app/models/jx-factory'); //获取 share code
+var JxFactoryTuan = require('./app/models/jx-factory-tuan'); //获取 share code
 var port = process.env.PORT || 8080; // 设置启动端口
 app.set('superSecret', config.secret); // 设置app 的超级密码--用来生成摘要的密码
 const whiteList = ['https://ninesix.cc', 'https://whyour.cn', 'http://localhost:8080'];
@@ -186,10 +187,33 @@ app.get('/jx-factory/count', function (req, res) {
   })
 });
 
-app.get('/factory/remove', function (req, res) {
-  JxFactory.remove({}, function( err ){
+app.get('/jx-factory-tuan/:code/:name', function (req, res) {
+  JxFactoryTuan.findOneAndUpdate(
+    { name: req.params.name },
+    {
+      value: req.params.code,
+      name: req.params.name,
+      type: 1,
+    },
+    { upsert: true, new: true, setDefaultsOnInsert: true },
+    (err, data) => {
+      res.send({ code: 200, data });
+    }
+  );
+});
+
+app.get('/jx-factory-tuan', function (req, res) {
+  JxFactoryTuan.aggregate([{ $sample: { size: 1 } }], function (err, data) {
     if (err) throw err;
-    res.send({ code: 200 });
+    res.send({ code: 200, data: data[0] });
+  });
+
+});
+
+app.get('/jx-factory-tuan/count', function (req, res) {
+  JxFactoryTuan.count({}, function( err, count){
+    if (err) throw err;
+    res.send({ code: 200, data: count });
   })
 });
 
