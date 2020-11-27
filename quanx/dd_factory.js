@@ -3,18 +3,17 @@
   参考自： https://raw.githubusercontent.com/799953468/Quantumult-X/master/Scripts/JD/jd_factory.js
   增加随机助力，每次随机助力一位
   增加box自动充电配置
-  拷贝定时任务时删掉 *\/1 中的 \
   quanx:
   [task_local]
-  0 *\/1 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/dd_factory.js, tag=东东工厂, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png enabled=true
+  0 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/dd_factory.js, tag=东东工厂, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png enabled=true
 
   loon:
   [Script]
-  cron "0 *\/1 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/dd_factory.js, tag=东东工厂
+  cron "0 * * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/dd_factory.js, tag=东东工厂
 
   surge:
   [Script]
-  东东工厂 = type=cron,cronexp=0 *\/1 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/dd_factory.js,
+  东东工厂 = type=cron,cronexp=0 * * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/dd_factory.js,
  *
  *  
  **/
@@ -314,6 +313,7 @@ function browserMeetingFun(token, cookie, task) {
   return new Promise((resolve) => {
     if (parseInt(task.times) >= parseInt(task.maxTimes)) {
       resolve();
+      return;
     }
     $.post(
       taskPostUrl("jdfactory_collectScore", { taskToken: token }, cookie),
@@ -336,6 +336,7 @@ function followShopFun(shopId, shopTask) {
   return new Promise((resolve) => {
     if (parseInt(shopTask.times) >= parseInt(shopTask.maxTimes)) {
       resolve();
+      return;
     }
     $.post(
       taskPostUrl("followShop", {

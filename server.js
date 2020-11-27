@@ -22,6 +22,7 @@ var LunYu = require('./app/models/lunyu'); //获取 yiyan model 信息
 var ShiJing = require('./app/models/shijing'); //获取 yiyan model 信息
 var Code = require('./app/models/code'); //获取 share code
 var Factory = require('./app/models/factory'); //获取 share code
+var JxFactory = require('./app/models/jx-factory'); //获取 share code
 var port = process.env.PORT || 8080; // 设置启动端口
 app.set('superSecret', config.secret); // 设置app 的超级密码--用来生成摘要的密码
 const whiteList = ['https://ninesix.cc', 'https://whyour.cn', 'http://localhost:8080'];
@@ -142,7 +143,7 @@ app.get('/factory', function (req, res) {
 });
 
 app.get('/factory/count', function (req, res) {
-  Factory.count({}, function( err, count){
+  Factory.count({type:1}, function( err, count){
     if (err) throw err;
     res.send({ code: 200, data: count });
   })
@@ -150,6 +151,43 @@ app.get('/factory/count', function (req, res) {
 
 app.get('/factory/remove', function (req, res) {
   Factory.remove({}, function( err ){
+    if (err) throw err;
+    res.send({ code: 200 });
+  })
+});
+
+app.get('/jx-factory/:code/:name', function (req, res) {
+  JxFactory.findOneAndUpdate(
+    { name: req.params.name },
+    {
+      value: req.params.code,
+      name: req.params.name,
+      type: 1,
+    },
+    { upsert: true, new: true, setDefaultsOnInsert: true },
+    (err, data) => {
+      res.send({ code: 200, data });
+    }
+  );
+});
+
+app.get('/jx-factory', function (req, res) {
+  JxFactory.aggregate([{ $sample: { size: 1 } }], function (err, data) {
+    if (err) throw err;
+    res.send({ code: 200, data: data[0] });
+  });
+
+});
+
+app.get('/jx-factory/count', function (req, res) {
+  JxFactory.count({}, function( err, count){
+    if (err) throw err;
+    res.send({ code: 200, data: count });
+  })
+});
+
+app.get('/factory/remove', function (req, res) {
+  JxFactory.remove({}, function( err ){
     if (err) throw err;
     res.send({ code: 200 });
   })
