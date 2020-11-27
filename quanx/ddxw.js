@@ -58,7 +58,7 @@ $.drawCenterInfo = {};
       await getDrawCenter($.tokens[i]);
       await drawTask($.tokens[i]);
       await getAllTask($.tokens[i]);
-      await getValid();
+      if(!getValid()) return;
       await signIn($.tokens[i]);
       await browseTasks($.tokens[i]);
       await gameTask($.tokens[i]);
