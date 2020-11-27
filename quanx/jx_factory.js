@@ -170,7 +170,7 @@ function collectElectricity(facId, master) {
     $.get(
       taskUrl(
         "generator/CollectCurrentElectricity",
-        `factoryid=${facId}&master=${master}`
+        `factoryid=${facId}&master=${master ? master : ""}`
       ),
       (err, resp, data) => {
         try {
