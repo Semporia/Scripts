@@ -106,7 +106,11 @@ function getUserInfo() {
           productionInfo: productionList[0],
           user,
         };
-        resolve($.info)
+        resolve({
+          factoryInfo: factoryList[0],
+          productionInfo: productionList[0],
+          user,
+        })
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -251,7 +255,7 @@ function browserTask() {
 function awardTask({ taskId, taskName, completedTimes, configTargetTimes }) {
   return new Promise(async (resolve) => {
     if (parseInt(completedTimes) >= parseInt(configTargetTimes)) {
-      resolve();
+      resolve(false);
       $.log(`\n${taskName}[领奖励]： mission success`);
       return;
     }
@@ -272,7 +276,7 @@ function awardTask({ taskId, taskName, completedTimes, configTargetTimes }) {
 function doTask({ taskId, completedTimes, configTargetTimes, taskName }) {
   return new Promise(async (resolve) => {
     if (parseInt(completedTimes) >= parseInt(configTargetTimes)) {
-      resolve();
+      resolve(false);
       $.log(`\n${taskName}[做任务]： mission success`);
       return;
     }
@@ -294,6 +298,7 @@ function investElectric() {
   return new Promise(async (resolve) => {
     if (!$.autoCharge) {
       $.result.push('未打开自动投入')
+      resolve();
       return;
     }
     $.get(
