@@ -101,6 +101,7 @@ function getUserInfo() {
         } = JSON.parse(data);
         $.log(`\n${msg}\n${data}`);
         $.info = {
+          ...$.info,
           factoryInfo: factoryList[0],
           productionInfo: productionList[0],
           user,
