@@ -23,7 +23,7 @@ const $ = new Env("京东赚赚");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://api.m.jd.com";
 $.tokens = [$.getdata("jdzz_token1") || "", $.getdata("jdzz_token2") || ""];
-$.exchangePrize = parseInt($.getdata("jd_zzExchangePrize"));
+$.exchangePrize = parseInt($.getdata("jd_zzExchangePrize")) || 0;
 $.result = [];
 $.cookieArr = [];
 $.allTask = [];
@@ -178,6 +178,7 @@ function exchangePrize(token) {
   return new Promise((resolve) => {
     if ($.exchangePrize === 0) {
       resolve();
+      return;
     }
     const { prizeId } = $.allExchangeList[$.exchangePrize - 1];
     $.post(

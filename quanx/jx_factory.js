@@ -24,7 +24,7 @@ $.autoCharge = $.getdata("jd_autoCharge")
 $.notifyTime = $.getdata("jd_notifyTime");
 $.result = [];
 $.cookieArr = [];
-$.currentCookie = '';
+$.currentCookie = "";
 $.allTask = [];
 $.info = {};
 
@@ -34,7 +34,8 @@ $.info = {};
     $.currentCookie = $.cookieArr[i];
     if ($.currentCookie) {
       const userName = decodeURIComponent(
-        $.currentCookie.match(/pt_pin=(.+?);/) && $.currentCookie.match(/pt_pin=(.+?);/)[1]
+        $.currentCookie.match(/pt_pin=(.+?);/) &&
+          $.currentCookie.match(/pt_pin=(.+?);/)[1]
       );
       $.log(`\n开始【京东账号${i + 1}】${userName}`);
       await getUserInfo();
@@ -201,8 +202,8 @@ function getTaskList() {
         const { ret, data: { userTaskStatusList = [] } = {}, msg } = JSON.parse(
           data
         );
-        $.log(`\n${msg}`);
-        $.allTask = userTaskStatusList.filter(x=>x.taskType !== 5);
+        $.log(`\n获取任务列表 ${msg}`);
+        $.allTask = userTaskStatusList;
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -214,41 +215,41 @@ function getTaskList() {
 
 function browserTask() {
   return new Promise(async (resolve) => {
-    const times = Math.max(
-      ...[...$.allTask].map(x=>x.configTargetTimes)
-    );
+    const times = Math.max(...[...$.allTask].map((x) => x.configTargetTimes));
     for (let i = 0; i < $.allTask.length; i++) {
       const task = $.allTask[i];
+      $.log(`\n开始第${i}个任务：${task.taskName}`);
       const status = [true, true];
       for (let i = 0; i < times; i++) {
-        await $.wait(500)
+        await $.wait(500);
         if (status[0]) {
-          status[0] = await doTask(task)
+          status[0] = await doTask(task);
         }
-        await $.wait(500)
+        await $.wait(500);
         if (status[1]) {
-          status[1] = await awardTask(task)
+          status[1] = await awardTask(task);
         }
         // await $.wait(500)
         // await getTaskList()
       }
+      $.log(`\n结束第${i}个任务：${task.taskName}`);
     }
     resolve();
   });
 }
 
-function awardTask({taskId, taskName, completedTimes, configTargetTimes}) {
+function awardTask({ taskId, taskName, completedTimes, configTargetTimes }) {
   return new Promise(async (resolve) => {
     if (parseInt(completedTimes) >= parseInt(configTargetTimes)) {
       resolve();
-      $.log(`\n${taskName}： mission success`);
+      $.log(`\n${taskName}[领奖励]： mission success`);
       return;
     }
     $.get(taskListUrl("Award", `taskId=${taskId}`), (err, resp, data) => {
       try {
         const { msg, ret } = JSON.parse(data);
-        $.log(`\n${taskName}： ${msg}\n${data}`);
-        resolve(ret === 0)
+        $.log(`\n${taskName}[领奖励]： ${msg}\n${data}`);
+        resolve(ret === 0);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -258,18 +259,18 @@ function awardTask({taskId, taskName, completedTimes, configTargetTimes}) {
   });
 }
 
-function doTask({taskId,completedTimes,configTargetTimes,taskName}) {
+function doTask({ taskId, completedTimes, configTargetTimes, taskName }) {
   return new Promise(async (resolve) => {
     if (parseInt(completedTimes) >= parseInt(configTargetTimes)) {
       resolve();
-      $.log(`\n${taskName}： mission success`);
+      $.log(`\n${taskName}[做任务]： mission success`);
       return;
     }
     $.get(taskListUrl("DoTask", `taskId=${taskId}`), (err, resp, data) => {
       try {
         const { msg, ret } = JSON.parse(data);
-        $.log(`\n${taskName}： ${msg}\n${data}`);
-        resolve(ret === 0)
+        $.log(`\n${taskName}[做任务]： ${msg}\n${data}`);
+        resolve(ret === 0);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -280,72 +281,91 @@ function doTask({taskId,completedTimes,configTargetTimes,taskName}) {
 }
 
 function investElectric() {
-  return new Promise(async resolve => {
-    $.get(taskUrl('userinfo/InvestElectric', `productionId=${$.info.productionInfo.productionId}`), (err, resp, data) => {
-      try {
-        const { msg, data: {investElectric} = {} } = JSON.parse(data);
-        $.log(`\n投入电力: ${msg}\n${data}`);
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
+  return new Promise(async (resolve) => {
+    $.get(
+      taskUrl(
+        "userinfo/InvestElectric",
+        `productionId=${$.info.productionInfo.productionId}`
+      ),
+      (err, resp, data) => {
+        try {
+          const { msg, data: { investElectric } = {} } = JSON.parse(data);
+          $.log(
+            `\n投入电力: ${
+              investElectric ? investElectric : ""
+            } ${msg}\n${data}`
+          );
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
       }
-    })
-  })
+    );
+  });
 }
 
 function hireAward() {
-  return new Promise(async resolve => {
-    $.get(taskUrl('friend/HireAward',`date=${$.time("yyyyMMdd")}`), async (err, resp, data) => {
-      try {
-        const { msg, data: {investElectric} = {} } = JSON.parse(data);
-        $.log(`\n${msg}\n收取打工电力${data}`);
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
+  return new Promise(async (resolve) => {
+    $.get(
+      taskUrl("friend/HireAward", `date=${$.time("yyyyMMdd")}`),
+      async (err, resp, data) => {
+        try {
+          const { msg, data: { investElectric } = {} } = JSON.parse(data);
+          $.log(`\n${msg}\n收取打工电力${data}`);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
       }
-    })
-  })
+    );
+  });
 }
 
 function stealFriend() {
-  return new Promise(async resolve => {
-    $.get(taskUrl('friend/QueryFactoryManagerList'), async (err, resp, data) => {
-      try {
-        const { msg, data: { list = [] } = {} } = JSON.parse(data);
-        $.log(`\n${msg}\n工厂好友${data}`);
-        const canCollectFriends = list.map(x => x.collectFlag === 1);
-        for (let i = 0; i < canCollectFriends.length; i++) {
-          const {encryptPin, key} = canCollectFriends[i];
-          const facId = await getFactoryIdByPin(encryptPin);
-          if (facId) {
-            await collectElectricity(facId, key)
+  return new Promise(async (resolve) => {
+    $.get(
+      taskUrl("friend/QueryFactoryManagerList"),
+      async (err, resp, data) => {
+        try {
+          const { msg, data: { list = [] } = {} } = JSON.parse(data);
+          $.log(`\n${msg}\n工厂好友${data}`);
+          const canCollectFriends = list.filter((x) => x.collectFlag === 1);
+          for (let i = 0; i < canCollectFriends.length; i++) {
+            const { encryptPin, key } = canCollectFriends[i];
+            const facId = await getFactoryIdByPin(encryptPin);
+            if (facId) {
+              await collectElectricity(facId, key);
+            }
           }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
       }
-    })
-  })
+    );
+  });
 }
 
 function getFactoryIdByPin(pin) {
   return new Promise((resolve, reject) => {
-    $.get(taskUrl('userinfo/GetUserInfoByPin',`pin=${pin}`), (err, resp, data) => {
-      try {
-        const { msg, data: {factoryList=[]} = {} } = JSON.parse(data);
-        $.log(`\n${msg}\n${data}`);
-        resolve(factoryList[0].factoryId);
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
+    $.get(
+      taskUrl("userinfo/GetUserInfoByPin", `pin=${pin}`),
+      (err, resp, data) => {
+        try {
+          const { msg, data: { factoryList = [] } = {} } = JSON.parse(data);
+          $.log(`\n${msg}\n${data}`);
+          resolve(factoryList[0].factoryId);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
       }
-    })
-  })
+    );
+  });
 }
 
 function submitInviteId(userName) {
@@ -378,7 +398,9 @@ function createAssistUser() {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${_data}`);
-          $.get(taskUrl('friend/AssistFriend',`sharepin=${escape(data.value)}`), async (err, resp, data) => {
+        $.get(
+          taskUrl("friend/AssistFriend", `sharepin=${escape(data.value)}`),
+          async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
               $.log(`\n${msg}\n${data}`);
@@ -387,11 +409,19 @@ function createAssistUser() {
             } finally {
               resolve();
             }
-          })
+          }
+        );
       } catch (e) {
         $.logErr(e, resp);
       }
     });
+  });
+}
+
+function showMsg() {
+  return new Promise((resolve) => {
+    $.msg($.name, "", `${$.result.join("\n")}`);
+    resolve();
   });
 }
 
@@ -400,14 +430,13 @@ function taskUrl(function_path, body) {
     url: `${JD_API_HOST}dreamfactory/${function_path}?zone=dream_factory&sceneval=2&g_login_type=1&${body}`,
     headers: {
       Cookie: $.currentCookie,
-      Host: "m.jingxi.com",
-      Accept: "*/*",
-      Connection: "keep-alive",
-      "User-Agent":
-        "jdpingou;iPhone;3.14.4;14.0;ae75259f6ca8378672006fc41079cd8c90c53be8;network/wifi;model/iPhone10,2;appBuild/100351;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/1;hasOCPay/0;supportBestPay/0;session/62;pap/JA2015_311210;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
-      "Accept-Language": "zh-cn",
-      Referer: "https://wqsd.jd.com/pingou/dream_factory/index.html",
-      "Accept-Encoding": "gzip, deflate, br",
+      Accept: `*/*`,
+      Connection: `keep-alive`,
+      Referer: `https://wqsd.jd.com/pingou/dream_factory/index.html?jxsid=16064615029143314965&exchange=&ptag=139045.1.2&from_source=outer&jump_rd=17088.24.47&deepLink=1`,
+      "Accept-Encoding": `gzip, deflate, br`,
+      Host: `wq.jd.com`,
+      "User-Agent": `jdpingou;iPhone;3.15.2;14.2.1;ea00763447803eb0f32045dcba629c248ea53bb3;network/3g;model/iPhone13,2;appBuild/100365;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/4;pap/JA2015_311210;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+      "Accept-Language": `zh-cn`,
     },
   };
 }
@@ -417,14 +446,13 @@ function taskListUrl(function_path, body) {
     url: `${JD_API_HOST}newtasksys/newtasksys_front/${function_path}?source=dreamfactory&bizCode=dream_factory&sceneval=2&g_login_type=1${body}`,
     headers: {
       Cookie: $.currentCookie,
-      Host: "m.jingxi.com",
-      Accept: "*/*",
-      Connection: "keep-alive",
-      "User-Agent":
-        "jdpingou;iPhone;3.14.4;14.0;ae75259f6ca8378672006fc41079cd8c90c53be8;network/wifi;model/iPhone10,2;appBuild/100351;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/1;hasOCPay/0;supportBestPay/0;session/62;pap/JA2015_311210;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
-      "Accept-Language": "zh-cn",
-      Referer: "https://wqsd.jd.com/pingou/dream_factory/index.html",
-      "Accept-Encoding": "gzip, deflate, br",
+      Accept: `*/*`,
+      Connection: `keep-alive`,
+      Referer: `https://wqsd.jd.com/pingou/dream_factory/index.html?jxsid=16064615029143314965&exchange=&ptag=139045.1.2&from_source=outer&jump_rd=17088.24.47&deepLink=1`,
+      "Accept-Encoding": `gzip, deflate, br`,
+      Host: `wq.jd.com`,
+      "User-Agent": `jdpingou;iPhone;3.15.2;14.2.1;ea00763447803eb0f32045dcba629c248ea53bb3;network/3g;model/iPhone13,2;appBuild/100365;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/4;pap/JA2015_311210;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+      "Accept-Language": `zh-cn`,
     },
   };
 }
