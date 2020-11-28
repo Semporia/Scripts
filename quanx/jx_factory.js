@@ -270,7 +270,7 @@ function awardTask({ taskId, taskName }) {
     $.get(taskListUrl("Award", `taskId=${taskId}`), (err, resp, data) => {
       try {
         const { msg, ret } = JSON.parse(data);
-        $.log(`\n${taskName}[领奖励]：${msg.include('活动太火爆了') ? '任务进行中或者未到任务时间' : msg}\n${$.showLog ? data : ''}`);
+        $.log(`\n${taskName}[领奖励]：${msg.indexOf('活动太火爆了') !== -1 ? '任务进行中或者未到任务时间' : msg}\n${$.showLog ? data : ''}`);
         resolve(ret === 0);
       } catch (e) {
         $.logErr(e, resp);
@@ -291,7 +291,7 @@ function doTask({ taskId, completedTimes, configTargetTimes, taskName }) {
     $.get(taskListUrl("DoTask", `taskId=${taskId}`), (err, resp, data) => {
       try {
         const { msg, ret } = JSON.parse(data);
-        $.log(`\n${taskName}[做任务]： ${msg.include('活动太火爆了') ? '任务进行中或者未到任务时间' : msg}\n${$.showLog ? data : ''}`);
+        $.log(`\n${taskName}[做任务]： ${msg.indexOf('活动太火爆了') !== -1 ? '任务进行中或者未到任务时间' : msg}\n${$.showLog ? data : ''}`);
         resolve(ret === 0);
       } catch (e) {
         $.logErr(e, resp);
