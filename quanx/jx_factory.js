@@ -475,9 +475,9 @@ function getTuanInfo() {
       taskUrl("tuan/QueryActiveConfig", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&_time=${new Date().getTime()}`),
       async (err, resp, data) => {
         try {
-          const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
+          const { msg, data: { userTuanInfo, activeInfo = {} } = {} } = JSON.parse(data);
           $.log(`\n获取开团信息：${msg}\n${$.showLog ? data : ''}`);
-          if (!userTuanInfo.tuanId) {
+          if (!userTuanInfo.tuanId || activeInfo.endTime < Math.ceil(new Date().getTime() / 1000)) {
             await createTuan();
           } else {
             $.userTuanInfo = userTuanInfo;
