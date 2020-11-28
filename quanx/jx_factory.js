@@ -73,7 +73,7 @@ $.userTuanInfo = {};
         } 还需能量：${endInfo.productionInfo.needElectric - beginInfo.productionInfo.investedElectric}`
       );
       await investElectric();
-      await getTuanInfo();
+      await getTuanId();
       await submitTuanId(userName);
       await joinTuan();
     }
@@ -469,18 +469,44 @@ function createAssistUser() {
   });
 }
 
-function getTuanInfo() {
+function getTuanId() {
   return new Promise(async (resolve) => {
     $.get(
       taskUrl("tuan/QueryActiveConfig", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&_time=${new Date().getTime()}`),
       async (err, resp, data) => {
         try {
-          const { msg, data: { userTuanInfo, activeInfo = {} } = {} } = JSON.parse(data);
+          const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
           $.log(`\n获取开团信息：${msg}\n${$.showLog ? data : ''}`);
-          if (!userTuanInfo.tuanId || activeInfo.endTime < Math.ceil(new Date().getTime() / 1000)) {
+          if (!userTuanInfo.tuanId) {
             await createTuan();
           } else {
-            $.userTuanInfo = userTuanInfo;
+            const tuanInfo = await getTuanInfo(`tuanId=${userTuanInfo.tuanId}`);
+            if (tuanInfo.endTime < Math.ceil(new Date().getTime() / 1000)) {
+              await createTuan();
+            } else {
+              $.userTuanInfo = tuanInfo;
+            }
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function getTuanInfo(body) {
+  return new Promise(async (resolve) => {
+    $.get(
+      taskUrl("tuan/QueryTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&${body}&_time=${new Date().getTime()}`),
+      async (err, resp, data) => {
+        try {
+          const { msg, data: { tuanInfo = [] } = {} } = JSON.parse(data);
+          $.log(`\n获取开团信息：${msg}\n${$.showLog ? data : ''}`);
+          if (tuanInfo && tuanInfo[0]) {
+            resolve(tuanInfo[0])
           }
         } catch (e) {
           $.logErr(e, resp);
