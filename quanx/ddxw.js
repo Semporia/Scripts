@@ -36,6 +36,9 @@ $.tokens = [
 $.woBLottery = $.getdata("jd_wob_lottery")
   ? $.getdata("jd_wob_lottery") === "true"
   : false;
+$.showLog = $.getdata("xw_showLog")
+  ? $.getdata("xw_showLog") === "true"
+  : false;
 $.result = [];
 $.cookieArr = [];
 $.allTask = [];
@@ -111,7 +114,7 @@ function submitInviteId(inviteId, userName) {
     $.get({ url: `https://api.ninesix.cc/code/${inviteId}/${userName}` }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
-        $.log(`\n${data.value}\n${_data}`);
+        $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         if (data.value) {
           $.result.push('邀请码提交成功！')
         }
@@ -134,7 +137,7 @@ function getToken(name, i, cookie) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
           $.tokens[i] = head.token;
           $.setdata(head.token, `jd_ddxw_token${i + 1}`);
           resolve(head.token);
@@ -158,7 +161,7 @@ function checkToken(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
           resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);
@@ -189,7 +192,7 @@ function getUserName(cookie, i) {
     $.post(url, async (err, resp, _data) => {
       try {
         const { data } = JSON.parse(_data);
-        $.log(`\n${data.msg}\n${_data}`);
+        $.log(`\n${data.msg}\n${$.showLog ? _data : ''}`);
         $.userNames[i] = data;
         $.setdata(data, `jd_ddxw_name${i + 1}`);
         resolve(data);
@@ -258,7 +261,7 @@ function draw(token, i) {
       (err, resp, data) => {
         try {
           const { head = {}, body = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
           $.result.push(
             `第${i + 1}次抽奖：${body.name ? body.name : head.msg}`
           );
@@ -309,7 +312,7 @@ function game(token, i, id) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -328,7 +331,7 @@ function signIn(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -345,7 +348,7 @@ function createAssistUser(token) {
     $.get({ url: 'https://api.ninesix.cc/code' }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
-        $.log(`\n${data.value}\n${_data}`);
+        $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(
           taskUrl(
             `ssjj-task-record/createAssistUser/${data.value}/${invite.ssjjTaskInfo.id}`,
@@ -355,7 +358,7 @@ function createAssistUser(token) {
           (err, resp, data) => {
             try {
               const { head = {} } = JSON.parse(data);
-              $.log(`\n${head.msg}\n${data}`);
+              $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
             } catch (e) {
               $.logErr(e, resp);
             } finally {
@@ -378,7 +381,7 @@ function getInviteId(token) {
       async (err, resp, data) => {
         try {
           const { body = {}, head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
           $.log(`\n你的shareID：${body.id}`);
           resolve(body.id);
         } catch (e) {
@@ -403,7 +406,7 @@ function followShops(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -426,7 +429,7 @@ function followChannels(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -514,7 +517,7 @@ function browseShopFun(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
           $.log(`\n${head.code === 200}`);
           resolve(head.code === 200);
         } catch (e) {
@@ -542,7 +545,7 @@ function browseChannelFun(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
           resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);
@@ -571,7 +574,7 @@ function browseCommodityFun(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
           resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);
@@ -598,7 +601,7 @@ function browseMeetingFun(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${data}`);
+          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
           resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);

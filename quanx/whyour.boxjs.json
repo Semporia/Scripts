@@ -171,6 +171,13 @@
       "keys": ["jd_ddxw_name1", "jd_ddxw_name2", "jd_ddxw_token1", "jd_ddxw_token2"],
       "settings": [
         {
+          "id": "xw_showLog",
+          "name": "日志开关",
+          "val": false,
+          "type": "boolean",
+          "desc": "是否打开接口返回详情日志打印"
+        },
+        {
           "id": "jd_wob_lottery",
           "name": "窝币抽奖",
           "val": false,
@@ -191,6 +198,13 @@
       "name": "京东赚赚小程序",
       "keys": ["jdzz_token1", "jdzz_token2"],
       "settings":[
+        {
+          "id": "zz_showLog",
+          "name": "日志开关",
+          "val": false,
+          "type": "boolean",
+          "desc": "是否打开接口返回详情日志打印"
+        },
         {
           "id": "jd_zzExchangePrize",
           "name": "是否兑换红包",
@@ -270,6 +284,13 @@
       "name": "东东工厂",
       "settings": [
         {
+          "id": "dd_showLog",
+          "name": "日志开关",
+          "val": false,
+          "type": "boolean",
+          "desc": "是否打开接口返回详情日志打印"
+        },
+        {
           "id": "dd_autoCharge",
           "name": "自动充电",
           "val": false,
@@ -296,6 +317,13 @@
       "id": "jd_jxgc",
       "name": "京喜工厂",
       "settings": [
+        {
+          "id": "jx_showLog",
+          "name": "日志开关",
+          "val": false,
+          "type": "boolean",
+          "desc": "是否打开接口返回详情日志打印"
+        },
         {
           "id": "jx_autoCharge",
           "name": "自动充能",

@@ -24,6 +24,9 @@ const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://api.m.jd.com";
 $.tokens = [$.getdata("jdzz_token1") || "", $.getdata("jdzz_token2") || ""];
 $.exchangePrize = parseInt($.getdata("jd_zzExchangePrize")) || 0;
+$.showLog = $.getdata("zz_showLog")
+  ? $.getdata("zz_showLog") === "true"
+  : false;
 $.result = [];
 $.cookieArr = [];
 $.allTask = [];
@@ -89,7 +92,7 @@ function getAllTask(token) {
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
-          $.log(`\n${message}\n${_data}`);
+          $.log(`\n${message}\n${$.showLog ? _data : ''}`);
           $.allTask = data.taskDetailResList.filter((x) => x.taskId !== 3);
         } catch (e) {
           $.logErr(e, resp);
@@ -108,7 +111,7 @@ function getHomeInfo(token) {
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
-          $.log(`\n${message}\n${_data}`);
+          $.log(`\n${message}\n${$.showLog ? _data : ''}`);
           resolve({ totalBeanNum: data.totalBeanNum, totalNum: data.totalNum });
         } catch (e) {
           $.logErr(e, resp);
@@ -144,7 +147,7 @@ function doTask(task, token) {
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
-          $.log(`\n${task.taskName}：${message}\n${_data}`);
+          $.log(`\n${task.taskName}：${message}\n${$.showLog ? _data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -162,7 +165,7 @@ function getExchangePrizeList(token) {
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
-          $.log(`\n${message}\n${_data}`);
+          $.log(`\n${message}\n${$.showLog ? _data : ''}`);
           $.allExchangeList = data.exchangePrizeList;
         } catch (e) {
           $.logErr(e, resp);
@@ -186,7 +189,7 @@ function exchangePrize(token) {
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
-          $.log(`\n${message}\n${_data}`);
+          $.log(`\n${message}\n${$.showLog ? _data : ''}`);
           $.result.push(`${message}`)
         } catch (e) {
           $.logErr(e, resp);

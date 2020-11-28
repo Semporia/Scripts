@@ -24,6 +24,9 @@ const JD_API_HOST = "https://api.m.jd.com/client.action";
 $.autoCharge = $.getdata("dd_autoCharge")
   ? $.getdata("dd_autoCharge") === "true"
   : false;
+$.showLog = $.getdata("dd_showLog")
+  ? $.getdata("dd_showLog") === "true"
+  : false;
 $.notifyTime = $.getdata("dd_notifyTime");
 $.result = [];
 $.cookieArr = [];
@@ -231,7 +234,7 @@ function submitInviteId(userName) {
       (err, resp, _data) => {
         try {
           const { data = {} } = JSON.parse(_data);
-          $.log(`\n${data.value}\n${_data}`);
+          $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
           if (data.value) {
             $.result.push("邀请码提交成功！");
           }
@@ -250,7 +253,7 @@ function createAssistUser(cookie) {
     $.get({ url: "https://api.ninesix.cc/factory" }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
-        $.log(`\n${data.value}\n${_data}`);
+        $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.post(
           taskPostUrl(
             "jdfactory_collectScore",
@@ -260,7 +263,7 @@ function createAssistUser(cookie) {
           (err, resp, _data) => {
             try {
               const { data: { bizMsg } = {}, msg } = JSON.parse(_data);
-              $.log(`\n${bizMsg || msg}\n${_data}`);
+              $.log(`\n${bizMsg || msg}\n${$.showLog ? _data : ''}`);
             } catch (e) {
               $.logErr(e, resp);
             } finally {
@@ -298,7 +301,7 @@ function queryVkComponent(cookie) {
       (err, resp, _data) => {
         try {
           const { data: { bizMsg } = {}, msg } = JSON.parse(_data);
-          $.log(`\n${bizMsg || msg}\n${_data}`);
+          $.log(`\n${bizMsg || msg}\n${$.showLog ? _data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -320,7 +323,7 @@ function browserMeetingFun(token, cookie, task) {
       (err, resp, _data) => {
         try {
           const { data: { bizCode, bizMsg } = {}, msg } = JSON.parse(_data);
-          $.log(`\n${task.taskName}  ${bizMsg || msg}\n${_data}`);
+          $.log(`\n${task.taskName}  ${bizMsg || msg}\n${$.showLog ? _data : ''}`);
           resolve(bizCode === 0);
         } catch (e) {
           $.logErr(e, resp);
@@ -348,7 +351,7 @@ function followShopFun(shopId, shopTask) {
       (err, resp, _data) => {
         try {
           const { data: { bizMsg } = {}, msg } = JSON.parse(_data);
-          $.log(`\n${shopTask.taskName}  ${bizMsg || msg}\n${_data}`);
+          $.log(`\n${shopTask.taskName}  ${bizMsg || msg}\n${$.showLog ? _data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -373,7 +376,7 @@ function addEnergy(cookie) {
               data: { bizMsg },
               msg,
             } = JSON.parse(_data);
-            $.log(`\n${bizMsg || msg}\n${_data}`);
+            $.log(`\n${bizMsg || msg}\n${$.showLog ? _data : ''}`);
           } catch (e) {
             $.logErr(e, resp);
           } finally {
@@ -396,7 +399,7 @@ function collectElectricity(cookie) {
             data: { bizMsg },
             msg,
           } = JSON.parse(_data);
-          $.log(`\n${bizMsg || msg}\n${_data}`);
+          $.log(`\n${bizMsg || msg}\n${$.showLog ? _data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {

@@ -23,7 +23,10 @@ const $ = new Env("京喜工厂");
 const JD_API_HOST = "https://wq.jd.com/";
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 $.autoCharge = $.getdata("jx_autoCharge")
-  ? $.getdata("jd_autoCharge") === "true"
+  ? $.getdata("jx_autoCharge") === "true"
+  : false;
+$.showLog = $.getdata("jx_showLog")
+  ? $.getdata("jx_showLog") === "true"
   : false;
 $.notifyTime = $.getdata("jx_notifyTime");
 $.result = [];
@@ -107,7 +110,7 @@ function getUserInfo() {
           data: { factoryList = [], productionList = [], user = {} } = {},
           msg,
         } = JSON.parse(data);
-        $.log(`\n${msg}\n${data}`);
+        $.log(`\n获取用户信息：${msg}\n${$.showLog ? data : ''}`);
         $.info = {
           ...$.info,
           factoryInfo: factoryList[0],
@@ -140,7 +143,7 @@ function getCommodityDetail() {
           const { ret, data: { commodityList = [] } = {}, msg } = JSON.parse(
             data
           );
-          $.log(`\n${msg}\n${data}`);
+          $.log(`\n获取商品详情：${msg}\n${$.showLog ? data : ''}`);
           $.info.commodityInfo = commodityList[0];
         } catch (e) {
           $.logErr(e, resp);
@@ -170,7 +173,7 @@ function getCurrentElectricity() {
             } = {},
             msg,
           } = JSON.parse(data);
-          $.log(`\n${msg}\n${data}`);
+          $.log(`\n获取当前能量：${msg}\n${$.showLog ? data : ''}`);
           if (
             currentElectricityQuantity === maxElectricityQuantity &&
             doubleElectricityFlag
@@ -201,11 +204,10 @@ function collectElectricity(facId, master) {
             data: { CollectElectricity, loginPinCollectElectricity } = {},
             msg,
           } = JSON.parse(data);
-          $.log(`\n${msg}\n${data}`);
           $.log(
             `${
               master ? "偷取好友" : "收取"
-            } ${CollectElectricity} 电力，获得 ${loginPinCollectElectricity} 电力`
+            } ${CollectElectricity} 电力 ${msg} \n${$.showLog ? data : ''}`
           );
         } catch (e) {
           $.logErr(e, resp);
@@ -224,8 +226,8 @@ function getTaskList() {
         const { ret, data: { userTaskStatusList = [] } = {}, msg } = JSON.parse(
           data
         );
-        $.log(`\n获取任务列表 ${msg}`);
         $.allTask = userTaskStatusList.filter(x => x.awardStatus !== 1);
+        $.log(`\n获取任务列表 ${msg}，总共${$.allTask.length}个任务！`);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -240,7 +242,7 @@ function browserTask() {
     const times = Math.max(...[...$.allTask].map((x) => x.configTargetTimes));
     for (let i = 0; i < $.allTask.length; i++) {
       const task = $.allTask[i];
-      $.log(`\n开始第${i}个任务：${task.taskName}`);
+      $.log(`\n开始第${i+1}个任务：${task.taskName}`);
       const status = [true, true];
       for (let i = 0; i < times; i++) {
         await $.wait(500);
@@ -257,7 +259,7 @@ function browserTask() {
         // await $.wait(500)
         // await getTaskList()
       }
-      $.log(`\n结束第${i}个任务：${task.taskName}`);
+      $.log(`\n结束第${i+1}个任务：${task.taskName}`);
     }
     resolve();
   });
@@ -268,7 +270,7 @@ function awardTask({ taskId, taskName }) {
     $.get(taskListUrl("Award", `taskId=${taskId}`), (err, resp, data) => {
       try {
         const { msg, ret } = JSON.parse(data);
-        $.log(`\n${taskName}[领奖励]： ${msg}\n${data}`);
+        $.log(`\n${taskName}[领奖励]：${msg.include('活动太火爆了') ? '任务进行中或者未到任务时间' : msg}\n${$.showLog ? data : ''}`);
         resolve(ret === 0);
       } catch (e) {
         $.logErr(e, resp);
@@ -289,7 +291,7 @@ function doTask({ taskId, completedTimes, configTargetTimes, taskName }) {
     $.get(taskListUrl("DoTask", `taskId=${taskId}`), (err, resp, data) => {
       try {
         const { msg, ret } = JSON.parse(data);
-        $.log(`\n${taskName}[做任务]： ${msg}\n${data}`);
+        $.log(`\n${taskName}[做任务]： ${msg.include('活动太火爆了') ? '任务进行中或者未到任务时间' : msg}\n${$.showLog ? data : ''}`);
         resolve(ret === 0);
       } catch (e) {
         $.logErr(e, resp);
@@ -318,7 +320,7 @@ function investElectric() {
           $.log(
             `\n投入电力: ${
               investElectric ? investElectric : ""
-            } ${msg}\n${data}`
+            } ${msg}\n${$.showLog ? data : ''}`
           );
           $.result.push(`本次投入电力 ${investElectric}`);
         } catch (e) {
@@ -338,7 +340,7 @@ function hireAward() {
       async (err, resp, data) => {
         try {
           const { msg, data: { investElectric } = {} } = JSON.parse(data);
-          $.log(`\n${msg}\n收取打工电力${data}`);
+          $.log(`\n收取打工电力：${msg}\n${$.showLog ? data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -356,7 +358,7 @@ function stealFriend() {
       async (err, resp, data) => {
         try {
           const { msg, data: { list = [] } = {} } = JSON.parse(data);
-          $.log(`\n${msg}\n工厂好友${data}`);
+          $.log(`\n获取工厂好友：${msg}\n${$.showLog ? data : ''}`);
           const canCollectFriends = list.filter((x) => x.collectFlag === 1);
           for (let i = 0; i < canCollectFriends.length; i++) {
             const { encryptPin, key } = canCollectFriends[i];
@@ -382,7 +384,7 @@ function getFactoryIdByPin(pin) {
       (err, resp, data) => {
         try {
           const { msg, data: { factoryList = [] } = {} } = JSON.parse(data);
-          $.log(`\n${msg}\n${data}`);
+          $.log(`\n获取工厂信息：${msg}\n${$.showLog ? data : ''}`);
           resolve(factoryList[0].factoryId);
         } catch (e) {
           $.logErr(e, resp);
@@ -404,7 +406,7 @@ function submitInviteId(userName) {
       (err, resp, _data) => {
         try {
           const { data = {} } = JSON.parse(_data);
-          $.log(`\n${data.value}\n${_data}`);
+          $.log(`\n邀请码提交：${data.value}\n${$.showLog ? _data : ''}`);
           if (data.value) {
             $.result.push("邀请码提交成功！");
           }
@@ -423,13 +425,13 @@ function createAssistUser() {
     $.get({ url: "https://api.ninesix.cc/jx-factory" }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
-        $.log(`\n${data.value}\n${_data}`);
+        $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(
           taskUrl("friend/AssistFriend", `sharepin=${escape(data.value)}`),
           async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
-              $.log(`\n${msg}\n${data}`);
+              $.log(`\n${msg}\n${$.showLog ? data : ''}`);
             } catch (e) {
               $.logErr(e, resp);
             } finally {
@@ -451,7 +453,7 @@ function getTuanInfo() {
       async (err, resp, data) => {
         try {
           const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
-          $.log(`\n${msg}\n开团信息${data}`);
+          $.log(`\n获取开团信息：${msg}\n${$.showLog ? data : ''}`);
           if (!userTuanInfo.tuanId) {
             await createTuan();
           } else {
@@ -477,7 +479,7 @@ function submitTuanId(userName) {
       (err, resp, _data) => {
         try {
           const { data = {} } = JSON.parse(_data);
-          $.log(`\n${data.value}\n${_data}`);
+          $.log(`\n团码提交成功：${data.value}\n${$.showLog ? _data : ''}`);
           if (data.value) {
             $.result.push("团码提交成功！");
           }
@@ -498,7 +500,7 @@ function createTuan() {
       async (err, resp, data) => {
         try {
           const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
-          $.log(`\n${msg}\n开团信息${data}`);
+          $.log(`\n开团信息：${msg}\n${$.showLog ? data : ''}`);
           $.userTuanInfo = userTuanInfo;
         } catch (e) {
           $.logErr(e, resp);
@@ -515,13 +517,13 @@ function joinTuan() {
     $.get({ url: "https://api.ninesix.cc/jx-factory-tuan" }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
-        $.log(`\n${data.value}\n${_data}`);
+        $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(
           taskUrl("tuan/JoinTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&tuanId=4N_bc2tVuNS77jvmoN22jg==&_time=${new Date().getTime()}`),
           async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
-              $.log(`\n参团：${msg}\n${data}`);
+              $.log(`\n参团：${msg}\n${$.showLog ? data : ''}`);
             } catch (e) {
               $.logErr(e, resp);
             } finally {
