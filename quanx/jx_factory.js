@@ -56,7 +56,7 @@ $.userTuanInfo = {};
       await $.wait(500);
       await browserTask();
       await $.wait(500);
-      await hireAward();
+      await getHireRewardList();
       await $.wait(500);
       await stealFriend();
       await $.wait(500);
@@ -333,10 +333,33 @@ function investElectric() {
   });
 }
 
-function hireAward() {
+function getHireRewardList() {
+  return new Promise(async (resolve) => {
+    $.get(taskUrl("friend/QueryHireReward", `_time=${new Date().getTime()}`), async (err, resp, data) => {
+      try {
+        const { ret, data: { hireReward = [] } = {}, msg } = JSON.parse(
+          data
+        );
+        $.log(`\n获取打工奖励列表：${msg}\n${$.showLog ? data : ''}`);
+        if (hireReward && hireReward.length > 0) {
+          for (let i = 0; i < hireReward.length; i++) {
+            const { date } = hireReward[i];
+            await hireAward(`date=${date}`);
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    });
+  });
+}
+
+function hireAward(body) {
   return new Promise(async (resolve) => {
     $.get(
-      taskUrl("friend/HireAward", `_time=${new Date().getTime()}`),
+      taskUrl("friend/HireAward", `${body}&_time=${new Date().getTime()}&type=0`),
       async (err, resp, data) => {
         try {
           const { msg, data: { investElectric } = {} } = JSON.parse(data);
