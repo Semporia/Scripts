@@ -175,7 +175,7 @@
           "name": "日志开关",
           "val": false,
           "type": "boolean",
-          "desc": "是否打开接口返回详情日志打印"
+          "desc": "是否打开接口返回详情日志打印，默认关闭"
         },
         {
           "id": "jd_wob_lottery",
@@ -203,7 +203,7 @@
           "name": "日志开关",
           "val": false,
           "type": "boolean",
-          "desc": "是否打开接口返回详情日志打印"
+          "desc": "是否打开接口返回详情日志打印，默认关闭"
         },
         {
           "id": "jd_zzExchangePrize",
@@ -288,7 +288,7 @@
           "name": "日志开关",
           "val": false,
           "type": "boolean",
-          "desc": "是否打开接口返回详情日志打印"
+          "desc": "是否打开接口返回详情日志打印，默认关闭"
         },
         {
           "id": "dd_autoCharge",
@@ -322,7 +322,7 @@
           "name": "日志开关",
           "val": false,
           "type": "boolean",
-          "desc": "是否打开接口返回详情日志打印"
+          "desc": "是否打开接口返回详情日志打印，默认关闭"
         },
         {
           "id": "jx_autoCharge",
