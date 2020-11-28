@@ -476,7 +476,7 @@ function getTuanId() {
       async (err, resp, data) => {
         try {
           const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
-          $.log(`\n获取开团信息：${msg}\n${$.showLog ? data : ''}`);
+          $.log(`\n获取团id：${msg}\n${$.showLog ? data : ''}`);
           if (!userTuanInfo.tuanId) {
             await createTuan();
           } else {
