@@ -572,7 +572,7 @@ function joinTuan() {
           async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
-              $.log(`\n参团：${msg}\n${$.showLog ? data : ''}`);
+              $.log(`\n参团：${msg.indexOf('成功参团') !== -1 ? '您已参过此团或者参团失败' : msg}\n${$.showLog ? data : ''}`);
             } catch (e) {
               $.logErr(e, resp);
             } finally {
