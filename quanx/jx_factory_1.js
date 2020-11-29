@@ -38,7 +38,7 @@ $.userTuanInfo = {};
 !(async () => {
   if (!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
-    const currentCookie = $.cookieArr[i];
+    let currentCookie = $.cookieArr[i];
     if (currentCookie) {
       const userName = decodeURIComponent(
         currentCookie.match(/pt_pin=(.+?);/) &&
@@ -610,7 +610,7 @@ function showMsg() {
   });
 }
 
-function taskUrl(function_path, body) {
+function taskUrl(function_path, body, currentCookie) {
   return {
     url: `${JD_API_HOST}dreamfactory/${function_path}?zone=dream_factory&sceneval=2&g_login_type=1&${body}`,
     headers: {
@@ -626,7 +626,7 @@ function taskUrl(function_path, body) {
   };
 }
 
-function taskListUrl(function_path, body) {
+function taskListUrl(function_path, body, currentCookie) {
   return {
     url: `${JD_API_HOST}newtasksys/newtasksys_front/${function_path}?${body}&source=dreamfactory&bizCode=dream_factory&sceneval=2&g_login_type=1`,
     headers: {
