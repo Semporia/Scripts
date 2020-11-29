@@ -568,7 +568,7 @@ function joinTuan() {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(
-          taskUrl("tuan/JoinTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&tuanId=4N_bc2tVuNS77jvmoN22jg==&_time=${new Date().getTime()}`),
+          taskUrl("tuan/JoinTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&tuanId=${escape(data.value)}&_time=${new Date().getTime()}`),
           async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
