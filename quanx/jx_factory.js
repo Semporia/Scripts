@@ -484,10 +484,11 @@ function getTuanId() {
             await createTuan();
           } else {
             const tuanInfo = await getTuanInfo(`tuanId=${userTuanInfo.tuanId}`);
+            $.log(`获取团详情成功 \n${$.showLog ? JSON.stringify(tuanInfo) : ''}`)
             if (tuanInfo.endTime < Math.ceil(new Date().getTime() / 1000)) {
               await createTuan();
             } else {
-              $.userTuanInfo = tuanInfo;
+              $.userTuanInfo = userTuanInfo;
             }
           }
         } catch (e) {
