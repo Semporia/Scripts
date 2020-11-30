@@ -12,14 +12,14 @@
   quanx:
   [task_local]
   10 * * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_dreamFactory.js, tag=京喜工厂, enabled=true
-  
+
   Loon:
   [Script]
   cron "10 * * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_dreamFactory.js,tag=京喜工厂
-  
+
   Surge:
   京喜工厂 = type=cron,cronexp="10 * * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_dreamFactory.js
-*  
+*
 **/
 
 const $ = new Env("京喜工厂");
@@ -480,7 +480,7 @@ function submitInviteId(userName) {
   return new Promise((resolve) => {
     $.get(
       {
-        url: `https://api.ninesix.cc/jx-factory/${$.info.user.encryptPin}/${userName}`,
+        url: `https://api.ninesix.cc/api/jx-factory/${$.info.user.encryptPin}/${userName}`,
       },
       (err, resp, _data) => {
         try {
@@ -501,7 +501,7 @@ function submitInviteId(userName) {
 
 function createAssistUser() {
   return new Promise((resolve) => {
-    $.get({ url: "https://api.ninesix.cc/jx-factory" }, (err, resp, _data) => {
+    $.get({ url: "https://api.ninesix.cc/api/jx-factory" }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
@@ -580,7 +580,7 @@ function submitTuanId(userName) {
   return new Promise((resolve) => {
     $.get(
       {
-        url: `https://api.ninesix.cc/jx-factory-tuan/${$.userTuanInfo.tuanId}/${userName}`,
+        url: `https://api.ninesix.cc/api/jx-factory-tuan/${$.userTuanInfo.tuanId}/${userName}`,
       },
       (err, resp, _data) => {
         try {
@@ -620,7 +620,7 @@ function createTuan() {
 
 function joinTuan() {
   return new Promise(async (resolve) => {
-    $.get({ url: "https://api.ninesix.cc/jx-factory-tuan" }, (err, resp, _data) => {
+    $.get({ url: "https://api.ninesix.cc/api/jx-factory-tuan" }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);

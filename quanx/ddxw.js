@@ -4,7 +4,7 @@
  * @Date: 2020-11-20 10:42:06
  * @LastEditors: whyour
  * @LastEditTime: 2020-11-30 13:11:09
- 
+
   hostname = lkyl.dianpusoft.cn
 
   quanx:
@@ -23,7 +23,7 @@
   京东小窝 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js,
   京东小窝cookie = type=http-request,pattern=^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.cookie.js
  *
- *  
+ *
  **/
 const $ = new Env("东东小窝");
 
@@ -117,7 +117,7 @@ function getValid() {
 
 function submitInviteId(inviteId, userName) {
   return new Promise((resolve) => {
-    $.get({ url: `https://api.ninesix.cc/code/${inviteId}/${userName}` }, (err, resp, _data) => {
+    $.get({ url: `https://api.ninesix.cc/api/code/${inviteId}/${userName}` }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
@@ -351,7 +351,7 @@ function signIn(token) {
 function createAssistUser(token) {
   const invite = $.allTask.find((x) => x.ssjjTaskInfo.type === 1);
   return new Promise((resolve) => {
-    $.get({ url: 'https://api.ninesix.cc/code' }, (err, resp, _data) => {
+    $.get({ url: 'https://api.ninesix.cc/api/code' }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);

@@ -3,8 +3,8 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-25 18:26:29
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 13:11:33
- 
+ * @LastEditTime: 2020-11-30 18:12:24
+
   参考自： https://raw.githubusercontent.com/799953468/Quantumult-X/master/Scripts/JD/jd_factory.js
   增加随机助力，每次随机助力一位
   增加box自动充电配置
@@ -20,7 +20,7 @@
   [Script]
   东东工厂 = type=cron,cronexp=0 * * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/dd_factory.js,
  *
- *  
+ *
  **/
 
 const $ = new Env("东东工厂");
@@ -234,7 +234,7 @@ function submitInviteId(userName) {
   return new Promise((resolve) => {
     $.get(
       {
-        url: `https://api.ninesix.cc/factory/${inviteTask.assistTaskDetailVo.taskToken}/${userName}`,
+        url: `https://api.ninesix.cc/api/factory/${inviteTask.assistTaskDetailVo.taskToken}/${userName}`,
       },
       (err, resp, _data) => {
         try {
@@ -255,7 +255,7 @@ function submitInviteId(userName) {
 
 function createAssistUser(cookie) {
   return new Promise((resolve) => {
-    $.get({ url: "https://api.ninesix.cc/factory" }, (err, resp, _data) => {
+    $.get({ url: "https://api.ninesix.cc/api/factory" }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
