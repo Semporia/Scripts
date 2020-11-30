@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 23:17:48
+ * @LastEditTime: 2020-12-01 00:46:33
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -260,7 +260,7 @@ function pickUpComponent(placeId, pin) {
       (err, resp, data) => {
         try {
           const { msg, data: { increaseElectric } = {} } = JSON.parse(data);
-          $.log(`\n拾取好友零件：${msg}，获得电力 ${increaseElectric}\n${$.showLog ? data : ''}`);
+          $.log(`\n拾取好友零件：${msg}，获得电力 ${increaseElectric || 0}\n${$.showLog ? data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -472,8 +472,12 @@ function getFactoryIdByPin(pin) {
 }
 
 function submitInviteId(userName) {
-  $.log("你的互助码: " + $.info.user.encryptPin);
   return new Promise((resolve) => {
+    if (!$.info.user || !$.info.user.encryptPin) {
+      resolve();
+      return;
+    }
+    $.log("你的互助码: " + $.info.user.encryptPin);
     $.get(
       {
         url: `https://api.ninesix.cc/api/jx-factory/${$.info.user.encryptPin}/${userName}`,
@@ -524,20 +528,20 @@ function createAssistUser() {
 function getTuanId() {
   return new Promise(async (resolve) => {
     $.get(
-      taskUrl("tuan/QueryActiveConfig", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D`),
+      taskUrl("tuan/QueryActiveConfig", `activeId=jfkcidGQavswLOBcAWljrw%3D%3D`),
       async (err, resp, data) => {
         try {
           const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
           $.log(`\n获取团id：${msg}\n${$.showLog ? data : ''}`);
-          if (!userTuanInfo.tuanId) {
+          if (!userTuanInfo || !userTuanInfo.tuanId) {
             await createTuan();
           } else {
             const tuanInfo = await getTuanInfo(`tuanId=${userTuanInfo.tuanId}`);
             $.log(`获取团详情成功 \n${$.showLog ? JSON.stringify(tuanInfo) : ''}`)
-            if (tuanInfo.endTime < Math.ceil(new Date().getTime() / 1000)) {
+            if (!tuanInfo || tuanInfo.endTime < Math.ceil(new Date().getTime() / 1000)) {
               await createTuan();
             } else {
-              $.userTuanInfo = userTuanInfo;
+              $.userTuanInfo = tuanInfo;
             }
           }
         } catch (e) {
@@ -553,7 +557,7 @@ function getTuanId() {
 function getTuanInfo(body) {
   return new Promise(async (resolve) => {
     $.get(
-      taskUrl("tuan/QueryTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&${body}`),
+      taskUrl("tuan/QueryTuan", `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&${body}`),
       async (err, resp, data) => {
         try {
           const { msg, data: { tuanInfo = [] } = {} } = JSON.parse(data);
@@ -572,8 +576,12 @@ function getTuanInfo(body) {
 }
 
 function submitTuanId(userName) {
-  $.log("你的团码: " + $.userTuanInfo.tuanId);
   return new Promise((resolve) => {
+    if (!$.userTuanInfo || !$.userTuanInfo.tuanId) {
+      resolve()
+      return;
+    }
+    $.log("你的团码: " + $.userTuanInfo && $.userTuanInfo.tuanId);
     $.get(
       {
         url: `https://api.ninesix.cc/api/jx-factory-tuan/${$.userTuanInfo.tuanId}/${userName}`,
@@ -598,12 +606,14 @@ function submitTuanId(userName) {
 function createTuan() {
   return new Promise(async (resolve) => {
     $.get(
-      taskUrl("tuan/CreateTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&isOpenApp=1`),
+      taskUrl("tuan/CreateTuan", `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&isOpenApp=1`),
       async (err, resp, data) => {
         try {
           const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
-          $.log(`\n开团信息：${msg}\n${$.showLog ? data : ''}`);
-          $.userTuanInfo = userTuanInfo;
+          $.log(`\n开团信息：${msg}\n${!$.showLog ? data : ''}`);
+          if (userTuanInfo) {
+            $.userTuanInfo = userTuanInfo;
+          }
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -621,7 +631,7 @@ function joinTuan() {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(
-          taskUrl("tuan/JoinTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&tuanId=${escape(data.value)}`),
+          taskUrl("tuan/JoinTuan", `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&tuanId=${escape(data.value)}`),
           async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
