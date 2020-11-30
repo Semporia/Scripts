@@ -1,3 +1,10 @@
+/*
+ * @Author: whyour
+ * @Github: https://github.com/whyour
+ * @Date: 2020-11-20 10:42:06
+ * @LastEditors: whyour
+ * @LastEditTime: 2020-11-30 13:12:39
+ */
 const $ = new Env("互助码");
 const shareCodes = [
   {

@@ -1,5 +1,10 @@
-/**
- *
+/*
+ * @Author: whyour
+ * @Github: https://github.com/whyour
+ * @Date: 2020-11-23 11:30:44
+ * @LastEditors: whyour
+ * @LastEditTime: 2020-11-30 13:09:52
+ 
   quanx:
   [task_local]
   0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js, tag=京东赚赚, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdzz.png, enabled=true

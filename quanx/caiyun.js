@@ -1,23 +1,26 @@
-/**
- *
-  拷贝定时任务时删掉 *\/1 中的 \
-  
+/*
+ * @Author: whyour
+ * @Github: https://github.com/whyour
+ * @Date: 2020-11-23 11:30:44
+ * @LastEditors: whyour
+ * @LastEditTime: 2020-11-30 13:12:02
+ 
   hostname = restapi.amap.com
 
   quanx:
   [task_local]
-  0 *\/1 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js, tag=彩云天气, enabled=true
+  0 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js, tag=彩云天气, enabled=true
   [rewrite_local]
   https:\/\/restapi\.amap\.com\/v3\/geocode url script-request-body https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js
 
   loon:
   [Script]
   http-request https:\/\/restapi\.amap\.com\/v3\/geocode script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js, requires-body=true, timeout=10, tag=彩云天气cookie
-  cron "0 *\/1 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js, tag=彩云天气
+  cron "0 * * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js, tag=彩云天气
 
   surge:
   [Script]
-  彩云天气 = type=cron,cronexp=0 *\/1 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js,
+  彩云天气 = type=cron,cronexp=0 * * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js,
   彩云天气cookie = type=http-request,pattern=https:\/\/restapi\.amap\.com\/v3\/geocode,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js
  *
  *  

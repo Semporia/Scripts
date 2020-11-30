@@ -1,5 +1,10 @@
-/**
- *
+/*
+ * @Author: whyour
+ * @Github: https://github.com/whyour
+ * @Date: 2020-11-23 11:30:44
+ * @LastEditors: whyour
+ * @LastEditTime: 2020-11-30 13:18:48
+ 
   quanx:
   [task_local]
   0 18 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/donate-step.js, tag=捐步数, enabled=true

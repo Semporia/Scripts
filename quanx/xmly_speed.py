@@ -1,3 +1,10 @@
+'''
+Author: whyour
+Github: https://github.com/whyour
+Date: 2020-11-19 23:25:22
+LastEditors: whyour
+LastEditTime: 2020-11-30 13:17:26
+'''
 import requests
 import json
 import rsa

@@ -1,4 +1,10 @@
-//京小超领蓝币
+/*
+ * @Author: whyour
+ * @Github: https://github.com/whyour
+ * @Date: 2020-11-05 14:35:36
+ * @LastEditors: whyour
+ * @LastEditTime: 2020-11-30 13:10:19
+ */
 const JD_API_HOST = `https://api.m.jd.com/api?appid=jdsupermarket&functionId=smtg_receiveCoin&clientVersion=8.0.0&client=m&body=%7B%22type%22:2%7D&t=${Date.now()}`;
 const $ = new Env("京小超领蓝币");
 $.cookieArr = [];

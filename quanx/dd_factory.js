@@ -1,5 +1,10 @@
-/**
- *
+/*
+ * @Author: whyour
+ * @Github: https://github.com/whyour
+ * @Date: 2020-11-25 18:26:29
+ * @LastEditors: whyour
+ * @LastEditTime: 2020-11-30 13:11:33
+ 
   参考自： https://raw.githubusercontent.com/799953468/Quantumult-X/master/Scripts/JD/jd_factory.js
   增加随机助力，每次随机助力一位
   增加box自动充电配置

@@ -1,11 +1,14 @@
-/**
- *
-  参考自： https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_dreamFactory.js
-  多谢贡献： https://github.com/MoPoQAQ
-  * 添加随机助力
-  * 自动开团助力
-  * box设置不自动充能
-  * 可设置每天通知时间
+/*
+ * @Author: whyour
+ * @Github: https://github.com/whyour
+ * @Date: 2020-11-29 13:14:19
+ * @LastEditors: whyour
+ * @LastEditTime: 2020-11-30 13:09:13
+ * 多谢贡献： https://github.com/MoPoQAQ
+ * 添加随机助力
+ * 自动开团助力
+ * box设置不自动充能
+ * 可设置每天通知时间
   quanx:
   [task_local]
   10 * * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_dreamFactory.js, tag=京喜工厂, enabled=true

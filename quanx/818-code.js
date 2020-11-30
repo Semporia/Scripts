@@ -1,3 +1,10 @@
+/*
+ * @Author: whyour
+ * @Github: https://github.com/whyour
+ * @Date: 2020-11-15 00:02:38
+ * @LastEditors: whyour
+ * @LastEditTime: 2020-11-30 13:12:26
+ */
 const $ = new Env("狂欢城互助码");
 
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";

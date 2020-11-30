@@ -1,5 +1,10 @@
-/**
- *
+/*
+ * @Author: whyour
+ * @Github: https://github.com/whyour
+ * @Date: 2020-11-23 11:30:44
+ * @LastEditors: whyour
+ * @LastEditTime: 2020-11-30 13:18:56
+ 
   ## 获取商品id
   例如：某个商品的网页url为 https://item.jd.com/1178879.html ，那么商品id就是 1178879，多个商品id之间用英文逗号分隔
 

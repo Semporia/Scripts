@@ -1,3 +1,10 @@
+/*
+ * @Author: whyour
+ * @Github: https://github.com/whyour
+ * @Date: 2020-11-16 11:58:48
+ * @LastEditors: whyour
+ * @LastEditTime: 2020-11-30 13:12:12
+ */
 var body = $response.body;
 var url = $request.url;
 var obj = JSON.parse(body);

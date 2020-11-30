@@ -1,3 +1,10 @@
+/*
+ * @Author: whyour
+ * @Github: https://github.com/whyour
+ * @Date: 2020-11-08 23:10:33
+ * @LastEditors: whyour
+ * @LastEditTime: 2020-11-30 13:12:56
+ */
 const $ = new Env("京东超市升级货架");
 const JD_API_HOST = 'https://api.m.jd.com/api';
 $.level = parseInt($.getdata("zd_shelf_level") || "1");
