@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 23:13:18
+ * @LastEditTime: 2020-11-30 23:29:21
   quanx:
   [task_local]
   0 5 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js, tag=京喜工厂拾取零件, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
@@ -17,15 +17,14 @@
 *
 **/
 
-const $ = new Env("京喜工厂拾取零件");
-const JD_API_HOST = "https://wq.jd.com/";
-const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
-$.showLog = $.getdata("jx_showLog")
-  ? $.getdata("jx_showLog") === "true"
-  : false;
+const $ = new Env('京喜工厂拾取零件');
+const JD_API_HOST = 'https://wq.jd.com/';
+const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+$.authExecute = $.getdata('jx_authExecute') ? $.getdata('jx_authExecute') === 'true' : false;
+$.showLog = $.getdata('jx_showLog') ? $.getdata('jx_showLog') === 'true' : false;
 $.result = [];
 $.cookieArr = [];
-$.currentCookie = "";
+$.currentCookie = '';
 $.info = {};
 
 !(async () => {
@@ -34,8 +33,7 @@ $.info = {};
     $.currentCookie = $.cookieArr[i];
     if ($.currentCookie) {
       const userName = decodeURIComponent(
-        $.currentCookie.match(/pt_pin=(.+?);/) &&
-          $.currentCookie.match(/pt_pin=(.+?);/)[1]
+        $.currentCookie.match(/pt_pin=(.+?);/) && $.currentCookie.match(/pt_pin=(.+?);/)[1],
       );
       $.log(`\n开始【京东账号${i + 1}】${userName}`);
       const beginInfo = await getUserInfo();
@@ -48,44 +46,35 @@ $.info = {};
       $.result.push(
         `名称：${$.info.commodityInfo.name}`,
         `任务前能量：${beginInfo.user.electric} 任务后能量：${endInfo.user.electric}`,
-        `获得能量：${
-          endInfo.user.electric - beginInfo.user.electric
-        }`
+        `获得能量：${endInfo.user.electric - beginInfo.user.electric}`,
       );
     }
   }
-  await showMsg();
+  $.authExecute && await showMsg();
 })()
-  .catch((e) => $.logErr(e))
+  .catch(e => $.logErr(e))
   .finally(() => $.done());
 
 function getCookies() {
   if ($.isNode()) {
     $.cookieArr = Object.values(jdCookieNode);
   } else {
-    $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || ""];
+    $.cookieArr = [$.getdata('CookieJD') || '', $.getdata('CookieJD2') || ''];
   }
   if (!$.cookieArr[0]) {
-    $.msg(
-      $.name,
-      "【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取",
-      "https://bean.m.jd.com/",
-      { "open-url": "https://bean.m.jd.com/" }
-    );
+    $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
+      'open-url': 'https://bean.m.jd.com/',
+    });
     return false;
   }
   return true;
 }
 
 function getUserInfo() {
-  return new Promise((resolve) => {
-    $.get(taskUrl("userinfo/GetUserInfo"), async (err, resp, data) => {
+  return new Promise(resolve => {
+    $.get(taskUrl('userinfo/GetUserInfo'), async (err, resp, data) => {
       try {
-        const {
-          ret,
-          data: { factoryList = [], productionList = [], user = {} } = {},
-          msg,
-        } = JSON.parse(data);
+        const { ret, data: { factoryList = [], productionList = [], user = {} } = {}, msg } = JSON.parse(data);
         $.log(`\n获取用户信息：${msg}\n${$.showLog ? data : ''}`);
         $.info = {
           ...$.info,
@@ -97,7 +86,7 @@ function getUserInfo() {
           factoryInfo: factoryList[0],
           productionInfo: productionList[0],
           user,
-        })
+        });
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -108,119 +97,106 @@ function getUserInfo() {
 }
 
 function pickUserComponents(pin, isMe) {
-  return new Promise(async (resolve) => {
-    $.get(
-      taskUrl(
-        "usermaterial/GetUserComponent",
-        `pin=${pin}`
-      ),
-      async (err, resp, data) => {
-        try {
-          const { msg, data: { componentList = [] } = {} } = JSON.parse(data);
-          $.log(`\n获取${isMe?'自己':'好友'}零件：${msg}\n${$.showLog ? data : ''}`);
-          if (componentList.length > 0) {
-            let statusArr = [];
-            for (let i = 0; i < componentList.length; i++) {
-              const { placeId } = componentList[i];
-              let status = [false];
-              if (!status[0]) {
-                $.wait(1000)
-                status[0] = await pickUpComponent(placeId, pin, isMe);
-                statusArr.push(status[0])
-              } else {
-                statusArr.push(true)
-              }
-            }
-            if (statusArr[componentList.length - 1]) {
-              resolve(true)
+  return new Promise(async resolve => {
+    $.get(taskUrl('usermaterial/GetUserComponent', `pin=${pin}`), async (err, resp, data) => {
+      try {
+        const { msg, data: { componentList = [] } = {} } = JSON.parse(data);
+        $.log(`\n获取${isMe ? '自己' : '好友'}零件：${msg}\n${$.showLog ? data : ''}`);
+        if (componentList.length > 0) {
+          let statusArr = [];
+          for (let i = 0; i < componentList.length; i++) {
+            const { placeId } = componentList[i];
+            let status = [false];
+            if (!status[0]) {
+              $.wait(2000);
+              status[0] = await pickUpComponent(placeId, pin, isMe);
+              statusArr.push(status[0]);
             } else {
-              resolve(false)
+              statusArr.push(true);
             }
           }
-        } catch (e) {
-          $.logErr(e, resp);
-        } finally {
-          resolve();
+          if (statusArr[componentList.length - 1]) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
         }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
       }
-    );
+    });
   });
 }
 
 function pickUpComponent(placeId, pin, isMe) {
-  return new Promise(async (resolve) => {
-    $.get(
-      taskUrl(
-        "usermaterial/PickUpComponent",
-        `pin=${pin}&placeId=${placeId}`
-      ),
-      (err, resp, data) => {
-        try {
-          const { msg, data: { increaseElectric } = {} } = JSON.parse(data);
-          $.log(`\n拾取${isMe?'自己':'好友'}零件：${msg}，获得电力 ${increaseElectric || 0}\n${$.showLog ? data : ''}`);
-          if (!increaseElectric) {
-            resolve(true);
-          } else {
-            resolve(false)
-          }
-        } catch (e) {
-          $.logErr(e, resp);
-        } finally {
-          resolve();
+  return new Promise(async resolve => {
+    $.get(taskUrl('usermaterial/PickUpComponent', `pin=${pin}&placeId=${placeId}`), (err, resp, data) => {
+      try {
+        const { msg, data: { increaseElectric } = {} } = JSON.parse(data);
+        $.log(
+          `\n拾取${isMe ? '自己' : '好友'}零件：${msg}，获得电力 ${increaseElectric || 0}\n${$.showLog ? data : ''}`,
+        );
+        if (!increaseElectric) {
+          resolve(true);
+        } else {
+          resolve(false);
         }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
       }
-    );
+    });
   });
 }
 
 async function getMyComponent() {
   let meStatus = [false];
   if (!meStatus[0]) {
-    meStatus[0] = await pickUserComponents($.info.user.encryptPin, true)
+    meStatus[0] = await pickUserComponents($.info.user.encryptPin, true);
   }
-  if (!meStatus[0]) {
+  if (!meStatus[0] && $.authExecute) {
     await $.wait(5000);
     await getMyComponent();
   }
 }
 
 function getFriends() {
-  return new Promise(async (resolve) => {
-    $.get(
-      taskUrl("friend/QueryFactoryManagerList"),
-      async (err, resp, data) => {
-        try {
-          const { msg, data: { list = [] } = {} } = JSON.parse(data);
-          $.log(`\n获取工厂好友：${msg}\n${$.showLog ? data : ''}`);
-          let statusArr = [];
-          for (let i = 0; i < list.length; i++) {
-            const { encryptPin } = list[i];
-            let status = [false];
-            if (!status[0]) {
-              $.wait(5000)
-              status[0] = await pickUserComponents(encryptPin)
-              statusArr.push(status[0])
-            } else {
-              statusArr.push(true)
-            }
+  return new Promise(async resolve => {
+    $.get(taskUrl('friend/QueryFactoryManagerList'), async (err, resp, data) => {
+      try {
+        const { msg, data: { list = [] } = {} } = JSON.parse(data);
+        $.log(`\n获取工厂好友：${msg}\n${$.showLog ? data : ''}`);
+        let statusArr = [];
+        for (let i = 0; i < list.length; i++) {
+          const { encryptPin } = list[i];
+          let status = [false];
+          if (!status[0]) {
+            $.wait(5000);
+            status[0] = await pickUserComponents(encryptPin);
+            statusArr.push(status[0]);
+          } else {
+            statusArr.push(true);
           }
-          await $.wait(5000);
-          if (!statusArr[list.length - 1]) {
-            await getFriends();
-          }
-        } catch (e) {
-          $.logErr(e, resp);
-        } finally {
-          resolve();
         }
+        if (!statusArr[list.length - 1] && $.authExecute) {
+          await $.wait(5000);
+          await getFriends();
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
       }
-    );
+    });
   });
 }
 
 function showMsg() {
-  return new Promise((resolve) => {
-    $.msg($.name, "", `\n${$.result.join("\n")}`);
+  return new Promise(resolve => {
+    $.msg($.name, '', `\n${$.result.join('\n')}`);
     resolve();
   });
 }
@@ -233,10 +209,10 @@ function taskUrl(function_path, body) {
       Accept: `*/*`,
       Connection: `keep-alive`,
       Referer: `https://wqsd.jd.com/pingou/dream_factory/index.html?jxsid=16064615029143314965&exchange=&ptag=139045.1.2&from_source=outer&jump_rd=17088.24.47&deepLink=1`,
-      "Accept-Encoding": `gzip, deflate, br`,
+      'Accept-Encoding': `gzip, deflate, br`,
       Host: `wq.jd.com`,
-      "User-Agent": `jdpingou;iPhone;3.15.2;14.2.1;ea00763447803eb0f32045dcba629c248ea53bb3;network/3g;model/iPhone13,2;appBuild/100365;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/4;pap/JA2015_311210;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
-      "Accept-Language": `zh-cn`,
+      'User-Agent': `jdpingou;iPhone;3.15.2;14.2.1;ea00763447803eb0f32045dcba629c248ea53bb3;network/3g;model/iPhone13,2;appBuild/100365;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/4;pap/JA2015_311210;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+      'Accept-Language': `zh-cn`,
     },
   };
 }
