@@ -3,22 +3,22 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 14:21:34
- * 多谢贡献： https://github.com/MoPoQAQ
+ * @LastEditTime: 2020-11-30 18:27:59
+ * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
  * box设置不自动充能
  * 可设置每天通知时间
   quanx:
   [task_local]
-  10 * * * * https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_dreamFactory.js, tag=京喜工厂, enabled=true
+  10 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory.js, tag=京喜工厂, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
 
   Loon:
   [Script]
-  cron "10 * * * *" script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_dreamFactory.js,tag=京喜工厂
+  cron "10 * * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory.js,tag=京喜工厂
 
   Surge:
-  京喜工厂 = type=cron,cronexp="10 * * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/jd_scripts/master/jd_dreamFactory.js
+  京喜工厂 = type=cron,cronexp="10 * * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory.js
 *
 **/
 
@@ -42,9 +42,6 @@ $.userTuanInfo = {};
 !(async () => {
   if (!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
-    if (i > 0 && $.isSurge()) {
-      $.wait(10000)
-    }
     $.currentCookie = $.cookieArr[i];
     if ($.currentCookie) {
       const userName = decodeURIComponent(
@@ -230,7 +227,7 @@ function pickUserComponents(pin, factId) {
     $.get(
       taskUrl(
         "usermaterial/GetUserComponent",
-        `pin=${pin}&_time=${Date.now()}`
+        `pin=${pin}`
       ),
       async (err, resp, data) => {
         try {
@@ -257,7 +254,7 @@ function pickUpComponent(placeId, pin) {
     $.get(
       taskUrl(
         "usermaterial/PickUpComponent",
-        `pin=${pin}&placeId=${placeId}&_time=${Date.now()}`
+        `pin=${pin}&placeId=${placeId}`
       ),
       (err, resp, data) => {
         try {
@@ -389,7 +386,7 @@ function investElectric() {
 
 function getHireRewardList() {
   return new Promise(async (resolve) => {
-    $.get(taskUrl("friend/QueryHireReward", `_time=${new Date().getTime()}`), async (err, resp, data) => {
+    $.get(taskUrl("friend/QueryHireReward"), async (err, resp, data) => {
       try {
         const { ret, data: { hireReward = [] } = {}, msg } = JSON.parse(
           data
@@ -413,7 +410,7 @@ function getHireRewardList() {
 function hireAward(body) {
   return new Promise(async (resolve) => {
     $.get(
-      taskUrl("friend/HireAward", `${body}&_time=${new Date().getTime()}&type=0`),
+      taskUrl("friend/HireAward", `${body}&type=0`),
       async (err, resp, data) => {
         try {
           const { msg, data: { investElectric } = {} } = JSON.parse(data);
@@ -528,7 +525,7 @@ function createAssistUser() {
 function getTuanId() {
   return new Promise(async (resolve) => {
     $.get(
-      taskUrl("tuan/QueryActiveConfig", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&_time=${new Date().getTime()}`),
+      taskUrl("tuan/QueryActiveConfig", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D`),
       async (err, resp, data) => {
         try {
           const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
@@ -557,7 +554,7 @@ function getTuanId() {
 function getTuanInfo(body) {
   return new Promise(async (resolve) => {
     $.get(
-      taskUrl("tuan/QueryTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&${body}&_time=${new Date().getTime()}`),
+      taskUrl("tuan/QueryTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&${body}`),
       async (err, resp, data) => {
         try {
           const { msg, data: { tuanInfo = [] } = {} } = JSON.parse(data);
@@ -602,7 +599,7 @@ function submitTuanId(userName) {
 function createTuan() {
   return new Promise(async (resolve) => {
     $.get(
-      taskUrl("tuan/CreateTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&isOpenApp=1&_time=${new Date().getTime()}`),
+      taskUrl("tuan/CreateTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&isOpenApp=1`),
       async (err, resp, data) => {
         try {
           const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
@@ -625,7 +622,7 @@ function joinTuan() {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(
-          taskUrl("tuan/JoinTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&tuanId=${escape(data.value)}&_time=${new Date().getTime()}`),
+          taskUrl("tuan/JoinTuan", `activeId=ilOin38J30PcT9xnWbx9lw%3D%3D&tuanId=${escape(data.value)}`),
           async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
@@ -663,7 +660,7 @@ function showMsg() {
 
 function taskUrl(function_path, body) {
   return {
-    url: `${JD_API_HOST}dreamfactory/${function_path}?zone=dream_factory&sceneval=2&g_login_type=1&${body}`,
+    url: `${JD_API_HOST}dreamfactory/${function_path}?zone=dream_factory&sceneval=2&g_login_type=1&&_time=${Date.now()}&_=${Date.now()}&${body}`,
     headers: {
       Cookie: $.currentCookie,
       Accept: `*/*`,
@@ -679,7 +676,7 @@ function taskUrl(function_path, body) {
 
 function taskListUrl(function_path, body) {
   return {
-    url: `${JD_API_HOST}newtasksys/newtasksys_front/${function_path}?${body}&source=dreamfactory&bizCode=dream_factory&sceneval=2&g_login_type=1`,
+    url: `${JD_API_HOST}newtasksys/newtasksys_front/${function_path}?${body}&source=dreamfactory&bizCode=dream_factory&sceneval=2&g_login_type=1&_time=${Date.now()}&_=${Date.now()}`,
     headers: {
       Cookie: $.currentCookie,
       Accept: `*/*`,
