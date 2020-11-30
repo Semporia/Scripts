@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 14:16:18
+ * @LastEditTime: 2020-11-30 14:18:14
  * 多谢贡献： https://github.com/MoPoQAQ
  * 添加随机助力
  * 自动开团助力
@@ -436,13 +436,12 @@ function stealFriend() {
         try {
           const { msg, data: { list = [] } = {} } = JSON.parse(data);
           $.log(`\n获取工厂好友：${msg}\n${$.showLog ? data : ''}`);
-          const canCollectFriends = list.filter((x) => x.collectFlag === 1);
-          for (let i = 0; i < canCollectFriends.length; i++) {
-            const { encryptPin, key } = canCollectFriends[i];
+          for (let i = 0; i < list.length; i++) {
+            const { encryptPin, key, collectFlag } = list[i];
             const factId = await getFactoryIdByPin(encryptPin);
             if (factId) {
               await pickUserComponents(encryptPin, factId)
-              await collectElectricity(factId, key);
+              collectFlag && await collectElectricity(factId, key);
             }
           }
         } catch (e) {
