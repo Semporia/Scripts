@@ -24,6 +24,10 @@ export default async ({ expressApp }) => {
     name: 'jxFactory',
     model: require('../models/jxFactory').default,
   };
+  const jxFactoryTuan = {
+    name: 'jxFactoryTuan',
+    model: require('../models/jxFactoryTuan').default,
+  };
   const lunYu = {
     name: 'lunYu',
     model: require('../models/lunYu').default,
@@ -52,7 +56,8 @@ export default async ({ expressApp }) => {
       lunYu,
       shi,
       shiJing,
-      yiYan
+      yiYan,
+      jxFactoryTuan
     ],
   });
   Logger.info('✌️ Dependency Injector loaded');
