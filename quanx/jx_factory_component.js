@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 23:29:21
+ * @LastEditTime: 2020-11-30 23:54:36
   quanx:
   [task_local]
   0 5 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js, tag=京喜工厂拾取零件, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
@@ -44,7 +44,6 @@ $.info = {};
       await $.wait(500);
       const endInfo = await getUserInfo();
       $.result.push(
-        `名称：${$.info.commodityInfo.name}`,
         `任务前能量：${beginInfo.user.electric} 任务后能量：${endInfo.user.electric}`,
         `获得能量：${endInfo.user.electric - beginInfo.user.electric}`,
       );
@@ -96,6 +95,49 @@ function getUserInfo() {
   });
 }
 
+async function getMyComponent() {
+  let meStatus = [false];
+  if (!meStatus[0]) {
+    meStatus[0] = await pickUserComponents($.info.user.encryptPin, true);
+  }
+  if (!meStatus[0] && $.authExecute) {
+    await $.wait(5000);
+    await getMyComponent();
+  }
+}
+
+function getFriends() {
+  return new Promise(async resolve => {
+    $.get(taskUrl('friend/QueryFactoryManagerList'), async (err, resp, data) => {
+      try {
+        const { msg, data: { list = [] } = {} } = JSON.parse(data);
+        $.log(`\n获取工厂好友：${msg}\n${$.showLog ? data : ''}`);
+        let statusArr = [];
+        for (let i = 0; i < list.length; i++) {
+          const { encryptPin } = list[i];
+          let status = [false];
+          if (!status[0]) {
+            $.wait(5000);
+            status[0] = await pickUserComponents(encryptPin);
+            statusArr.push(status[0]);
+          }
+          if (status[0]) {
+            break;
+          }
+        }
+        if (!statusArr[statusArr.length - 1] && $.authExecute) {
+          await $.wait(5000);
+          await getFriends();
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    });
+  });
+}
+
 function pickUserComponents(pin, isMe) {
   return new Promise(async resolve => {
     $.get(taskUrl('usermaterial/GetUserComponent', `pin=${pin}`), async (err, resp, data) => {
@@ -111,11 +153,12 @@ function pickUserComponents(pin, isMe) {
               $.wait(2000);
               status[0] = await pickUpComponent(placeId, pin, isMe);
               statusArr.push(status[0]);
-            } else {
-              statusArr.push(true);
+            }
+            if (status[0]) {
+              break;
             }
           }
-          if (statusArr[componentList.length - 1]) {
+          if (statusArr[statusArr.length - 1]) {
             resolve(true);
           } else {
             resolve(false);
@@ -142,48 +185,6 @@ function pickUpComponent(placeId, pin, isMe) {
           resolve(true);
         } else {
           resolve(false);
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
-      }
-    });
-  });
-}
-
-async function getMyComponent() {
-  let meStatus = [false];
-  if (!meStatus[0]) {
-    meStatus[0] = await pickUserComponents($.info.user.encryptPin, true);
-  }
-  if (!meStatus[0] && $.authExecute) {
-    await $.wait(5000);
-    await getMyComponent();
-  }
-}
-
-function getFriends() {
-  return new Promise(async resolve => {
-    $.get(taskUrl('friend/QueryFactoryManagerList'), async (err, resp, data) => {
-      try {
-        const { msg, data: { list = [] } = {} } = JSON.parse(data);
-        $.log(`\n获取工厂好友：${msg}\n${$.showLog ? data : ''}`);
-        let statusArr = [];
-        for (let i = 0; i < list.length; i++) {
-          const { encryptPin } = list[i];
-          let status = [false];
-          if (!status[0]) {
-            $.wait(5000);
-            status[0] = await pickUserComponents(encryptPin);
-            statusArr.push(status[0]);
-          } else {
-            statusArr.push(true);
-          }
-        }
-        if (!statusArr[list.length - 1] && $.authExecute) {
-          await $.wait(5000);
-          await getFriends();
         }
       } catch (e) {
         $.logErr(e, resp);
