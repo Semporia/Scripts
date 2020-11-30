@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 14:01:44
+ * @LastEditTime: 2020-11-30 14:16:18
  * 多谢贡献： https://github.com/MoPoQAQ
  * 添加随机助力
  * 自动开团助力
@@ -232,7 +232,7 @@ function pickUserComponents(pin, factId) {
         "usermaterial/GetUserComponent",
         `pin=${pin}&_time=${Date.now()}`
       ),
-      (err, resp, data) => {
+      async (err, resp, data) => {
         try {
           const { msg, data: { componentList = [] } = {} } = JSON.parse(data);
           $.log(`\n获取好友零件：${msg}\n${$.showLog ? data : ''}`);
