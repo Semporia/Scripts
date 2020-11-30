@@ -40,7 +40,7 @@ $.userTuanInfo = {};
   if (!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
     if (i > 0 && $.isSurge()) {
-      $.await(10000)
+      $.wait(10000)
     }
     $.currentCookie = $.cookieArr[i];
     if ($.currentCookie) {
