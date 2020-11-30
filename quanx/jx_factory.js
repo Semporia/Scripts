@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 18:27:59
+ * @LastEditTime: 2020-11-30 18:42:36
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -459,7 +459,7 @@ function getFactoryIdByPin(pin) {
         try {
           const { msg, data: { factoryList = [] } = {} } = JSON.parse(data);
           $.log(`\n获取工厂信息：${msg}\n${$.showLog ? data : ''}`);
-          if (factoryList[0]) {
+          if (factoryList && factoryList[0]) {
             resolve(factoryList[0].factoryId);
           }
         } catch (e) {
