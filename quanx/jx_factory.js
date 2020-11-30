@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 14:18:14
+ * @LastEditTime: 2020-11-30 14:21:34
  * 多谢贡献： https://github.com/MoPoQAQ
  * 添加随机助力
  * 自动开团助力
@@ -262,7 +262,7 @@ function pickUpComponent(placeId, pin) {
       (err, resp, data) => {
         try {
           const { msg, data: { increaseElectric } = {} } = JSON.parse(data);
-          $.log(`\n拾取好友零件：${msg}，增加电力 ${increaseElectric}\n${$.showLog ? data : ''}`);
+          $.log(`\n拾取好友零件：${msg}，获得电力 ${increaseElectric}\n${$.showLog ? data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -462,7 +462,9 @@ function getFactoryIdByPin(pin) {
         try {
           const { msg, data: { factoryList = [] } = {} } = JSON.parse(data);
           $.log(`\n获取工厂信息：${msg}\n${$.showLog ? data : ''}`);
-          resolve(factoryList[0].factoryId);
+          if (factoryList[0]) {
+            resolve(factoryList[0].factoryId);
+          }
         } catch (e) {
           $.logErr(e, resp);
         } finally {
