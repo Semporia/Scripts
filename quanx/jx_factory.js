@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 18:42:36
+ * @LastEditTime: 2020-11-30 23:17:48
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -61,7 +61,7 @@ $.userTuanInfo = {};
       await $.wait(500);
       await getHireRewardList();
       await $.wait(500);
-      await stealFriend();
+      await getFriends();
       await $.wait(500);
       await submitInviteId(userName);
       await $.wait(500);
@@ -222,7 +222,7 @@ function collectElectricity(facId, master) {
   });
 }
 
-function pickUserComponents(pin, factId) {
+function pickUserComponents(pin) {
   return new Promise(async (resolve) => {
     $.get(
       taskUrl(
@@ -235,6 +235,7 @@ function pickUserComponents(pin, factId) {
           $.log(`\n获取好友零件：${msg}\n${$.showLog ? data : ''}`);
           if (componentList.length > 0) {
             for (let i = 0; i < componentList.length; i++) {
+              await $.wait(1000)
               const {placeId} = componentList[i];
               await pickUpComponent(placeId, pin);
             }
@@ -307,10 +308,8 @@ function browserTask() {
         if (!status[0] && !status[1]) {
           break;
         }
-        // await $.wait(500)
-        // await getTaskList()
       }
-      $.log(`\n结束第${i+1}个任务：${task.taskName}`);
+      $.log(`\n结束第${i+1}个任务：${task.taskName}\n`);
     }
     resolve();
   });
@@ -425,7 +424,7 @@ function hireAward(body) {
   });
 }
 
-function stealFriend() {
+function getFriends() {
   return new Promise(async (resolve) => {
     $.get(
       taskUrl("friend/QueryFactoryManagerList"),
@@ -437,9 +436,9 @@ function stealFriend() {
             const { encryptPin, key, collectFlag } = list[i];
             const factId = await getFactoryIdByPin(encryptPin);
             if (factId) {
-              await pickUserComponents(encryptPin, factId)
               collectFlag && await collectElectricity(factId, key);
             }
+            await pickUserComponents(encryptPin);
           }
         } catch (e) {
           $.logErr(e, resp);
