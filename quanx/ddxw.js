@@ -106,6 +106,7 @@ function getValid() {
   if ($.allTask.length > 0) {
     return true;
   }
+  $.msg($.name, '任务已结束，没有可执行任务!');
   return false
 }
 
@@ -261,7 +262,7 @@ function draw(token, i) {
       (err, resp, data) => {
         try {
           const { head = {}, body = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
+          $.log(`\n第${i + 1}次抽奖：${head.msg}\n${$.showLog ? data : ''}`);
           $.result.push(
             `第${i + 1}次抽奖：${body.name ? body.name : head.msg}`
           );
@@ -300,19 +301,19 @@ async function gameTask(token) {
   const _game = $.allTask.find((x) => x.ssjjTaskInfo.type === 3);
   const count = _game.ssjjTaskInfo.awardOfDayNum - _game.doneNum;
   for (let i = 0; i < count; i++) {
-    await game(token, i, _game.ssjjTaskInfo.id);
+    await game(token, _game);
     await $.wait(5000);
   }
 }
 
-function game(token, i, id) {
+function game(token, _game) {
   return new Promise((resolve) => {
     $.get(
-      taskUrl(`ssjj-task-record/game/${i+1}/${id}`, {}, token),
+      taskUrl(`ssjj-task-record/game/1/${_game.ssjjTaskInfo.id}`, {}, token),
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
+          $.log(`\n${_game.ssjjTaskInfo.name}：${head.msg}\n${$.showLog ? data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -331,7 +332,7 @@ function signIn(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
+          $.log(`\n${clock.ssjjTaskInfo.name}：${head.msg}\n${$.showLog ? data : ''}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -517,8 +518,7 @@ function browseShopFun(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
-          $.log(`\n${head.code === 200}`);
+          $.log(`\n${browseShop.ssjjTaskInfo.name}：${head.msg}\n${$.showLog ? data : ''}`);
           resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);
@@ -545,7 +545,7 @@ function browseChannelFun(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
+          $.log(`\n${browseChannel.ssjjTaskInfo.name}：${head.msg}\n${$.showLog ? data : ''}`);
           resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);
@@ -574,7 +574,7 @@ function browseCommodityFun(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
+          $.log(`\n${browseCommodity.ssjjTaskInfo.name}：${head.msg}\n${$.showLog ? data : ''}`);
           resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);
@@ -601,7 +601,7 @@ function browseMeetingFun(token) {
       (err, resp, data) => {
         try {
           const { head = {} } = JSON.parse(data);
-          $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
+          $.log(`\n${browseMeeting.ssjjTaskInfo.name}：${head.msg}\n${$.showLog ? data : ''}`);
           resolve(head.code === 200);
         } catch (e) {
           $.logErr(e, resp);
