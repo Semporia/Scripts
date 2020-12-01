@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-01 21:19:02
+ * @LastEditTime: 2020-12-01 21:19:43
   quanx:
   [task_local]
   10 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_story.js, tag=京喜金牌厂长, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
@@ -21,7 +21,7 @@ const $ = new Env('京喜金牌厂长');
 const JD_API_HOST = 'https://m.jingxi.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.autoCharge = $.getdata('jx_autoCharge') ? $.getdata('jx_autoCharge') === 'true' : false;
-$.showLog = $.getdata('jx_showLog') ? $.getdata('jx_showLog') === 'true' : true;
+$.showLog = $.getdata('jx_showLog') ? $.getdata('jx_showLog') === 'true' : false;
 $.notifyTime = $.getdata('jx_notifyTime');
 $.result = [];
 $.cookieArr = [];
