@@ -1,7 +1,7 @@
 import { ICommon } from '../interfaces/ICommon';
 import mongoose from 'mongoose';
 
-const JxFactory = new mongoose.Schema(
+const JxStory = new mongoose.Schema(
   {
     value: String,
     name: String,
@@ -9,4 +9,4 @@ const JxFactory = new mongoose.Schema(
   }
 );
 
-export default mongoose.model<ICommon & mongoose.Document>('jx-story', JxFactory, 'jx-story');
+export default mongoose.model<ICommon & mongoose.Document>('jx-story', JxStory, 'jx-story');
