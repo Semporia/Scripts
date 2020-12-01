@@ -4,6 +4,7 @@ import ddXw from './routes/ddXw';
 import ddFactory from './routes/ddFactory';
 import jxFactory from './routes/jxFactory';
 import jxFactoryTuan from './routes/jxFactoryTuan';
+import shiCi from './routes/shiCi';
 import agendash from './routes/agendash';
 
 export default () => {
@@ -13,6 +14,7 @@ export default () => {
 	jxFactory(app);
 	yiYan(app);
 	jxFactoryTuan(app);
+	shiCi(app);
 	agendash(app);
 
 	return app
