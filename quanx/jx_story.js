@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-01 18:48:21
+ * @LastEditTime: 2020-12-01 19:59:00
   quanx:
   [task_local]
   10 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_story.js, tag=京喜金牌厂长, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
@@ -19,7 +19,7 @@
 
 const $ = new Env('京喜金牌厂长');
 const JD_API_HOST = 'https://m.jingxi.com/';
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+// const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.autoCharge = $.getdata('jx_autoCharge') ? $.getdata('jx_autoCharge') === 'true' : false;
 $.showLog = $.getdata('jx_showLog') ? $.getdata('jx_showLog') === 'true' : true;
 $.notifyTime = $.getdata('jx_notifyTime');
@@ -122,7 +122,7 @@ function createAssistUser() {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
-        $.get(taskUrl('friend/AssistFriend', `shareId=${data.value}`), async (err, resp, data) => {
+        $.get(taskUrl('friend/AssistFriend', `shareId=${data.value}`), (err, resp, data) => {
           try {
             const { msg, data: { rewardMoney = 0 } = {} } = JSON.parse(data);
             $.log(`\n助力：${msg} 获得红包 ${rewardMoney}\n${$.showLog ? data : ''}`);
@@ -160,7 +160,7 @@ function getReadyCard() {
       try {
         const { ret, data: { cardInfo = [] } = {}, msg } = JSON.parse(data);
         $.log(`\n获取翻倍列表 ${msg}，总共${cardInfo.length}个卡片！随机选择一个卡片`);
-        await selectCard(cardInfo[Math.random * cardInfo.length]);
+        await selectCard(cardInfo[Math.floor(Math.random() * cardInfo.length)]);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -327,7 +327,7 @@ function taskUrl(function_path, body) {
       Cookie: $.currentCookie,
       Accept: `*/*`,
       Connection: `keep-alive`,
-      Referer: `https://wqsd.jd.com/pingou/dream_factory/index.html?jxsid=16064615029143314965&exchange=&ptag=139045.1.2&from_source=outer&jump_rd=17088.24.47&deepLink=1`,
+      Referer: `https://st.jingxi.com/pingou/jx_factory_story/index.html`,
       'Accept-Encoding': `gzip, deflate, br`,
       Host: `m.jingxi.com`,
       'User-Agent': `jdpingou;iPhone;3.15.2;14.2.1;ea00763447803eb0f32045dcba629c248ea53bb3;network/wifi;model/iPhone13,2;appBuild/100365;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/${
@@ -345,7 +345,7 @@ function taskListUrl(function_path, body) {
       Cookie: $.currentCookie,
       Accept: `*/*`,
       Connection: `keep-alive`,
-      Referer: `https://wqsd.jd.com/pingou/dream_factory/index.html?jxsid=16064615029143314965&exchange=&ptag=139045.1.2&from_source=outer&jump_rd=17088.24.47&deepLink=1`,
+      Referer: `https://st.jingxi.com/pingou/jx_factory_story/index.html`,
       'Accept-Encoding': `gzip, deflate, br`,
       Host: `m.jingxi.com`,
       'User-Agent': `jdpingou;iPhone;3.15.2;14.2.1;ea00763447803eb0f32045dcba629c248ea53bb3;network/wifi;model/iPhone13,2;appBuild/100365;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/${
