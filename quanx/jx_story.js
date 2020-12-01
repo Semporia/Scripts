@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-01 21:28:51
+ * @LastEditTime: 2020-12-02 00:00:14
   quanx:
   [task_local]
   10 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_story.js, tag=京喜金牌厂长, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
@@ -48,6 +48,7 @@ $.info = {};
       await $.wait(500);
       await browserTask();
       await getReadyCard();
+      await getFriends();
       const endInfo = await getUserInfo();
       $.result.push(
         `任务前钞票：${beginInfo.currentMoneyNum} 任务后钞票：${endInfo.currentMoneyNum}`,
@@ -56,7 +57,7 @@ $.info = {};
         }`,
         `任务前银行钞票：${beginInfo.financialBanknote} 任务后银行钞票：${endInfo.financialBanknote}`,
         `获得钞票：${
-          endInfo.currentMoneyNum - beginInfo.currentMoneyNum
+          endInfo.financialBanknote - beginInfo.financialBanknote
         }`,
         `当前等级 ${endInfo.userLevel}, 升级还需投入 ${endInfo.needLevelInvestedMoneyNum - endInfo.curLevelAlreadyInvestedMoneyNum}`
       );
@@ -165,6 +166,69 @@ function getAwardDetails() {
       }
     });
   });
+}
+
+function getFriends() {
+  return new Promise(async (resolve) => {
+    $.get(
+      taskUrl("userinfo/GetFriendList"),
+      async (err, resp, data) => {
+        try {
+          const { msg, data: { hireListToday = [] } = {} } = JSON.parse(data);
+          $.log(`\n获取助力好友：${msg}\n${$.showLog ? data : ''}`);
+          for (let i = 0; i < hireListToday.length; i++) {
+            const { awardMoneyStatus, awardHongbaoStatus, bingoActive } = hireListToday[i];
+            if (!awardMoneyStatus) {
+              await awardMoney(i + 1);
+            }
+            if (!awardHongbaoStatus && bingoActive) {
+              await awardHongbao(i + 1);
+            }
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
+}
+
+function awardMoney(id) {
+  return new Promise((resolve) => {
+    $.get(
+      taskUrl("userinfo/HireAward", `type=1&position=${id}`),
+      async (err, resp, data) => {
+        try {
+          const { msg, data: { rewardMoney = 0 } = {} } = JSON.parse(data);
+          $.log(`\n获取助力钞票：${msg}，获得钞票 ${rewardMoney}\n${$.showLog ? data : ''}`);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  })
+}
+
+function awardHongbao(id) {
+  return new Promise((resolve) => {
+    $.get(
+      taskUrl("userinfo/HireAward", `type=1&position=${id}`),
+      async (err, resp, data) => {
+        try {
+          const { msg, data: { rewardHongbao = 0 } = {} } = JSON.parse(data);
+          $.log(`\n获取助力红包：${msg}，获得红包 ${rewardHongbao}\n${$.showLog ? data : ''}`);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  })
 }
 
 function getReadyCard() {
