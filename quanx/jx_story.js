@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-01 21:19:43
+ * @LastEditTime: 2020-12-01 21:28:51
   quanx:
   [task_local]
   10 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_story.js, tag=京喜金牌厂长, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
@@ -22,7 +22,7 @@ const JD_API_HOST = 'https://m.jingxi.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.autoCharge = $.getdata('jx_autoCharge') ? $.getdata('jx_autoCharge') === 'true' : false;
 $.showLog = $.getdata('jx_showLog') ? $.getdata('jx_showLog') === 'true' : false;
-$.notifyTime = $.getdata('jx_notifyTime');
+$.notifyTime = $.getdata('jxcz_notifyTime');
 $.result = [];
 $.cookieArr = [];
 $.currentCookie = '';
@@ -172,8 +172,10 @@ function getReadyCard() {
     $.get(taskUrl('userinfo/ReadyCard'), async (err, resp, data) => {
       try {
         const { ret, data: { cardInfo = [] } = {}, msg } = JSON.parse(data);
-        $.log(`\n获取翻倍列表 ${msg}，总共${cardInfo.length}个卡片！随机选择一个卡片`);
-        await selectCard(cardInfo);
+        $.log(`\n获取翻倍列表 ${msg}，总共${cardInfo.length}个卡片！${cardInfo.length ? '随机选择一个卡片' : ''}`);
+        if (cardInfo.length > 0) {
+          await selectCard(cardInfo);
+        }
       } catch (e) {
         $.logErr(e, resp);
       } finally {
