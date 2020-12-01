@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-01 19:59:00
+ * @LastEditTime: 2020-12-01 21:19:02
   quanx:
   [task_local]
   10 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_story.js, tag=京喜金牌厂长, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
@@ -19,7 +19,7 @@
 
 const $ = new Env('京喜金牌厂长');
 const JD_API_HOST = 'https://m.jingxi.com/';
-// const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.autoCharge = $.getdata('jx_autoCharge') ? $.getdata('jx_autoCharge') === 'true' : false;
 $.showLog = $.getdata('jx_showLog') ? $.getdata('jx_showLog') === 'true' : true;
 $.notifyTime = $.getdata('jx_notifyTime');
@@ -48,6 +48,18 @@ $.info = {};
       await $.wait(500);
       await browserTask();
       await getReadyCard();
+      const endInfo = await getUserInfo();
+      $.result.push(
+        `任务前钞票：${beginInfo.currentMoneyNum} 任务后钞票：${endInfo.currentMoneyNum}`,
+        `获得钞票：${
+          endInfo.currentMoneyNum - beginInfo.currentMoneyNum
+        }`,
+        `任务前银行钞票：${beginInfo.financialBanknote} 任务后银行钞票：${endInfo.financialBanknote}`,
+        `获得钞票：${
+          endInfo.currentMoneyNum - beginInfo.currentMoneyNum
+        }`,
+        `当前等级 ${endInfo.userLevel}, 升级还需投入 ${endInfo.needLevelInvestedMoneyNum - endInfo.curLevelAlreadyInvestedMoneyNum}`
+      );
       await submitInviteId(userName);
       await createAssistUser();
     }
@@ -79,6 +91,7 @@ function getUserInfo() {
         const { ret, data = {}, msg } = JSON.parse(_data);
         $.log(`\n获取用户信息：${msg}\n${$.showLog ? _data : ''}`);
         $.info = data;
+        resolve(data)
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -90,14 +103,14 @@ function getUserInfo() {
 
 function submitInviteId(userName) {
   return new Promise(resolve => {
-    if (!$.info || !$.info.encryptPin) {
+    if (!$.info || !$.info.shareId) {
       resolve();
       return;
     }
-    $.log('你的互助码: ' + $.info.encryptPin);
+    $.log('你的互助码: ' + $.info.shareId);
     $.get(
       {
-        url: `https://api.ninesix.cc/api/jx-story/${$.info.encryptPin}/${userName}`,
+        url: `https://api.ninesix.cc/api/jx-story/${$.info.shareId}/${userName}`,
       },
       (err, resp, _data) => {
         try {
@@ -122,10 +135,10 @@ function createAssistUser() {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
-        $.get(taskUrl('friend/AssistFriend', `shareId=${data.value}`), (err, resp, data) => {
+        $.get(taskUrl('userinfo/AssistFriend', `shareId=${escape(data.value)}`), (err, resp, data) => {
           try {
             const { msg, data: { rewardMoney = 0 } = {} } = JSON.parse(data);
-            $.log(`\n助力：${msg} 获得红包 ${rewardMoney}\n${$.showLog ? data : ''}`);
+            $.log(`\n助力：${msg} 获得钞票 ${rewardMoney}\n${$.showLog ? data : ''}`);
           } catch (e) {
             $.logErr(e, resp);
           } finally {
@@ -160,7 +173,7 @@ function getReadyCard() {
       try {
         const { ret, data: { cardInfo = [] } = {}, msg } = JSON.parse(data);
         $.log(`\n获取翻倍列表 ${msg}，总共${cardInfo.length}个卡片！随机选择一个卡片`);
-        await selectCard(cardInfo[Math.floor(Math.random() * cardInfo.length)]);
+        await selectCard(cardInfo);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -170,13 +183,22 @@ function getReadyCard() {
   });
 }
 
-function selectCard(card) {
+function selectCard(cardInfo) {
   return new Promise(async resolve => {
-    $.get(taskUrl('userinfo/SelectCard', `cardInfo=${JSON.stringify(card)}`), async (err, resp, data) => {
+    const random = Math.floor(Math.random() * 3);
+    const cardList = [...cardInfo].map((x, i) => {
+      return {
+        cardId: x.cardId,
+        cardPosition: i + 1,
+        cardStatus: i===random ? 1: 0
+      }
+    })
+    $.get(taskUrl('userinfo/SelectCard', `cardInfo=${encodeURIComponent(JSON.stringify({cardInfo:cardList}))}`), async (err, resp, data) => {
       try {
         const { ret, msg } = JSON.parse(data);
         $.log(`\n选择翻倍卡片 ${msg}`);
-        await finishCard(card);
+        await $.wait(10300);
+        await finishCard(cardInfo[random]);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -186,7 +208,7 @@ function selectCard(card) {
   });
 }
 
-function finishCard({ cardId }) {
+function finishCard({cardId}) {
   return new Promise(async resolve => {
     $.get(taskUrl('userinfo/FinishCard', `cardid=${cardId}`), async (err, resp, data) => {
       try {
@@ -290,10 +312,10 @@ function doTask({ taskId, completedTimes, configTargetTimes, taskName }) {
 
 function signIn() {
   return new Promise(resolve => {
-    $.get(taskUrl('userinfo/SignIn'), async (err, resp, data) => {
+    $.get(taskUrl('userinfo/SignIn', `date=${$.time('yyyyMMdd')}`), async (err, resp, data) => {
       try {
         const { msg, data: { rewardMoneyToday } = {} } = JSON.parse(data);
-        $.log(`\n登录：${msg} 获得红包 ${rewardMoneyToday || 0}\n${$.showLog ? data : ''}`);
+        $.log(`\n签到：${msg} 获得钞票 ${rewardMoneyToday || 0}\n${$.showLog ? data : ''}`);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
