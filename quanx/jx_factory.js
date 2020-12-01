@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-01 00:46:33
+ * @LastEditTime: 2020-12-01 11:27:30
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -62,6 +62,8 @@ $.userTuanInfo = {};
       await getHireRewardList();
       await $.wait(500);
       await getFriends();
+      await $.wait(500);
+      await pickUserComponents($.info.user.encryptPin, true);
       await $.wait(500);
       await submitInviteId(userName);
       await $.wait(500);
@@ -222,7 +224,7 @@ function collectElectricity(facId, master) {
   });
 }
 
-function pickUserComponents(pin) {
+function pickUserComponents(pin, isMe) {
   return new Promise(async (resolve) => {
     $.get(
       taskUrl(
@@ -232,12 +234,18 @@ function pickUserComponents(pin) {
       async (err, resp, data) => {
         try {
           const { msg, data: { componentList = [] } = {} } = JSON.parse(data);
-          $.log(`\n获取好友零件：${msg}\n${$.showLog ? data : ''}`);
+          $.log(`\n获取${isMe ? '自己' : '好友'}零件：${msg}\n${$.showLog ? data : ''}`);
           if (componentList.length > 0) {
             for (let i = 0; i < componentList.length; i++) {
               await $.wait(1000)
               const {placeId} = componentList[i];
-              await pickUpComponent(placeId, pin);
+              let status = [false];
+              if (!status[0]) {
+                status[0] = await pickUpComponent(placeId, pin, isMe);
+              }
+              if (status[0]) {
+                break;
+              }
             }
           }
         } catch (e) {
@@ -250,7 +258,7 @@ function pickUserComponents(pin) {
   });
 }
 
-function pickUpComponent(placeId, pin) {
+function pickUpComponent(placeId, pin, isMe) {
   return new Promise(async (resolve) => {
     $.get(
       taskUrl(
@@ -260,7 +268,12 @@ function pickUpComponent(placeId, pin) {
       (err, resp, data) => {
         try {
           const { msg, data: { increaseElectric } = {} } = JSON.parse(data);
-          $.log(`\n拾取好友零件：${msg}，获得电力 ${increaseElectric || 0}\n${$.showLog ? data : ''}`);
+          $.log(`\n拾取${isMe ? '自己' : '好友'}零件：${msg}，获得电力 ${increaseElectric || 0}\n${$.showLog ? data : ''}`);
+          if (!increaseElectric) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
         } catch (e) {
           $.logErr(e, resp);
         } finally {
