@@ -7,7 +7,8 @@
     ],
     "typeRoots": [
       "./node_modules/@types",
-      "./src/types"
+      "./src/types",
+      "./node_modules/celebrate/lib/index.d.ts"
     ],
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
