@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-01 18:41:48
+ * @LastEditTime: 2020-12-01 18:48:21
   quanx:
   [task_local]
   10 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_story.js, tag=京喜金牌厂长, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
@@ -25,7 +25,7 @@ $.showLog = $.getdata('jx_showLog') ? $.getdata('jx_showLog') === 'true' : true;
 $.notifyTime = $.getdata('jx_notifyTime');
 $.result = [];
 $.cookieArr = [];
-$.currentCookie = 'pt_key=AAJfotMwADA3mtE8xIDG1Db7gA2OZ8uJT8FIXFLwOPNIUepzJw8FOqjNpKqnboSK5xoB-tEX4TM;pt_pin=CCDreamm;';
+$.currentCookie = '';
 $.allTask = [];
 $.info = {};
 
