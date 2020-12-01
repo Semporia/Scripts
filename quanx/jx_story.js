@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-02 00:00:14
+ * @LastEditTime: 2020-12-02 00:21:58
   quanx:
   [task_local]
   10 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_story.js, tag=京喜金牌厂长, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
@@ -49,6 +49,7 @@ $.info = {};
       await browserTask();
       await getReadyCard();
       await getFriends();
+      await clickManage();
       const endInfo = await getUserInfo();
       $.result.push(
         `任务前钞票：${beginInfo.currentMoneyNum} 任务后钞票：${endInfo.currentMoneyNum}`,
@@ -93,6 +94,25 @@ function getUserInfo() {
         $.log(`\n获取用户信息：${msg}\n${$.showLog ? _data : ''}`);
         $.info = data;
         resolve(data)
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    });
+  });
+}
+
+function clickManage() {
+  return new Promise(resolve => {
+    $.get(taskUrl('userinfo/IncreaseUserMoney'), async (err, resp, _data) => {
+      try {
+        const { ret, data: { moneyNum = 0 } = {}, msg } = JSON.parse(_data);
+        $.log(`\n点击厂长：${msg}，获得钞票 ${moneyNum}\n${$.showLog ? _data : ''}`);
+        if (ret === 0) {
+          await $.wait(500);
+          await clickManage()
+        }
       } catch (e) {
         $.logErr(e, resp);
       } finally {
