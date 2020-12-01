@@ -13,7 +13,7 @@ export default (app: Router) => {
     try {
       const shiServiceInstance = Container.get(ShiCiService);
       const { shici } = await shiServiceInstance.getShiCi();
-      return res.status(200).json({ ...shici });
+      return res.status(200).json({ code: 200, data: shici });
     } catch (e) {
       logger.error('🔥 error: %o', e);
       return next(e);

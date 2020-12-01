@@ -13,7 +13,7 @@ export default (app: Router) => {
     try {
       const yiYanServiceInstance = Container.get(YiYanService);
       const { yiYan } = await yiYanServiceInstance.getYiYan();
-      return res.status(200).json({ ...yiYan });
+      return res.status(200).json({ code: 200, data: yiYan });
     } catch (e) {
       logger.error('🔥 error: %o', e);
       return next(e);
