@@ -344,7 +344,7 @@
           "val": "",
           "type": "text",
           "desc": "防止频繁通知，可以设置通知时间，24小时制，比如 19 或者 19:30，多个时间以英文逗号隔开."
-        },
+        }
       ],
       "author": "@whyour",
       "repo": "https://github.com/whyour/hundun/blob/master/quanx/jx_factory.js",
