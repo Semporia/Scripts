@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-02 10:35:44
+ * @LastEditTime: 2020-12-02 14:37:09
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -55,8 +55,8 @@ $.userTuanInfo = {};
       await browserTask();
       await $.wait(500);
       await getHireRewardList();
-      await $.wait(500);
-      await getFriends();
+      // await $.wait(500);
+      // await getFriends();
       await $.wait(500);
       await pickUserComponents($.info.user.encryptPin, true);
       await $.wait(500);

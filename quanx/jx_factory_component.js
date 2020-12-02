@@ -3,28 +3,29 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-02 11:52:02
- * 本脚本包含京喜耗时任务，默认不会递归执行，自己用软件设置每小时执行，需要自动执行打开box中自动运行的配置，一天执行两三次即可，防止漏网之鱼，目前包括
+ * @LastEditTime: 2020-12-02 14:43:03
+ * 本脚本包含京喜耗时任务，默认自动执行，一天执行两三次即可，防止漏网之鱼，可以在box中关闭，然后自己设置定时任务，目前包括
  * 拾取好友与自己零件
  * 厂长翻倍任务
  * 点击厂长任务
+ * 拷贝定时任务删除 *\/4 中的 \
   quanx:
   [task_local]
-  0 5 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js, tag=京喜工厂plus, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
+  0 *\/4 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js, tag=京喜工厂plus, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
 
   Loon:
   [Script]
-  cron "0 5 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js,tag=京喜工厂plus
+  cron "0 *\/4 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js,tag=京喜工厂plus
 
   Surge:
-  京喜工厂plus = type=cron,cronexp="1 * * * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js
+  京喜工厂plus = type=cron,cronexp="0 *\/4 * * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js
 *
 **/
 
 const $ = new Env('京喜工厂plus');
 const JD_API_HOST = 'https://wq.jd.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.authExecute = $.getdata('jx_authExecute') ? $.getdata('jx_authExecute') === 'true' : false;
+$.authExecute = $.getdata('jx_authExecute') ? $.getdata('jx_authExecute') === 'true' : true;
 $.showLog = $.getdata('jx_showLog') ? $.getdata('jx_showLog') === 'true' : false;
 $.result = [];
 $.cookieArr = [];
@@ -52,9 +53,9 @@ $.multiple = 0;
       await clickManage();
       await getReadyCard();
       $.result.push(
-        `任务前能量：${beginInfo.user.electric} 任务后能量：${endInfo.user.electric}`,
-        `获得能量：${endInfo.user.electric - beginInfo.user.electric}`,
-        `点击厂长获得钞票：${$.count}，获得倍数：${$.multiple}`
+        `拾取前能量：${beginInfo.user.electric} 拾取后能量：${endInfo.user.electric}`,
+        `获得零件能量：${endInfo.user.electric - beginInfo.user.electric}`,
+        `厂长钞票：${$.count}，银行倍数：${$.multiple}`
       );
     }
   }
