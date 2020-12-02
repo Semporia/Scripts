@@ -3,21 +3,25 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-02 10:45:17
+ * @LastEditTime: 2020-12-02 11:52:02
+ * 本脚本包含京喜耗时任务，默认不会递归执行，自己用软件设置每小时执行，需要自动执行打开box中自动运行的配置，一天执行两三次即可，防止漏网之鱼，目前包括
+ * 拾取好友与自己零件
+ * 厂长翻倍任务
+ * 点击厂长任务
   quanx:
   [task_local]
-  0 5 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js, tag=京喜工厂拾取零件, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
+  0 5 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js, tag=京喜工厂plus, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
 
   Loon:
   [Script]
-  cron "0 5 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js,tag=京喜工厂拾取零件
+  cron "0 5 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js,tag=京喜工厂plus
 
   Surge:
-  京喜工厂拾取零件 = type=cron,cronexp="1 * * * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js
+  京喜工厂plus = type=cron,cronexp="1 * * * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js
 *
 **/
 
-const $ = new Env('京喜工厂拾取零件');
+const $ = new Env('京喜工厂plus');
 const JD_API_HOST = 'https://wq.jd.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.authExecute = $.getdata('jx_authExecute') ? $.getdata('jx_authExecute') === 'true' : false;
