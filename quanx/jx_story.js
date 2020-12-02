@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-02 00:30:57
+ * @LastEditTime: 2020-12-02 10:45:59
   quanx:
   [task_local]
   10 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_story.js, tag=京喜金牌厂长, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png, enabled=true
@@ -47,9 +47,11 @@ $.info = {};
       await getTaskList();
       await $.wait(500);
       await browserTask();
-      await getReadyCard();
+      await $.wait(500);
       await getFriends();
-      await clickManage();
+      // await getReadyCard();
+      // await clickManage();
+      await $.wait(500);
       const endInfo = await getUserInfo();
       $.result.push(
         `任务前钞票：${beginInfo.currentMoneyNum} 任务后钞票：${endInfo.currentMoneyNum}`,

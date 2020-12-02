@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-02 00:31:35
+ * @LastEditTime: 2020-12-02 10:35:44
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -171,7 +171,7 @@ function getCurrentElectricity() {
 function collectElectricity(facId, master) {
   return new Promise(async resolve => {
     $.get(
-      taskUrl('generator/CollectCurrentElectricity', `factoryid=${facId}&master=${master ? master : ''}`),
+      taskUrl('generator/CollectCurrentElectricity', `factoryid=${facId}&master=${master ? master : ''}&apptoken=&pgtimestamp=&phoneID=&doubleflag=1`),
       (err, resp, data) => {
         try {
           const { ret, data: { CollectElectricity, loginPinCollectElectricity } = {}, msg } = JSON.parse(data);
@@ -391,10 +391,6 @@ function getFriends() {
         $.log(`\n获取工厂好友：${msg}\n${$.showLog ? data : ''}`);
         for (let i = 0; i < list.length; i++) {
           const { encryptPin, key, collectFlag } = list[i];
-          const factId = await getFactoryIdByPin(encryptPin);
-          if (factId) {
-            collectFlag && (await collectElectricity(factId, key));
-          }
           await pickUserComponents(encryptPin);
         }
       } catch (e) {
