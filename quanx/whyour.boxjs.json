@@ -168,7 +168,7 @@
     {
       "id": "jd_ddxw",
       "name": "东东小窝",
-      "keys": ["jd_ddxw_name1", "jd_ddxw_name2", "jd_ddxw_token1", "jd_ddxw_token2"],
+      "keys": ["jd_ddxw_name1", "jd_ddxw_name2"],
       "settings": [
         {
           "id": "xw_showLog",

@@ -3,25 +3,19 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-20 10:42:06
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-02 14:41:28
-
-  hostname = lkyl.dianpusoft.cn
+ * @LastEditTime: 2020-12-03 00:20:33
 
   quanx:
   [task_local]
   0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js, tag=京东小窝, img-url=https://raw.githubusercontent.com/58xinian/icon/master/ddxw.png enabled=true
-  [rewrite_local]
-  ^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login url script-request-body https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.cookie.js
 
   loon:
   [Script]
-  http-request ^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.cookie.js, requires-body=true, timeout=10, tag=京东小窝cookie
   cron "0 9 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js, tag=京东小窝
 
   surge:
   [Script]
   京东小窝 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.js,
-  京东小窝cookie = type=http-request,pattern=^https\:\/\/lkyl\.dianpusoft\.cn\/api\/user\-info\/login,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/ddxw.cookie.js
  *
  *
  **/
@@ -29,15 +23,8 @@ const $ = new Env("东东小窝");
 
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://lkyl.dianpusoft.cn/api/";
-$.testTaskId = "1329472966483550209"; // 测试邀请任务
-$.userNames = [
-  $.getdata("jd_ddxw_name1") || "",
-  $.getdata("jd_ddxw_name2") || "",
-];
-$.tokens = [
-  $.getdata("jd_ddxw_token1") || "",
-  $.getdata("jd_ddxw_token2") || "",
-];
+$.userNames = [];
+$.tokens = [];
 $.woBLottery = $.getdata("jd_wob_lottery")
   ? $.getdata("jd_wob_lottery") === "true"
   : false;
@@ -58,10 +45,7 @@ $.drawCenterInfo = {};
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
-      const isOk = await checkToken($.tokens[i]);
-      if (!isOk) {
-        $.tokens[i] = await getToken($.userNames[i], i, cookie);
-      }
+      $.tokens[i] = await getToken($.userNames[i], i, cookie);
       const startHomeInfo = await getHomeInfo($.tokens[i]);
       if (!startHomeInfo) return;
       await getDrawCenter($.tokens[i]);
@@ -146,7 +130,6 @@ function getToken(name, i, cookie) {
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
           $.tokens[i] = head.token;
-          $.setdata(head.token, `jd_ddxw_token${i + 1}`);
           resolve(head.token);
         } catch (e) {
           $.logErr(e, resp);
