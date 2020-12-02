@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-02 17:52:51
+ * @LastEditTime: 2020-12-02 20:50:40
  * 本脚本包含京喜耗时任务，默认自动执行，一天执行几次即可，防止漏网之鱼，可以在box中关闭，然后自己设置定时任务，目前包括
  * 拾取好友与自己零件
  * 厂长翻倍任务
@@ -27,12 +27,14 @@ const JD_API_HOST = 'https://wq.jd.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.authExecute = $.getdata('jx_authExecute') ? $.getdata('jx_authExecute') === 'true' : true;
 $.showLog = $.getdata('jx_showLog') ? $.getdata('jx_showLog') === 'true' : false;
+$.autoUpgrade = $.getdata('jx_autoUpgrade') ? $.getdata('jx_autoUpgrade') === 'true' : false;
 $.result = [];
 $.cookieArr = [];
 $.currentCookie = '';
 $.info = {};
 $.count = 0;
 $.multiple = 0;
+$.time = 0;
 
 !(async () => {
   if (!getCookies()) return;
@@ -57,6 +59,7 @@ $.multiple = 0;
         `获得零件能量：${endInfo.user.electric - beginInfo.user.electric}`,
         `厂长钞票：${$.count}，银行倍数：${$.multiple}`
       );
+      await upgradeUserLevel();
     }
   }
   $.authExecute && await showMsg();
@@ -195,6 +198,37 @@ function pickUpComponent(placeId, pin, isMe) {
           resolve(true);
         } else {
           resolve(false);
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    });
+  });
+}
+
+function upgradeUserLevel() {
+  return new Promise(async resolve => {
+    if (!$.autoUpgrade) {
+      resolve();
+      return;
+    }
+    $.get(taskUrl('usermaterial/UpgradeUserLevelDraw'), (err, resp, data) => {
+      try {
+        const { msg, data: { discount, quota, currentUserLevel, consumeMoneyNum } = {}, ret } = JSON.parse(data);
+        let str = '';
+        if (discount && quota) {
+          str = `，获得满${quota}减${discount}红包`;
+        }
+        if (ret === 0) {
+          $.time++;
+          $.log(`\n投入钞票：${msg}，消耗钞票${consumeMoneyNum}，当前等级 ${currentUserLevel}${str ? str : ''}\n${$.showLog ? data : ''}`);
+          await upgradeUserLevel();
+        } else {
+          $.result.push(
+            `厂长从${currentUserLevel-$.time}级升到${currentUserLevel}`,
+          );
         }
       } catch (e) {
         $.logErr(e, resp);
