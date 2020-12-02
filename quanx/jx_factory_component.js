@@ -3,8 +3,8 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-02 14:43:03
- * 本脚本包含京喜耗时任务，默认自动执行，一天执行两三次即可，防止漏网之鱼，可以在box中关闭，然后自己设置定时任务，目前包括
+ * @LastEditTime: 2020-12-02 17:52:51
+ * 本脚本包含京喜耗时任务，默认自动执行，一天执行几次即可，防止漏网之鱼，可以在box中关闭，然后自己设置定时任务，目前包括
  * 拾取好友与自己零件
  * 厂长翻倍任务
  * 点击厂长任务
@@ -18,7 +18,7 @@
   cron "0 *\/4 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js,tag=京喜工厂plus
 
   Surge:
-  京喜工厂plus = type=cron,cronexp="0 *\/4 * * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js
+  京喜工厂plus = type=cron,cronexp="0 *\/4 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js
 *
 **/
 

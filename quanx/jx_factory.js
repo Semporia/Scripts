@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-02 14:37:09
+ * @LastEditTime: 2020-12-02 17:59:08
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -282,11 +282,11 @@ function awardTask({ taskId, taskName }) {
   return new Promise(resolve => {
     $.get(taskListUrl('Award', `taskId=${taskId}`), (err, resp, data) => {
       try {
-        const { msg = `获得钞票`, ret, data: { prizeInfo = '' } = {} } = JSON.parse(data);
+        const { msg, ret, data: { prizeInfo = '' } = {} } = JSON.parse(data);
         $.log(
           `\n${taskName}[领奖励]：${
             msg.indexOf('活动太火爆了') !== -1 ? '任务进行中或者未到任务时间' : msg
-          }：${prizeInfo.slice(0, -2)}\n${$.showLog ? data : ''}`,
+          }：获得钞票 ${prizeInfo.slice(0, -2)}\n${$.showLog ? data : ''}`,
         );
         resolve(ret === 0);
       } catch (e) {
