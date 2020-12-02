@@ -378,7 +378,7 @@
           "val": false,
           "type": "boolean",
           "desc": "打开时，会一直升级到钞票不够20000，默认关闭"
-        },
+        }
       ],
       "author": "@whyour",
       "repo": "https://github.com/whyour/hundun/blob/master/quanx/jx_factory_component.js",
