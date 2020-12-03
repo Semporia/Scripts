@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-03 13:14:39
+ * @LastEditTime: 2020-12-03 13:23:56
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -601,7 +601,7 @@ function awardTuan() {
     }
     $.get(taskTuanUrl('tuan/Award', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&tuanId=${$.userTuanInfo.tuanId}`), async (err, resp, data) => {
       try {
-        const { msg, data: { electric = 0 } = {} } = JSON.parse(data);
+        const { ret, msg, data: { electric = 0 } = {} } = JSON.parse(data);
         if (ret === 0) {
           $.log(`\n领取开团奖励：${msg}，获得电力 ${electric}\n${!$.showLog ? data : ''}`);
           await createTuan();
