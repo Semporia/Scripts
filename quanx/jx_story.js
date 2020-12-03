@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-02 17:58:36
+ * @LastEditTime: 2020-12-03 21:20:38
  * 拷贝定时任务删除 *\/4 中的 \
   quanx:
   [task_local]
@@ -194,7 +194,7 @@ function getFriends() {
     $.get(taskUrl('userinfo/GetFriendList'), async (err, resp, data) => {
       try {
         const { msg, data: { hireListToday = [] } = {} } = JSON.parse(data);
-        $.log(`\n获取助力好友：${msg}\n${!$.showLog ? data : ''}`);
+        $.log(`\n获取助力好友：${msg}\n${$.showLog ? data : ''}`);
         for (let i = 0; i < hireListToday.length; i++) {
           const { awardMoneyStatus, awardHongbaoStatus, rewardHongbaoMax } = hireListToday[i];
           if (!awardMoneyStatus) {

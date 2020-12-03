@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-02 22:53:47
+ * @LastEditTime: 2020-12-03 21:25:42
  * 本脚本包含京喜耗时任务，默认自动执行，一天执行几次即可，防止漏网之鱼，可以在box中关闭，然后自己设置定时任务，目前包括
  * 拾取好友与自己零件
  * 厂长翻倍任务
@@ -35,6 +35,7 @@ $.info = {};
 $.count = 0;
 $.multiple = 0;
 $.time = 0;
+$.waitTime = 1000;
 
 !(async () => {
   if (!getCookies()) return;
@@ -53,6 +54,7 @@ $.time = 0;
       await $.wait(500);
       const endInfo = await getUserInfo();
       await clickManage();
+      await $.wait(500);
       await getReadyCard();
       $.result.push(
         `拾取前能量：${beginInfo.user.electric} 拾取后能量：${endInfo.user.electric}`,
@@ -247,7 +249,11 @@ function clickManage() {
         $.log(`\n点击厂长：${msg}，获得钞票 ${moneyNum}\n${$.showLog ? _data : ''}`);
         $.count += moneyNum;
         if (ret === 0 && $.authExecute) {
-          await $.wait(500);
+          await $.wait($.waitTime);
+          await clickManage();
+        } else if(msg.indexOf('点击的频率') !== -1) {
+          $.waitTime += 500;
+          await $.wait(3000);
           await clickManage();
         }
       } catch (e) {
