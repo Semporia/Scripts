@@ -7,7 +7,7 @@ const route = Router();
 
 export default (app: Router) => {
   app.use('/factory', route);
-  route.post(
+  route.get(
     '/:code/:name',
     celebrate({
       params: Joi.object({
