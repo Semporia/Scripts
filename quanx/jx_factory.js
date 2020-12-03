@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-03 11:00:15
+ * @LastEditTime: 2020-12-03 11:26:23
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -562,7 +562,7 @@ function submitTuanId(userName) {
 
 function createTuan() {
   return new Promise(async resolve => {
-    $.get(taskUrl('tuan/CreateTuan', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&isOpenApp=1`), async (err, resp, data) => {
+    $.get(taskTuanUrl('tuan/CreateTuan', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&isOpenApp=1`), async (err, resp, data) => {
       try {
         const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
         $.log(`\n开团信息：${msg}\n${!$.showLog ? data : ''}`);
@@ -585,7 +585,7 @@ function joinTuan() {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(
-          taskUrl('tuan/JoinTuan', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&tuanId=${escape(data.value)}`),
+          taskTuanUrl('tuan/JoinTuan', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&tuanId=${data.value}`),
           async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
@@ -668,6 +668,22 @@ function taskAssistUrl(function_path, body) {
       'Accept-Encoding': `gzip, deflate, br`,
       Host: `m.jingxi.com`,
       'Accept-Language': `zh-cn`,
+    },
+  };
+}
+
+function taskTuanUrl(function_path, body) {
+  return {
+    url: `${JD_API_HOST}dreamfactory/${function_path}?${body}&zone=dream_factory&sceneval=2&g_login_type=1&_time=${Date.now()}&_=${Date.now()}`,
+    headers: {
+      Cookie: $.currentCookie,
+      Accept: `*/*`,
+      Connection: `keep-alive`,
+      Referer: `https://st.jingxi.com/pingou/dream_factory/index.html`,
+      'Accept-Encoding': `gzip, deflate, br`,
+      Host: `m.jingxi.com`,
+      'Accept-Language': `zh-cn`,
+      "User-Agent": "jdpingou;",
     },
   };
 }
