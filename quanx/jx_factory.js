@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-03 11:42:54
+ * @LastEditTime: 2020-12-03 13:14:39
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -68,8 +68,8 @@ $.userTuanInfo = {};
       await $.wait(500);
       $.result.push(
         `名称：${$.info.commodityInfo.name}`,
-        `任务前能量：${beginInfo.user.electric} 任务后能量：${endInfo.user.electric}`,
-        `获得能量：${endInfo.user.electric - beginInfo.user.electric} 还需能量：${
+        `任务前电力：${beginInfo.user.electric} 任务后电力：${endInfo.user.electric}`,
+        `获得电力：${endInfo.user.electric - beginInfo.user.electric} 还需电力：${
           endInfo.productionInfo.needElectric - beginInfo.productionInfo.investedElectric
         }`,
       );
@@ -77,6 +77,7 @@ $.userTuanInfo = {};
       await getTuanId();
       await submitTuanId(userName);
       await joinTuan();
+      await awardTuan();
     }
   }
   await showMsg();
@@ -155,7 +156,7 @@ function getCurrentElectricity() {
             data: { currentElectricityQuantity, doubleElectricityFlag, maxElectricityQuantity } = {},
             msg,
           } = JSON.parse(data);
-          $.log(`\n获取当前能量：${msg}\n${$.showLog ? data : ''}`);
+          $.log(`\n获取当前电力：${msg}\n${$.showLog ? data : ''}`);
           if (currentElectricityQuantity === maxElectricityQuantity && doubleElectricityFlag) {
             await collectElectricity($.info.factoryInfo.factoryId);
           }
@@ -587,6 +588,28 @@ function joinTuan() {
         );
       } catch (e) {
         $.logErr(e, resp);
+      }
+    });
+  });
+}
+
+function awardTuan() {
+  return new Promise(async resolve => {
+    if (!$.userTuanInfo || !$.userTuanInfo.tuanId) {
+      resolve();
+      return;
+    }
+    $.get(taskTuanUrl('tuan/Award', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&tuanId=${$.userTuanInfo.tuanId}`), async (err, resp, data) => {
+      try {
+        const { msg, data: { electric = 0 } = {} } = JSON.parse(data);
+        if (ret === 0) {
+          $.log(`\n领取开团奖励：${msg}，获得电力 ${electric}\n${!$.showLog ? data : ''}`);
+          await createTuan();
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
       }
     });
   });
