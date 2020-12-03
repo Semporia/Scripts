@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-03 11:26:23
+ * @LastEditTime: 2020-12-03 11:42:54
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -34,7 +34,6 @@ $.currentCookie = '';
 $.allTask = [];
 $.info = {};
 $.userTuanInfo = {};
-$.testAssistId = 'k3XRgh9SqTEODDhQVrfL1A==';
 
 !(async () => {
   if (!getCookies()) return;
@@ -64,7 +63,7 @@ $.testAssistId = 'k3XRgh9SqTEODDhQVrfL1A==';
       await submitInviteId(userName);
       await $.wait(500);
       await createAssistUser();
-      await createTestAssistUser();
+      await $.wait(500);
       const endInfo = await getUserInfo();
       await $.wait(500);
       $.result.push(
@@ -448,21 +447,6 @@ function submitInviteId(userName) {
       },
     );
   });
-}
-
-function createTestAssistUser() {
-  return new Promise(resolve => {
-    $.get(taskAssistUrl('friend/AssistFriend', `sharepin=${$.testAssistId}`), async (err, resp, data) => {
-      try {
-        const { msg } = JSON.parse(data);
-        $.log(`\n${msg}\n${$.showLog ? data : ''}`);
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
-      }
-    });
-  })
 }
 
 function createAssistUser() {
