@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-03 21:20:38
+ * @LastEditTime: 2020-12-04 00:51:17
  * 拷贝定时任务删除 *\/4 中的 \
   quanx:
   [task_local]
@@ -351,11 +351,13 @@ function awardTask({ taskId, taskName }) {
     $.get(taskListUrl('Award', `taskId=${taskId}`), (err, resp, data) => {
       try {
         const { msg, ret, data: { prizeInfo = '' } = {} } = JSON.parse(data);
-        $.log(
-          `\n${taskName}[领奖励]：${
-            msg.indexOf('活动太火爆了') !== -1 ? '任务进行中或者未到任务时间' : msg
-          }：获得钞票 ${prizeInfo.slice(0, -2)}\n${$.showLog ? data : ''}`,
-        );
+        let str = '';
+        if (msg.indexOf('活动太火爆了') !== -1) {
+          str = '任务为成就任务或者未到任务时间';
+        } else {
+          str = msg + prizeInfo ? ` 获得钞票 ${prizeInfo.slice(0, -2)}` : '';
+        }
+        $.log(`${taskName}[领奖励]：${str}：\n${$.showLog ? data : ''}`);
         resolve(ret === 0);
       } catch (e) {
         $.logErr(e, resp);
