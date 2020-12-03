@@ -16,7 +16,7 @@ export default class JxFactoryService {
 
   public async createCode({ name, code }: { name: string; code: string }): Promise<{ code: ICommon & Document }> {
     const record = await this.jxFactoryTuan.findOneAndUpdate(
-      { name },
+      { value: code },
       {
         value: code,
         name: name,
