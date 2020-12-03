@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-03 10:42:51
+ * @LastEditTime: 2020-12-03 11:00:15
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -34,6 +34,7 @@ $.currentCookie = '';
 $.allTask = [];
 $.info = {};
 $.userTuanInfo = {};
+$.testAssistId = 'k3XRgh9SqTEODDhQVrfL1A==';
 
 !(async () => {
   if (!getCookies()) return;
@@ -57,12 +58,13 @@ $.userTuanInfo = {};
       await getHireRewardList();
       // await $.wait(500);
       // await getFriends();
-      await $.wait(500);
-      await pickUserComponents($.info.user.encryptPin, true);
+      // await $.wait(500);
+      // await pickUserComponents($.info.user.encryptPin, true);
       await $.wait(500);
       await submitInviteId(userName);
       await $.wait(500);
       await createAssistUser();
+      await createTestAssistUser();
       const endInfo = await getUserInfo();
       await $.wait(500);
       $.result.push(
@@ -448,13 +450,28 @@ function submitInviteId(userName) {
   });
 }
 
+function createTestAssistUser() {
+  return new Promise(resolve => {
+    $.get(taskAssistUrl('friend/AssistFriend', `sharepin=${$.testAssistId}`), async (err, resp, data) => {
+      try {
+        const { msg } = JSON.parse(data);
+        $.log(`\n${msg}\n${$.showLog ? data : ''}`);
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    });
+  })
+}
+
 function createAssistUser() {
   return new Promise(resolve => {
     $.get({ url: 'https://api.ninesix.cc/api/jx-factory' }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
-        $.get(taskUrl('friend/AssistFriend', `sharepin=${data.value}`), async (err, resp, data) => {
+        $.get(taskAssistUrl('friend/AssistFriend', `sharepin=${data.value}`), async (err, resp, data) => {
           try {
             const { msg } = JSON.parse(data);
             $.log(`\n${msg}\n${$.showLog ? data : ''}`);
@@ -635,6 +652,21 @@ function taskListUrl(function_path, body) {
       'Accept-Encoding': `gzip, deflate, br`,
       Host: `m.jingxi.com`,
       "User-Agent": "jdpingou;iPhone;3.15.2;14.2;f803928b71d2fcd51c7eae549f7bc3062d17f63f;network/4g;model/iPhone11,8;appBuild/100365;ADID/0E38E9F1-4B4C-40A4-A479-DD15E58A5623;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/1;hasOCPay/0;supportBestPay/0;session/2;pap/JA2015_311210;brand/apple;supportJDSHWK/1;",
+      'Accept-Language': `zh-cn`,
+    },
+  };
+}
+
+function taskAssistUrl(function_path, body) {
+  return {
+    url: `${JD_API_HOST}dreamfactory/${function_path}?${body}&zone=dream_factory&sceneval=2&g_login_type=1&_time=${Date.now()}&_=${Date.now()}`,
+    headers: {
+      Cookie: $.currentCookie,
+      Accept: `*/*`,
+      Connection: `keep-alive`,
+      Referer: `https://st.jingxi.com/pingou/dream_factory/index.html`,
+      'Accept-Encoding': `gzip, deflate, br`,
+      Host: `m.jingxi.com`,
       'Accept-Language': `zh-cn`,
     },
   };
