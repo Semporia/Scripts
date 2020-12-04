@@ -16,7 +16,7 @@ export default class DdXwService {
 
   public async createCode({ name, code }: { name: string; code: string }): Promise<{ code: ICommon & Document }> {
     const record = await this.ddXw.findOneAndUpdate(
-      { value: code },
+      { $or: [{ name, value: code }] },
       {
         value: code,
         name: name,
