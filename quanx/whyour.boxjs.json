@@ -314,32 +314,32 @@
       ]
     },
     {
-      "id": "jd_jxgc",
+      "id": "jx_gc",
       "name": "京喜工厂",
       "settings": [
         {
-          "id": "jx_showLog",
+          "id": "gc_showLog",
           "name": "日志开关",
           "val": false,
           "type": "boolean",
           "desc": "是否打开接口返回详情日志打印，默认关闭"
         },
         {
-          "id": "jx_autoCharge",
+          "id": "gc_autoCharge",
           "name": "自动充能",
           "val": false,
           "type": "boolean",
           "desc": "收取能量后自动充能，默认不自动充"
         },
         {
-          "id": "jx_notifyTime",
+          "id": "gc_notifyTime",
           "name": "京喜工厂通知时间",
           "val": "",
           "type": "text",
           "desc": "防止频繁通知，可以设置通知时间，24小时制，比如 19 或者 19:30，多个时间以英文逗号隔开."
         },
         {
-          "id": "jxcz_notifyTime",
+          "id": "cz_notifyTime",
           "name": "京喜黄金厂长通知时间",
           "val": "",
           "type": "text",
@@ -355,25 +355,25 @@
       ]
     },
     {
-      "id": "jd_jxgclj",
-      "name": "京喜工厂拾取零件",
+      "id": "jx_gcPlus",
+      "name": "京喜工厂延时任务",
       "settings": [
         {
-          "id": "jx_showLog",
+          "id": "gc_plusShowLog",
           "name": "日志开关",
           "val": false,
           "type": "boolean",
           "desc": "是否打开接口返回详情日志打印，默认关闭"
         },
         {
-          "id": "jx_authExecute",
+          "id": "gc_authExecute",
           "name": "自动拾取好友与自己的零件",
-          "val": false,
+          "val": true,
           "type": "boolean",
           "desc": "打开时，脚本只需执行一次，会一直循环拾取知道达到上限，关闭时，需要自己设置定时来执行脚本，脚本只拾取一次，默认关闭"
         },
         {
-          "id": "jx_autoUpgrade",
+          "id": "cz_autoUpgrade",
           "name": "金牌厂长自动升级",
           "val": false,
           "type": "boolean",
@@ -386,6 +386,33 @@
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/jdgc_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png"
+      ]
+    },
+    {
+      "id": "jx_cfd",
+      "name": "京喜财富岛",
+      "settings": [
+        {
+          "id": "cfd_showLog",
+          "name": "日志开关",
+          "val": false,
+          "type": "boolean",
+          "desc": "是否打开接口返回详情日志打印，默认关闭"
+        },
+        {
+          "id": "cfd_notifyTime",
+          "name": "京喜财富岛通知时间",
+          "val": "",
+          "type": "text",
+          "desc": "防止频繁通知，可以设置通知时间，24小时制，比如 19 或者 19:30，多个时间以英文逗号隔开."
+        }
+      ],
+      "author": "@whyour",
+      "repo": "https://raw.githubusercontent.com/MoPoQAQ/Script/main/Me/jx_cfd.js",
+      "script": "https://raw.githubusercontent.com/MoPoQAQ/Script/main/Me/jx_cfd.js",
+      "icons": [
+        "https://raw.githubusercontent.com/58xinian/icon/master/jxcfd_mini.png",
+        "https://raw.githubusercontent.com/58xinian/icon/master/jxcfd.png"
       ]
     }
   ]

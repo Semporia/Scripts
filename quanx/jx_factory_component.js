@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-04 11:15:22
+ * @LastEditTime: 2020-12-04 18:14:24
  * 本脚本包含京喜耗时任务，默认自动执行，一天执行几次即可，防止漏网之鱼，可以在box中关闭，然后自己设置定时任务，目前包括
  * 拾取好友与自己零件
  * 厂长翻倍任务
@@ -25,9 +25,9 @@
 const $ = new Env('京喜工厂plus');
 const JD_API_HOST = 'https://wq.jd.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.authExecute = $.getdata('jx_authExecute') ? $.getdata('jx_authExecute') === 'true' : true;
-$.showLog = $.getdata('jx_showLog') ? $.getdata('jx_showLog') === 'true' : false;
-$.autoUpgrade = $.getdata('jx_autoUpgrade') ? $.getdata('jx_autoUpgrade') === 'true' : false;
+$.authExecute = $.getdata('gc_authExecute') ? $.getdata('gc_authExecute') === 'true' : true;
+$.showLog = $.getdata('gc_plusShowLog') ? $.getdata('gc_plusShowLog') === 'true' : false;
+$.autoUpgrade = $.getdata('cz_autoUpgrade') ? $.getdata('cz_autoUpgrade') === 'true' : false;
 $.result = [];
 $.cookieArr = [];
 $.currentCookie = '';

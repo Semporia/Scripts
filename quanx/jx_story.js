@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-04 13:21:22
+ * @LastEditTime: 2020-12-04 18:13:35
  * 拷贝定时任务删除 *\/4 中的 \
   quanx:
   [task_local]
@@ -21,9 +21,8 @@
 const $ = new Env('京喜金牌厂长');
 const JD_API_HOST = 'https://m.jingxi.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.autoCharge = $.getdata('jx_autoCharge') ? $.getdata('jx_autoCharge') === 'true' : false;
-$.showLog = $.getdata('jx_showLog') ? $.getdata('jx_showLog') === 'true' : false;
-$.notifyTime = $.getdata('jxcz_notifyTime');
+$.showLog = $.getdata('gc_showLog') ? $.getdata('gc_showLog') === 'true' : false;
+$.notifyTime = $.getdata('cz_notifyTime');
 $.result = [];
 $.cookieArr = [];
 $.currentCookie = '';

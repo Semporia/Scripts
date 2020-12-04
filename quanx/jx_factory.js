@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-04 13:20:37
+ * @LastEditTime: 2020-12-04 18:12:09
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -25,9 +25,9 @@
 const $ = new Env('京喜工厂');
 const JD_API_HOST = 'https://m.jingxi.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.autoCharge = $.getdata('jx_autoCharge') ? $.getdata('jx_autoCharge') === 'true' : false;
-$.showLog = $.getdata('jx_showLog') ? $.getdata('jx_showLog') === 'true' : false;
-$.notifyTime = $.getdata('jx_notifyTime');
+$.autoCharge = $.getdata('gc_autoCharge') ? $.getdata('gc_autoCharge') === 'true' : false;
+$.showLog = $.getdata('gc_showLog') ? $.getdata('gc_showLog') === 'true' : false;
+$.notifyTime = $.getdata('gc_notifyTime');
 $.result = [];
 $.cookieArr = [];
 $.currentCookie = '';
