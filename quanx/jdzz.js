@@ -3,8 +3,8 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-23 11:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 13:19:06
- 
+ * @LastEditTime: 2020-12-04 14:36:50
+
   quanx:
   [task_local]
   0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js, tag=京东赚赚, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdzz.png, enabled=true
@@ -21,7 +21,7 @@
   京东赚赚 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js,
   京东赚赚cookie = type=http-request,pattern=^https\:\/\/api\.m\.jd\.com\/client\.action\?functionId\=interactIndex,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.cookie.js
  *
- *  
+ *
  **/
 const $ = new Env("京东赚赚");
 
@@ -46,6 +46,10 @@ $.allExchangeList = [];
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
+      const isOK = checkToken($.tokens[i]);
+      if (!isOK) {
+        return;
+      }
       await getExchangePrizeList($.tokens[i]);
       await exchangePrize($.tokens[i]);
       const startHomeInfo = await getHomeInfo($.tokens[i]);
@@ -88,6 +92,33 @@ function getCookies() {
     return false;
   }
   return true;
+}
+
+function checkToken(token, i) {
+  return new Promise((resolve) => {
+    $.get(
+      taskUrl("interactTaskIndex", { mpVersion: "3.0.6" }, token),
+      (err, resp, data) => {
+        try {
+          const { message } = JSON.parse(data);
+          $.log(`\n${message}\n${$.showLog ? data : ''}`);
+          if (message.indexOf('未登录') !== -1) {
+            $.setdata('', `jdzz_token${i + 1}`);
+            $.msg(
+              $.name,
+              "【提示】token失效，请重新去赚赚小程序获取token",
+              "微信搜索'京东赚赚'小程序\n即可获取Token"
+            );
+          }
+          resolve(message.indexOf('未登录') === -1);
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      }
+    );
+  });
 }
 
 function getAllTask(token) {
