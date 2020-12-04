@@ -234,7 +234,7 @@ function submitInviteId(userName) {
   return new Promise((resolve) => {
     $.get(
       {
-        url: `https://api.ninesix.cc/api/factory/${inviteTask.assistTaskDetailVo.taskToken}/${userName}`,
+        url: `https://api.ninesix.cc/api/factory/${inviteTask.assistTaskDetailVo.taskToken}/${encodeURIComponent(userName)}`,
       },
       (err, resp, _data) => {
         try {

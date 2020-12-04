@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-04 00:51:17
+ * @LastEditTime: 2020-12-04 13:21:22
  * 拷贝定时任务删除 *\/4 中的 \
   quanx:
   [task_local]
@@ -132,7 +132,7 @@ function submitInviteId(userName) {
     $.log('你的互助码: ' + $.info.shareId);
     $.get(
       {
-        url: `https://api.ninesix.cc/api/jx-story/${$.info.shareId}/${userName}`,
+        url: `https://api.ninesix.cc/api/jx-story/${$.info.shareId}/${encodeURIComponent(userName)}`,
       },
       (err, resp, _data) => {
         try {

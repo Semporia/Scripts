@@ -102,7 +102,7 @@ function getValid() {
 
 function submitInviteId(inviteId, userName) {
   return new Promise((resolve) => {
-    $.get({ url: `https://api.ninesix.cc/api/code/${inviteId}/${userName}` }, (err, resp, _data) => {
+    $.get({ url: `https://api.ninesix.cc/api/code/${inviteId}/${encodeURIComponent(userName)}` }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);

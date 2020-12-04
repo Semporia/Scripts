@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-04 00:51:06
+ * @LastEditTime: 2020-12-04 13:20:37
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -433,7 +433,7 @@ function submitInviteId(userName) {
     $.log('你的互助码: ' + $.info.user.encryptPin);
     $.get(
       {
-        url: `https://api.ninesix.cc/api/jx-factory/${$.info.user.encryptPin}/${userName}`,
+        url: `https://api.ninesix.cc/api/jx-factory/${$.info.user.encryptPin}/${encodeURIComponent(userName)}`,
       },
       (err, resp, _data) => {
         try {
@@ -528,7 +528,7 @@ function submitTuanId(userName) {
     $.log('你的团码: ' + $.userTuanInfo && $.userTuanInfo.tuanId);
     $.get(
       {
-        url: `https://api.ninesix.cc/api/jx-factory-tuan/${$.userTuanInfo.tuanId}/${userName}`,
+        url: `https://api.ninesix.cc/api/jx-factory-tuan/${$.userTuanInfo.tuanId}/${encodeURIComponent(userName)}`,
       },
       (err, resp, _data) => {
         try {
