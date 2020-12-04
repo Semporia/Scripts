@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-04 18:12:09
+ * @LastEditTime: 2020-12-05 01:04:04
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -287,11 +287,11 @@ function awardTask({ taskId, taskName }) {
         const { msg, ret, data: { prizeInfo = '' } = {} } = JSON.parse(data);
         let str = '';
         if (msg.indexOf('活动太火爆了') !== -1) {
-          str = '任务为成就任务或者未到任务时间';
+          str = '任务进行中或者未到任务时间';
         } else {
           str = msg + prizeInfo ? ` 获得电力 ${prizeInfo.slice(0, -2)}` : '';
         }
-        $.log(`${taskName}[领奖励]：${str}：\n${$.showLog ? data : ''}`);
+        $.log(`${taskName}[领奖励]：${str}\n${$.showLog ? data : ''}`);
         resolve(ret === 0);
       } catch (e) {
         $.logErr(e, resp);
@@ -313,8 +313,8 @@ function doTask({ taskId, completedTimes, configTargetTimes, taskName }) {
       try {
         const { msg, ret } = JSON.parse(data);
         $.log(
-          `\n${taskName}[做任务]： ${msg.indexOf('活动太火爆了') !== -1 ? '任务进行中或者未到任务时间' : msg}\n${
-            $.showLog ? data : ''
+          `\n${taskName}[做任务]：${msg.indexOf('活动太火爆了') !== -1 ? '任务进行中或者未到任务时间' : msg}${
+            $.showLog ? '\n' + data : ''
           }`,
         );
         resolve(ret === 0);

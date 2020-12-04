@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-20 10:42:06
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-03 00:20:33
+ * @LastEditTime: 2020-12-05 01:07:43
 
   quanx:
   [task_local]
@@ -183,9 +183,8 @@ function getUserName(cookie, i) {
     $.post(url, async (err, resp, _data) => {
       try {
         const { data } = JSON.parse(_data);
-        $.log(`\n${data.msg}\n${$.showLog ? _data : ''}`);
+        $.log(`\n${data}\n${$.showLog ? _data : ''}`);
         $.userNames[i] = data;
-        $.setdata(data, `jd_ddxw_name${i + 1}`);
         resolve(data);
       } catch (e) {
         $.logErr(e, resp);
