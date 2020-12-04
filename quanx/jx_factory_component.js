@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-03 21:25:42
+ * @LastEditTime: 2020-12-04 11:15:22
  * 本脚本包含京喜耗时任务，默认自动执行，一天执行几次即可，防止漏网之鱼，可以在box中关闭，然后自己设置定时任务，目前包括
  * 拾取好友与自己零件
  * 厂长翻倍任务
@@ -229,7 +229,7 @@ function upgradeUserLevel() {
           await upgradeUserLevel();
         } else {
           $.result.push(
-            `厂长从${currentUserLevel-$.time}级升到${currentUserLevel}`,
+            `厂长从${parseInt(currentUserLevel)-$.time}级升到${parseInt(currentUserLevel)}`,
           );
         }
       } catch (e) {
