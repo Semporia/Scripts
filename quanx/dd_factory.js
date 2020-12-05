@@ -232,7 +232,7 @@ function submitInviteId(userName) {
   const inviteTask = $.allTask.find((x) => x.taskId === 2);
   $.log("你的互助码: " + inviteTask.assistTaskDetailVo.taskToken);
   return new Promise((resolve) => {
-    $.get(
+    $.post(
       {
         url: `https://api.ninesix.cc/api/factory/${inviteTask.assistTaskDetailVo.taskToken}/${encodeURIComponent(userName)}`,
       },

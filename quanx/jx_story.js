@@ -129,7 +129,7 @@ function submitInviteId(userName) {
       return;
     }
     $.log('你的互助码: ' + $.info.shareId);
-    $.get(
+    $.post(
       {
         url: `https://api.ninesix.cc/api/jx-story/${$.info.shareId}/${encodeURIComponent(userName)}`,
       },

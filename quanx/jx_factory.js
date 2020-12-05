@@ -451,7 +451,7 @@ function submitInviteId(userName) {
       return;
     }
     $.log('你的互助码: ' + $.info.user.encryptPin);
-    $.get(
+    $.post(
       {
         url: `https://api.ninesix.cc/api/jx-factory/${$.info.user.encryptPin}/${encodeURIComponent(userName)}`,
       },
@@ -546,7 +546,7 @@ function submitTuanId(userName) {
       return;
     }
     $.log('你的团码: ' + $.userTuanInfo && $.userTuanInfo.tuanId);
-    $.get(
+    $.post(
       {
         url: `https://api.ninesix.cc/api/jx-factory-tuan/${$.userTuanInfo.tuanId}/${encodeURIComponent(userName)}`,
       },

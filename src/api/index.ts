@@ -6,6 +6,7 @@ import jxFactory from './routes/jxFactory';
 import jxStory from './routes/jxStory';
 import jxFactoryTuan from './routes/jxFactoryTuan';
 import shiCi from './routes/shiCi';
+import jxCfd from './routes/jxCfd';
 import agendash from './routes/agendash';
 
 export default () => {
@@ -15,7 +16,8 @@ export default () => {
 	jxFactory(app);
 	yiYan(app);
 	jxFactoryTuan(app);
-	shiCi(app);
+  shiCi(app);
+  jxCfd(app);
 	jxStory(app);
 	agendash(app);
 
