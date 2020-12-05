@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-05 01:04:04
+ * @LastEditTime: 2020-12-05 14:08:20
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -45,6 +45,7 @@ $.userTuanInfo = {};
       );
       $.log(`\n开始【京东账号${i + 1}】${userName}`);
       const beginInfo = await getUserInfo();
+      if (checkProductProcess()) return;
       await $.wait(500);
       await getCommodityDetail();
       await $.wait(500);
@@ -60,12 +61,9 @@ $.userTuanInfo = {};
       // await $.wait(500);
       // await pickUserComponents($.info.user.encryptPin, true);
       await $.wait(500);
-      await submitInviteId(userName);
-      await $.wait(500);
-      await createAssistUser();
+      await awardTuan();
       await $.wait(500);
       const endInfo = await getUserInfo();
-      await $.wait(500);
       $.result.push(
         `名称：${$.info.commodityInfo.name}`,
         `任务前电力：${beginInfo.user.electric} 任务后电力：${endInfo.user.electric}`,
@@ -73,11 +71,19 @@ $.userTuanInfo = {};
           endInfo.productionInfo.needElectric - beginInfo.productionInfo.investedElectric
         }`,
       );
+      await $.wait(500);
       await investElectric();
+      if (checkProductProcess()) return;
+      await $.wait(500);
+      await submitInviteId(userName);
+      await $.wait(500);
+      await createAssistUser();
+      await $.wait(500);
       await getTuanId();
+      await $.wait(500);
       await submitTuanId(userName);
+      await $.wait(500);
       await joinTuan();
-      await awardTuan();
     }
   }
   await showMsg();
@@ -145,6 +151,17 @@ function getCommodityDetail() {
   });
 }
 
+function checkProductProcess() {
+  if ($.info.productionInfo) {
+    const { needElectric, investedElectric } = $.info.productionInfo;
+    if (needElectric <= investedElectric) {
+      $.msg($.name, `【提示】商品 ${$.info.commodityInfo.name} 已生产完成，请前往京喜工厂兑换并选择新商品！`);
+      return true;
+    }
+  }
+  return false;
+}
+
 function getCurrentElectricity() {
   return new Promise(async resolve => {
     $.get(
@@ -173,7 +190,10 @@ function getCurrentElectricity() {
 function collectElectricity(facId, master) {
   return new Promise(async resolve => {
     $.get(
-      taskUrl('generator/CollectCurrentElectricity', `factoryid=${facId}&master=${master ? master : ''}&apptoken=&pgtimestamp=&phoneID=&doubleflag=1`),
+      taskUrl(
+        'generator/CollectCurrentElectricity',
+        `factoryid=${facId}&master=${master ? master : ''}&apptoken=&pgtimestamp=&phoneID=&doubleflag=1`,
+      ),
       (err, resp, data) => {
         try {
           const { ret, data: { CollectElectricity, loginPinCollectElectricity } = {}, msg } = JSON.parse(data);
@@ -549,19 +569,22 @@ function submitTuanId(userName) {
 
 function createTuan() {
   return new Promise(async resolve => {
-    $.get(taskTuanUrl('tuan/CreateTuan', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&isOpenApp=1`), async (err, resp, _data) => {
-      try {
-        const { msg, data = {} } = JSON.parse(_data);
-        $.log(`\n开团信息：${msg}\n${$.showLog ? _data : ''}`);
-        if (data) {
-          $.userTuanInfo = {...$.userTuanInfo, ...data};
+    $.get(
+      taskTuanUrl('tuan/CreateTuan', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&isOpenApp=1`),
+      async (err, resp, _data) => {
+        try {
+          const { msg, data = {} } = JSON.parse(_data);
+          $.log(`\n开团信息：${msg}\n${$.showLog ? _data : ''}`);
+          if (data) {
+            $.userTuanInfo = { ...$.userTuanInfo, ...data };
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
-      }
-    });
+      },
+    );
   });
 }
 
@@ -601,19 +624,22 @@ function awardTuan() {
       resolve();
       return;
     }
-    $.get(taskTuanUrl('tuan/Award', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&tuanId=${$.userTuanInfo.tuanId}`), async (err, resp, data) => {
-      try {
-        const { ret, msg, data: { electric = 0 } = {} } = JSON.parse(data);
-        if (ret === 0) {
-          $.log(`\n领取开团奖励：${msg}，获得电力 ${electric}\n${$.showLog ? data : ''}`);
-          await createTuan();
+    $.get(
+      taskTuanUrl('tuan/Award', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&tuanId=${$.userTuanInfo.tuanId}`),
+      async (err, resp, data) => {
+        try {
+          const { ret, msg, data: { electric = 0 } = {} } = JSON.parse(data);
+          if (ret === 0) {
+            $.log(`\n领取开团奖励：${msg}，获得电力 ${electric}\n${$.showLog ? data : ''}`);
+            await createTuan();
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
-      }
-    });
+      },
+    );
   });
 }
 
@@ -644,7 +670,7 @@ function taskUrl(function_path, body) {
       Referer: `https://st.jingxi.com/pingou/dream_factory/index.html`,
       'Accept-Encoding': `gzip, deflate, br`,
       Host: `m.jingxi.com`,
-      "User-Agent": `jdpingou;iPhone;3.16.0;14.2.1;f803928b71d2fcd51c7eae549f7bc3062d17f63f;network/wifi;model/iPhone13,2;appBuild/100374;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/64;pap/JA2019_3111789;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
+      'User-Agent': `jdpingou;iPhone;3.16.0;14.2.1;f803928b71d2fcd51c7eae549f7bc3062d17f63f;network/wifi;model/iPhone13,2;appBuild/100374;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/64;pap/JA2019_3111789;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`,
       'Accept-Language': `zh-cn`,
     },
   };
@@ -660,7 +686,8 @@ function taskListUrl(function_path, body) {
       Referer: `https://st.jingxi.com/pingou/dream_factory/index.html`,
       'Accept-Encoding': `gzip, deflate, br`,
       Host: `m.jingxi.com`,
-      "User-Agent": "jdpingou;iPhone;3.15.2;14.2;f803928b71d2fcd51c7eae549f7bc3062d17f63f;network/4g;model/iPhone11,8;appBuild/100365;ADID/0E38E9F1-4B4C-40A4-A479-DD15E58A5623;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/1;hasOCPay/0;supportBestPay/0;session/2;pap/JA2015_311210;brand/apple;supportJDSHWK/1;",
+      'User-Agent':
+        'jdpingou;iPhone;3.15.2;14.2;f803928b71d2fcd51c7eae549f7bc3062d17f63f;network/4g;model/iPhone11,8;appBuild/100365;ADID/0E38E9F1-4B4C-40A4-A479-DD15E58A5623;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/1;hasOCPay/0;supportBestPay/0;session/2;pap/JA2015_311210;brand/apple;supportJDSHWK/1;',
       'Accept-Language': `zh-cn`,
     },
   };
@@ -692,7 +719,7 @@ function taskTuanUrl(function_path, body) {
       'Accept-Encoding': `gzip, deflate, br`,
       Host: `m.jingxi.com`,
       'Accept-Language': `zh-cn`,
-      "User-Agent": "jdpingou;",
+      'User-Agent': 'jdpingou;',
     },
   };
 }
