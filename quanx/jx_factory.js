@@ -506,7 +506,7 @@ function getTuanId() {
         } else {
           const tuanInfo = await getTuanInfo(`tuanId=${userTuanInfo.tuanId}`);
           $.log(`获取团详情成功 \n${$.showLog ? JSON.stringify(tuanInfo) : ''}`);
-          if (!tuanInfo || tuanInfo.endTime < Math.ceil(new Date().getTime() / 1000)) {
+          if ((!tuanInfo || tuanInfo.endTime < Math.ceil(new Date().getTime() / 1000)) && userTuanInfo.surplusOpenTuanNum > 0) {
             await createTuan();
           } else {
             $.userTuanInfo = tuanInfo;
