@@ -9,7 +9,7 @@ export default class DdXwService {
   public async getCode(): Promise<{ code: ICommon }> {
     const [record] = await this.ddXw.aggregate([{ $sample: { size: 1 } }]);
     if (!record) {
-      throw new Error('get code error');
+      throw new Error('get ddxw code error');
     }
     return { code: record };
   }
@@ -25,7 +25,7 @@ export default class DdXwService {
       { upsert: true, new: true, setDefaultsOnInsert: true },
     );
     if (!record) {
-      throw new Error('get shiCi error');
+      throw new Error('create ddxw code error');
     }
     return { code: record };
   }

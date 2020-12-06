@@ -22,7 +22,7 @@ export default class ShiCiService {
     const random = Math.floor(Math.random() * 4);
     const [record] = await obj[random].aggregate([{ $sample: { size: 1 } }]);
     if (!record) {
-      throw new Error('get shiCi error');
+      throw new Error('get shici error');
     }
     return { shici: record };
   }

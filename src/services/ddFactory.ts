@@ -9,7 +9,7 @@ export default class DdFactoryService {
   public async getCode(): Promise<{ code: ICommon }> {
     const [record] = await this.ddFactory.aggregate([{ $sample: { size: 1 } }]);
     if (!record) {
-      throw new Error('get shiCi error');
+      throw new Error('get ddgc code error');
     }
     return { code: record };
   }
@@ -25,7 +25,7 @@ export default class DdFactoryService {
       { upsert: true, new: true, setDefaultsOnInsert: true },
     );
     if (!record) {
-      throw new Error('get shiCi error');
+      throw new Error('create ddgc code error');
     }
     return { code: record };
   }

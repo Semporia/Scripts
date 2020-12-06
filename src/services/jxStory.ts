@@ -9,7 +9,7 @@ export default class JxStoryService {
   public async getCode(): Promise<{ code: ICommon }> {
     const [record] = await this.jxStory.aggregate([{ $sample: { size: 1 } }]);
     if (!record) {
-      throw new Error('get shiCi error');
+      throw new Error('get jpcz code error');
     }
     return { code: record };
   }
@@ -25,7 +25,7 @@ export default class JxStoryService {
       { upsert: true, new: true, setDefaultsOnInsert: true },
     );
     if (!record) {
-      throw new Error('get shiCi error');
+      throw new Error('create jpcz code error');
     }
     return { code: record };
   }

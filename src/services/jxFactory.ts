@@ -9,7 +9,7 @@ export default class JxFactoryService {
   public async getCode(): Promise<{ code: ICommon }> {
     const [record] = await this.jxFactory.aggregate([{ $sample: { size: 1 } }]);
     if (!record) {
-      throw new Error('get shiCi error');
+      throw new Error('get jxgc code error');
     }
     return { code: record };
   }
@@ -25,7 +25,7 @@ export default class JxFactoryService {
       { upsert: true, new: true, setDefaultsOnInsert: true },
     );
     if (!record) {
-      throw new Error('get shiCi error');
+      throw new Error('create jxgc code error');
     }
     return { code: record };
   }
