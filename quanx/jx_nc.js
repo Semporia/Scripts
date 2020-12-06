@@ -6,23 +6,22 @@
  * @LastEditTime: 2020-12-06 23:16:27
   quanx:
   [task_local]
-  10 * * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, enabled=true
+  10 9,18 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, enabled=true
 
   Loon:
   [Script]
-  cron "10 * * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js,tag=京喜农场
+  cron "10 9,18 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js,tag=京喜农场
 
   Surge:
-  京喜农场 = type=cron,cronexp="10 * * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js
+  京喜农场 = type=cron,cronexp="10 9,18 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js
 *
 **/
 
 const $ = new Env('京喜农场');
 const JD_API_HOST = 'https://wq.jd.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.autoCharge = $.getdata('gc_autoCharge') ? $.getdata('gc_autoCharge') === 'true' : false;
-$.showLog = $.getdata('gc_showLog') ? $.getdata('gc_showLog') === 'true' : true;
-$.notifyTime = $.getdata('gc_notifyTime');
+$.showLog = $.getdata('nc_showLog') ? $.getdata('nc_showLog') === 'true' : false;
+$.notifyTime = $.getdata('nc_notifyTime');
 $.result = [];
 $.cookieArr = [];
 $.currentCookie = '';
