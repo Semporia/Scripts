@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-25 18:26:29
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 18:12:24
+ * @LastEditTime: 2020-12-06 15:10:10
 
   参考自： https://raw.githubusercontent.com/799953468/Quantumult-X/master/Scripts/JD/jd_factory.js
   增加随机助力，每次随机助力一位
@@ -60,7 +60,7 @@ $.factoryInfo = {};
       await submitInviteId(userName);
       await $.wait(500);
       await createAssistUser(cookie);
-      $.result.push(
+      startHomeInfo && $.result.push(
         `名称：${startHomeInfo.name}  剩余:${startHomeInfo.couponCount}`,
         `任务前电量：${startHomeInfo.remainScore} 任务后电量：${endHomeInfo.remainScore}`,
         `获得电量：${
@@ -94,6 +94,9 @@ function getCookies() {
 
 function showMsg() {
   return new Promise((resolve) => {
+    if (!$.factoryInfo || !$.factoryInfo.name) {
+      $.result.push('未选择商品，任务已执行完成，请及时选择商品');
+    }
     if ($.notifyTime) {
       const notifyTimes = $.notifyTime.split(',').map(x => x.split(':'));
       const now = $.time('HH:mm').split(':');

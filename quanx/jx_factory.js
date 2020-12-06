@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-05 14:08:20
+ * @LastEditTime: 2020-12-06 15:31:00
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -64,7 +64,7 @@ $.userTuanInfo = {};
       await awardTuan();
       await $.wait(500);
       const endInfo = await getUserInfo();
-      $.result.push(
+      $.info.commodityInfo && $.result.push(
         `名称：${$.info.commodityInfo.name}`,
         `任务前电力：${beginInfo.user.electric} 任务后电力：${endInfo.user.electric}`,
         `获得电力：${endInfo.user.electric - beginInfo.user.electric} 还需电力：${
@@ -115,12 +115,12 @@ function getUserInfo() {
         $.info = {
           ...$.info,
           factoryInfo: factoryList[0],
-          productionInfo: productionList[0],
+          productionInfo: productionList[0] || {},
           user,
         };
         resolve({
           factoryInfo: factoryList[0],
-          productionInfo: productionList[0],
+          productionInfo: productionList[0] || {},
           user,
         });
       } catch (e) {
@@ -134,6 +134,10 @@ function getUserInfo() {
 
 function getCommodityDetail() {
   return new Promise(async resolve => {
+    if (!$.info.productionInfo.commodityDimId) {
+      resolve();
+      return;
+    }
     $.get(
       taskUrl('diminfo/GetCommodityDetails', `commodityId=${$.info.productionInfo.commodityDimId}`),
       (err, resp, data) => {
@@ -645,6 +649,9 @@ function awardTuan() {
 
 function showMsg() {
   return new Promise(resolve => {
+    if (!$.info || !$.info.commodityInfo || !$.info.commodityInfo.name) {
+      $.result.push('未选择商品，任务已执行完成，请及时选择商品');
+    }
     if ($.notifyTime) {
       const notifyTimes = $.notifyTime.split(',').map(x => x.split(':'));
       const now = $.time('HH:mm').split(':');
