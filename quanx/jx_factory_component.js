@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-04 18:14:24
+ * @LastEditTime: 2020-12-07 16:36:35
  * 本脚本包含京喜耗时任务，默认自动执行，一天执行几次即可，防止漏网之鱼，可以在box中关闭，然后自己设置定时任务，目前包括
  * 拾取好友与自己零件
  * 厂长翻倍任务
@@ -218,18 +218,20 @@ function upgradeUserLevel() {
     }
     $.get(taskStroyUrl('userinfo/UpgradeUserLevelDraw'), async (err, resp, data) => {
       try {
-        const { msg, data: { discount, quota, currentUserLevel, consumeMoneyNum } = {}, ret } = JSON.parse(data);
+        const { msg, data: { discount, quota, currentUserLevel, consumeMoneyNum, active } = {}, ret } = JSON.parse(data);
         let str = '';
         if (discount && quota) {
           str = `，获得满${quota}减${discount}红包`;
         }
         if (ret === 0) {
-          $.time++;
+          if (active) {
+            $.time++;
+          }
           $.log(`\n投入钞票：${msg}，消耗钞票${consumeMoneyNum}，当前等级 ${currentUserLevel}${str ? str : ''}\n${$.showLog ? data : ''}`);
           await upgradeUserLevel();
         } else {
-          $.result.push(
-            `厂长从${parseInt(currentUserLevel)-$.time}级升到${parseInt(currentUserLevel)}`,
+          currentUserLevel && $.result.push(
+            `厂长从${currentUserLevel-$.time}级升到${currentUserLevel}`,
           );
         }
       } catch (e) {
