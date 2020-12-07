@@ -414,6 +414,26 @@
         "https://raw.githubusercontent.com/58xinian/icon/master/jxcfd_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jxcfd.png"
       ]
+    },
+    {
+      "id": "jx_nc",
+      "name": "京喜农场",
+      "settings": [
+        {
+          "id": "nc_showLog",
+          "name": "日志开关",
+          "val": false,
+          "type": "boolean",
+          "desc": "是否打开接口返回详情日志打印，默认关闭"
+        }
+      ],
+      "author": "@whyour",
+      "repo": "https://github.com/whyour/hundun/blob/master/quanx/jx_nc.js",
+      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js",
+      "icons": [
+        "https://raw.githubusercontent.com/58xinian/icon/master/jxnc_mini.png",
+        "https://raw.githubusercontent.com/58xinian/icon/master/jxnc.png"
+      ]
     }
   ]
 }

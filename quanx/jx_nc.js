@@ -7,7 +7,7 @@
   只能选择非京喜app专属种子
   quanx:
   [task_local]
-  10 9,18 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, enabled=true
+  10 9,18 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxnc.png, enabled=true
 
   Loon:
   [Script]
@@ -22,7 +22,6 @@ const $ = new Env('京喜农场');
 const JD_API_HOST = 'https://wq.jd.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.showLog = $.getdata('nc_showLog') ? $.getdata('nc_showLog') === 'true' : false;
-$.notifyTime = $.getdata('nc_notifyTime');
 $.openUrl = encodeURIComponent(
   `openjd://virtual?params={ "category": "jump", "des": "m", "url": "https://wqsh.jd.com/sns/201912/12/jxnc/detail.html?ptag=7155.9.32&smp=b47f4790d7b2a024e75279f55f6249b9&active=jdnc_1_chelizi1205_2" }`,
 );
@@ -211,17 +210,7 @@ function createAssistUser() {
 
 function showMsg() {
   return new Promise(resolve => {
-    if ($.notifyTime) {
-      const notifyTimes = $.notifyTime.split(',').map(x => x.split(':'));
-      const now = $.time('HH:mm').split(':');
-      $.log(`\n${JSON.stringify(notifyTimes)}`);
-      $.log(`\n${JSON.stringify(now)}`);
-      if (notifyTimes.some(x => x[0] === now[0] && (!x[1] || x[1] === now[1]))) {
-        $.msg($.name, '', `\n${$.result.join('\n')}`);
-      }
-    } else {
-      $.msg($.name, '', `\n${$.result.join('\n')}`);
-    }
+    $.msg($.name, '', `\n${$.result.join('\n')}`);
     resolve();
   });
 }
