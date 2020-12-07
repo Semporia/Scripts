@@ -23,7 +23,7 @@ const JD_API_HOST = 'https://wq.jd.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.showLog = $.getdata('nc_showLog') ? $.getdata('nc_showLog') === 'true' : false;
 $.openUrl = encodeURIComponent(
-  `openjd://virtual?params={ "category": "jump", "des": "m", "url": "https://wqsh.jd.com/sns/201912/12/jxnc/detail.html?ptag=7155.9.32&smp=b47f4790d7b2a024e75279f55f6249b9&active=jdnc_1_chelizi1205_2" }`,
+  `openjd://virtual?params={ "category": "jump", "des": "m", "url": "https://wqsh.jd.com/sns/201912/12/jxnc/detail.html?ptag=7155.9.32&smp=b47f4790d7b2a024e75279f55f6249b9&active=jdnc_1_chelizi1205_2" }`
 );
 $.result = [];
 $.cookieArr = [];
@@ -110,7 +110,7 @@ function browserTask() {
         }
       }
       if (status[0] === 1032) {
-        $.msg($.name, '请选择非京喜app专属种子！', '必须选择非app专属种子，点击通知跳转', { 'open-url': $.openUrl }););
+        $.msg($.name, '请选择非京喜app专属种子！', '必须选择非app专属种子，点击通知跳转', { 'open-url': $.openUrl });
         resolve(false);
         return;
       }
