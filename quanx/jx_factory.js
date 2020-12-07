@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-06 15:31:00
+ * @LastEditTime: 2020-12-07 18:56:08
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -45,9 +45,9 @@ $.userTuanInfo = {};
       );
       $.log(`\n开始【京东账号${i + 1}】${userName}`);
       const beginInfo = await getUserInfo();
-      if (checkProductProcess()) return;
       await $.wait(500);
       await getCommodityDetail();
+      if (checkProductProcess()) return;
       await $.wait(500);
       await getCurrentElectricity();
       await $.wait(500);
