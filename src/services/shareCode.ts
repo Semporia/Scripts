@@ -31,7 +31,7 @@ export default class ShareCodeService {
   }
 
   public async countCode(type: ShareCodeType): Promise<{ count: Number }> {
-    const count = await this.shareCode.count({ type });
+    const count = await this.shareCode.countDocuments({ type });
     return { count };
   }
 
