@@ -1,8 +1,9 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { Container } from 'typedi';
-import JxNcService from '../../services/jxNc';
+import ShareCodeService from '../../services/shareCode';
 import { celebrate, Joi } from 'celebrate';
 import { Logger } from 'winston';
+import { ShareCodeType } from '../../interfaces/ICommon';
 const route = Router();
 
 export default (app: Router) => {
@@ -18,8 +19,8 @@ export default (app: Router) => {
     async (req: Request, res: Response, next: NextFunction) => {
       const logger: Logger = Container.get('logger');
       try {
-        const serviceInstance = Container.get(JxNcService);
-        const { code } = await serviceInstance.createCode({ name: req.params.name, code: req.params.code });
+        const serviceInstance = Container.get(ShareCodeService);
+        const { code } = await serviceInstance.createCode({ name: req.params.name, code: req.params.code, type: ShareCodeType['jxNc'] });
         return res.status(200).json({ code: 200, data: code });
       } catch (e) {
         logger.error('🔥 error: %o', e);
@@ -31,8 +32,8 @@ export default (app: Router) => {
   route.get('/', async (req: Request, res: Response, next: NextFunction) => {
     const logger: Logger = Container.get('logger');
     try {
-      const serviceInstance = Container.get(JxNcService);
-      const { code } = await serviceInstance.getCode();
+      const serviceInstance = Container.get(ShareCodeService);
+      const { code } = await serviceInstance.getCode(ShareCodeType['jxNc']);
       return res.status(200).json({ code: 200, data: code });
     } catch (e) {
       logger.error('🔥 error: %o', e);
@@ -43,8 +44,8 @@ export default (app: Router) => {
   route.get('/count', async (req: Request, res: Response, next: NextFunction) => {
     const logger: Logger = Container.get('logger');
     try {
-      const serviceInstance = Container.get(JxNcService);
-      const { count } = await serviceInstance.countCode();
+      const serviceInstance = Container.get(ShareCodeService);
+      const { count } = await serviceInstance.countCode(ShareCodeType['jxNc']);
       return res.status(200).json({ code: 200, count });
     } catch (e) {
       logger.error('🔥 error: %o', e);
@@ -55,8 +56,8 @@ export default (app: Router) => {
   route.get('/remove', async (req: Request, res: Response, next: NextFunction) => {
     const logger: Logger = Container.get('logger');
     try {
-      const serviceInstance = Container.get(JxNcService);
-      const { msg } = await serviceInstance.removeCode();
+      const serviceInstance = Container.get(ShareCodeService);
+      const { msg } = await serviceInstance.removeCode(ShareCodeType['jxNc']);
       return res.status(200).json({ code: 200, msg });
     } catch (e) {
       logger.error('🔥 error: %o', e);

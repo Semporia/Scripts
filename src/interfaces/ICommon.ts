@@ -10,3 +10,13 @@ export interface ICommonInputDTO {
   name: String;
   type: Number;
 }
+
+export enum ShareCodeType {
+  ddFactory = 1,
+  ddXw,
+  jxCfd,
+  jxFactory,
+  jxFactoryTuan,
+  jxNc,
+  jxStory
+}

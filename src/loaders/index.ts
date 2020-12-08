@@ -56,6 +56,10 @@ export default async ({ expressApp }) => {
     name: 'jxNc',
     model: require('../models/jxNc').default,
   };
+  const shareCode = {
+    name: 'shareCode',
+    model: require('../models/shareCode').default,
+  };
 
   // It returns the agenda instance because it's needed in the subsequent loaders
   const { agenda } = await dependencyInjectorLoader({
@@ -72,7 +76,8 @@ export default async ({ expressApp }) => {
       jxFactoryTuan,
       jxStory,
       jxCfd,
-      jxNc
+      jxNc,
+      shareCode
     ],
   });
   Logger.info('✌️ Dependency Injector loaded');
