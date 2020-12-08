@@ -56,7 +56,7 @@ $.drawCenterInfo = {};
       await browseTasks($.tokens[i]);
       await gameTask($.tokens[i]);
       const inviteId = await getInviteId($.tokens[i]);
-      await submitInviteId(inviteId, $.userNames[i]);
+      await submitInviteId(inviteId, userName);
       // 没人只能助力一次，全凭天意，每天0点清库
       await createAssistUser($.tokens[i]);
       const endHomeInfo = await getHomeInfo($.tokens[i]);
