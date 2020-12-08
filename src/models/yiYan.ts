@@ -1,7 +1,11 @@
 import { ICommon } from '../interfaces/ICommon';
 import mongoose from 'mongoose';
 import config from '../config';
-const yiyan = mongoose.createConnection(config.yiyanDatabaseURL);
+const yiyan = mongoose.createConnection(config.yiyanDatabaseURL, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true
+});
 
 const YiYan = new mongoose.Schema(
   {

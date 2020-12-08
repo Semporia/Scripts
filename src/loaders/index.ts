@@ -12,26 +12,6 @@ export default async ({ expressApp }) => {
     name: 'ci',
     model: require('../models/ci').default,
   };
-  const ddFactory = {
-    name: 'ddFactory',
-    model: require('../models/ddFactory').default,
-  };
-  const ddXw = {
-    name: 'ddXw',
-    model: require('../models/ddXw').default,
-  };
-  const jxFactory = {
-    name: 'jxFactory',
-    model: require('../models/jxFactory').default,
-  };
-  const jxStory = {
-    name: 'jxStory',
-    model: require('../models/jxStory').default,
-  };
-  const jxFactoryTuan = {
-    name: 'jxFactoryTuan',
-    model: require('../models/jxFactoryTuan').default,
-  };
   const lunYu = {
     name: 'lunYu',
     model: require('../models/lunYu').default,
@@ -48,14 +28,6 @@ export default async ({ expressApp }) => {
     name: 'yiYan',
     model: require('../models/yiYan').default,
   };
-  const jxCfd = {
-    name: 'jxCfd',
-    model: require('../models/jxCfd').default,
-  };
-  const jxNc = {
-    name: 'jxNc',
-    model: require('../models/jxNc').default,
-  };
   const shareCode = {
     name: 'shareCode',
     model: require('../models/shareCode').default,
@@ -66,17 +38,10 @@ export default async ({ expressApp }) => {
     mongoConnection,
     models: [
       ci,
-      ddFactory,
-      ddXw,
-      jxFactory,
       lunYu,
       shi,
       shiJing,
       yiYan,
-      jxFactoryTuan,
-      jxStory,
-      jxCfd,
-      jxNc,
       shareCode
     ],
   });
