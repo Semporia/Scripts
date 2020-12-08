@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-07 18:56:08
+ * @LastEditTime: 2020-12-09 00:39:22
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -501,7 +501,7 @@ function createAssistUser() {
 
 function getTuanId() {
   return new Promise(async resolve => {
-    $.get(taskUrl('tuan/QueryActiveConfig', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D`), async (err, resp, data) => {
+    $.get(taskUrl('tuan/QueryActiveConfig', `activeId=gaVXW_NJ0KPEA2LyUhoXzA%3D%3D`), async (err, resp, data) => {
       try {
         const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
         $.log(`\n获取团id：${msg}\n${$.showLog ? data : ''}`);
@@ -527,7 +527,7 @@ function getTuanId() {
 
 function getTuanInfo(body) {
   return new Promise(async resolve => {
-    $.get(taskUrl('tuan/QueryTuan', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&${body}`), async (err, resp, data) => {
+    $.get(taskUrl('tuan/QueryTuan', `activeId=gaVXW_NJ0KPEA2LyUhoXzA%3D%3D&${body}`), async (err, resp, data) => {
       try {
         const { msg, data: { tuanInfo = [] } = {} } = JSON.parse(data);
         $.log(`\n获取开团信息：${msg}\n${$.showLog ? data : ''}`);
@@ -574,7 +574,7 @@ function submitTuanId(userName) {
 function createTuan() {
   return new Promise(async resolve => {
     $.get(
-      taskTuanUrl('tuan/CreateTuan', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&isOpenApp=1`),
+      taskTuanUrl('tuan/CreateTuan', `activeId=gaVXW_NJ0KPEA2LyUhoXzA%3D%3D&isOpenApp=1`),
       async (err, resp, _data) => {
         try {
           const { msg, data = {} } = JSON.parse(_data);
@@ -599,7 +599,7 @@ function joinTuan() {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(
-          taskTuanUrl('tuan/JoinTuan', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&tuanId=${data.value}`),
+          taskTuanUrl('tuan/JoinTuan', `activeId=gaVXW_NJ0KPEA2LyUhoXzA%3D%3D&tuanId=${data.value}`),
           async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
@@ -629,7 +629,7 @@ function awardTuan() {
       return;
     }
     $.get(
-      taskTuanUrl('tuan/Award', `activeId=jfkcidGQavswLOBcAWljrw%3D%3D&tuanId=${$.userTuanInfo.tuanId}`),
+      taskTuanUrl('tuan/Award', `activeId=gaVXW_NJ0KPEA2LyUhoXzA%3D%3D&tuanId=${$.userTuanInfo.tuanId}`),
       async (err, resp, data) => {
         try {
           const { ret, msg, data: { electric = 0 } = {} } = JSON.parse(data);
