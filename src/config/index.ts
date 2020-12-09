@@ -10,6 +10,7 @@ export default {
   port: parseInt(process.env.PORT, 10),
   databaseURL: process.env.MONGODB_URI,
   yiyanDatabaseURL: process.env.YIYAN_MONGODB_URI,
+  secret: process.env.SECRET,
   logs: {
     level: process.env.LOG_LEVEL || 'silly',
   },

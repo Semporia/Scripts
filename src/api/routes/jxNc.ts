@@ -4,6 +4,7 @@ import ShareCodeService from '../../services/shareCode';
 import { celebrate, Joi } from 'celebrate';
 import { Logger } from 'winston';
 import { ShareCodeType } from '../../interfaces/ICommon';
+import config from '../../config';
 const route = Router();
 
 export default (app: Router) => {
@@ -20,7 +21,11 @@ export default (app: Router) => {
       const logger: Logger = Container.get('logger');
       try {
         const serviceInstance = Container.get(ShareCodeService);
-        const { code } = await serviceInstance.createCode({ name: req.params.name, code: req.params.code, type: ShareCodeType['jxNc'] });
+        const { code } = await serviceInstance.createCode({
+          name: req.params.name,
+          code: req.params.code,
+          type: ShareCodeType['jxNc'],
+        });
         return res.status(200).json({ code: 200, data: code });
       } catch (e) {
         logger.error('🔥 error: %o', e);
@@ -53,15 +58,23 @@ export default (app: Router) => {
     }
   });
 
-  route.get('/remove', async (req: Request, res: Response, next: NextFunction) => {
-    const logger: Logger = Container.get('logger');
-    try {
-      const serviceInstance = Container.get(ShareCodeService);
-      const { msg } = await serviceInstance.removeCode(ShareCodeType['jxNc']);
-      return res.status(200).json({ code: 200, msg });
-    } catch (e) {
-      logger.error('🔥 error: %o', e);
-      return next(e);
-    }
-  });
+  route.get(
+    '/remove',
+    celebrate({
+      query: Joi.object({
+        token: Joi.string().required().equal(config.secret),
+      }),
+    }),
+    async (req: Request, res: Response, next: NextFunction) => {
+      const logger: Logger = Container.get('logger');
+      try {
+        const serviceInstance = Container.get(ShareCodeService);
+        const { msg } = await serviceInstance.removeCode(ShareCodeType['jxNc']);
+        return res.status(200).json({ code: 200, msg });
+      } catch (e) {
+        logger.error('🔥 error: %o', e);
+        return next(e);
+      }
+    },
+  );
 };
