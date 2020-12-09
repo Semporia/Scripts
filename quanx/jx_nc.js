@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-09 10:43:52
+ * @LastEditTime: 2020-12-09 11:55:18
   只能选择非京喜app专属种子
   quanx:
   [task_local]
@@ -22,8 +22,9 @@ const $ = new Env('京喜农场');
 const JD_API_HOST = 'https://wq.jd.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.showLog = $.getdata('nc_showLog') ? $.getdata('nc_showLog') === 'true' : false;
-$.openUrl =
-  `openjd://virtual?params=${encodeURIComponent('{ "category": "jump", "des": "m", "url": "https://wqsh.jd.com/sns/201912/12/jxnc/detail.html?ptag=7155.9.32&smp=b47f4790d7b2a024e75279f55f6249b9&active=jdnc_1_chelizi1205_2"}')}`
+$.openUrl = `openjd://virtual?params=${encodeURIComponent(
+  '{ "category": "jump", "des": "m", "url": "https://wqsh.jd.com/sns/201912/12/jxnc/detail.html?ptag=7155.9.32&smp=b47f4790d7b2a024e75279f55f6249b9&active=jdnc_1_chelizi1205_2"}',
+)}`;
 $.result = [];
 $.cookieArr = [];
 $.currentCookie = '';
@@ -133,9 +134,11 @@ function answerTask() {
     $.get(
       taskUrl(
         'dotask',
-        `active=${$.info.active}&answer=${$.info.indexday}:${['A','B','C','D'][$.answer]}:0&joinnum=${$.info.joinnum}&tasklevel=${tasklevel}`,
+        `active=${$.info.active}&answer=${$.info.indexday}:${['A', 'B', 'C', 'D'][$.answer]}:0&joinnum=${
+          $.info.joinnum
+        }&tasklevel=${tasklevel}`,
       ),
-      (err, resp, data) => {
+      async (err, resp, data) => {
         try {
           const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];
           $.log(res);
