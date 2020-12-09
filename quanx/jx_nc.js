@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-09 11:55:18
+ * @LastEditTime: 2020-12-09 12:43:21
   只能选择非京喜app专属种子
   quanx:
   [task_local]
@@ -124,7 +124,7 @@ function browserTask() {
 }
 
 function answerTask() {
-  const { tasklevel, left, taskname } = this.allTask.filter(x => x.tasklevel === 6)[0];
+  const { tasklevel, left, taskname } = $.allTask.filter(x => x.tasklevel === 6)[0];
   return new Promise(async resolve => {
     if (parseInt(left) <= 0) {
       resolve(false);
