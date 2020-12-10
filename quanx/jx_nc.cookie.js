@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-10 13:33:55
+ * @LastEditTime: 2020-12-10 13:53:31
 
   hostname = wq.jd.com
 
@@ -60,7 +60,7 @@ if (getTokenRegex.test(url)) {
     if (oldValue == result) {
       console.log(`\n用户名: ${DecodeName}\n与历史京东${CookieName}Cookie相同, 跳过写入 ⚠️`)
     } else {
-      $.setdata(result, CookieKey);
+      $.setdata(result, cookieKey);
       $.msg($.name,`设备: ${obj.phoneid}`, `${oldValue?`更新`:`写入`}京喜农场${cookieName} Cookie成功 🎉`);
     }
   } catch (err) {
