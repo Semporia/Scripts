@@ -127,6 +127,10 @@ function getToken(name, i, cookie) {
       postTaskUrl("user-info/login", { body: { client: 2, userName: name } }),
       (err, resp, data) => {
         try {
+          if (!data) {
+            await $.wait(1000);
+            await getToken(name, i, cookie);
+          }
           const { head = {} } = JSON.parse(data);
           $.log(`\n${head.msg}\n${$.showLog ? data : ''}`);
           $.tokens[i] = head.token;
