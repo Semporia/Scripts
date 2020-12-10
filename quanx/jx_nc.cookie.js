@@ -3,7 +3,9 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-10 13:09:52
+ * @LastEditTime: 2020-12-10 13:20:44
+
+  hostname = wq.jd.com
 
   quanx:
   [task_local]
