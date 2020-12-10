@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-20 10:42:06
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-08 00:44:10
+ * @LastEditTime: 2020-12-10 15:14:24
 
   quanx:
   [task_local]
@@ -125,7 +125,7 @@ function getToken(name, i, cookie) {
     }
     $.post(
       postTaskUrl("user-info/login", { body: { client: 2, userName: name } }),
-      (err, resp, data) => {
+      async (err, resp, data) => {
         try {
           if (!data) {
             await $.wait(1000);
