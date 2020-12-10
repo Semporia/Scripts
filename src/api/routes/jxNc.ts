@@ -16,7 +16,7 @@ export default (app: Router) => {
         code: Joi.string().required(),
         name: Joi.string().required(),
       }),
-      body: Joi.object({
+      query: Joi.object({
         active: Joi.string().required(),
       }),
     }),
@@ -30,7 +30,7 @@ export default (app: Router) => {
             code: req.params.code,
             type: ShareCodeType['jxNc'],
           },
-          req.body,
+          req.query,
         );
         return res.status(200).json({ code: 200, data: code });
       } catch (e) {

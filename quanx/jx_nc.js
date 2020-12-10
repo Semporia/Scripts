@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-10 22:16:40
+ * @LastEditTime: 2020-12-10 23:00:12
  * 打开京喜农场，手动完成工厂任务或者签到任务，或者金牌厂长任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -213,10 +213,10 @@ function submitInviteId(userName) {
       return;
     }
     $.log('你的互助码: ' + $.info.smp);
+    $.log('你的活动id: ' + $.info.active);
     $.post(
       {
-        url: `https://api.ninesix.cc/api/jx-nc/${$.info.smp}/${encodeURIComponent(userName)}`,
-        body: { active: $.info.active },
+        url: `http://127.0.0.1:8080/api/jx-nc/${$.info.smp}/${encodeURIComponent(userName)}?active=${$.info.active}`,
       },
       (err, resp, _data) => {
         try {
@@ -241,6 +241,11 @@ function createAssistUser() {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
+        if (!data.value) {
+          await $.wait(1000)
+          await createAssistUser();
+          return;
+        }
         $.get(
           taskUrl('help', `active=${$.info.active}&joinnum=${$.info.joinnum}&smp=${data.value}`),
           (err, resp, data) => {
