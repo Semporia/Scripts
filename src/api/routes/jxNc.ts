@@ -16,16 +16,22 @@ export default (app: Router) => {
         code: Joi.string().required(),
         name: Joi.string().required(),
       }),
+      body: Joi.object({
+        active: Joi.string().required(),
+      }),
     }),
     async (req: Request, res: Response, next: NextFunction) => {
       const logger: Logger = Container.get('logger');
       try {
         const serviceInstance = Container.get(ShareCodeService);
-        const { code } = await serviceInstance.createCode({
-          name: req.params.name,
-          code: req.params.code,
-          type: ShareCodeType['jxNc'],
-        });
+        const { code } = await serviceInstance.createCode(
+          {
+            name: req.params.name,
+            code: req.params.code,
+            type: ShareCodeType['jxNc'],
+          },
+          req.body,
+        );
         return res.status(200).json({ code: 200, data: code });
       } catch (e) {
         logger.error('🔥 error: %o', e);
@@ -34,17 +40,25 @@ export default (app: Router) => {
     },
   );
 
-  route.get('/', async (req: Request, res: Response, next: NextFunction) => {
-    const logger: Logger = Container.get('logger');
-    try {
-      const serviceInstance = Container.get(ShareCodeService);
-      const { code } = await serviceInstance.getCode(ShareCodeType['jxNc']);
-      return res.status(200).json({ code: 200, data: code });
-    } catch (e) {
-      logger.error('🔥 error: %o', e);
-      return next(e);
-    }
-  });
+  route.get(
+    '/',
+    celebrate({
+      query: Joi.object({
+        active: Joi.string().required(),
+      }),
+    }),
+    async (req: Request, res: Response, next: NextFunction) => {
+      const logger: Logger = Container.get('logger');
+      try {
+        const serviceInstance = Container.get(ShareCodeService);
+        const { code } = await serviceInstance.getCode(ShareCodeType['jxNc'], { active: req.query.active });
+        return res.status(200).json({ code: 200, data: code });
+      } catch (e) {
+        logger.error('🔥 error: %o', e);
+        return next(e);
+      }
+    },
+  );
 
   route.get('/count', async (req: Request, res: Response, next: NextFunction) => {
     const logger: Logger = Container.get('logger');

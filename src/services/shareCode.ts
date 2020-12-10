@@ -6,21 +6,30 @@ import { ICommon, ShareCodeType } from '../interfaces/ICommon';
 export default class ShareCodeService {
   constructor(@Inject('shareCode') private shareCode: Models.ICommonModel, @Inject('logger') private logger) {}
 
-  public async getCode(type: ShareCodeType): Promise<{ code: ICommon }> {
-    const [record] = await this.shareCode.aggregate([{ $match: { type } }, { $sample: { size: 1 } }]);
+  public async getCode(type: ShareCodeType, body = {}): Promise<{ code: ICommon }> {
+    const [record] = await this.shareCode.aggregate([{ $match: { type, ...body } }, { $sample: { size: 1 } }]);
     if (!record) {
       throw new Error(`get ${ShareCodeType[type]} code error`);
     }
     return { code: record };
   }
 
-  public async createCode({ name, code, type }: { name: string; code: string; type: ShareCodeType }): Promise<{ code: ICommon & Document }> {
+  public async createCode(
+    { name, code, type }: { name: string; code: string; type: ShareCodeType },
+    body = {},
+  ): Promise<{ code: ICommon & Document }> {
     const record = await this.shareCode.findOneAndUpdate(
-      { $or: [{ name, type }, { value: code, type }] },
+      {
+        $or: [
+          { name, type },
+          { value: code, type },
+        ],
+      },
       {
         value: code,
         name: name,
         type,
+        ...body,
       },
       { upsert: true, new: true, setDefaultsOnInsert: true },
     );

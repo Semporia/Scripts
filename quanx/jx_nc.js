@@ -3,8 +3,8 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-10 17:18:12
- * 打开京喜农场，手动完成去工厂任务，提示获取cookie成功，然后退出跑任务脚本
+ * @LastEditTime: 2020-12-10 22:16:40
+ * 打开京喜农场，手动完成工厂任务或者签到任务，或者金牌厂长任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
 
@@ -53,10 +53,10 @@ $.answer = 0;
       );
       $.log(`\n开始【京东账号${i + 1}】${userName}`);
       const isSuccess = await getTaskList();
-      if (!isSuccess) return;
+      if (!isSuccess) break;
       await $.wait(500);
       const isOk = await browserTask();
-      if (!isOk) return;
+      if (!isOk) break;
       await $.wait(500);
       await answerTask();
       await $.wait(500);
@@ -216,6 +216,7 @@ function submitInviteId(userName) {
     $.post(
       {
         url: `https://api.ninesix.cc/api/jx-nc/${$.info.smp}/${encodeURIComponent(userName)}`,
+        body: { active: $.info.active },
       },
       (err, resp, _data) => {
         try {
@@ -236,7 +237,7 @@ function submitInviteId(userName) {
 
 function createAssistUser() {
   return new Promise(resolve => {
-    $.get({ url: 'https://api.ninesix.cc/api/jx-nc' }, (err, resp, _data) => {
+    $.get({ url: `https://api.ninesix.cc/api/jx-nc?active=${$.info.active}` }, (err, resp, _data) => {
       try {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
