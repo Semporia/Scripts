@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-10 23:56:52
+ * @LastEditTime: 2020-12-10 23:58:54
  * 打开京喜农场，手动完成工厂任务或者签到任务，或者金牌厂长任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -28,7 +28,7 @@
 
 const $ = new Env('京喜农场');
 const JD_API_HOST = 'https://wq.jd.com/';
-// const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.tokens = [$.getdata('jxnc_token1') || '{}', $.getdata('jxnc_token2') || '{}'];
 $.showLog = $.getdata('nc_showLog') ? $.getdata('nc_showLog') === 'true' : false;
 $.openUrl = `openjd://virtual?params=${encodeURIComponent(
@@ -36,35 +36,35 @@ $.openUrl = `openjd://virtual?params=${encodeURIComponent(
 )}`;
 $.result = [];
 $.cookieArr = [];
-$.currentCookie = 'pt_key=AAJfvOobADDOhFrhW9ZOErQNjcUN2Dm0avXMpuTpbEtL1-C21N6mjmsTEEANnarwubGk6Ohmgfk;pt_pin=CCDreamm';
+$.currentCookie = '';
 $.currentToken = {};
 $.allTask = [];
 $.info = {};
 $.answer = 0;
 
 !(async () => {
-  // if (!getCookies()) return;
-  // for (let i = 0; i < $.cookieArr.length; i++) {
-  //   $.currentCookie = $.cookieArr[i];
-  //   $.currentToken = JSON.parse($.tokens[i]);
+  if (!getCookies()) return;
+  for (let i = 0; i < $.cookieArr.length; i++) {
+    $.currentCookie = $.cookieArr[i];
+    $.currentToken = JSON.parse($.tokens[i]);
     if ($.currentCookie) {
       const userName = decodeURIComponent(
         $.currentCookie.match(/pt_pin=(.+?);/) && $.currentCookie.match(/pt_pin=(.+?);/)[1],
       );
-      // $.log(`\n开始【京东账号${i + 1}】${userName}`);
+      $.log(`\n开始【京东账号${i + 1}】${userName}`);
       const isSuccess = await getTaskList();
-      // if (!isSuccess) break;
-      // await $.wait(500);
-      // const isOk = await browserTask();
-      // if (!isOk) break;
-      // await $.wait(500);
-      // await answerTask();
-      // await $.wait(500);
+      if (!isSuccess) break;
+      await $.wait(500);
+      const isOk = await browserTask();
+      if (!isOk) break;
+      await $.wait(500);
+      await answerTask();
+      await $.wait(500);
       await submitInviteId(userName);
       await $.wait(500);
       await createAssistUser();
     }
-  // }
+  }
   await showMsg();
 })()
   .catch(e => $.logErr(e))
