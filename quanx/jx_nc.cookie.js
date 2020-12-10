@@ -3,7 +3,8 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-10 17:15:52
+ * @LastEditTime: 2020-12-10 17:18:05
+ * 打开京喜农场，手动完成去工厂任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
 
