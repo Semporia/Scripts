@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-10 13:20:44
+ * @LastEditTime: 2020-12-10 13:33:55
 
   hostname = wq.jd.com
 
@@ -57,10 +57,10 @@ if (getTokenRegex.test(url)) {
       cookieKey = jxNcTokenKey2;
     }
     const oldValue = $.getdata(cookieKey);
-    if (oldValue == CookieValue) {
+    if (oldValue == result) {
       console.log(`\n用户名: ${DecodeName}\n与历史京东${CookieName}Cookie相同, 跳过写入 ⚠️`)
     } else {
-      $.setdata(CookieValue, CookieKey);
+      $.setdata(result, CookieKey);
       $.msg($.name,`设备: ${obj.phoneid}`, `${oldValue?`更新`:`写入`}京喜农场${cookieName} Cookie成功 🎉`);
     }
   } catch (err) {
