@@ -3,24 +3,30 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-09 12:43:21
-  只能选择非京喜app专属种子
+ * @LastEditTime: 2020-12-10 13:16:15
+
   quanx:
   [task_local]
-  10 9,18 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxnc.png, enabled=true
+  0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, tag=京喜农场, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxnc.png, enabled=true
+  [rewrite_local]
+  ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
 
-  Loon:
+  loon:
   [Script]
-  cron "10 9,18 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js,tag=京喜农场
+  http-request ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js, requires-body=false, timeout=10, tag=京喜农场cookie
+  cron "0 9 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, tag=京喜农场
 
-  Surge:
-  京喜农场 = type=cron,cronexp="10 9,18 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js
-*
-**/
+  surge:
+  [Script]
+  京喜农场 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js,
+  京喜农场cookie = type=http-request,pattern=^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
+ *
+ **/
 
 const $ = new Env('京喜农场');
 const JD_API_HOST = 'https://wq.jd.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+$.tokens = [$.getdata('jxnc_token1') || '{}', $.getdata('jxnc_token2') || '{}'];
 $.showLog = $.getdata('nc_showLog') ? $.getdata('nc_showLog') === 'true' : false;
 $.openUrl = `openjd://virtual?params=${encodeURIComponent(
   '{ "category": "jump", "des": "m", "url": "https://wqsh.jd.com/sns/201912/12/jxnc/detail.html?ptag=7155.9.32&smp=b47f4790d7b2a024e75279f55f6249b9&active=jdnc_1_chelizi1205_2"}',
@@ -28,6 +34,7 @@ $.openUrl = `openjd://virtual?params=${encodeURIComponent(
 $.result = [];
 $.cookieArr = [];
 $.currentCookie = '';
+$.currentToken = {};
 $.allTask = [];
 $.info = {};
 $.answer = 0;
@@ -36,6 +43,7 @@ $.answer = 0;
   if (!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
     $.currentCookie = $.cookieArr[i];
+    $.currentToken = JSON.parse($.tokens[i]);
     if ($.currentCookie) {
       const userName = decodeURIComponent(
         $.currentCookie.match(/pt_pin=(.+?);/) && $.currentCookie.match(/pt_pin=(.+?);/)[1],
@@ -259,14 +267,18 @@ function showMsg() {
 
 function taskUrl(function_path, body) {
   return {
-    url: `${JD_API_HOST}cubeactive/farm/${function_path}?${body}&sceneval=2&g_login_type=1&callback=whyour&timestamp=${Date.now()}&_=${Date.now()}&g_ty=ls`,
+    url: `${JD_API_HOST}cubeactive/farm/${function_path}?${body}&farm_jstoken=${
+      $.currentToken['farm_jstoken']
+    }&phoneid=${$.currentToken['phoneid']}&timestamp=${
+      $.currentToken['timestamp']
+    }&sceneval=2&g_login_type=1&callback=whyour&_=${Date.now()}&g_ty=ls`,
     headers: {
       Cookie: $.currentCookie,
       Accept: `*/*`,
       Connection: `keep-alive`,
       Referer: `https://st.jingxi.com/pingou/dream_factory/index.html`,
       'Accept-Encoding': `gzip, deflate, br`,
-      Host: `m.jingxi.com`,
+      Host: `wq.jd.com`,
       'Accept-Language': `zh-cn`,
     },
   };
