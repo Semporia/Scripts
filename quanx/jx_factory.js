@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-09 00:39:22
+ * @LastEditTime: 2020-12-11 14:35:51
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -510,7 +510,7 @@ function getTuanId() {
         } else {
           const tuanInfo = await getTuanInfo(`tuanId=${userTuanInfo.tuanId}`);
           $.log(`获取团详情成功 \n${$.showLog ? JSON.stringify(tuanInfo) : ''}`);
-          if ((!tuanInfo || tuanInfo.endTime < Math.ceil(new Date().getTime() / 1000)) && userTuanInfo.surplusOpenTuanNum > 0) {
+          if ((!tuanInfo || tuanInfo.realTuanNum === tuanInfo.tuanNum || tuanInfo.endTime < Math.ceil(new Date().getTime() / 1000)) && userTuanInfo.surplusOpenTuanNum > 0) {
             await createTuan();
           } else {
             $.userTuanInfo = tuanInfo;
