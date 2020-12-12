@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-11 14:35:51
+ * @LastEditTime: 2020-12-12 14:40:27
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -629,7 +629,7 @@ function awardTuan() {
       return;
     }
     $.get(
-      taskTuanUrl('tuan/Award', `activeId=gaVXW_NJ0KPEA2LyUhoXzA%3D%3D&tuanId=${$.userTuanInfo.tuanId}`),
+      taskTuanUrl('tuan/Award', `activeId=cKw-LGBsjl0XLu9coQ0d4A%3D%3D&tuanId=${$.userTuanInfo.tuanId}`),
       async (err, resp, data) => {
         try {
           const { ret, msg, data: { electric = 0 } = {} } = JSON.parse(data);
