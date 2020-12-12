@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-12 10:46:59
+ * @LastEditTime: 2020-12-12 13:44:14
  * 打开京喜农场，手动完成工厂任务或者签到任务，或者金牌厂长任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -95,7 +95,7 @@ function getTaskList() {
         $.info = other;
         $.log(`\n获取任务列表 ${retmsg} 总共${$.allTask.length}个任务！`);
         if (!$.info.active) {
-          $.msg($.name, '请先去京喜农场选择种子！', '必须选择非app专属种子，点击通知跳转', { 'open-url': $.openUrl });
+          $.msg($.name, '请先去京喜农场选择种子！', '选择app专属种子时，请参考脚本头部说明获取token，点击通知跳转', { 'open-url': $.openUrl });
           resolve(false);
         }
       } catch (e) {
@@ -115,7 +115,7 @@ function  browserTask() {
       $.log(`\n开始第${i + 1}个任务：${task.taskname}`);
       const status = [0];
       for (let i = 0; i < times; i++) {
-        const random = Math.random() * 2;
+        const random = Math.random() * 3;
         await $.wait(random * 1000);
         if (status[0] === 0) {
           status[0] = await doTask(task);
@@ -125,7 +125,7 @@ function  browserTask() {
         }
       }
       if (status[0] === 1032) {
-        $.msg($.name, '请选择非京喜app专属种子！', '必须选择非app专属种子，点击通知跳转', { 'open-url': $.openUrl });
+        $.msg($.name, '请参考脚本头部说明获取token', '或者改中非app专属种子，点击通知跳转', { 'open-url': $.openUrl });
         resolve(false);
         return;
       }
@@ -136,7 +136,9 @@ function  browserTask() {
 }
 
 function answerTask() {
-  const { tasklevel, left, taskname } = $.allTask.filter(x => x.tasklevel === 6)[0];
+  const _answerTask = $.allTask.filter(x => x.tasklevel === 6);
+  if (!_answerTask) return;
+  const { tasklevel, left, taskname } = _answerTask[0];
   return new Promise(async resolve => {
     if (parseInt(left) <= 0) {
       resolve(false);
@@ -214,16 +216,16 @@ function submitInviteId(userName) {
       resolve();
       return;
     }
-    $.log('你的互助码: ' + $.info.smp);
-    $.log('你的活动id: ' + $.info.active);
+    $.log(`\n你的互助码: ${$.info.smp}`);
+    $.log(`你的活动id: ${$.info.active}`);
     $.post(
       {
         url: `https://api.ninesix.cc/api/jx-nc/${$.info.smp}/${encodeURIComponent(userName)}?active=${$.info.active}`,
       },
       (err, resp, _data) => {
         try {
-          const { data = {} } = JSON.parse(_data);
-          $.log(`\n邀请码提交：${data.value}\n${$.showLog ? _data : ''}`);
+          const { code, data = {} } = JSON.parse(_data);
+          $.log(`\n邀请码提交：${code}\n${$.showLog ? _data : ''}`);
           if (data.value) {
             $.result.push('邀请码提交成功！');
           }
@@ -241,8 +243,8 @@ function createAssistUser() {
   return new Promise(resolve => {
     $.get({ url: `https://api.ninesix.cc/api/jx-nc?active=${$.info.active}` }, async (err, resp, _data) => {
       try {
-        const { data = {} } = JSON.parse(_data);
-        $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
+        const { code, data = {} } = JSON.parse(_data);
+        $.log(`\n获取随机助力码${code}\n${$.showLog ? _data : ''}`);
         if (!data.value) {
           $.result.push('助力失败或者同活动助力码不存在，请再次手动执行脚本！');
           resolve();
