@@ -7,6 +7,7 @@ import jxStory from './routes/jxStory';
 import jxFactoryTuan from './routes/jxFactoryTuan';
 import shiCi from './routes/shiCi';
 import jxCfd from './routes/jxCfd';
+import jxCfdGroup from './routes/jxCfdGroup';
 import jxNc from './routes/jxNc';
 import agendash from './routes/agendash';
 
@@ -20,7 +21,8 @@ export default () => {
   shiCi(app);
   jxCfd(app);
   jxNc(app);
-	jxStory(app);
+  jxStory(app);
+  jxCfdGroup(app);
 	agendash(app);
 
 	return app
