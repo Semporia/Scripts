@@ -649,14 +649,13 @@ def qq_read():
     content += f'\n🕛耗时：%.2f秒' % (time.time() - start_time)
     print(title)
     print(content)
-    # 每天 22:00 - 22:10 发送消息推送
-    # if beijing_datetime.hour == 22 and beijing_datetime.minute <= 10:
-    send(title=title, content=content,
-                notify_mode=notify_mode)
-    # elif not beijing_datetime.hour == 22:
-    #     print('未进行消息推送，原因：没到对应的推送时间点\n')
-    # else:
-    #     print('未在规定的时间范围内\n')
+    # 每天 19:30 发送消息推送
+    if beijing_datetime.hour == 19 and beijing_datetime.minute >= 30:
+      send(title=title, content=content, notify_mode=notify_mode)
+    elif not beijing_datetime.hour == 19:
+        print('未进行消息推送，原因：没到对应的推送时间点\n')
+    else:
+        print('未在规定的时间范围内\n')
 
 
 def main():
