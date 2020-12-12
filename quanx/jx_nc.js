@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-12 01:18:56
+ * @LastEditTime: 2020-12-12 10:46:59
  * 打开京喜农场，手动完成工厂任务或者签到任务，或者金牌厂长任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -91,7 +91,7 @@ function getTaskList() {
       try {
         const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];
         const { detail, msg, task = [], retmsg, ...other } = JSON.parse(res);
-        $.allTask = task.filter(x => x.tasktype !== 3 && x.tasktype !== 2);
+        $.allTask = task.filter(x => x.tasktype !== 3 && x.tasktype !== 2 && parseInt(x.left) > 0);
         $.info = other;
         $.log(`\n获取任务列表 ${retmsg} 总共${$.allTask.length}个任务！`);
         if (!$.info.active) {
@@ -107,7 +107,7 @@ function getTaskList() {
   });
 }
 
-function browserTask() {
+function  browserTask() {
   return new Promise(async resolve => {
     const times = Math.max(...[...$.allTask].map(x => x.limit));
     for (let i = 0; i < $.allTask.length; i++) {
@@ -115,7 +115,8 @@ function browserTask() {
       $.log(`\n开始第${i + 1}个任务：${task.taskname}`);
       const status = [0];
       for (let i = 0; i < times; i++) {
-        await $.wait(500);
+        const random = Math.random() * 2;
+        await $.wait(random * 1000);
         if (status[0] === 0) {
           status[0] = await doTask(task);
         }
@@ -161,6 +162,7 @@ function answerTask() {
           );
           if ((ret !== 0 || retmsg === 'ans err') && $.answer < 4) {
             $.answer++;
+            await $.wait(1000);
             await answerTask();
           }
         } catch (e) {
@@ -248,11 +250,14 @@ function createAssistUser() {
         }
         $.get(
           taskUrl('help', `active=${$.info.active}&joinnum=${$.info.joinnum}&smp=${data.value}`),
-          (err, resp, data) => {
+          async (err, resp, data) => {
             try {
               const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];
               const { ret, retmsg = '' } = JSON.parse(res);
               $.log(`\n助力：${retmsg} \n${$.showLog ? res : ''}`);
+              if (ret !== 1016 || retmsg !== 'today help max') {
+                await createAssistUser();
+              }
             } catch (e) {
               $.logErr(e, resp);
             } finally {
