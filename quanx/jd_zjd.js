@@ -69,14 +69,15 @@ function exchangeJd(i) {
   return new Promise((resolve) => {
     $.post(
       taskPostUrl("swat_game_exchangejingbean", { stepNumber }),
-      (err, resp, _data) => {
+      async (err, resp, _data) => {
         try {
           console.log(_data)
           const { code, msg } = JSON.parse(_data);
           $.log(`\n${msg}\n${_data}`);
           $.result.push(`${stepNumber}步：${msg}`)
           const next = steps[i + 1];
-          if (code === parseInt(code) && next) {
+          if (0 === parseInt(code) && next) {
+            await $.wait(3000);
             await exchangeJd(next, i + 1);
           }
         } catch (e) {
