@@ -257,7 +257,7 @@ function createAssistUser() {
               const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];
               const { ret, retmsg = '' } = JSON.parse(res);
               $.log(`\n助力：${retmsg} \n${$.showLog ? res : ''}`);
-              if (ret !== 1016 || retmsg !== 'today help max' || retmsg !== 'cannot helf self') {
+              if (ret !== 1016 || (retmsg !== 'today help max' && retmsg !== 'cannot helf self')) {
                 await createAssistUser();
               }
             } catch (e) {
