@@ -18,5 +18,6 @@ export enum ShareCodeType {
   jxFactory,
   jxFactoryTuan,
   jxNc,
-  jxStory
+  jxStory,
+  jxCfdGroup
 }
