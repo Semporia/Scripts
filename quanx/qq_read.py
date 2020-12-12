@@ -12,8 +12,8 @@ import sys
 import os
 from notify import send
 from datetime import datetime, timezone, timedelta
-cookies1 = {'QQREAD_BODY': {"common":{"appid":1450024394,"areaid":5,"qq_ver":"8.4.17","os_ver":"iOS 14.2.1","mp_ver":"0.33.3","mpos_ver":"1.21.0","brand":"iPhone","model":"iPhone 12<iPhone13,2>","screenWidth":390,"screenHeight":844,"windowWidth":390,"windowHeight":761,"openid":"FD85F04AA0A29ABBCE78F061689AD01A","guid":1262138420,"session":"euj1zqkgq930vlxj99675fxq6azptt97","scene":1007,"source":"wza0005wzb0004","hasRedDot":"false","missions":-1,"caseID":-1},"dataList":[{"click1":"bookDetail_bottomBar_read_C","click2":"bookLib_freeBook_bookClick_C","route":"pages/book-read/index","refer":"pages/book-detail/index","options":{"bid":"34803629","cid":"1"},"dis":1607755946327,"ext6":73,"eventID":"bookRead_show_I","type":"shown","ccid":1,"bid":"34803629","bookStatus":0,"bookPay":0,"chapterStatus":0,"ext1":{"font":18,"bg":0,"pageMode":1},"from":"bookLib_freeBook_bookClick_C_0_34803629"}]}, 'QQREAD_TIMEURL': 'https://mqqapi.reader.qq.com/mqq/addReadTimeWithBid?scene=1007&refer=pages%2Fnav-library%2Findex&bid=34803629&readTime=6433&read_type=0&conttype=1&read_status=0&chapter_info=%5B%7B%221%22%3A%7B%22readTime%22%3A6433%2C%22pay_status%22%3A0%7D%7D%5D&sp=-1',
-    'QQREAD_TIMEHD': {"ywsession":"euj1zqkgq930vlxj99675fxq6azptt97","Cookie":"ywguid=1262138420;ywkey=yw3CfwayQzbB;platform=ios;channel=mqqmina;mpVersion=0.33.3;qq_ver=8.4.17;os_ver=iOS 14.2.1;mpos_ver=1.21.0;platform=ios;openid=FD85F04AA0A29ABBCE78F061689AD01A","Connection":"keep-alive","Content-Type":"application/json","Accept":"*/*","Host":"mqqapi.reader.qq.com","User-Agent":"QQ/8.4.17.638 CFNetwork/1206 Darwin/20.1.0","Referer":"https://appservice.qq.com/1110657249/0.33.3/page-frame.html","Accept-Language":"zh-cn","Accept-Encoding":"gzip, deflate, br","mpversion":"0.33.3"}, 'WITHDRAW': False, 'HOSTING_MODE': False}
+# 实例 body 和 head 都为对象
+cookies1 = {'QQREAD_BODY': '', 'QQREAD_TIMEURL': '', 'QQREAD_TIMEHD': '', 'WITHDRAW': False, 'HOSTING_MODE': False}
 cookies2 = ""
 
 COOKIELIST = [cookies1, ]   # 多账号准备
@@ -650,13 +650,13 @@ def qq_read():
     print(title)
     print(content)
     # 每天 22:00 - 22:10 发送消息推送
-    if beijing_datetime.hour == 19 and beijing_datetime.minute <= 10:
-      send(title=title, content=content,
-                  notify_mode=notify_mode)
-    elif not beijing_datetime.hour == 19:
-        print('未进行消息推送，原因：没到对应的推送时间点\n')
-    else:
-        print('未在规定的时间范围内\n')
+    # if beijing_datetime.hour == 22 and beijing_datetime.minute <= 10:
+    send(title=title, content=content,
+                notify_mode=notify_mode)
+    # elif not beijing_datetime.hour == 22:
+    #     print('未进行消息推送，原因：没到对应的推送时间点\n')
+    # else:
+    #     print('未在规定的时间范围内\n')
 
 
 def main():
