@@ -137,7 +137,7 @@ function  browserTask() {
 
 function answerTask() {
   const _answerTask = $.allTask.filter(x => x.tasklevel === 6);
-  if (!_answerTask) return;
+  if (!_answerTask || !_answerTask[0]) return;
   const { tasklevel, left, taskname } = _answerTask[0];
   return new Promise(async resolve => {
     if (parseInt(left) <= 0) {
