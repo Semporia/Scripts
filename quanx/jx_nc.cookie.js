@@ -33,6 +33,7 @@ const getTokenRegex = /^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask/;
 const $ = new Env("京喜农场Cookie");
 
 const url = $request.url;
+const headers = $request.headers;
 
 if (getTokenRegex.test(url)) {
   try {
@@ -43,17 +44,22 @@ if (getTokenRegex.test(url)) {
       const [key, value] = params[i].split('=');
       obj[key] = value;
     }
-    const result = JSON.stringify({ 'farm_jstoken': obj['farm_jstoken'], phoneid: obj.phoneid, timestamp: obj.timestamp });
+    if (!headers['Cookie']) {
+      $.logErr(`京喜农场写入Token失败，未从headers中获取到cookie`);
+    }
+    let pin = headers['Cookie'].match(/pt_pin\=(\S*)\;/)[1];
+    pin = pin.split(';')[0];
+    const result = JSON.stringify({ 'farm_jstoken': obj['farm_jstoken'], phoneid: obj.phoneid, timestamp: obj.timestamp, pin });
     const token1 = $.getdata(jxNcTokenKey1)
     const token2 = $.getdata(jxNcTokenKey2)
-    var accountOne = token1 ? JSON.parse(token1) ? JSON.parse(token1)['phoneid'] : null : null
-    var accountTwo = token2 ? JSON.parse(token2) ? JSON.parse(token2)['phoneid'] : null : null
+    var accountOne = token1 ? JSON.parse(token1) ? JSON.parse(token1)['pin'] : null : null
+    var accountTwo = token2 ? JSON.parse(token2) ? JSON.parse(token2)['pin'] : null : null
     var cookieName = " [账号一] ";
     var cookieKey = "CookieJD";
-    if (!accountOne || obj.phoneid == accountOne) {
+    if (!accountOne || obj.pin == accountOne) {
       cookieName = " [账号一] ";
       cookieKey = jxNcTokenKey1;
-    } else if (!accountTwo || obj.phoneid == accountTwo) {
+    } else if (!accountTwo || obj.pin == accountTwo) {
       cookieName = " [账号二] ";
       cookieKey = jxNcTokenKey2;
     }
@@ -62,7 +68,7 @@ if (getTokenRegex.test(url)) {
       console.log(`\n用户名: ${DecodeName}\n与历史京东${CookieName}Cookie相同, 跳过写入 ⚠️`)
     } else {
       $.setdata(result, cookieKey);
-      $.msg($.name,`设备: ${obj.phoneid}`, `${oldValue?`更新`:`写入`}京喜农场${cookieName} Cookie成功 🎉`);
+      $.msg($.name,`账号: ${obj.pin} 设备: ${obj.phoneid.slice(0,5)}...`, `${oldValue?`更新`:`写入`}京喜农场${cookieName} Cookie成功 🎉`);
     }
   } catch (err) {
     $.logErr(`京喜农场写入Token失败，执行异常：${err}。`);
