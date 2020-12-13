@@ -78,8 +78,8 @@ function exchangeJd(i) {
           $.result.push(`${stepNumber}步：${msg}`)
           const next = steps[i + 1];
           if (0 === parseInt(code) && next) {
-            await $.wait(3000);
-            await exchangeJd(next, i + 1);
+            await $.wait(1000);
+            await exchangeJd(i + 1);
           }
         } catch (e) {
           $.logErr(e, resp);
