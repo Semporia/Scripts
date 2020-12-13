@@ -52,15 +52,15 @@ $.waitTime = 1000;
       await getFriends();
       await $.wait(500);
       const endInfo = await getUserInfo();
-      await clickManage();
-      await $.wait(500);
-      await getReadyCard();
+      // await clickManage();
+      // await $.wait(500);
+      // await getReadyCard();
       $.result.push(
         `拾取前能量：${beginInfo.user.electric} 拾取后能量：${endInfo.user.electric}`,
         `获得零件能量：${endInfo.user.electric - beginInfo.user.electric}`,
-        `厂长钞票：${$.count}，银行倍数：${$.multiple}`
+        // `厂长钞票：${$.count}，银行倍数：${$.multiple}`
       );
-      await upgradeUserLevel();
+      // await upgradeUserLevel();
     }
   }
   $.authExecute && await showMsg();

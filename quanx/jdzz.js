@@ -46,6 +46,7 @@ $.allExchangeList = [];
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
+      $.result.push(`【京东账号${i + 1}】${userName}`);
       const isOK = checkToken($.tokens[i]);
       if (!isOK) {
         return;

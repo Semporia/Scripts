@@ -38,6 +38,8 @@ const steps = [50, 2000, 5000, 10000, 20000];
       const userName = decodeURIComponent(
         $.currentCookie.match(/pt_pin=(.+?);/) && $.currentCookie.match(/pt_pin=(.+?);/)[1]
       );
+      $.log(`\n开始【京东账号${i + 1}】${userName}`);
+      $.result.push(`【京东账号${i + 1}】${userName}`);
       await exchangeJd(0);
     }
   }
@@ -71,7 +73,6 @@ function exchangeJd(i) {
       taskPostUrl("swat_game_exchangejingbean", { stepNumber }),
       async (err, resp, _data) => {
         try {
-          console.log(_data)
           const { code, msg } = JSON.parse(_data);
           $.log(`\n${msg}\n${_data}`);
           $.result.push(`${stepNumber}步：${msg}`)

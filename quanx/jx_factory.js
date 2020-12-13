@@ -44,6 +44,7 @@ $.userTuanInfo = {};
         $.currentCookie.match(/pt_pin=(.+?);/) && $.currentCookie.match(/pt_pin=(.+?);/)[1],
       );
       $.log(`\n开始【京东账号${i + 1}】${userName}`);
+      $.result.push(`【京东账号${i + 1}】${userName}`);
       const beginInfo = await getUserInfo();
       await $.wait(500);
       await getCommodityDetail();

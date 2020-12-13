@@ -41,6 +41,8 @@ $.currentToken = {};
 $.allTask = [];
 $.info = {};
 $.answer = 0;
+$.helpTask = null;
+$.drip = 0;
 
 !(async () => {
   if (!getCookies()) return;
@@ -52,14 +54,17 @@ $.answer = 0;
         $.currentCookie.match(/pt_pin=(.+?);/) && $.currentCookie.match(/pt_pin=(.+?);/)[1],
       );
       $.log(`\n开始【京东账号${i + 1}】${userName}`);
-      const isSuccess = await getTaskList();
-      if (!isSuccess) break;
+      $.result.push(`【京东账号${i + 1}】${userName}`);
+      const startInfo = await getTaskList();
+      if (!startInfo) break;
       await $.wait(500);
       const isOk = await browserTask();
       if (!isOk) break;
       await $.wait(500);
       await answerTask();
       await $.wait(500);
+      const endInfo = await getTaskList();
+      getMessage(endInfo, startInfo);
       await submitInviteId(userName);
       await $.wait(500);
       await createAssistUser();
@@ -85,12 +90,25 @@ function getCookies() {
   return true;
 }
 
+function getMessage(endInfo) {
+  const need = endInfo.target - endInfo.score;
+  const get = $.drip;
+  const max = parseInt(need / get);
+  const min = parseInt(need / (get + $.helpTask.limit * $.helpTask.eachtimeget));
+  $.result.push(
+    `【水果名称】${endInfo.prizename}`,
+    `【水滴】获得水滴${get} 还需水滴${need}`,
+    `【预测】还需 ${min} ~ ${max} 天`
+  );
+}
+
 function getTaskList() {
   return new Promise(async resolve => {
     $.get(taskUrl('query', `type=1`), async (err, resp, data) => {
       try {
         const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];
         const { detail, msg, task = [], retmsg, ...other } = JSON.parse(res);
+        $.helpTask = task.filter(x => x.tasktype === 2);
         $.allTask = task.filter(x => x.tasktype !== 3 && x.tasktype !== 2 && parseInt(x.left) > 0);
         $.info = other;
         $.log(`\n获取任务列表 ${retmsg} 总共${$.allTask.length}个任务！`);
@@ -98,6 +116,7 @@ function getTaskList() {
           $.msg($.name, '请先去京喜农场选择种子！', '选择app专属种子时，请参考脚本头部说明获取token，点击通知跳转', { 'open-url': $.openUrl });
           resolve(false);
         }
+        resolve(other);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -138,7 +157,7 @@ function  browserTask() {
 function answerTask() {
   const _answerTask = $.allTask.filter(x => x.tasklevel === 6);
   if (!_answerTask || !_answerTask[0]) return;
-  const { tasklevel, left, taskname } = _answerTask[0];
+  const { tasklevel, left, taskname, eachtimeget } = _answerTask[0];
   return new Promise(async resolve => {
     if (parseInt(left) <= 0) {
       resolve(false);
@@ -156,12 +175,16 @@ function answerTask() {
         try {
           const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];
           $.log(res);
-          const { ret, retmsg = 'success' } = JSON.parse(res);
+          const { ret, retmsg } = JSON.parse(res);
+          retmsg = retmsg === '' ? retmsg : 'success';
           $.log(
             `\n${taskname}[做任务]：${retmsg.indexOf('活动太火爆了') !== -1 ? '任务进行中或者未到任务时间' : retmsg}${
               $.showLog ? '\n' + res : ''
             }`,
           );
+          if (ret === 0) {
+            $.drip += eachtimeget;
+          }
           if (((ret !== 0 && ret !== 1029) || retmsg === 'ans err') && $.answer < 4) {
             $.answer++;
             await $.wait(1000);
@@ -177,7 +200,7 @@ function answerTask() {
   });
 }
 
-function doTask({ tasklevel, left, taskname }) {
+function doTask({ tasklevel, left, taskname, eachtimeget }) {
   return new Promise(async resolve => {
     if (parseInt(left) <= 0) {
       resolve(false);
@@ -193,12 +216,16 @@ function doTask({ tasklevel, left, taskname }) {
         try {
           const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];
           $.log(res);
-          const { ret, retmsg = 'success' } = JSON.parse(res);
+          const { ret, retmsg } = JSON.parse(res);
+          retmsg = retmsg === '' ? retmsg : 'success';
           $.log(
             `\n${taskname}[做任务]：${retmsg.indexOf('活动太火爆了') !== -1 ? '任务进行中或者未到任务时间' : retmsg}${
               $.showLog ? '\n' + res : ''
             }`,
           );
+          if (ret === 0) {
+            $.drip += eachtimeget;
+          }
           resolve(ret);
         } catch (e) {
           $.logErr(e, resp);
@@ -227,7 +254,7 @@ function submitInviteId(userName) {
           const { code, data = {} } = JSON.parse(_data);
           $.log(`\n邀请码提交：${code}\n${$.showLog ? _data : ''}`);
           if (data.value) {
-            $.result.push('邀请码提交成功！');
+            $.result.push('【邀请码】提交成功！');
           }
         } catch (e) {
           $.logErr(e, resp);
