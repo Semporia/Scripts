@@ -395,6 +395,22 @@ def get_red_packets(headers, pn):
         print(traceback.format_exc())
         return
 
+def get_withdraw_list(headers):
+    """
+    历史提现记录
+    :param headers:
+    :return:
+    """
+    try:
+        url = f'https://mqqapi.reader.qq.com/mqq/red_packet/user/trans/page'
+        response = requests.get(url=url, headers=headers, timeout=30).json()
+        if response['code'] == 0:
+            return response['data']
+        else:
+            return
+    except:
+        print(traceback.format_exc())
+        return
 
 def get_withdraw_info(headers):
     try:
@@ -436,8 +452,9 @@ def qq_read():
         f'\n{symbol}【企鹅读书】{utc_datetime.strftime("%Y-%m-%d %H:%M:%S")}/{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")} {symbol}\n')
 
     start_time = time.time()
-    title = f'☆【企鹅读书】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")} ☆'
+    title = f'📚企鹅读书'
     content = ''
+    result = ''
 
     # 调用 track 接口，为保证输出结果美观，输出信息写在后面
     track_result = track(headers=headers, body=body)
@@ -445,10 +462,12 @@ def qq_read():
     user_info = get_user_info(headers=headers)
     if user_info:
         content += f'【用户昵称】{user_info["user"]["nickName"]}'
+        result += f'【用户昵称】{user_info["user"]["nickName"]}'
     # 获取任务列表，查询金币余额
     daily_tasks = get_daily_tasks(headers=headers)
     if daily_tasks:
         content += f'\n【金币余额】剩余{daily_tasks["user"]["amount"]}金币，可提现{daily_tasks["user"]["amount"] // 10000}元'
+        result += f'\n【当前剩余】{"{:4.2f}".format(daily_tasks["user"]["amount"] / 10000)}'
     # 查询今日获得金币数量
     beijing_datetime_0 = beijing_datetime.strftime(
         '%Y-%m-%d') + ' 00:00:00'
@@ -465,9 +484,11 @@ def qq_read():
                     break
         elif not red_packets:
             content += f'\n【今日收益】请求接口错误！'
+            result += f'\n【今日收益】请求接口错误！'
             break
         else:
             content += f"\n【今日收益】{today_coins_total}金币，约{'{:4.2f}'.format(today_coins_total / 10000)}元"
+            result += f"\n【今日收益】{'{:4.2f}'.format(today_coins_total / 10000)}"
             break
     # 查询本周阅读时长
     week_read_time = get_week_read_time(headers=headers)
@@ -649,9 +670,22 @@ def qq_read():
     content += f'\n🕛耗时：%.2f秒' % (time.time() - start_time)
     print(title)
     print(content)
+
+    # 历史收益
+    history_coins_total = daily_tasks["user"]["amount"]
+    withdraw_list = get_withdraw_list(headers=headers)
+    if withdraw_list:
+        for with_draw in withdraw_list['withdrawList']:
+            history_coins_total -= with_draw['amount']
+        content += f"\n【历史收益】{history_coins_total}金币，约{'{:4.2f}'.format(today_coins_total / 10000)}元"
+        result += f"\n【历史收益】{'{:4.2f}'.format(history_coins_total / 10000)}\n"
+    else:
+        content += f'\n【历史收益】请求接口错误！\n'
+        result += f'\n【历史收益】请求接口错误！\n'
+
     # 每天 19:30 发送消息推送
     if beijing_datetime.hour == 19 and beijing_datetime.minute >= 30:
-      send(title=title, content=content, notify_mode=notify_mode)
+        send(title=title, content=result, notify_mode=notify_mode)
     elif not beijing_datetime.hour == 19:
         print('未进行消息推送，原因：没到对应的推送时间点\n')
     else:
