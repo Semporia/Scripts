@@ -93,13 +93,15 @@ function getCookies() {
 function getMessage(endInfo) {
   const need = endInfo.target - endInfo.score;
   const get = $.drip;
-  const max = parseInt(need / get);
-  const min = parseInt(need / (get + $.helpTask.limit * $.helpTask.eachtimeget));
   $.result.push(
     `【水果名称】${endInfo.prizename}`,
-    `【水滴】获得水滴${get} 还需水滴${need}`,
-    `【预测】还需 ${min} ~ ${max} 天`
+    `【水滴】获得水滴${get} 还需水滴${need}`
   );
+  if (get > 0) {
+    const max = parseInt(need / get);
+    const min = parseInt(need / (get + $.helpTask.limit * $.helpTask.eachtimeget));
+    $.result.push(`【预测】还需 ${min} ~ ${max} 天`);
+  }
 }
 
 function getTaskList() {
