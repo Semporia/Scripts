@@ -667,21 +667,21 @@ def qq_read():
     else:
         content += f'\n【自动提现】未启用该功能'
 
-    content += f'\n🕛耗时：%.2f秒' % (time.time() - start_time)
-    print(title)
-    print(content)
-
     # 历史收益
     history_coins_total = daily_tasks["user"]["amount"]
     withdraw_list = get_withdraw_list(headers=headers)
     if withdraw_list:
         for with_draw in withdraw_list['withdrawList']:
             history_coins_total -= with_draw['amount']
-        content += f"\n【历史收益】{history_coins_total}金币，约{'{:4.2f}'.format(today_coins_total / 10000)}元"
+        content += f"\n【历史收益】{history_coins_total}金币，约{'{:4.2f}'.format(history_coins_total / 10000)}元"
         result += f"\n【历史收益】{'{:4.2f}'.format(history_coins_total / 10000)}\n"
     else:
         content += f'\n【历史收益】请求接口错误！\n'
         result += f'\n【历史收益】请求接口错误！\n'
+
+    content += f'\n🕛耗时：%.2f秒' % (time.time() - start_time)
+    print(title)
+    print(content)
 
     # 每天 19:30 发送消息推送
     if beijing_datetime.hour == 19 and beijing_datetime.minute >= 30:
