@@ -443,6 +443,7 @@ def qq_read():
   title = f'📚企鹅读书'
   content = ''
   result = ''
+  print(title)
   for account in COOKIELIST:
     book_url = account['QQREAD_TIMEURL']
     headers = account['QQREAD_TIMEHD']
@@ -680,9 +681,9 @@ def qq_read():
         content += f'\n【历史收益】请求接口错误！\n'
         result += f'\n【历史收益】：请求接口错误！\n'
 
-    content += f'\n🕛耗时：%.2f秒' % (time.time() - start_time)
-    print(title)
-    print(content)
+    content += f'\n🕛耗时：%.2f秒\n' % (time.time() - start_time)
+
+  print(content)
 
   # 每天 19:30 发送消息推送
   if beijing_datetime.hour == 19 and beijing_datetime.minute >= 30 and beijing_datetime.minute <= 40:
