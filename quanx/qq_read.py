@@ -441,6 +441,8 @@ def withdraw_to_wallet(headers, amount):
 def qq_read():
   # 确定脚本是否开启执行模式
   title = f'📚企鹅读书'
+  content = ''
+  result = ''
   for account in COOKIELIST:
     book_url = account['QQREAD_TIMEURL']
     headers = account['QQREAD_TIMEHD']
@@ -453,8 +455,6 @@ def qq_read():
         f'\n{symbol}【企鹅读书】{utc_datetime.strftime("%Y-%m-%d %H:%M:%S")}/{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")} {symbol}\n')
 
     start_time = time.time()
-    content = ''
-    result = ''
 
     # 调用 track 接口，为保证输出结果美观，输出信息写在后面
     track_result = track(headers=headers, body=body)
