@@ -6,101 +6,6 @@
   "repo": "https://github.com/whyour/hundun",
   "apps": [
     {
-      "id": "shareCode",
-      "name": "互助码",
-      "keys": [
-        "zd_shareCode1",
-        "nc_shareCode1",
-        "mc_shareCode1",
-        "dd_shareCode1",
-        "jx_shareCode1",
-        "zd_shareCode2",
-        "nc_shareCode2",
-        "mc_shareCode2",
-        "dd_shareCode2",
-        "jx_shareCode2"
-      ],
-      "settings": [
-        {
-          "id": "zd_shareCode1",
-          "name": "种豆得豆互助码1",
-          "val": "",
-          "type": "text",
-          "desc": "种豆得豆互助码.你自己的互助码."
-        },
-        {
-          "id": "nc_shareCode1",
-          "name": "东东农场互助码1",
-          "val": "",
-          "type": "text",
-          "desc": "东东农场互助码.你自己的互助码."
-        },
-        {
-          "id": "mc_shareCode1",
-          "name": "东东萌宠互助码1",
-          "val": "",
-          "type": "text",
-          "desc": "东东萌宠互助码.你自己的互助码."
-        },
-        {
-          "id": "dd_shareCode1",
-          "name": "东东工厂互助码1",
-          "val": "",
-          "type": "text",
-          "desc": "东东工厂互助码.你自己的互助码."
-        },
-        {
-          "id": "jx_shareCode1",
-          "name": "京喜工厂互助码1",
-          "val": "",
-          "type": "text",
-          "desc": "京喜工厂互助码.你自己的互助码."
-        },
-        {
-          "id": "zd_shareCode2",
-          "name": "种豆得豆互助码2",
-          "val": "",
-          "type": "text",
-          "desc": "种豆得豆互助码.你自己的互助码."
-        },
-        {
-          "id": "nc_shareCode2",
-          "name": "东东农场互助码2",
-          "val": "",
-          "type": "text",
-          "desc": "东东农场互助码.你自己的互助码."
-        },
-        {
-          "id": "mc_shareCode2",
-          "name": "东东萌宠互助码2",
-          "val": "",
-          "type": "text",
-          "desc": "东东萌宠互助码.你自己的互助码."
-        },
-        {
-          "id": "dd_shareCode2",
-          "name": "东东工厂互助码2",
-          "val": "",
-          "type": "text",
-          "desc": "东东工厂互助码.你自己的互助码."
-        },
-        {
-          "id": "jx_shareCode2",
-          "name": "京喜工厂互助码2",
-          "val": "",
-          "type": "text",
-          "desc": "京喜工厂互助码.你自己的互助码."
-        }
-      ],
-      "author": "@whyour",
-      "repo": "https://github.com/whyour/hundun/blob/master/quanx/shareCode-auto.js",
-      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/shareCode-auto.js",
-      "icons": [
-        "https://raw.githubusercontent.com/58xinian/icon/master/jdnc_mini.png",
-        "https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png"
-      ]
-    },
-    {
       "id": "supermarket",
       "name": "京东超市",
       "keys": ["zd_shelf_level", "zd_product_level"],
@@ -150,13 +55,7 @@
     {
       "id": "didi",
       "name": "滴滴出行",
-      "keys": [
-        "didi_city_id",
-        "didi_token",
-        "didi_lid",
-        "didi_activity_id",
-        "didi_channel_id"
-      ],
+      "keys": ["didi_city_id", "didi_token", "didi_lid", "didi_activity_id", "didi_channel_id"],
       "author": "@whyour",
       "repo": "https://github.com/whyour/hundun/blob/master/quanx/didi.js",
       "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js",
@@ -197,7 +96,7 @@
       "id": "jdzz",
       "name": "京东赚赚小程序",
       "keys": ["jdzz_token1", "jdzz_token2"],
-      "settings":[
+      "settings": [
         {
           "id": "zz_showLog",
           "name": "日志开关",
@@ -418,10 +317,7 @@
     {
       "id": "jx_nc",
       "name": "京喜农场",
-      "keys": [
-        "jxnc_token1",
-        "jxnc_token2"
-      ],
+      "keys": ["jxnc_token1", "jxnc_token2"],
       "settings": [
         {
           "id": "nc_showLog",
