@@ -34,7 +34,7 @@ def get_standard_time():
     # <class 'datetime.datetime'>
     utc_datetime = datetime.utcnow().replace(tzinfo=timezone.utc)  # utc时间
     beijing_datetime = utc_datetime.astimezone(timezone(timedelta(hours=8)))  # 北京时间
-    return utc_datetime, beijing_datetime
+    return beijing_datetime
 
 def pretty_dict(dict):
     """
@@ -440,12 +440,11 @@ def withdraw_to_wallet(headers, amount):
 
 def qq_read():
   # 确定脚本是否开启执行模式
-  title = f'📚 企鹅读书'
+  title = f'📚企鹅读书'
   content = ''
   result = ''
   beijing_datetime = get_standard_time()
-  print(
-      f'\n📚【企鹅读书】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}\n')
+  print(f'\n【企鹅读书】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}\n')
   for account in COOKIELIST:
     book_url = account['QQREAD_TIMEURL']
     headers = account['QQREAD_TIMEHD']
@@ -684,9 +683,9 @@ def qq_read():
   print(content)
 
   # 每天 19:30 发送消息推送
-  if beijing_datetime.hour == 19 and beijing_datetime.minute >= 30 and beijing_datetime.minute <= 40:
+  if beijing_datetime.hour == 23 and beijing_datetime.minute >= 0 and beijing_datetime.minute <= 10:
       send(title=title, content=result, notify_mode=notify_mode)
-  elif not beijing_datetime.hour == 19:
+  elif not beijing_datetime.hour == 23:
       print('未进行消息推送，原因：没到对应的推送时间点\n')
   else:
       print('未在规定的时间范围内\n')

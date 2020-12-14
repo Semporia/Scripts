@@ -3,7 +3,7 @@ Author: whyour
 Github: https://github.com/whyour
 Date: 2020-11-19 23:25:22
 LastEditors: whyour
-LastEditTime: 2020-11-30 13:17:26
+LastEditTime: 2020-12-14 23:13:49
 '''
 import requests
 import json
@@ -65,7 +65,7 @@ if "XMLY_SPEED_COOKIE" in os.environ:
 # 可选项
 # 自定义设备命名,非必须 ;devices=["iPhone7P","huawei"];与cookiesList对应
 devices = []
-notify_time = 19                            # 通知时间,24小时制,默认19
+notify_time = 23                            # 通知时间,24小时制,默认19
 XMLY_ACCUMULATE_TIME = 1                    # 希望刷时长的,此处置1,默认打开;关闭置0
 UserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 13_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 iting/1.0.12 kdtunion_iting/1.0 iting(main)/1.0.12/ios_1"
 # 非iOS设备的需要的自行修改,自己抓包 与cookie形式类似
@@ -999,7 +999,7 @@ def telegram(title, content):
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     payload = {'chat_id': str(TG_USER_ID), 'text': f"""{title}\n\n{content}""", 'disable_web_page_preview': 'true'}
     proxyStr = "http://{}:{}".format(TG_PROXY_IP, TG_PROXY_PORT)
-    proxies = {"http": proxyStr, "https": proxyStr } 
+    proxies = {"http": proxyStr, "https": proxyStr }
     response = requests.post(url=url,headers=headers, params=payload,proxies=proxies)
     print(response.text)
 
@@ -1037,7 +1037,7 @@ def run():
 
         print("###"*20)
         print("\n"*4)
-    if int(_notify_time.split()[0]) == notify_time and int(_notify_time.split()[1]) >= 30:
+    if int(_notify_time.split()[0]) == notify_time and int(_notify_time.split()[1]) < 30:
         # if 1:
         message = ''
         for i in table:
@@ -1046,7 +1046,7 @@ def run():
             message += f"今天：＋{i[2]:<4.2f}\n"
             message += f"历史：{i[3]:<7.2f}\n"
             message += f"连续签到：{i[4]}/30\n"
-        
+
         bark("⏰ 喜马拉雅极速版", message)
         serverJ("⏰ 喜马拉雅极速版", message)
         telegram("⏰ 喜马拉雅极速版", message)
