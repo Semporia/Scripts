@@ -440,20 +440,18 @@ def withdraw_to_wallet(headers, amount):
 
 def qq_read():
   # 确定脚本是否开启执行模式
-  title = f'📚企鹅读书'
+  title = f'📚 企鹅读书'
   content = ''
   result = ''
-  print(title)
+  beijing_datetime = get_standard_time()
+  print(
+      f'\n📚【企鹅读书】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}\n')
   for account in COOKIELIST:
     book_url = account['QQREAD_TIMEURL']
     headers = account['QQREAD_TIMEHD']
     body = account['QQREAD_BODY']
     withdraw = account['WITHDRAW']
     hosting_mode = account['HOSTING_MODE']
-    utc_datetime, beijing_datetime = get_standard_time()
-    symbol = '=' * 16
-    print(
-        f'\n{symbol}【企鹅读书】{utc_datetime.strftime("%Y-%m-%d %H:%M:%S")}/{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")} {symbol}\n')
 
     start_time = time.time()
 
@@ -676,12 +674,12 @@ def qq_read():
         for with_draw in withdraw_list['withdrawList']:
             history_coins_total -= with_draw['amount']
         content += f"\n【历史收益】{history_coins_total}金币，约{'{:4.2f}'.format(history_coins_total / 10000)}元"
-        result += f"\n【历史收益】：{'{:4.2f}'.format(history_coins_total / 10000)}\n"
+        result += f"\n【历史收益】：{'{:4.2f}'.format(history_coins_total / 10000)}\n\n"
     else:
         content += f'\n【历史收益】请求接口错误！\n'
-        result += f'\n【历史收益】：请求接口错误！\n'
+        result += f'\n【历史收益】：请求接口错误！\n\n'
 
-    content += f'\n🕛耗时：%.2f秒\n' % (time.time() - start_time)
+    content += f'\n🕛耗时：%.2f秒\n\n' % (time.time() - start_time)
 
   print(content)
 
