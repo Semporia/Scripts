@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-23 11:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-15 13:30:37
+ * @LastEditTime: 2020-12-15 14:27:17
 
   quanx:
   [task_local]
@@ -34,7 +34,7 @@ const headers = $request.headers;
 
 if (getTokenRegex.test(url)) {
   try {
-    $.log('京东赚赚token响应', headers)
+    $.log('京东赚赚token响应', JSON.stringify(headers))
     if (!headers['Cookie']) {
       $.logErr(`京东赚赚写入Token失败，请先手动登录小程序点击赚好礼签到，然后点击重新进入小程序或者清除微信后台`);
     }
@@ -46,10 +46,10 @@ if (getTokenRegex.test(url)) {
       $.logErr(`京东赚赚写入Token失败，请先手动登录小程序点击赚好礼签到，然后点击重新进入小程序或者清除微信后台`);
     }
     const result = JSON.stringify({ pin, token });
-    const token1 = $.getdata(jdzzTokenKey1)
-    const token2 = $.getdata(jdzzTokenKey2)
-    if (!isJsonString(token1)) $.setdata('', jdzzTokenKey1);
-    if (!isJsonString(token2)) $.setdata('', jdzzTokenKey2);
+    let token1 = $.getdata(jdzzTokenKey1)
+    let token2 = $.getdata(jdzzTokenKey2)
+    if (!isJsonString(token1)) token1 = '';
+    if (!isJsonString(token2)) token2 = '';
 
     var accountOne = token1 ? JSON.parse(token1) ? JSON.parse(token1)['pin'] : null : null
     var accountTwo = token2 ? JSON.parse(token2) ? JSON.parse(token2)['pin'] : null : null
