@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-23 11:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-04 14:36:50
+ * @LastEditTime: 2020-12-15 13:26:53
 
   quanx:
   [task_local]
@@ -36,6 +36,7 @@ $.result = [];
 $.cookieArr = [];
 $.allTask = [];
 $.allExchangeList = [];
+$.currentToken = '';
 
 !(async () => {
   if (!getCookies()) return;
@@ -95,15 +96,29 @@ function getCookies() {
   return true;
 }
 
-function checkToken(token, i) {
+function isJsonString(str) {
+  try {
+    if (typeof JSON.parse(str) == "object") {
+      return true;
+    }
+  } catch (e) {}
+  return false;
+}
+
+function checkToken(i) {
+  $.currentToken = $.tokens[i];
+  if (isJsonString($.tokens[i])) {
+    const { token } = JSON.parse($.tokens[i]);
+    $.currentToken = token;
+  }
   return new Promise((resolve) => {
     $.get(
-      taskUrl("interactTaskIndex", { mpVersion: "3.0.6" }, token),
+      taskUrl("interactTaskIndex", { mpVersion: "3.0.6" }),
       (err, resp, data) => {
         try {
           const { message } = JSON.parse(data);
           $.log(`\n${message}\n${$.showLog ? data : ''}`);
-          if (message.indexOf('未登录') !== -1) {
+          if (message.indexOf('未登陆') !== -1) {
             $.setdata('', `jdzz_token${i + 1}`);
             $.msg(
               $.name,
@@ -111,7 +126,7 @@ function checkToken(token, i) {
               "微信搜索'京东赚赚'小程序\n即可获取Token"
             );
           }
-          resolve(message.indexOf('未登录') === -1);
+          resolve(message.indexOf('未登陆') === -1);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -125,7 +140,7 @@ function checkToken(token, i) {
 function getAllTask(token) {
   return new Promise((resolve) => {
     $.get(
-      taskUrl("interactTaskIndex", { mpVersion: "3.0.6" }, token),
+      taskUrl("interactTaskIndex", { mpVersion: "3.0.6" }),
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
@@ -144,7 +159,7 @@ function getAllTask(token) {
 function getHomeInfo(token) {
   return new Promise((resolve) => {
     $.get(
-      taskUrl("interactTaskIndex", { mpVersion: "3.0.6" }, token),
+      taskUrl("interactTaskIndex", { mpVersion: "3.0.6" }),
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
@@ -178,8 +193,7 @@ function doTask(task, token) {
           taskId: task.taskId,
           mpVersion: "3.0.6",
           taskItem: task,
-        },
-        token
+        }
       ),
       (err, resp, _data) => {
         try {
@@ -198,7 +212,7 @@ function doTask(task, token) {
 function getExchangePrizeList(token) {
   return new Promise((resolve) => {
     $.post(
-      taskPostUrl("getExchangePrizeList", {}, token),
+      taskPostUrl("getExchangePrizeList", {}),
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
@@ -222,7 +236,7 @@ function exchangePrize(token) {
     }
     const { prizeId } = $.allExchangeList[$.exchangePrize - 1];
     $.post(
-      taskPostUrl("exchangePrize", { prizeId }, token),
+      taskPostUrl("exchangePrize", { prizeId }),
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
@@ -251,7 +265,7 @@ function taskUrl(function_path, body = {}, token) {
       JSON.stringify(body)
     )}&appid=wh5&loginType=1&loginWQBiz=interact&g_ty=ls&g_tk=1389236456`,
     headers: {
-      Cookie: `buildtime=20201120;wxapp_type=14;wxapp_version=6.9.130;province=Guangdong;city=Shenzhen;country=China;wq_auth_token=${token};network=wifi`,
+      Cookie: `buildtime=20201120;wxapp_type=14;wxapp_version=6.9.130;province=Guangdong;city=Shenzhen;country=China;wq_auth_token=${$.currentToken};network=wifi`,
       wqreferer: `http://wq.jd.com/wxapp/pages/hd-interaction/index/index`,
       "Content-Type": `application/json`,
       Host: `api.m.jd.com`,
@@ -267,7 +281,7 @@ function taskPostUrl(function_path, body = {}, token) {
   return {
     url: `${JD_API_HOST}/client.action?functionIdTest=${function_path}`,
     headers: {
-      Cookie: `buildtime=20201120;wxapp_type=14;wxapp_version=6.9.130;province=Guangdong;city=Shenzhen;country=China;wq_auth_token=${token};network=wifi`,
+      Cookie: `buildtime=20201120;wxapp_type=14;wxapp_version=6.9.130;province=Guangdong;city=Shenzhen;country=China;wq_auth_token=${$.currentToken};network=wifi`,
       wqreferer: `http://wq.jd.com/wxapp/pages/hd-interaction/index/index`,
       Host: `api.m.jd.com`,
       "User-Agent": `Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/7.0.18(0x1700122c) NetType/WIFI Language/zh_CN`,

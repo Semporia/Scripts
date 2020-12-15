@@ -3,8 +3,8 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-23 11:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 13:09:52
- 
+ * @LastEditTime: 2020-12-15 13:30:37
+
   quanx:
   [task_local]
   0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js, tag=京东赚赚, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdzz.png, enabled=true
@@ -21,7 +21,7 @@
   京东赚赚 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js,
   京东赚赚cookie = type=http-request,pattern=^https\:\/\/api\.m\.jd\.com\/client\.action\?functionId\=interactIndex,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.cookie.js
  *
- *  
+ *
  **/
 
 const jdzzTokenKey1 = "jdzz_token1";
@@ -38,24 +38,50 @@ if (getTokenRegex.test(url)) {
     if (!headers['Cookie']) {
       $.logErr(`京东赚赚写入Token失败，请先手动登录小程序点击赚好礼签到，然后点击重新进入小程序或者清除微信后台`);
     }
+    let pin = headers['Cookie'].match(/pin\=(\S*)\;/)[1];
+    pin = pin.split(';')[0];
     let token = headers['Cookie'].match(/wq_auth_token\=(\S*)\;/)[1];
     token = token.split(';')[0];
     if (!/^[0-9A-Z]+$/.test(token)) {
       $.logErr(`京东赚赚写入Token失败，请先手动登录小程序点击赚好礼签到，然后点击重新进入小程序或者清除微信后台`);
     }
+    const result = JSON.stringify({ pin, token });
     const token1 = $.getdata(jdzzTokenKey1)
-    if (!token1) {
-      $.setdata(token, jdzzTokenKey1);
-      $.log(`新的Token1：\n${token}，Token已更新。`);
-    } else {
-      $.setdata(token, jdzzTokenKey2);
-      $.log(`新的Token2：\n${token}，Token已更新。`);
+    const token2 = $.getdata(jdzzTokenKey2)
+    if (!isJsonString(token1)) $.setdata('', jdzzTokenKey1);
+    if (!isJsonString(token2)) $.setdata('', jdzzTokenKey2);
+
+    var accountOne = token1 ? JSON.parse(token1) ? JSON.parse(token1)['pin'] : null : null
+    var accountTwo = token2 ? JSON.parse(token2) ? JSON.parse(token2)['pin'] : null : null
+    var cookieName = " [账号一] ";
+    var cookieKey = jdzzTokenKey1;
+    if (!accountOne || obj.pin == accountOne) {
+      cookieName = " [账号一] ";
+      cookieKey = jdzzTokenKey1;
+    } else if (!accountTwo || obj.pin == accountTwo) {
+      cookieName = " [账号二] ";
+      cookieKey = jdzzTokenKey2;
     }
-    $.msg($.name, "🎉京东赚赚写入Token成功！！");
+    const oldValue = $.getdata(cookieKey);
+    if (oldValue == result) {
+      console.log(`\n账号: ${pin} \n与历史京东${cookieName}Cookie相同, 跳过写入 ⚠️`)
+    } else {
+      $.setdata(result, cookieKey);
+      $.msg($.name,`账号: ${pin}`, `${oldValue?`更新`:`写入`}京东赚赚${cookieName} Cookie成功 🎉`);
+    }
   } catch (err) {
     $.logErr(`京东赚赚写入Token失败，执行异常：${err}。`);
     $.msg($.name, "❌京东赚赚写入Token失败");
   }
+}
+
+function isJsonString(str) {
+  try {
+    if (typeof JSON.parse(str) == "object") {
+      return true;
+    }
+  } catch (e) {}
+  return false;
 }
 
 $.done()
