@@ -3,7 +3,7 @@ Author: whyour
 Github: https://github.com/whyour
 Date: 2020-11-19 23:25:22
 LastEditors: whyour
-LastEditTime: 2020-12-14 23:21:59
+LastEditTime: 2020-12-15 20:41:19
 '''
 import requests
 import json
@@ -1037,7 +1037,7 @@ def run():
 
         print("###"*20)
         print("\n"*4)
-    if int(_notify_time.split()[0]) == notify_time and int(_notify_time.split()[1]) >= 30:
+    if int(_notify_time.split()[0]) == notify_time and int(_notify_time.split()[1]) < 30:
     #if 1:
         message = ''
         for i in table:
