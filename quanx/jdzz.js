@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-23 11:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-15 13:26:53
+ * @LastEditTime: 2020-12-15 14:35:14
 
   quanx:
   [task_local]
@@ -48,16 +48,16 @@ $.currentToken = '';
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
       $.result.push(`【京东账号${i + 1}】${userName}`);
-      const isOK = checkToken($.tokens[i]);
+      const isOK = checkToken(i);
       if (!isOK) {
         return;
       }
-      await getExchangePrizeList($.tokens[i]);
-      await exchangePrize($.tokens[i]);
-      const startHomeInfo = await getHomeInfo($.tokens[i]);
-      await getAllTask($.tokens[i]);
-      await doTasks($.tokens[i]);
-      const endHomeInfo = await getHomeInfo($.tokens[i]);
+      await getExchangePrizeList();
+      await exchangePrize();
+      const startHomeInfo = await getHomeInfo();
+      await getAllTask();
+      await doTasks();
+      const endHomeInfo = await getHomeInfo();
       $.result.push(
         `获得京豆：${endHomeInfo.totalBeanNum - startHomeInfo.totalBeanNum}`,
         `获得金币：${endHomeInfo.totalNum - startHomeInfo.totalNum}`,
@@ -137,7 +137,7 @@ function checkToken(i) {
   });
 }
 
-function getAllTask(token) {
+function getAllTask() {
   return new Promise((resolve) => {
     $.get(
       taskUrl("interactTaskIndex", { mpVersion: "3.0.6" }),
@@ -156,7 +156,7 @@ function getAllTask(token) {
   });
 }
 
-function getHomeInfo(token) {
+function getHomeInfo() {
   return new Promise((resolve) => {
     $.get(
       taskUrl("interactTaskIndex", { mpVersion: "3.0.6" }),
@@ -175,15 +175,15 @@ function getHomeInfo(token) {
   });
 }
 
-async function doTasks(token) {
+async function doTasks() {
   for (let i = 0; i < $.allTask.length; i++) {
     const task = $.allTask[i];
-    await doTask(task, token);
+    await doTask(task);
     await $.wait(300);
   }
 }
 
-function doTask(task, token) {
+function doTask(task) {
   return new Promise((resolve) => {
     $.get(
       taskUrl(
@@ -209,7 +209,7 @@ function doTask(task, token) {
   });
 }
 
-function getExchangePrizeList(token) {
+function getExchangePrizeList() {
   return new Promise((resolve) => {
     $.post(
       taskPostUrl("getExchangePrizeList", {}),
@@ -228,7 +228,7 @@ function getExchangePrizeList(token) {
   });
 }
 
-function exchangePrize(token) {
+function exchangePrize() {
   return new Promise((resolve) => {
     if ($.exchangePrize === 0) {
       resolve();
@@ -259,7 +259,7 @@ function showMsg() {
   });
 }
 
-function taskUrl(function_path, body = {}, token) {
+function taskUrl(function_path, body = {}) {
   return {
     url: `${JD_API_HOST}/client.action?functionId=${function_path}&body=${encodeURIComponent(
       JSON.stringify(body)
@@ -277,7 +277,7 @@ function taskUrl(function_path, body = {}, token) {
   };
 }
 
-function taskPostUrl(function_path, body = {}, token) {
+function taskPostUrl(function_path, body = {}) {
   return {
     url: `${JD_API_HOST}/client.action?functionIdTest=${function_path}`,
     headers: {
