@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-23 11:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-16 11:53:34
+ * @LastEditTime: 2020-12-16 12:53:34
  * 参考 shylocks 大佬修改ck和助力 https://github.com/shylocks
 
   quanx:
@@ -106,7 +106,7 @@ function getUserInfo() {
     $.get(taskUrl("interactIndex"), async (err, resp, _data) => {
       try {
         const { data:{shareTaskRes} = {}, message } = JSON.parse(_data);
-        $.log(`\n获取用户信息：${message}\n${$.showLog ? _data : ''}`);
+        $.log(`\n获取用户信息：${message}\n${_data}`);
         $.shareTask = shareTaskRes;
       } catch (e) {
         $.logErr(e, resp)
@@ -190,7 +190,7 @@ function getAllTask() {
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
-          $.log(`\n$获取任务列表：{message}\n${$.showLog ? _data : ''}`);
+          $.log(`\n获取任务列表：${message}\n${$.showLog ? _data : ''}`);
           $.allTask = data.taskDetailResList.filter((x) => x.taskId !== 3);
         } catch (e) {
           $.logErr(e, resp);
@@ -304,7 +304,7 @@ function showMsg() {
 
 function taskUrl(functionId, body = {}) {
   return {
-    url: `${JD_API_HOST}?functionId=${functionId}&body=${encodeURIComponent(JSON.stringify(body))}&client=wh5`,
+    url: `${JD_API_HOST}/client.action?functionId=${functionId}&body=${encodeURIComponent(JSON.stringify(body))}&client=wh5`,
     headers: {
       'Cookie': $.currentCookie,
       'Host': 'api.m.jd.com',
@@ -320,7 +320,7 @@ function taskUrl(functionId, body = {}) {
 
 function taskPostUrl(function_id, body = "") {
   return {
-    url: `${JD_API_HOST}?functionIdTest=${function_id}`,
+    url: `${JD_API_HOST}/client.action?functionIdTest=${function_id}`,
     body: `functionId=${function_id}&body=${encodeURIComponent(body)}&client=wh5&clientVersion=1.0.0`,
     headers: {
       "Cookie": $.currentCookie,
