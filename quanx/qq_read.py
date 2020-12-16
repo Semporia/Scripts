@@ -458,10 +458,11 @@ def qq_read():
     track_result = track(headers=headers, body=body)
     # 获取用户信息（昵称）
     user_info = get_user_info(headers=headers)
-    model = re.sub(r'<.*$', "", body['common']['model'])
+    guid = re.search(r'ywguid\=(\d+)\;', headers['Cookie'])
+    result += f'【账号】：{guid.group(1)}'
+    # model = re.sub(r'<.*$', "", body['common']['model'])
     if user_info:
         content += f'【用户昵称】{user_info["user"]["nickName"]}'
-        result += f'【设备】：{model}'
     # 获取任务列表，查询金币余额
     daily_tasks = get_daily_tasks(headers=headers)
     if daily_tasks:
