@@ -453,6 +453,7 @@ def qq_read():
     hosting_mode = account['HOSTING_MODE']
 
     start_time = time.time()
+    error_catch = 0
 
     # 调用 track 接口，为保证输出结果美观，输出信息写在后面
     track_result = track(headers=headers, body=body)
@@ -521,12 +522,14 @@ def qq_read():
                 headers=headers, seconds=i)
             if read_time_reward:
                 content += f"\n【阅读奖励】阅读{i}秒，获得金币{read_time_reward['amount']}"
+                error_catch = read_time_reward['amount']
 
     # 立即阅读《xxx》
     if daily_tasks['taskList'][0]['enableFlag']:
         read_now_reward = read_now(headers=headers)
         if read_now_reward:
             content += f'\n【{daily_tasks["taskList"][0]["title"]}】获得{read_now_reward["amount"]}金币'
+            error_catch = read_now_reward['amount']
 
     # 阅读任务
     if daily_tasks['taskList'][1]['enableFlag']:
@@ -536,6 +539,7 @@ def qq_read():
                     headers=headers, seconds=task['seconds'])
                 if read_reward and read_reward['amount'] > 0:
                     content += f"\n【阅读任务】阅读{task['timeStr']}，获得{read_reward['amount']}金币"
+                    error_catch = read_reward['amount']
 
     # 今日打卡
     if daily_tasks['taskList'][2]['enableFlag']:
@@ -556,6 +560,7 @@ def qq_read():
         watch_videos_reward = watch_videos(headers=headers)
         if watch_videos_reward:
             content += f"\n【视频奖励】获得{watch_videos_reward['amount']}金币({finish_count + 1}/{total_count})"
+            error_catch = watch_videos_reward['amount']
 
     # 周阅读时长奖励查询
     week_read_rewards = get_week_read_tasks(headers=headers)
@@ -573,6 +578,7 @@ def qq_read():
         treasure_box_reward = open_treasure_box(headers=headers)
         if treasure_box_reward:
             content += f"\n【开启第{treasure_box_reward['count']}个宝箱】获得{treasure_box_reward['amount']}金币"
+            error_catch = treasure_box_reward['amount']
 
     # 宝箱金币奖励翻倍
     daily_tasks = get_daily_tasks(headers=headers)
@@ -581,6 +587,7 @@ def qq_read():
             headers=headers)
         if treasure_box_ads_reward:
             content += f"\n【宝箱奖励翻倍】获得{treasure_box_ads_reward['amount']}金币"
+            error_catch = treasure_box_ads_reward['amount']
 
     # 读书刷时长
     if max_read_time > today_read_time["todayReadSeconds"] // 60:
@@ -680,6 +687,10 @@ def qq_read():
         result += f'\n【历史收益】：请求接口错误！\n\n'
 
     content += f'\n🕛耗时：%.2f秒\n\n' % (time.time() - start_time)
+
+    if (error_catch == 1) {
+      send(title=title, content=f'【账号】：{guid.group(1)} 数据异常', notify_mode=notify_mode)
+    }
 
   print(content)
 
