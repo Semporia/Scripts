@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-23 11:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-16 12:53:34
+ * @LastEditTime: 2020-12-16 21:28:30
  * 参考 shylocks 大佬修改ck和助力 https://github.com/shylocks
 
   quanx:
@@ -45,11 +45,7 @@ $.shareTask = null;
       );
       console.log(`\n开始【京东账号${i + 1}】${userName}`);
       $.result.push(`【京东账号${i + 1}】${userName}`);
-      await getUserInfo()
-      await $.wait(500);
       const startHomeInfo = await getHomeInfo();
-      await $.wait(500);
-      await getAllTask();
       await $.wait(500);
       await doTasks();
       await $.wait(500);
@@ -98,22 +94,6 @@ function isJsonString(str) {
     }
   } catch (e) {}
   return false;
-}
-
-function getUserInfo() {
-  return new Promise(resolve => {
-    $.get(taskUrl("interactIndex"), async (err, resp, _data) => {
-      try {
-        const { data:{shareTaskRes} = {}, message } = JSON.parse(_data);
-        $.log(`\n获取用户信息：${message}\n${$.showLog ? _data : ''}`);
-        $.shareTask = shareTaskRes;
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve();
-      }
-    })
-  })
 }
 
 function submitInviteId(userName) {
@@ -182,34 +162,17 @@ function createAssistUser() {
   });
 }
 
-function getAllTask() {
-  return new Promise((resolve) => {
-    $.get(
-      taskUrl("interactTaskIndex"),
-      (err, resp, _data) => {
-        try {
-          const { data = {}, message } = JSON.parse(_data);
-          $.log(`\n获取任务列表：${message}\n${$.showLog ? _data : ''}`);
-          $.allTask = data.taskDetailResList.filter((x) => x.taskId !== 3);
-        } catch (e) {
-          $.logErr(e, resp);
-        } finally {
-          resolve();
-        }
-      }
-    );
-  });
-}
-
 function getHomeInfo() {
   return new Promise((resolve) => {
     $.get(
       taskUrl("interactTaskIndex"),
       (err, resp, _data) => {
         try {
-          const { data = {}, message } = JSON.parse(_data);
-          $.log(`\n获取home信息：${message}\n${$.showLog ? _data : ''}`);
-          resolve({ totalBeanNum: data.totalBeanNum, totalNum: data.totalNum });
+          const { data: { taskDetailResList, totalBeanNum, totalNum } = {}, message } = JSON.parse(_data);
+          $.log(`\n获取任务信息：${message}\n${$.showLog ? _data : ''}`);
+          $.allTask = taskDetailResList.filter(x => x.taskId !== 3);
+          $.shareTask = taskDetailResList.filter(x => x.taskId === 3)[0];
+          resolve({ totalBeanNum, totalNum });
         } catch (e) {
           $.logErr(e, resp);
         } finally {
