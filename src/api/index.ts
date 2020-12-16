@@ -9,6 +9,7 @@ import shiCi from './routes/shiCi';
 import jxCfd from './routes/jxCfd';
 import jxCfdGroup from './routes/jxCfdGroup';
 import jxNc from './routes/jxNc';
+import jdZz from './routes/jdZz';
 import agendash from './routes/agendash';
 
 export default () => {
@@ -21,6 +22,7 @@ export default () => {
   shiCi(app);
   jxCfd(app);
   jxNc(app);
+  jdZz(app);
   jxStory(app);
   jxCfdGroup(app);
 	agendash(app);

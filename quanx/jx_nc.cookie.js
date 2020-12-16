@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-14 12:55:27
+ * @LastEditTime: 2020-12-16 10:12:54
  * 打开京喜农场，手动完成去工厂任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -65,7 +65,7 @@ if (getTokenRegex.test(url)) {
     }
     const oldValue = $.getdata(cookieKey);
     if (oldValue == result) {
-      console.log(`\n账号: ${pin} \n与历史京东${CookieName}Cookie相同, 跳过写入 ⚠️`)
+      console.log(`\n账号: ${pin} \n与历史京东${cookieName}Cookie相同, 跳过写入 ⚠️`)
     } else {
       $.setdata(result, cookieKey);
       $.msg($.name,`账号: ${pin} 设备: ${obj.phoneid.slice(0,10)}...`, `${oldValue?`更新`:`写入`}京喜农场${cookieName} Cookie成功 🎉`);
