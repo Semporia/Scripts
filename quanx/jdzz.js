@@ -55,8 +55,7 @@ $.shareTask = null;
       await $.wait(500);
       const endHomeInfo = await getHomeInfo();
       $.result.push(
-        `【获得京豆】：${endHomeInfo.totalBeanNum - startHomeInfo.totalBeanNum}`,
-        `【获得金币】：${endHomeInfo.totalNum - startHomeInfo.totalNum}`,
+        `【获得】：京东 ${endHomeInfo.totalBeanNum - startHomeInfo.totalBeanNum}，金币 ${endHomeInfo.totalNum - startHomeInfo.totalNum}`,
         `【累计】：金币 ${endHomeInfo.totalNum}，京豆 ${endHomeInfo.totalBeanNum}`
       );
       await $.wait(500);
@@ -106,7 +105,7 @@ function getUserInfo() {
     $.get(taskUrl("interactIndex"), async (err, resp, _data) => {
       try {
         const { data:{shareTaskRes} = {}, message } = JSON.parse(_data);
-        $.log(`\n获取用户信息：${message}\n${_data}`);
+        $.log(`\n获取用户信息：${message}\n${$.showLog ? _data : ''}`);
         $.shareTask = shareTaskRes;
       } catch (e) {
         $.logErr(e, resp)
@@ -284,7 +283,7 @@ function exchangePrize() {
         try {
           const { data = {}, message } = JSON.parse(_data);
           $.log(`\n${message}\n${$.showLog ? _data : ''}`);
-          $.result.push(`${message}`)
+          $.result.push(`【兑换红包】${message}`)
         } catch (e) {
           $.logErr(e, resp);
         } finally {
