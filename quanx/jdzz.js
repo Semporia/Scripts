@@ -55,9 +55,9 @@ $.shareTask = null;
       await $.wait(500);
       const endHomeInfo = await getHomeInfo();
       $.result.push(
-        `获得京豆：${endHomeInfo.totalBeanNum - startHomeInfo.totalBeanNum}`,
-        `获得金币：${endHomeInfo.totalNum - startHomeInfo.totalNum}`,
-        `账号总金币：${endHomeInfo.totalNum}`
+        `【获得京豆】：${endHomeInfo.totalBeanNum - startHomeInfo.totalBeanNum}`,
+        `【获得金币】：${endHomeInfo.totalNum - startHomeInfo.totalNum}`,
+        `【累计】：金币 ${endHomeInfo.totalNum}，京豆 ${endHomeInfo.totalBeanNum}`
       );
       await $.wait(500);
       await getExchangePrizeList();
@@ -106,12 +106,12 @@ function getUserInfo() {
     $.get(taskUrl("interactIndex"), async (err, resp, _data) => {
       try {
         const { data:{shareTaskRes} = {}, message } = JSON.parse(_data);
-        $.log(`\n${message}\n${$.showLog ? _data : ''}`);
+        $.log(`\n获取用户信息：${message}\n${$.showLog ? _data : ''}`);
         $.shareTask = shareTaskRes;
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve(data);
+        resolve();
       }
     })
   })
@@ -190,7 +190,7 @@ function getAllTask() {
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
-          $.log(`\n${message}\n${$.showLog ? _data : ''}`);
+          $.log(`\n$获取任务列表：{message}\n${$.showLog ? _data : ''}`);
           $.allTask = data.taskDetailResList.filter((x) => x.taskId !== 3);
         } catch (e) {
           $.logErr(e, resp);
@@ -209,7 +209,7 @@ function getHomeInfo() {
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
-          $.log(`\n${message}\n${$.showLog ? _data : ''}`);
+          $.log(`\n获取home信息：${message}\n${$.showLog ? _data : ''}`);
           resolve({ totalBeanNum: data.totalBeanNum, totalNum: data.totalNum });
         } catch (e) {
           $.logErr(e, resp);
@@ -259,7 +259,7 @@ function getExchangePrizeList() {
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
-          $.log(`\n${message}\n${$.showLog ? _data : ''}`);
+          $.log(`\n获取兑换列表：${message}\n${$.showLog ? _data : ''}`);
           $.allExchangeList = data.exchangePrizeList;
         } catch (e) {
           $.logErr(e, resp);
@@ -304,7 +304,7 @@ function showMsg() {
 
 function taskUrl(functionId, body = {}) {
   return {
-    url: `${JD_API_HOST}?functionId=${functionId}&body=${JSON.stringify(body)}&client=wh5`,
+    url: `${JD_API_HOST}?functionId=${functionId}&body=${encodeURIComponent(JSON.stringify(body))}&client=wh5`,
     headers: {
       'Cookie': $.currentCookie,
       'Host': 'api.m.jd.com',
@@ -321,7 +321,7 @@ function taskUrl(functionId, body = {}) {
 function taskPostUrl(function_id, body = "") {
   return {
     url: `${JD_API_HOST}?functionIdTest=${function_id}`,
-    body: `functionId=${function_id}&body=${body}&client=wh5&clientVersion=1.0.0`,
+    body: `functionId=${function_id}&body=${encodeURIComponent(body)}&client=wh5&clientVersion=1.0.0`,
     headers: {
       "Cookie": $.currentCookie,
       'Content-Type': 'application/x-www-form-urlencoded',
