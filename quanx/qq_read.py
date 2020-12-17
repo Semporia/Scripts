@@ -688,9 +688,8 @@ def qq_read():
 
     content += f'\n🕛耗时：%.2f秒\n\n' % (time.time() - start_time)
 
-    if (error_catch == 1) {
-      send(title=title, content=f'【账号】：{guid.group(1)} 数据异常', notify_mode=notify_mode)
-    }
+    if error_catch == 1:
+        send(title=title, content=f'【账号】：{guid.group(1)} 数据异常', notify_mode=notify_mode)
 
   print(content)
 
