@@ -10,10 +10,16 @@ import sys
 import os
 from notify import send
 from datetime import datetime, timezone, timedelta
+from concurrent.futures import ProcessPoolExecutor
 
 # body分割方式，默认 &
 READ_BODY_SPLIT = '&'
-READ_BODYS = ""
+
+READ_BODY1 = ""
+READ_BODY2 = ""
+
+# 多账号
+READ_BODYS = [READ_BODY1, ]
 
 # dingding_bot bark telegram_bot
 notify_mode = ['telegram_bot']
@@ -58,17 +64,22 @@ def read(body, i):
     print(traceback.format_exc())
     return
 
+def run(body):
+  print(body)
+  beijing_datetime = get_standard_time()
+  bodyList = body.split(READ_BODY_SPLIT)
+  print(f'\n【中青看点】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
+  print(f'\n【中青看点】总共{len(bodyList)}个body')
+  for i in range(0, len(bodyList)):
+    print(f'\n开始中青看点第{i}次阅读')
+    read(body=bodyList[i], i=i)
+  print(f'\n【中青结束】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
 
-def run():
+def main():
   title = f'📚中青看点'
   result = ''
-  beijing_datetime = get_standard_time()
-  BODYLIST = READ_BODYS.split(READ_BODY_SPLIT)
-  print(f'\n【中青看点】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
-  print(f'\n【中青看点】总共{len(BODYLIST)}个body')
-  for i in range(0, len(BODYLIST)):
-    print(f'\n开始中青看点第{i}次阅读')
-    read(body=BODYLIST[i], i=i)
+  with ProcessPoolExecutor(max_workers=5) as executor:
+    executor.map(run, READ_BODYS)
 
   # 暂无通知
   # if beijing_datetime.hour == 23 and beijing_datetime.minute >= 0 and beijing_datetime.minute <= 10:
@@ -79,4 +90,4 @@ def run():
   #   print('未在规定的时间范围内\n')
 
 if __name__ == '__main__':
-    run()
+    main()
