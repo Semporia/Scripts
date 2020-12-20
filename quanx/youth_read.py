@@ -65,7 +65,6 @@ def read(body, i):
     return
 
 def run(body):
-  print(body)
   beijing_datetime = get_standard_time()
   bodyList = body.split(READ_BODY_SPLIT)
   print(f'\n【中青看点】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')

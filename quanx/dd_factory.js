@@ -186,7 +186,7 @@ async function browserTask(cookie) {
     await $.wait(500);
     const status = [true, true, true, true];
     for (let i = 0; i < times; i++) {
-      if (status[0]) {
+      if (status[0] && browserMeeting.shoppingActivityVos[i]) {
         status[0] = await browserMeetingFun(
           browserMeeting.shoppingActivityVos[i].taskToken,
           cookie,
@@ -196,7 +196,7 @@ async function browserTask(cookie) {
         await getAllTask(cookie);
         await $.wait(500);
       }
-      if (status[1]) {
+      if (status[1] && lookCommodity.productInfoVos[i]) {
         status[1] = await browserMeetingFun(
           lookCommodity.productInfoVos[i].taskToken,
           cookie,
@@ -206,7 +206,7 @@ async function browserTask(cookie) {
         await getAllTask(cookie);
         await $.wait(500);
       }
-      if (status[2]) {
+      if (status[2] && followShop.followShopVo[i]) {
         await followShopFun(followShop.followShopVo[i].shopId, followShop);
         await $.wait(500);
         status[2] = await browserMeetingFun(
@@ -218,7 +218,7 @@ async function browserTask(cookie) {
         await getAllTask(cookie);
         await $.wait(500);
       }
-      if (status[3]) {
+      if (status[3] && patrolFactory.threeMealInfoVos[i]) {
         status[3] = await browserMeetingFun(
           patrolFactory.threeMealInfoVos[i].taskToken,
           cookie,
