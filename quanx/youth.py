@@ -397,7 +397,7 @@ def rotary(headers, body):
   """
   time.sleep(0.3)
   currentTime = time.time()
-  url = f'{YOUTH_HOST}RotaryTable/turnRotary?_=${currentTime}'
+  url = f'{YOUTH_HOST}RotaryTable/turnRotary?_={currentTime}'
   try:
     response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
     print('转盘任务')
@@ -436,7 +436,7 @@ def runRotary(headers, body):
   """
   time.sleep(0.3)
   currentTime = time.time()
-  url = f'{YOUTH_HOST}RotaryTable/chestReward?_=${currentTime}'
+  url = f'{YOUTH_HOST}RotaryTable/chestReward?_={currentTime}'
   try:
     response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
     print('转盘宝箱')
@@ -457,7 +457,7 @@ def doubleRotary(headers, body):
   """
   time.sleep(0.3)
   currentTime = time.time()
-  url = f'{YOUTH_HOST}RotaryTable/toTurnDouble?_=${currentTime}'
+  url = f'{YOUTH_HOST}RotaryTable/toTurnDouble?_={currentTime}'
   try:
     response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
     print('转盘双倍')
@@ -519,7 +519,7 @@ def run():
     if hour >= 5 and hour <= 8:
       do_card_res = doCard(headers=headers)
       if do_card_res:
-        content += f'\n【早起打卡】${do_card_res["card_time"]}${do_card_res["msg"]} ✅'
+        content += f'\n【早起打卡】{do_card_res["card_time"]} {do_card_res["msg"]} ✅'
     luck_draw_res = luckDraw(headers=headers)
     if luck_draw_res:
       content += f'\n【七日签到】+{luck_draw_res["score"]}青豆'
@@ -532,13 +532,13 @@ def run():
       content += f'\n【开启宝箱】+{open_box_res["score"]}青豆 下次奖励{open_box_res["time"] / 60}分钟'
     watch_ad_video_res = watchAdVideo(headers=headers)
     if watch_ad_video_res:
-      content += f'\n【观看视频】+${watch_ad_video_res["score"]}个青豆'
+      content += f'\n【观看视频】+{watch_ad_video_res["score"]}个青豆'
     watch_game_video_res = watchGameVideo(body=readBody)
     if watch_game_video_res:
-      content += f'\n【激励视频】+${watch_game_video_res["score"]}个青豆'
+      content += f'\n【激励视频】+{watch_game_video_res["score"]}个青豆'
     article_red_res = articleRed(body=redBody)
     if article_red_res:
-      content += f'\n【惊喜红包】+${article_red_res["score"]}个青豆'
+      content += f'\n【惊喜红包】+{article_red_res["score"]}个青豆'
     read_time_res = readTime(body=readTimeBody)
     if read_time_res:
       content += f'\n【阅读时长】共计` + Math.floor(read_time_res.time / 60) + `分钟'
@@ -566,8 +566,8 @@ def run():
       content += f'\n【今日收益】+{stat_res["user"]["today_score"]}青豆'
       result += f'\n【账户剩余】+{stat_res["user"]["score"]}青豆'
       content += f'\n【账户剩余】+{stat_res["user"]["score"]}青豆'
-      result += f'\n【历史收益】+{stat_res["user"]["total_score"]}青豆'
-      content += f'\n【历史收益】+{stat_res["user"]["total_score"]}青豆'
+      result += f'\n【历史收益】+{stat_res["user"]["total_score"]}青豆\n'
+      content += f'\n【历史收益】+{stat_res["user"]["total_score"]}青豆\n'
 
   print(content)
 
