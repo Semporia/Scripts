@@ -480,8 +480,6 @@ def incomeStat(headers):
   url = f'https://kd.youth.cn/wap/user/balance?{headers["Referer"].split("?")[1]}'
   try:
     response = requests.get(url=url, headers=headers, timeout=30).json()
-    print('收益统计')
-    print(response)
     if response['status'] == 0:
       return response
     else:
@@ -509,39 +507,39 @@ def run():
 
     sign_info = signInfo(headers=headers)
     if sign_info:
-      content += f'今天+{sign_info["sign_score"]}青豆 已连签{sign_info["sign_day"]}天'
+      content += f'\n 【账号】: {sign_info["user"]["nickname"]} 今天+{sign_info["sign_score"]}青豆 已连签{sign_info["sign_day"]}天'
       result += f'【账号】: {sign_info["user"]["nickname"]}'
     friendList(headers=headers)
     if hour > 12:
       punch_card_res = punchCard(headers=headers)
       if punch_card_res:
-        content += f'【打卡报名】打卡报名{punch_card_res["msg"]} ✅'
+        content += f'\n【打卡报名】打卡报名{punch_card_res["msg"]} ✅'
     if hour >= 5 and hour <= 8:
       do_card_res = doCard(headers=headers)
       if do_card_res:
-        content += f'【早起打卡】${do_card_res["card_time"]}${do_card_res["msg"]} ✅'
+        content += f'\n【早起打卡】${do_card_res["card_time"]}${do_card_res["msg"]} ✅'
     luck_draw_res = luckDraw(headers=headers)
     if luck_draw_res:
-      content += f'【七日签到】+{luck_draw_res["score"]}青豆'
+      content += f'\n【七日签到】+{luck_draw_res["score"]}青豆'
     visit_reward_res = visitReward(body=readBody)
     if visit_reward_res:
-      content += f'【回访奖励】+{visit_reward_res["score"]}青豆'
+      content += f'\n【回访奖励】+{visit_reward_res["score"]}青豆'
     shareArticle(headers=headers)
     open_box_res = openBox(headers=headers)
     if open_box_res:
-      content += f'【开启宝箱】+{open_box_res["score"]}青豆 下次奖励{open_box_res["time"] / 60}分钟'
+      content += f'\n【开启宝箱】+{open_box_res["score"]}青豆 下次奖励{open_box_res["time"] / 60}分钟'
     watch_ad_video_res = watchAdVideo(headers=headers)
     if watch_ad_video_res:
-      content += f'【观看视频】+${watch_ad_video_res["score"]}个青豆'
+      content += f'\n【观看视频】+${watch_ad_video_res["score"]}个青豆'
     watch_game_video_res = watchGameVideo(body=readBody)
     if watch_game_video_res:
-      content += f'【激励视频】+${watch_game_video_res["score"]}个青豆'
+      content += f'\n【激励视频】+${watch_game_video_res["score"]}个青豆'
     article_red_res = articleRed(body=redBody)
     if article_red_res:
-      content += f'【惊喜红包】+${article_red_res["score"]}个青豆'
+      content += f'\n【惊喜红包】+${article_red_res["score"]}个青豆'
     read_time_res = readTime(body=readTimeBody)
     if read_time_res:
-      content += f'【阅读时长】共计` + Math.floor(read_time_res.time / 60) + `分钟'
+      content += f'\n【阅读时长】共计` + Math.floor(read_time_res.time / 60) + `分钟'
     rotary_res = {}
     for i in range(0, 5):
       time.sleep(5)
@@ -550,20 +548,24 @@ def run():
         if rotary_res['status'] == 0:
           break
         elif rotary_res['status'] == 1:
-          content += f'【转盘抽奖】+{rotary_res["data"]["score"]}个青豆 剩余{rotary_res["data"]["remainTurn"]}次'
+          content += f'\n【转盘抽奖】+{rotary_res["data"]["score"]}个青豆 剩余{rotary_res["data"]["remainTurn"]}次'
           if rotary_res['data']['doubleNum'] != 0:
             double_rotary_res = doubleRotary(headers=headers, body=rotaryBody)
             if double_rotary_res['status'] == 1:
-              content += f'【转盘双倍】+{double_rotary_res["data"]["score"]}青豆 剩余{double_rotary_res["data"]["doubleNum"]}次'
+              content += f'\n【转盘双倍】+{double_rotary_res["data"]["score"]}青豆 剩余{double_rotary_res["data"]["doubleNum"]}次'
 
     rotaryCheck(headers=headers, body=rotaryBody, rotaryRes=rotary_res)
     stat_res = incomeStat(headers=headers)
     if stat_res['status'] == 0:
       for group in stat_res['history'][0]['group']:
         result += f'\n【{group["name"]}】+{group["money"]}青豆'
+        content += f'\n【{group["name"]}】+{group["money"]}青豆'
       result += f'\n【今日收益】+{stat_res["user"]["today_score"]}青豆'
+      content += f'\n【今日收益】+{stat_res["user"]["today_score"]}青豆'
       result += f'\n【账户剩余】+{stat_res["user"]["score"]}青豆'
+      content += f'\n【账户剩余】+{stat_res["user"]["score"]}青豆'
       result += f'\n【历史收益】+{stat_res["user"]["total_score"]}青豆'
+      content += f'\n【历史收益】+{stat_res["user"]["total_score"]}青豆'
 
   print(content)
 
