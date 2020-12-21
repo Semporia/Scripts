@@ -507,8 +507,10 @@ def run():
 
     sign_info = signInfo(headers=headers)
     if sign_info:
-      content += f'\n 【账号】: {sign_info["user"]["nickname"]} 今天+{sign_info["sign_score"]}青豆 已连签{sign_info["sign_day"]}天'
+      content += f'\n【账号】: {sign_info["user"]["nickname"]}'
+      content += f'\n【签到】+{sign_info["sign_score"]}青豆 已连签{sign_info["sign_day"]}天'
       result += f'【账号】: {sign_info["user"]["nickname"]}'
+      result += f'\n【签到】+{sign_info["sign_score"]}青豆 已连签{sign_info["sign_day"]}天'
     friendList(headers=headers)
     if hour > 12:
       punch_card_res = punchCard(headers=headers)
