@@ -64,21 +64,23 @@ def read(body, i):
     print(traceback.format_exc())
     return
 
-def run(body):
+def run(body, index):
   beijing_datetime = get_standard_time()
   bodyList = body.split(READ_BODY_SPLIT)
-  print(f'\n【中青看点】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
-  print(f'\n【中青看点】总共{len(bodyList)}个body')
+  print(f'\n【中青看点账号{index}】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
+  print(f'\n【中青看点账号{index}】总共{len(bodyList)}个body')
   for i in range(0, len(bodyList)):
-    print(f'\n开始中青看点第{i}次阅读')
+    print(f'\n账号{index}开始中青看点第{i}次阅读')
     read(body=bodyList[i], i=i)
-  print(f'\n【中青结束】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
+  print(f'\n【账号{index}中青结束】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
 
 def main():
   title = f'📚中青看点'
   result = ''
-  with ProcessPoolExecutor(max_workers=5) as executor:
-    executor.map(run, READ_BODYS)
+  with ProcessPoolExecutor(max_workers=3) as executor:
+    for i in range(0, len(READ_BODYS)):
+      executor.submit(run, READ_BODYS[i], i+1)
+    executor.shutdown(wait=True)
 
   # 暂无通知
   # if beijing_datetime.hour == 23 and beijing_datetime.minute >= 0 and beijing_datetime.minute <= 10:
