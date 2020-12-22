@@ -503,7 +503,7 @@ def run():
     rotaryBody = f'{headers["Referer"].split("&")[15]}&{headers["Referer"].split("&")[8]}'
     sign_res = sign(headers=headers)
     if sign_res and sign_res['status'] == 1:
-      content += f'【签到结果】成功 🎉 明日+{sign_res['nextScore']}青豆'
+      content += f'【签到结果】成功 🎉 明日+{sign_res["nextScore"]}青豆'
 
     sign_info = signInfo(headers=headers)
     if sign_info:
