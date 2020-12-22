@@ -510,7 +510,6 @@ def run():
       content += f'\n【账号】: {sign_info["user"]["nickname"]}'
       content += f'\n【签到】+{sign_info["sign_score"]}青豆 已连签{sign_info["sign_day"]}天'
       result += f'【账号】: {sign_info["user"]["nickname"]}'
-      result += f'\n【签到】+{sign_info["sign_score"]}青豆 已连签{sign_info["sign_day"]}天'
     friendList(headers=headers)
     if hour > 12:
       punch_card_res = punchCard(headers=headers)
@@ -560,19 +559,18 @@ def run():
     stat_res = incomeStat(headers=headers)
     if stat_res['status'] == 0:
       for group in stat_res['history'][0]['group']:
-        result += f'\n【{group["name"]}】+{group["money"]}青豆'
         content += f'\n【{group["name"]}】+{group["money"]}青豆'
       result += f'\n【今日收益】+{stat_res["user"]["today_score"]}青豆'
       content += f'\n【今日收益】+{stat_res["user"]["today_score"]}青豆'
       result += f'\n【账户剩余】+{stat_res["user"]["score"]}青豆'
       content += f'\n【账户剩余】+{stat_res["user"]["score"]}青豆'
-      result += f'\n【历史收益】+{stat_res["user"]["total_score"]}青豆\n'
+      result += f'\n【历史收益】+{stat_res["user"]["total_score"]}青豆\n\n'
       content += f'\n【历史收益】+{stat_res["user"]["total_score"]}青豆\n'
 
   print(content)
 
   # 每天 23:00 发送消息推送
-  if beijing_datetime.hour == 23 and beijing_datetime.minute >= 0 and beijing_datetime.minute <= 10:
+  if beijing_datetime.hour == 23 and beijing_datetime.minute >= 0 and beijing_datetime.minute < 5:
     send(title=title, content=result, notify_mode=notify_mode)
   elif not beijing_datetime.hour == 23:
     print('未进行消息推送，原因：没到对应的推送时间点\n')
