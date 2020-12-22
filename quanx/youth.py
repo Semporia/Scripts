@@ -417,7 +417,7 @@ def rotaryCheck(headers, body, rotaryRes):
   try:
     print('转盘宝箱判断')
     print(rotaryRes)
-    if rotaryRes['code'] != '10010':
+    if not rotaryRes['code'] or rotaryRes['code'] != '10010':
       i = 0
       while (i <= 3):
         if 100 - rotaryRes['data']['remainTurn'] == rotaryRes['data']['chestOpen'][i]['times']:
@@ -462,7 +462,7 @@ def doubleRotary(headers, body):
     response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
     print('转盘双倍')
     print(response)
-    if response['status'] == 0:
+    if response['status'] == 1:
       return response.data
     else:
       return
@@ -479,7 +479,7 @@ def incomeStat(headers):
   time.sleep(0.3)
   url = f'https://kd.youth.cn/wap/user/balance?{headers["Referer"].split("?")[1]}'
   try:
-    response = requests.get(url=url, headers=headers, timeout=30).json()
+    response = requests.get(url=url, headers=headers, timeout=50).json()
     if response['status'] == 0:
       return response
     else:
@@ -503,7 +503,7 @@ def run():
     rotaryBody = f'{headers["Referer"].split("&")[15]}&{headers["Referer"].split("&")[8]}'
     sign_res = sign(headers=headers)
     if sign_res and sign_res['status'] == 1:
-      content += f'【签到结果】成功 🎉 明日+{signres.nextScore}青豆'
+      content += f'【签到结果】成功 🎉 明日+{sign_res['nextScore']}青豆'
 
     sign_info = signInfo(headers=headers)
     if sign_info:
@@ -519,7 +519,7 @@ def run():
     if hour >= 5 and hour <= 8:
       do_card_res = doCard(headers=headers)
       if do_card_res:
-        content += f'\n【早起打卡】{do_card_res["card_time"]} {do_card_res["msg"]} ✅'
+        content += f'\n【早起打卡】{do_card_res["card_time"]} ✅'
     luck_draw_res = luckDraw(headers=headers)
     if luck_draw_res:
       content += f'\n【七日签到】+{luck_draw_res["score"]}青豆'
@@ -553,8 +553,8 @@ def run():
           content += f'\n【转盘抽奖】+{rotary_res["data"]["score"]}个青豆 剩余{rotary_res["data"]["remainTurn"]}次'
           if rotary_res['data']['doubleNum'] != 0:
             double_rotary_res = doubleRotary(headers=headers, body=rotaryBody)
-            if double_rotary_res['status'] == 1:
-              content += f'\n【转盘双倍】+{double_rotary_res["data"]["score"]}青豆 剩余{double_rotary_res["data"]["doubleNum"]}次'
+            if double_rotary_res:
+              content += f'\n【转盘双倍】+{double_rotary_res["score"]}青豆 剩余{double_rotary_res["doubleNum"]}次'
 
     rotaryCheck(headers=headers, body=rotaryBody, rotaryRes=rotary_res)
     stat_res = incomeStat(headers=headers)
