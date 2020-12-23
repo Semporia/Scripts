@@ -575,7 +575,7 @@ function submitTuanId(userName) {
 function createTuan() {
   return new Promise(async resolve => {
     $.get(
-      taskTuanUrl('tuan/CreateTuan', `activeId=6S9y4sJUfA2vPQP6TLdVIQ%3D%3D&isOpenApp=1`),
+      taskTuanUrl('tuan/CreateTuan', `activeId=6S9y4sJUfA2vPQP6TLdVIQ%3D%3D&isOpenApp=2`),
       async (err, resp, _data) => {
         try {
           const { msg, data = {} } = JSON.parse(_data);
