@@ -558,7 +558,7 @@ def bubble(cookies):
         print(i["id"])
 
         tmp = receive(cookies, i["id"])
-        if "errorCode" in tmp:
+        if tmp and "errorCode" in tmp:
             print("❌ 每天手动收听一段时间，暂无其他方法")
             return
         time.sleep(1)
