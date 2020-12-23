@@ -182,10 +182,15 @@ def shareArticle(headers):
   """
   time.sleep(0.3)
   url = 'https://focu.youth.cn/article/s?signature=0Z3Jgv96wqmVPeM7obRdNpHXgAmRhxNPJ6y4jpGDnANbo8KXQr&uid=46308484&phone_code=26170a068d9b9563e7028f197c8a4a2b&scid=33007686&time=1602937887&app_version=1.7.8&sign=d21dd80d0c6563f6f810dd76d7e0aef2'
+  readUrl = 'https://focus.youth.cn/article/s?signature=0Z3Jgv96wqmVPeM7obRdNpHXgAmRhxNPJ6y4jpGDnANbo8KXQr&uid=46308484&phone_code=26170a068d9b9563e7028f197c8a4a2b&scid=33007686&time=1602937887&app_version=1.7.8&sign=d21dd80d0c6563f6f810dd76d7e0aef2'
   try:
-    response = requests.post(url=url, headers=headers, timeout=30)
-    print('分享文章')
-    print(response)
+    response1 = requests.post(url=url, headers=headers, timeout=30)
+    print('分享文章1')
+    print(response1)
+    time.sleep(0.3)
+    response2 = requests.post(url=readUrl, headers=headers, timeout=30)
+    print('分享文章2')
+    print(response2)
     return
   except:
     print(traceback.format_exc())
