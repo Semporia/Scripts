@@ -167,7 +167,7 @@ def luckDraw(headers):
     print('七日签到')
     print(response)
     if response['code'] == 1:
-      return response.data
+      return response['data']
     else:
       return
   except:
@@ -417,7 +417,7 @@ def rotaryCheck(headers, body, rotaryRes):
   try:
     print('转盘宝箱判断')
     print(rotaryRes)
-    if not rotaryRes['code'] or rotaryRes['code'] != '10010':
+    if rotaryRes['status'] == 1:
       i = 0
       while (i <= 3):
         if rotaryRes['data']['opened'] >= rotaryRes['data']['chestOpen'][i]['times']:
@@ -442,7 +442,7 @@ def runRotary(headers, body):
     print('转盘宝箱')
     print(response)
     if response['status'] == 1:
-      return response.data
+      return response['data']
     else:
       return
   except:
@@ -463,7 +463,7 @@ def doubleRotary(headers, body):
     print('转盘双倍')
     print(response)
     if response['status'] == 1:
-      return response.data
+      return response['data']
     else:
       return
   except:
