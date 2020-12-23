@@ -427,7 +427,7 @@ def rotaryCheck(headers, body, rotaryRes):
     if rotaryRes['status'] == 1:
       i = 0
       while (i <= 3):
-        if rotaryRes['data']['opened'] >= rotaryRes['data']['chestOpen'][i]['times']:
+        if rotaryRes['data']['opened'] >= int(rotaryRes['data']['chestOpen'][i]['times']):
           runRotary(headers=headers, body=body)
         i += 1
     return
