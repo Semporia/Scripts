@@ -244,7 +244,7 @@ def friendList(headers):
     response = requests.get(url=url, headers=headers, timeout=30).json()
     print('好友列表')
     print(response)
-    if response['error_code'] == 0:
+    if response['error_code'] == '0':
       if len(response['data']['active_list']) > 0:
         for friend in response['data']['active_list']:
           if friend['button'] == 1:
@@ -278,15 +278,16 @@ def friendSign(headers, uid):
 
 def watchAdVideo(headers):
   """
-  看视频奖励
+  看广告视频
   :param headers:
   :return:
   """
   time.sleep(0.3)
   url = 'https://kd.youth.cn/taskCenter/getAdVideoReward'
+  headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
   try:
     response = requests.post(url=url, data="type=taskCenter", headers=headers, timeout=30).json()
-    print('看视频奖励')
+    print('看广告视频')
     print(response)
     if response['status'] == 1:
       return response
