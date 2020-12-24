@@ -28,7 +28,7 @@ export default (app: Router) => {
         const { code } = await serviceInstance.createCode(
           {
             name: req.params.name,
-            code: req.params.code,
+            code: req.query.assistedPinEncrypted as string,
             type: ShareCodeType['jdZjdTuan'],
           },
           req.query,
