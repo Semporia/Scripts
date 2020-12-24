@@ -414,23 +414,29 @@ def rotary(headers, body):
     print(traceback.format_exc())
     return
 
-def rotaryCheck(headers, body, rotaryRes):
+def rotaryChestReward(headers, body):
   """
-  转盘宝箱判断
+  转盘宝箱
   :param headers:
   :return:
   """
   time.sleep(0.3)
+  currentTime = time.time()
+  url = f'{YOUTH_HOST}RotaryTable/getData?_={currentTime}'
   try:
-    print('转盘宝箱判断')
-    print(rotaryRes)
-    if rotaryRes['status'] == 1:
+    response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
+    print('转盘宝箱')
+    print(response)
+    if response['status'] == 1:
       i = 0
       while (i <= 3):
-        if rotaryRes['data']['opened'] >= int(rotaryRes['data']['chestOpen'][i]['times']):
-          runRotary(headers=headers, body=body)
+        if response['data']['opened'] >= int(response['data']['chestOpen'][i]['times']):
+          time.sleep(1)
+          runRotary(headers=headers, body=f'{body}&num={i+1}')
         i += 1
-    return
+      return response['data']
+    else:
+      return
   except:
     print(traceback.format_exc())
     return
@@ -446,7 +452,7 @@ def runRotary(headers, body):
   url = f'{YOUTH_HOST}RotaryTable/chestReward?_={currentTime}'
   try:
     response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
-    print('转盘宝箱')
+    print('领取宝箱')
     print(response)
     if response['status'] == 1:
       return response['data']
@@ -550,7 +556,6 @@ def run():
     read_time_res = readTime(body=readTimeBody)
     if read_time_res:
       content += f'\n【阅读时长】共计{read_time_res["time"] // 60}分钟'
-    rotary_res = {}
     for i in range(0, 5):
       time.sleep(5)
       rotary_res = rotary(headers=headers, body=rotaryBody)
@@ -564,7 +569,7 @@ def run():
             if double_rotary_res:
               content += f'\n【转盘双倍】+{double_rotary_res["score"]}青豆 剩余{double_rotary_res["doubleNum"]}次'
 
-    rotaryCheck(headers=headers, body=rotaryBody, rotaryRes=rotary_res)
+    rotaryChestReward(headers=headers, body=rotaryBody)
     stat_res = incomeStat(headers=headers)
     if stat_res['status'] == 0:
       for group in stat_res['history'][0]['group']:
