@@ -71,8 +71,8 @@ function submitInviteId(userName) {
     $.post(
       {
         url: `https://api.ninesix.cc/api/jd-zjd-tuan/${encodeURIComponent(userName)}?assistedPinEncrypted=${
-          $.tuan.assistedPinEncrypted
-        }&assistStartRecordId=${$.tuan.assistStartRecordId}&activityIdEncrypted=${$.tuan.activityIdEncrypted}`,
+          encodeURIComponent($.tuan.assistedPinEncrypted)
+        }&assistStartRecordId=${$.tuan.assistStartRecordId}&activityIdEncrypted=${encodeURIComponent($.tuan.activityIdEncrypted)}`,
       },
       (err, resp, _data) => {
         try {
@@ -164,7 +164,7 @@ function taskTuanUrl(function_id, body = {}) {
   return {
     url: `${JD_API_HOST}?functionId=${function_id}&body=${encodeURIComponent(
       JSON.stringify(body),
-    )}&appid=swat_miniprogram&osVersion=5.0.0&clientVersion=3.1.3&fromType=wxapp&timestamp=${Date.now()}`,
+    )}&appid=swat_miniprogram&client=tjj_m&screen=1920*1080&osVersion=5.0.0&networkType=wifi&sdkName=orderDetail&sdkVersion=1.0.0&clientVersion=3.1.3&area=1_72_4137_0&fromType=wxapp&timestamp=${Date.now()}`,
     headers: {
       Accept: '*/*',
       'Accept-Encoding': 'gzip, deflate, br',
