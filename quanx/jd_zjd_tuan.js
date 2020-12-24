@@ -78,9 +78,6 @@ function submitInviteId(userName) {
         try {
           const { code, data = {} } = JSON.parse(_data);
           $.log(`\n邀请码提交：${code}\n${$.showLog ? _data : ''}`);
-          if (data.value) {
-            $.result.push('【邀请码】提交成功！');
-          }
         } catch (e) {
           $.logErr(e, resp);
         } finally {
