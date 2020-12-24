@@ -30,6 +30,7 @@ export default class ShareCodeService {
         name: name,
         type,
         ...body,
+        extra: body
       },
       { upsert: true, new: true, setDefaultsOnInsert: true },
     );

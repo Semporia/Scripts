@@ -6,7 +6,8 @@ const shareCode = new mongoose.Schema(
     value: String,
     name: String,
     type: Number,
-    active: String
+    active: String,
+    extra: Object
   }
 );
 
