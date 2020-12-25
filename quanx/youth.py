@@ -23,8 +23,25 @@ cookies2 = ""
 
 COOKIELIST = [cookies1, ]   # 多账号准备
 
-# dingding_bot bark telegram_bot
-notify_mode = ['telegram_bot']
+# ac读取环境变量
+if "YOUTH_HEADER1" in os.environ:
+  print("执行自GitHub action")
+  COOKIELIST = []
+  for i in range(5):
+    headerVar = f'YOUTH_HEADER{str(i+1)}'
+    readBodyVar = f'YOUTH_READBODY{str(i+1)}'
+    redBodyVar = f'YOUTH_REDBODY{str(i+1)}'
+    readTimeBodyVar = f'YOUTH_READTIMEBODY{str(i+1)}'
+    if headerVar in os.environ and os.environ[headerVar] and readBodyVar in os.environ and os.environ[readBodyVar] and redBodyVar in os.environ and os.environ[redBodyVar] and readTimeBodyVar in os.environ and os.environ[readTimeBodyVar]:
+      globals()['cookies'+str(i + 1)]["YOUTH_HEADER"] = json.loads(os.environ[headerVar])
+      globals()['cookies'+str(i + 1)]["YOUTH_READBODY"] = os.environ[readBodyVar]
+      globals()['cookies'+str(i + 1)]["YOUTH_REDBODY"] = os.environ[redBodyVar]
+      globals()['cookies' + str(i + 1)]["YOUTH_READTIMEBODY"] = os.environ[readTimeBodyVar]
+      COOKIELIST.append(globals()['cookies'+str(i + 1)])
+    else:
+      print(f'账号{i+1}参数错误或者未提供账号')
+      continue
+  print(COOKIELIST)
 
 cur_path = os.path.abspath(os.path.dirname(__file__))
 root_path = os.path.split(cur_path)[0]
@@ -585,7 +602,7 @@ def run():
 
   # 每天 23:00 发送消息推送
   if beijing_datetime.hour == 23 and beijing_datetime.minute >= 0 and beijing_datetime.minute < 5:
-    send(title=title, content=result, notify_mode=notify_mode)
+    send(title=title, content=result)
   elif not beijing_datetime.hour == 23:
     print('未进行消息推送，原因：没到对应的推送时间点\n')
   else:

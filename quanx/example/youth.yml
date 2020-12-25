@@ -1,0 +1,40 @@
+name: 中青阅读
+
+on:
+  schedule:
+    - cron: '*/10 5,23 * * *'
+  watch:
+    types: [started]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: 'Set up Python'
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+
+      - name: 'Install requirements'
+        run: pip install -r ./requirements.txt
+
+      - name: 'run 中青阅读'
+        run: python3 youtu.py
+        # 目前最大5个账号，可按格式继续填写
+        env:
+            YOUTH_HEADER1: ${{ secrets.YOUTH_HEADER1 }}  #必须 账号1 body1
+            YOUTH_READBODY1: ${{ secrets.YOUTH_READBODY1 }}  #必须 账号1 body1
+            YOUTH_REDBODY1: ${{ secrets.YOUTH_REDBODY1 }}  #必须 账号1 body1
+            YOUTH_READTIMEBODY1: ${{ secrets.YOUTH_READTIMEBODY1 }}  #必须 账号1 body1
+            YOUTH_HEADER2: ${{ secrets.YOUTH_HEADER2 }}  #非必须 账号2 body1
+            YOUTH_READBODY2: ${{ secrets.YOUTH_READBODY2 }}  #非必须 账号2 body1
+            YOUTH_REDBODY2: ${{ secrets.YOUTH_REDBODY2 }}  #非必须 账号2 body1
+            YOUTH_READTIMEBODY2: ${{ secrets.YOUTH_READTIMEBODY2 }}  #非必须 账号2 body1
+            BARK: ${{ secrets.BARK }}  #非必须 bark通知
+            SCKEY: ${{ secrets.SCKEY }}  #非必须 server酱通知
+            TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}  #非必须 tg机器人token
+            TG_USER_ID: ${{ secrets.TG_USER_ID }}  #非必须 tg机器人userId
+            DD_BOT_ACCESS_TOKEN: ${{ secrets.DD_BOT_ACCESS_TOKEN }}  #非必须 钉钉机器人token
+            DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}  #非必须 钉钉机器人secret

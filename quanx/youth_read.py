@@ -21,9 +21,6 @@ READ_BODY2 = ""
 # 多账号
 READ_BODYS = [READ_BODY1, ]
 
-# dingding_bot bark telegram_bot
-notify_mode = ['telegram_bot']
-
 # ac读取环境变量
 if "YOUTH1_READ_BODY1" in os.environ:
   print("执行自GitHub action")
@@ -97,7 +94,7 @@ def main():
 
   # 暂无通知
   # if beijing_datetime.hour == 23 and beijing_datetime.minute >= 0 and beijing_datetime.minute <= 10:
-  #   send(title=title, content=result, notify_mode=notify_mode)
+  #   send(title=title, content=result)
   # elif not beijing_datetime.hour == 23:
   #   print('未进行消息推送，原因：没到对应的推送时间点\n')
   # else:

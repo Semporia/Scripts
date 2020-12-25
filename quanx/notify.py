@@ -16,24 +16,61 @@ import base64
 import urllib.parse
 
 # 通知服务
-BARK = ''                   # bark服务,自行搜索; secrets可填;形如jfjqxDx3xxxxxxxxSaK的字符串
+BARK = ''                   # bark服务,自行搜索; secrets可填;
 SCKEY = ''                  # Server酱的SCKEY; secrets可填
 TG_BOT_TOKEN = ''           # tg机器人的TG_BOT_TOKEN; secrets可填
 TG_USER_ID = ''             # tg机器人的TG_USER_ID; secrets可填
 TG_PROXY_IP = ''            # tg机器人的TG_PROXY_IP; secrets可填
-TG_PROXY_PORT = '' # tg机器人的TG_PROXY_PORT; secrets可填
-BARK_MACHINE_CODE = ''
-DD_BOT_ACCESS_TOKEN = ''
-DD_BOT_SECRET = ''
+TG_PROXY_PORT = ''          # tg机器人的TG_PROXY_PORT; secrets可填
+DD_BOT_ACCESS_TOKEN = ''    # 钉钉机器人的DD_BOT_ACCESS_TOKEN; secrets可填
+DD_BOT_SECRET = ''          # 钉钉机器人的DD_BOT_SECRET; secrets可填
 
-def bark(bark_machine_code, title, content):
+notify_mode = []
+
+# GitHub action运行需要填写对应的secrets
+if "BARK" in os.environ and os.environ["BARK"]:
+    BARK = os.environ["BARK"]
+    notify_mode.append('bark')
+    print("BARK 推送打开")
+if "SCKEY" in os.environ and os.environ["SCKEY"]:
+    SCKEY = os.environ["SCKEY"]
+    notify_mode.append('sc_key')
+    print("Server酱 推送打开")
+if "TG_BOT_TOKEN" in os.environ and os.environ["TG_BOT_TOKEN"] and "TG_USER_ID" in os.environ and os.environ["TG_USER_ID"]:
+    TG_BOT_TOKEN = os.environ["TG_BOT_TOKEN"]
+    TG_USER_ID = os.environ["TG_USER_ID"]
+    notify_mode.append('telegram_bot')
+    print("Telegram 推送打开")
+if "DD_BOT_ACCESS_TOKEN" in os.environ and os.environ["DD_BOT_ACCESS_TOKEN"] and "DD_BOT_SECRET" in os.environ and os.environ["DD_BOT_SECRET"]:
+    DD_BOT_ACCESS_TOKEN = os.environ["DD_BOT_ACCESS_TOKEN"]
+    DD_BOT_SECRET = os.environ["DD_BOT_SECRET"]
+    notify_mode.append('dingding_bot')
+    print("钉钉机器人 推送打开")
+
+def bark(title, content):
     print("\n")
-    if not BARK_MACHINE_CODE:
+    if not BARK:
         print("bark服务的bark_token未设置!!\n取消推送")
         return
     print("bark服务启动")
     response = requests.get(
-        f"""https://api.day.app/{BARK_MACHINE_CODE}/{title}/{content}""").json()
+        f"""https://api.day.app/{BARK}/{title}/{content}""").json()
+    if response['code'] == 200:
+        print('推送成功！')
+    else:
+        print('推送失败！')
+
+def serverJ(title, content):
+    print("\n")
+    if not SCKEY:
+        print("server酱服务的SCKEY未设置!!\n取消推送")
+        return
+    print("serverJ服务启动")
+    data = {
+        "text": title,
+        "desp": content.replace("\n", "\n\n")+"\n\n [打赏作者](https://github.com/Zero-S1/xmly_speed/blob/master/thanks.md)"
+    }
+    response = requests.post(f"https://sc.ftqq.com/{SCKEY}.send", data=data).json()
     if response['code'] == 200:
         print('推送成功！')
     else:
@@ -78,7 +115,7 @@ def dingding_bot(title, content):
     else:
         print('推送失败！')
 
-def send(title, content, notify_mode):
+def send(title, content):
     """
     使用 bark, telegram bot, dingding bot, serverJ 发送手机推送
     :param title:
@@ -87,10 +124,16 @@ def send(title, content, notify_mode):
     """
     for i in notify_mode:
         if i == 'bark':
-            if BARK_MACHINE_CODE:
+            if BARK:
                 bark(title=title, content=content)
             else:
                 print('未启用 bark')
+            continue
+        if i == 'sc_key':
+            if SCKEY:
+                bark(title=title, content=content)
+            else:
+                print('未启用 Server酱')
             continue
         elif i == 'dingding_bot':
             if DD_BOT_ACCESS_TOKEN and DD_BOT_SECRET:
@@ -109,7 +152,7 @@ def send(title, content, notify_mode):
 
 
 def main():
-    send('title', 'content', notify_mode=['bark'])
+    send('title', 'content')
 
 
 if __name__ == '__main__':
