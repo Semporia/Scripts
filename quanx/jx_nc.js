@@ -48,7 +48,7 @@ $.drip = 0;
   if (!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
     $.currentCookie = $.cookieArr[i];
-    $.currentToken = JSON.parse($.tokens[i]);
+    $.currentToken = JSON.parse($.tokens[i] || '{}');
     $.drip = 0;
     if ($.currentCookie) {
       const userName = decodeURIComponent(
