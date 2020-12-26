@@ -13,8 +13,14 @@ import os
 from notify import send
 from datetime import datetime, timezone, timedelta
 # 实例 body 和 head 都为对象
-cookies1 = {'QQREAD_BODY': '', 'QQREAD_TIMEURL': '', 'QQREAD_TIMEHD': '', 'WITHDRAW': False, 'HOSTING_MODE': False}
-cookies2 = ""
+cookies1 = {
+  'QQREAD_BODY': {},
+  'QQREAD_TIMEURL': '',
+  'QQREAD_TIMEHD': {},
+  'WITHDRAW': False,
+  'HOSTING_MODE': False
+}
+cookies2 = {}
 
 COOKIELIST = [cookies1, ]   # 多账号准备
 

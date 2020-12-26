@@ -15,28 +15,16 @@ import hashlib
 from datetime import datetime, timedelta
 import os
 import re
+from notify import send
 
+# 参考 https://github.com/Zero-S1/xmly_speed/blob/master/xmly_speed.py
 
-# 喜马拉雅极速版
-# 使用参考 https://github.com/Zero-S1/xmly_speed/blob/master/xmly_speed.md
-
-###################################################
-# 对应方案2: 下载到本地,需要此处填写
 cookies1 = ""
 cookies2 = ""
 
 cookiesList = [cookies1, ]   # 多账号准备
 
-# 通知服务
-BARK = ''                   # bark服务,自行搜索; secrets可填;形如jfjqxDx3xxxxxxxxSaK的字符串
-SCKEY = ''                  # Server酱的SCKEY; secrets可填
-TG_BOT_TOKEN = ''           # tg机器人的TG_BOT_TOKEN; secrets可填
-TG_USER_ID = ''             # tg机器人的TG_USER_ID; secrets可填
-TG_PROXY_IP = ''            # tg机器人的TG_PROXY_IP; secrets可填
-TG_PROXY_PORT = ''               # tg机器人的TG_PROXY_PORT; secrets可填
-
-###################################################
-# 对应方案1:  GitHub action自动运行,此处无需填写;
+# ac读取环境变量
 if "XMLY_SPEED_COOKIE" in os.environ:
     """
     判断是否运行自GitHub action,"XMLY_SPEED_COOKIE" 该参数与 repo里的Secrets的名称保持一致
@@ -48,21 +36,7 @@ if "XMLY_SPEED_COOKIE" in os.environ:
         if not line:
             continue
         cookiesList.append(line)
-    # GitHub action运行需要填写对应的secrets
-    if "BARK" in os.environ and os.environ["BARK"]:
-        BARK = os.environ["BARK"]
-        print("BARK 推送打开")
-    if "SCKEY" in os.environ and os.environ["SCKEY"]:
-        BARK = os.environ["SCKEY"]
-        print("serverJ 推送打开")
-    if "TG_BOT_TOKEN" in os.environ and os.environ["TG_BOT_TOKEN"] and "TG_USER_ID" in os.environ and os.environ["TG_USER_ID"]:
-        TG_BOT_TOKEN = os.environ["TG_BOT_TOKEN"]
-        TG_USER_ID = os.environ["TG_USER_ID"]
-        print("Telegram 推送打开")
 
-
-###################################################
-# 可选项
 # 自定义设备命名,非必须 ;devices=["iPhone7P","huawei"];与cookiesList对应
 devices = []
 notify_time = 23                            # 通知时间,24小时制,默认19
@@ -973,37 +947,6 @@ def serverJ(title, content):
     response = requests.post(f"https://sc.ftqq.com/{sckey}.send", data=data)
     print(response.text)
 
-
-def bark(title, content):
-    print("\n")
-    bark_token = BARK
-    if "BARK" in os.environ:
-        bark_token = os.environ["BARK"]
-    if not bark_token:
-        print("bark服务的bark_token未设置!!\n取消推送")
-        return
-    print("bark服务启动")
-    response = requests.get(
-        f"""https://api.day.app/{bark_token}/{title}/{content}""")
-    print(response.text)
-
-def telegram(title, content):
-    print("\n")
-    bot_token = TG_BOT_TOKEN
-    user_id = TG_USER_ID
-    if not bot_token or not user_id:
-        print("tg服务的bot_token或者user_id未设置!!\n取消推送")
-        return
-    print("tg服务启动")
-    url=f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage"
-    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-    payload = {'chat_id': str(TG_USER_ID), 'text': f"""{title}\n\n{content}""", 'disable_web_page_preview': 'true'}
-    proxyStr = "http://{}:{}".format(TG_PROXY_IP, TG_PROXY_PORT)
-    proxies = {"http": proxyStr, "https": proxyStr }
-    response = requests.post(url=url,headers=headers, params=payload,proxies=proxies)
-    print(response.text)
-
-
 def run():
     print(f"喜马拉雅极速版 (https://github.com/Zero-S1/xmly_speed/blob/master/xmly_speed.md ) ,欢迎打赏¯\(°_o)/¯")
     mins, date_stamp, _datatime, _notify_time = get_time()
@@ -1048,10 +991,7 @@ def run():
             message += f"【连续签到】：{i[4]}/30\n"
             message += f"\n"
 
-        bark("⏰ 喜马拉雅极速版", message)
-        serverJ("⏰ 喜马拉雅极速版", message)
-        telegram("⏰ 喜马拉雅极速版", message)
-
+        send(title=="⏰ 喜马拉雅极速版", content=message)
 
 if __name__ == "__main__":
     run()

@@ -17,11 +17,12 @@ jobs:
         with:
           python-version: 3.7
 
-      - name: 'Install requirements'
-        run: pip install -r ./requirements.txt
+      - name: 'Install requests'
+        run: pip install requests
 
       - name: 'run 中青阅读'
-        run: python3 youtu.py
+        # youth_read.py目录自己修改
+        run: python3 quanx/youth.py
         # 目前最大5个账号，可按格式继续填写
         env:
             YOUTH_HEADER1: ${{ secrets.YOUTH_HEADER1 }}  #必须 账号1 body1

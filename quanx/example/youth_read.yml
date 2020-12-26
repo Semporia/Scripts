@@ -17,11 +17,12 @@ jobs:
         with:
           python-version: 3.7
 
-      - name: 'Install requirements'
-        run: pip install -r ./requirements.txt
+      - name: 'Install requests'
+        run: pip install requests
 
       - name: 'run 中青阅读body'
-        run: python3 youtu_read.py
+        # youth_read.py目录自己修改
+        run: python3 quanx/youtu_read.py
         env:
             YOUTH1_READ_BODY1: ${{ secrets.YOUTH1_READ_BODY1 }}  #必须 账号1 body1
             YOUTH1_READ_BODY2: ${{ secrets.YOUTH1_READ_BODY2 }}  #必须 账号1 body1

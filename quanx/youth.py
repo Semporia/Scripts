@@ -19,7 +19,7 @@ cookies1 = {
   'YOUTH_REDBODY': '',
   'YOUTH_READTIMEBODY': ''
 }
-cookies2 = ""
+cookies2 = {}
 
 COOKIELIST = [cookies1, ]   # 多账号准备
 
