@@ -51,8 +51,8 @@ $.shareTask = null;
       await $.wait(500);
       const endHomeInfo = await getHomeInfo();
       $.result.push(
-        `【获得】：京东 ${endHomeInfo.totalBeanNum - startHomeInfo.totalBeanNum}，金币 ${endHomeInfo.totalNum - startHomeInfo.totalNum}`,
-        `【累计】：金币 ${endHomeInfo.totalNum}，京豆 ${endHomeInfo.totalBeanNum}`
+        `【获得】：京豆 ${endHomeInfo.totalBeanNum - startHomeInfo.totalBeanNum}，金币 ${endHomeInfo.totalNum - startHomeInfo.totalNum}`,
+        `【累计】：京豆 ${endHomeInfo.totalBeanNum}，金币 ${endHomeInfo.totalNum}`
       );
       await $.wait(500);
       await getExchangePrizeList();

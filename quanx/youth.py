@@ -537,12 +537,12 @@ def run():
     if sign_res and sign_res['status'] == 1:
       content += f'【签到结果】成功 🎉 明日+{sign_res["nextScore"]}青豆'
     elif sign_res and sign_res['status'] == 2:
-      send(title=title, content=f'【账户{i}】Cookie已过期，请及时重新获取')
+      send(title=title, content=f'【账户{i+1}】Cookie已过期，请及时重新获取')
       continue
 
     sign_info = signInfo(headers=headers)
     if sign_info:
-      content += f'\n【账号】: {sign_info["user"]["nickname"]}'
+      content += f'\n【账号】：{sign_info["user"]["nickname"]}'
       content += f'\n【签到】+{sign_info["sign_score"]}青豆 已连签{sign_info["sign_day"]}天'
       result += f'【账号】: {sign_info["user"]["nickname"]}'
     friendList(headers=headers)
@@ -594,12 +594,12 @@ def run():
     if stat_res['status'] == 0:
       for group in stat_res['history'][0]['group']:
         content += f'\n【{group["name"]}】+{group["money"]}青豆'
-      result += f'\n【今日收益】+{stat_res["user"]["today_score"]}青豆'
-      content += f'\n【今日收益】+{stat_res["user"]["today_score"]}青豆'
-      result += f'\n【账户剩余】+{stat_res["user"]["score"]}青豆'
-      content += f'\n【账户剩余】+{stat_res["user"]["score"]}青豆'
-      result += f'\n【历史收益】+{stat_res["user"]["total_score"]}青豆\n\n'
-      content += f'\n【历史收益】+{stat_res["user"]["total_score"]}青豆\n'
+      result += f'\n【今日收益】+{'{:4.2f}'.format(stat_res["user"]["today_score"] / 10000)}'
+      content += f'\n【今日收益】+{'{:4.2f}'.format(stat_res["user"]["today_score"] / 10000)}'
+      result += f'\n【账户剩余】{'{:4.2f}'.format(stat_res["user"]["score"] / 10000)}'
+      content += f'\n【账户剩余】{'{:4.2f}'.format(stat_res["user"]["score"] / 10000)}'
+      result += f'\n【历史收益】{'{:4.2f}'.format(stat_res["user"]["total_score"] / 10000)}\n\n'
+      content += f'\n【历史收益】{'{:4.2f}'.format(stat_res["user"]["total_score"] / 10000)}\n'
 
   print(content)
 
