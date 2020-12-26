@@ -467,8 +467,11 @@ def qq_read():
     guid = re.search(r'ywguid\=(\d+)\;', headers['Cookie'])
     result += f'【账号】：{guid.group(1)}'
     # model = re.sub(r'<.*$', "", body['common']['model'])
-    if user_info:
+    if user_info and user_info['user'] and user_info['isLogin'] == True:
         content += f'【用户昵称】{user_info["user"]["nickName"]}'
+    else:
+        send(title=title, content=f'【账号】：{guid.group(1)} Cookie已过期，请重新获取')
+        continue
     # 获取任务列表，查询金币余额
     daily_tasks = get_daily_tasks(headers=headers)
     if daily_tasks:
