@@ -926,30 +926,10 @@ def card(cookies, _datatime):
 def get_uid(cookies):
     return cookies["1&_token"].split("&")[0]
 
-
-def serverJ(title, content):
-    print("\n")
-    sckey = SCKEY
-    if "SCKEY" in os.environ:
-        """
-        判断是否运行自GitHub action,"SCKEY" 该参数与 repo里的Secrets的名称保持一致
-        """
-        sckey = os.environ["SCKEY"]
-
-    if not sckey:
-        print("server酱服务的SCKEY未设置!!\n取消推送")
-        return
-    print("serverJ服务启动")
-    data = {
-        "text": title,
-        "desp": content.replace("\n", "\n\n")+"\n\n [打赏作者](https://github.com/Zero-S1/xmly_speed/blob/master/thanks.md)"
-    }
-    response = requests.post(f"https://sc.ftqq.com/{sckey}.send", data=data)
-    print(response.text)
-
 def run():
     print(f"喜马拉雅极速版 (https://github.com/Zero-S1/xmly_speed/blob/master/xmly_speed.md ) ,欢迎打赏¯\(°_o)/¯")
     mins, date_stamp, _datatime, _notify_time = get_time()
+    title = '⏰ 喜马拉雅极速版'
     table = []
     for k, v in enumerate(cookiesList):
         print(f">>>>>>>【账号开始{k+1}】\n")
@@ -991,7 +971,7 @@ def run():
             message += f"【连续签到】：{i[4]}/30\n"
             message += f"\n"
 
-        send(title=="⏰ 喜马拉雅极速版", content=message)
+        send(title==title, content=message)
 
 if __name__ == "__main__":
     run()
