@@ -16,34 +16,39 @@ import base64
 import urllib.parse
 
 # 通知服务
-BARK = ''                   # bark服务,自行搜索; secrets可填;
-SCKEY = ''                  # Server酱的SCKEY; secrets可填
-TG_BOT_TOKEN = ''           # tg机器人的TG_BOT_TOKEN; secrets可填
-TG_USER_ID = ''             # tg机器人的TG_USER_ID; secrets可填
-TG_PROXY_IP = ''            # tg机器人的TG_PROXY_IP; secrets可填
-TG_PROXY_PORT = ''          # tg机器人的TG_PROXY_PORT; secrets可填
-DD_BOT_ACCESS_TOKEN = ''    # 钉钉机器人的DD_BOT_ACCESS_TOKEN; secrets可填
-DD_BOT_SECRET = ''          # 钉钉机器人的DD_BOT_SECRET; secrets可填
+BARK = ''                                                                 # bark服务,自行搜索; secrets可填;
+SCKEY = ''                                                                # Server酱的SCKEY; secrets可填
+TG_BOT_TOKEN = ''                                                         # tg机器人的TG_BOT_TOKEN; secrets可填
+TG_USER_ID = ''                                                           # tg机器人的TG_USER_ID; secrets可填
+TG_PROXY_IP = ''                                                          # tg机器人的TG_PROXY_IP; secrets可填
+TG_PROXY_PORT = ''                                                        # tg机器人的TG_PROXY_PORT; secrets可填
+DD_BOT_ACCESS_TOKEN = ''                                                  # 钉钉机器人的DD_BOT_ACCESS_TOKEN; secrets可填
+DD_BOT_SECRET = ''                                                        # 钉钉机器人的DD_BOT_SECRET; secrets可填
 
 notify_mode = []
 
 # GitHub action运行需要填写对应的secrets
 if "BARK" in os.environ and os.environ["BARK"]:
     BARK = os.environ["BARK"]
-    notify_mode.append('bark')
-    print("BARK 推送打开")
 if "SCKEY" in os.environ and os.environ["SCKEY"]:
     SCKEY = os.environ["SCKEY"]
-    notify_mode.append('sc_key')
-    print("Server酱 推送打开")
 if "TG_BOT_TOKEN" in os.environ and os.environ["TG_BOT_TOKEN"] and "TG_USER_ID" in os.environ and os.environ["TG_USER_ID"]:
     TG_BOT_TOKEN = os.environ["TG_BOT_TOKEN"]
     TG_USER_ID = os.environ["TG_USER_ID"]
-    notify_mode.append('telegram_bot')
-    print("Telegram 推送打开")
 if "DD_BOT_ACCESS_TOKEN" in os.environ and os.environ["DD_BOT_ACCESS_TOKEN"] and "DD_BOT_SECRET" in os.environ and os.environ["DD_BOT_SECRET"]:
     DD_BOT_ACCESS_TOKEN = os.environ["DD_BOT_ACCESS_TOKEN"]
     DD_BOT_SECRET = os.environ["DD_BOT_SECRET"]
+
+if BARK:
+    notify_mode.append('bark')
+    print("BARK 推送打开")
+if SCKEY:
+    notify_mode.append('sc_key')
+    print("Server酱 推送打开")
+if TG_BOT_TOKEN and TG_USER_ID:
+    notify_mode.append('telegram_bot')
+    print("Telegram 推送打开")
+if DD_BOT_ACCESS_TOKEN and DD_BOT_SECRET:
     notify_mode.append('dingding_bot')
     print("钉钉机器人 推送打开")
 
@@ -87,9 +92,11 @@ def telegram_bot(title, content):
     url=f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage"
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     payload = {'chat_id': str(TG_USER_ID), 'text': f'{title}\n\n{content}', 'disable_web_page_preview': 'true'}
-    proxyStr = "http://{}:{}".format(TG_PROXY_IP, TG_PROXY_PORT)
-    proxies = {"http": proxyStr, "https": proxyStr }
-    response = requests.post(url=url,headers=headers, params=payload,proxies=proxies).json()
+    proxies = None
+    if TG_PROXY_IP and TG_PROXY_PORT:
+        proxyStr = "http://{}:{}".format(TG_PROXY_IP, TG_PROXY_PORT)
+        proxies = {"http": proxyStr, "https": proxyStr}
+    response = requests.post(url=url, headers=headers, params=payload, proxies=proxies).json()
     if response['ok']:
         print('推送成功！')
     else:

@@ -961,7 +961,7 @@ def run():
         print("###"*20)
         print("\n"*4)
     if int(_notify_time.split()[0]) == notify_time and int(_notify_time.split()[1]) < 30:
-    #if 1:
+    # if 1:
         message = ''
         for i in table:
             message += f"【设备】：{i[0].replace(' ',''):<9}\n"
