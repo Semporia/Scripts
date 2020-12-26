@@ -527,7 +527,7 @@ def run():
   beijing_datetime = get_standard_time()
   print(f'\n【中青看点】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
   hour = beijing_datetime.hour
-  for account in COOKIELIST:
+  for i, account in enumerate(COOKIELIST):
     headers = account['YOUTH_HEADER']
     readBody = account['YOUTH_READBODY']
     redBody = account['YOUTH_REDBODY']
@@ -536,6 +536,9 @@ def run():
     sign_res = sign(headers=headers)
     if sign_res and sign_res['status'] == 1:
       content += f'【签到结果】成功 🎉 明日+{sign_res["nextScore"]}青豆'
+    elif sign_res and sign_res['status'] == 2:
+      send(title=title, content=f'【账户{i}】Cookie已过期，请及时重新获取')
+      continue
 
     sign_info = signInfo(headers=headers)
     if sign_info:
