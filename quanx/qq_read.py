@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # _*_ coding:utf-8 _*_
 
-# 此脚本使用参考 https://raw.githubusercontent.com/TNanko/Scripts/master/scripts/qq_read.py
+# 此脚本参考 https://raw.githubusercontent.com/TNanko/Scripts/master/scripts/qq_read.py
 
 import traceback
 import requests
@@ -444,7 +444,6 @@ def withdraw_to_wallet(headers, amount):
 
 
 def qq_read():
-  # 确定脚本是否开启执行模式
   title = f'📚企鹅读书'
   content = ''
   result = ''
