@@ -2,15 +2,15 @@
 # _*_ coding:utf-8 _*_
 
 import traceback
-import requests
 import time
 import re
 import json
 import sys
 import os
 import math
-from notify import send
+from util import send, requests_session
 from datetime import datetime, timezone, timedelta
+
 # 实例 body 和 head 都为对象
 cookies1 = {
   'QQREAD_BODY': {},
@@ -54,7 +54,7 @@ def get_daily_tasks(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/page?fromGuid='
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
             # print('获取今日任务')
             return response['data']
@@ -73,7 +73,7 @@ def open_treasure_box(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/treasure_box'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         time.sleep(15)
         if response['code'] == 0:
             return response['data']
@@ -91,7 +91,7 @@ def watch_treasure_box_ads(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/treasure_box_video'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         time.sleep(15)
         if response['code'] == 0:
             return response['data']
@@ -114,7 +114,7 @@ def track(headers, body):
         body = json.dumps(body)
         body = re.sub(timestamp.findall(body)[0], str(
             int(time.time() * 1000)), str(body))
-        response = requests.post(
+        response = requests_session().post(
             url=url, headers=headers, data=body, timeout=30).json()
         if response['code'] == 0:
             return True

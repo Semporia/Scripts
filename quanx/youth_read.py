@@ -4,11 +4,10 @@
 # 此脚本参考 https://raw.githubusercontent.com/Sunert/Scripts/master/Task/Youth_Read.js
 
 import traceback
-import requests
 import time
 import sys
 import os
-from notify import send
+from util import send, requests_session
 from datetime import datetime, timezone, timedelta
 from concurrent.futures import ProcessPoolExecutor
 
@@ -57,7 +56,7 @@ def read(body, i):
     url = 'https://ios.baertt.com/v5/article/complete.json'
     headers = {'User-Agent': 'KDApp/1.7.8 (iPhone; iOS 14.0; Scale/3.00)', 'Content-Type':
                'application/x-www-form-urlencoded;charset=utf-8'}
-    response = requests.post(
+    response = requests_session().post(
       url=url, headers=headers, data=body, timeout=30).json()
     if response['error_code'] == '0':
       if 'read_score' in response['items']:

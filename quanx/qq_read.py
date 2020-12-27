@@ -4,13 +4,12 @@
 # 此脚本参考 https://raw.githubusercontent.com/TNanko/Scripts/master/scripts/qq_read.py
 
 import traceback
-import requests
 import time
 import re
 import json
 import sys
 import os
-from notify import send
+from util import send, requests_session
 from datetime import datetime, timezone, timedelta
 # 实例 body 和 head 都为对象
 cookies1 = {
@@ -58,7 +57,7 @@ def get_user_info(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/user/init'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
             return response['data']
         else:
@@ -76,7 +75,7 @@ def get_daily_beans(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/sign_in/user'
     try:
-        response = requests.post(url=url, headers=headers, timeout=30).json()
+        response = requests_session().post(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
             return response['data']
         else:
@@ -94,7 +93,7 @@ def get_daily_tasks(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/page?fromGuid='
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
             # print('获取今日任务')
             # pretty_dict(response['data'])
@@ -114,7 +113,7 @@ def get_today_read_time(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/page/config?router=%2Fpages%2Fbook-read%2Findex&options='
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         # print('今日阅读')
         # pretty_dict(response)
         if response['code'] == 0:
@@ -135,7 +134,7 @@ def read_time_reward_tasks(headers, seconds):
     """
     url = f'https://mqqapi.reader.qq.com/mqq/red_packet/user/read_time_reward?seconds={seconds}'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         # print('阅读奖励')
         # pretty_dict(response)
         if response['code'] == 0:
@@ -155,7 +154,7 @@ def get_week_read_time(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/v1/bookShelfInit'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         # print('周阅读时长')
         # pretty_dict(response)
         if response['code'] == 0:
@@ -175,7 +174,7 @@ def read_now(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/read_book'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         # pretty_dict(response)
         if response['code'] == 0:
             return response['data']
@@ -195,7 +194,7 @@ def read_tasks(headers, seconds):
     """
     url = f'https://mqqapi.reader.qq.com/mqq/red_packet/user/read_time?seconds={seconds}'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
             return response['data']
         else:
@@ -213,7 +212,7 @@ def daily_sign(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/clock_in/page'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
             return response['data']
         else:
@@ -231,7 +230,7 @@ def watch_daily_sign_ads(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/clock_in_video'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         time.sleep(3)
         if response['code'] == 0:
             return response['data']
@@ -250,7 +249,7 @@ def watch_videos(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/watch_video'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
             return response['data']
         else:
@@ -268,7 +267,7 @@ def open_treasure_box(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/treasure_box'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         time.sleep(15)
         if response['code'] == 0:
             return response['data']
@@ -287,7 +286,7 @@ def watch_treasure_box_ads(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/treasure_box_video'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         time.sleep(15)
         if response['code'] == 0:
             return response['data']
@@ -306,7 +305,7 @@ def get_week_read_tasks(headers):
     """
     url = 'https://mqqapi.reader.qq.com/mqq/pickPackageInit'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
             return response['data']
         else:
@@ -325,7 +324,7 @@ def get_week_read_reward(headers, read_time):
     """
     url = f'https://mqqapi.reader.qq.com/mqq/pickPackage?readTime={read_time}'
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         # print(f'领取周阅读奖励({read_time})')
         # pretty_dict(response)
         if response['code'] == 0:
@@ -348,7 +347,7 @@ def read_books(headers, book_url, upload_time):
         upload_time * 60 * 1000), str(book_url))
     # url = book_url.replace('readTime=', 'readTime=' + str(upload_time))
     try:
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
             return True
         else:
@@ -371,7 +370,7 @@ def track(headers, body):
         body = json.dumps(body)
         body = re.sub(timestamp.findall(body)[0], str(
             int(time.time() * 1000)), str(body))
-        response = requests.post(
+        response = requests_session().post(
             url=url, headers=headers, data=body, timeout=30).json()
         if response['code'] == 0:
             return True
@@ -391,7 +390,7 @@ def get_red_packets(headers, pn):
     """
     try:
         url = f'https://mqqapi.reader.qq.com/mqq/red_packet/user/trans/list?pn={pn}'
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
             return response['data']
         else:
@@ -408,7 +407,7 @@ def get_withdraw_list(headers):
     """
     try:
         url = f'https://mqqapi.reader.qq.com/mqq/red_packet/user/trans/page'
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
             return response['data']
         else:
@@ -420,7 +419,7 @@ def get_withdraw_list(headers):
 def get_withdraw_info(headers):
     try:
         url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/withdraw/page'
-        response = requests.get(url=url, headers=headers, timeout=30).json()
+        response = requests_session().get(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
             return response['data']['configList']
         else:
@@ -433,7 +432,7 @@ def get_withdraw_info(headers):
 def withdraw_to_wallet(headers, amount):
     try:
         url = f"https://mqqapi.reader.qq.com/mqq/red_packet/user/withdraw?amount={amount}"
-        response = requests.post(url=url, headers=headers, timeout=30).json()
+        response = requests_session().post(url=url, headers=headers, timeout=30).json()
         if response['data']['code'] == 0:
             return True
         else:

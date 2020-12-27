@@ -4,14 +4,14 @@
 # 此脚本参考 https://github.com/Sunert/Scripts/blob/master/Task/youth.js
 
 import traceback
-import requests
 import time
 import re
 import json
 import sys
 import os
-from notify import send
+from util import send, requests_session
 from datetime import datetime, timezone, timedelta
+
 # YOUTH_HEADER 为对象, 其他参数为字符串
 cookies1 = {
   'YOUTH_HEADER': {},
@@ -75,7 +75,7 @@ def sign(headers):
   time.sleep(0.3)
   url = 'https://kd.youth.cn/TaskCenter/sign'
   try:
-    response = requests.post(url=url, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, headers=headers, timeout=30).json()
     print('签到')
     print(response)
     if response['status'] == 1:
@@ -95,7 +95,7 @@ def signInfo(headers):
   time.sleep(0.3)
   url = 'https://kd.youth.cn/TaskCenter/getSign'
   try:
-    response = requests.post(url=url, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, headers=headers, timeout=30).json()
     print('签到详情')
     print(response)
     if response['status'] == 1:
@@ -115,7 +115,7 @@ def punchCard(headers):
   time.sleep(0.3)
   url = f'{YOUTH_HOST}PunchCard/signUp'
   try:
-    response = requests.post(url=url, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, headers=headers, timeout=30).json()
     print('打卡报名')
     print(response)
     if response['code'] == 1:
@@ -135,7 +135,7 @@ def doCard(headers):
   time.sleep(0.3)
   url = f'{YOUTH_HOST}PunchCard/doCard'
   try:
-    response = requests.post(url=url, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, headers=headers, timeout=30).json()
     print('早起打卡')
     print(response)
     if response['code'] == 1:
@@ -157,12 +157,12 @@ def shareCard(headers):
   startUrl = f'{YOUTH_HOST}PunchCard/shareStart'
   endUrl = f'{YOUTH_HOST}PunchCard/shareEnd'
   try:
-    response = requests.post(url=startUrl, headers=headers, timeout=30).json()
+    response = requests_session().post(url=startUrl, headers=headers, timeout=30).json()
     print('打卡分享')
     print(response)
     if response['code'] == 1:
       time.sleep(0.3)
-      responseEnd = requests.post(url=endUrl, headers=headers, timeout=30).json()
+      responseEnd = requests_session().post(url=endUrl, headers=headers, timeout=30).json()
       if responseEnd['code'] == 1:
         return responseEnd
     else:
@@ -180,7 +180,7 @@ def luckDraw(headers):
   time.sleep(0.3)
   url = f'{YOUTH_HOST}PunchCard/luckdraw'
   try:
-    response = requests.post(url=url, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, headers=headers, timeout=30).json()
     print('七日签到')
     print(response)
     if response['code'] == 1:
@@ -201,11 +201,11 @@ def shareArticle(headers):
   url = 'https://focu.youth.cn/article/s?signature=0Z3Jgv96wqmVPeM7obRdNpHXgAmRhxNPJ6y4jpGDnANbo8KXQr&uid=46308484&phone_code=26170a068d9b9563e7028f197c8a4a2b&scid=33007686&time=1602937887&app_version=1.7.8&sign=d21dd80d0c6563f6f810dd76d7e0aef2'
   readUrl = 'https://focus.youth.cn/article/s?signature=0Z3Jgv96wqmVPeM7obRdNpHXgAmRhxNPJ6y4jpGDnANbo8KXQr&uid=46308484&phone_code=26170a068d9b9563e7028f197c8a4a2b&scid=33007686&time=1602937887&app_version=1.7.8&sign=d21dd80d0c6563f6f810dd76d7e0aef2'
   try:
-    response1 = requests.post(url=url, headers=headers, timeout=30)
+    response1 = requests_session().post(url=url, headers=headers, timeout=30)
     print('分享文章1')
     print(response1)
     time.sleep(0.3)
-    response2 = requests.post(url=readUrl, headers=headers, timeout=30)
+    response2 = requests_session().post(url=readUrl, headers=headers, timeout=30)
     print('分享文章2')
     print(response2)
     return
@@ -222,7 +222,7 @@ def openBox(headers):
   time.sleep(0.3)
   url = f'{YOUTH_HOST}invite/openHourRed'
   try:
-    response = requests.post(url=url, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, headers=headers, timeout=30).json()
     print('开启宝箱')
     print(response)
     if response['code'] == 1:
@@ -243,7 +243,7 @@ def shareBox(headers):
   time.sleep(0.3)
   url = f'{YOUTH_HOST}invite/shareEnd'
   try:
-    response = requests.post(url=url, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, headers=headers, timeout=30).json()
     print('宝箱分享')
     print(response)
     if response['code'] == 1:
@@ -263,7 +263,7 @@ def friendList(headers):
   time.sleep(0.3)
   url = f'{YOUTH_HOST}ShareSignNew/getFriendActiveList'
   try:
-    response = requests.get(url=url, headers=headers, timeout=30).json()
+    response = requests_session().get(url=url, headers=headers, timeout=30).json()
     print('好友列表')
     print(response)
     if response['error_code'] == '0':
@@ -288,7 +288,7 @@ def friendSign(headers, uid):
   time.sleep(0.3)
   url = f'{YOUTH_HOST}ShareSignNew/sendScoreV2?friend_uid={uid}'
   try:
-    response = requests.get(url=url, headers=headers, timeout=30).json()
+    response = requests_session().get(url=url, headers=headers, timeout=30).json()
     print('好友签到')
     print(response)
     if response['error_code'] == '0':
@@ -309,7 +309,7 @@ def watchAdVideo(headers):
   url = 'https://kd.youth.cn/taskCenter/getAdVideoReward'
   headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
   try:
-    response = requests.post(url=url, data="type=taskCenter", headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, data="type=taskCenter", headers=headers, timeout=30).json()
     print('看广告视频')
     print(response)
     if response['status'] == 1:
@@ -330,7 +330,7 @@ def watchGameVideo(body):
   url = 'https://ios.baertt.com/v5/Game/GameVideoReward.json'
   headers = {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
   try:
-    response = requests.post(url=url, headers=headers, data=body, timeout=30).json()
+    response = requests_session().post(url=url, headers=headers, data=body, timeout=30).json()
     print('激励视频')
     print(response)
     if response['success'] == True:
@@ -354,7 +354,7 @@ def visitReward(body):
     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
   }
   try:
-    response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, data=body, headers=headers, timeout=30).json()
     print('回访奖励')
     print(response)
     if response['success'] == True:
@@ -378,7 +378,7 @@ def articleRed(body):
     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
   }
   try:
-    response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, data=body, headers=headers, timeout=30).json()
     print('惊喜红包')
     print(response)
     if response['success'] == True:
@@ -402,7 +402,7 @@ def readTime(body):
     'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
   }
   try:
-    response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, data=body, headers=headers, timeout=30).json()
     print('阅读时长')
     print(response)
     if response['error_code'] == '0':
@@ -423,7 +423,7 @@ def rotary(headers, body):
   currentTime = time.time()
   url = f'{YOUTH_HOST}RotaryTable/turnRotary?_={currentTime}'
   try:
-    response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, data=body, headers=headers, timeout=30).json()
     print('转盘任务')
     print(response)
     return response
@@ -441,13 +441,14 @@ def rotaryChestReward(headers, body):
   currentTime = time.time()
   url = f'{YOUTH_HOST}RotaryTable/getData?_={currentTime}'
   try:
-    response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, data=body, headers=headers, timeout=30).json()
     print('转盘宝箱')
     print(response)
     if response['status'] == 1:
       i = 0
       while (i <= 3):
-        if response['data']['opened'] >= int(response['data']['chestOpen'][i]['times']):
+        chest = response['data']['chestOpen'][i]
+        if response['data']['opened'] >= int(chest['times']) and chest['received'] != 1:
           time.sleep(1)
           runRotary(headers=headers, body=f'{body}&num={i+1}')
         i += 1
@@ -468,7 +469,7 @@ def runRotary(headers, body):
   currentTime = time.time()
   url = f'{YOUTH_HOST}RotaryTable/chestReward?_={currentTime}'
   try:
-    response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, data=body, headers=headers, timeout=30).json()
     print('领取宝箱')
     print(response)
     if response['status'] == 1:
@@ -489,7 +490,7 @@ def doubleRotary(headers, body):
   currentTime = time.time()
   url = f'{YOUTH_HOST}RotaryTable/toTurnDouble?_={currentTime}'
   try:
-    response = requests.post(url=url, data=body, headers=headers, timeout=30).json()
+    response = requests_session().post(url=url, data=body, headers=headers, timeout=30).json()
     print('转盘双倍')
     print(response)
     if response['status'] == 1:
@@ -509,7 +510,7 @@ def incomeStat(headers):
   time.sleep(0.3)
   url = f'https://kd.youth.cn/wap/user/balance?{headers["Referer"].split("?")[1]}'
   try:
-    response = requests.get(url=url, headers=headers, timeout=50).json()
+    response = requests_session().get(url=url, headers=headers, timeout=50).json()
     print('收益统计')
     print(response)
     if response['status'] == 0:
