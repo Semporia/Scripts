@@ -14,7 +14,7 @@ import hashlib
 from datetime import datetime, timedelta
 import os
 import re
-from notify import send, requests_session
+from util import send, requests_session
 
 # 参考 https://github.com/Zero-S1/xmly_speed/blob/master/xmly_speed.py
 
