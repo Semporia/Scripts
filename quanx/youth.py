@@ -535,7 +535,7 @@ def run():
     rotaryBody = f'{headers["Referer"].split("&")[15]}&{headers["Referer"].split("&")[8]}'
     sign_res = sign(headers=headers)
     if sign_res and sign_res['status'] == 1:
-      content += f'【签到结果】成功 🎉 明日+{sign_res["nextScore"]}青豆'
+      content += f'【签到结果】：成功 🎉 明日+{sign_res["nextScore"]}青豆'
     elif sign_res and sign_res['status'] == 2:
       send(title=title, content=f'【账户{i+1}】Cookie已过期，请及时重新获取')
       continue
@@ -543,39 +543,39 @@ def run():
     sign_info = signInfo(headers=headers)
     if sign_info:
       content += f'\n【账号】：{sign_info["user"]["nickname"]}'
-      content += f'\n【签到】+{sign_info["sign_score"]}青豆 已连签{sign_info["sign_day"]}天'
+      content += f'\n【签到】：+{sign_info["sign_score"]}青豆 已连签{sign_info["sign_day"]}天'
       result += f'【账号】: {sign_info["user"]["nickname"]}'
     friendList(headers=headers)
     if hour > 12:
       punch_card_res = punchCard(headers=headers)
       if punch_card_res:
-        content += f'\n【打卡报名】打卡报名{punch_card_res["msg"]} ✅'
+        content += f'\n【打卡报名】：打卡报名{punch_card_res["msg"]} ✅'
     if hour >= 5 and hour <= 8:
       do_card_res = doCard(headers=headers)
       if do_card_res:
-        content += f'\n【早起打卡】{do_card_res["card_time"]} ✅'
+        content += f'\n【早起打卡】：{do_card_res["card_time"]} ✅'
     luck_draw_res = luckDraw(headers=headers)
     if luck_draw_res:
-      content += f'\n【七日签到】+{luck_draw_res["score"]}青豆'
+      content += f'\n【七日签到】：+{luck_draw_res["score"]}青豆'
     visit_reward_res = visitReward(body=readBody)
     if visit_reward_res:
-      content += f'\n【回访奖励】+{visit_reward_res["score"]}青豆'
+      content += f'\n【回访奖励】：+{visit_reward_res["score"]}青豆'
     shareArticle(headers=headers)
     open_box_res = openBox(headers=headers)
     if open_box_res:
-      content += f'\n【开启宝箱】+{open_box_res["score"]}青豆 下次奖励{open_box_res["time"] / 60}分钟'
+      content += f'\n【开启宝箱】：+{open_box_res["score"]}青豆 下次奖励{open_box_res["time"] / 60}分钟'
     watch_ad_video_res = watchAdVideo(headers=headers)
     if watch_ad_video_res:
-      content += f'\n【观看视频】+{watch_ad_video_res["score"]}个青豆'
+      content += f'\n【观看视频】：+{watch_ad_video_res["score"]}个青豆'
     watch_game_video_res = watchGameVideo(body=readBody)
     if watch_game_video_res:
-      content += f'\n【激励视频】{watch_game_video_res["score"]}个青豆'
+      content += f'\n【激励视频】：{watch_game_video_res["score"]}个青豆'
     article_red_res = articleRed(body=redBody)
     if article_red_res:
-      content += f'\n【惊喜红包】+{article_red_res["score"]}个青豆'
+      content += f'\n【惊喜红包】：+{article_red_res["score"]}个青豆'
     read_time_res = readTime(body=readTimeBody)
     if read_time_res:
-      content += f'\n【阅读时长】共计{read_time_res["time"] // 60}分钟'
+      content += f'\n【阅读时长】：共计{read_time_res["time"] // 60}分钟'
     for i in range(0, 5):
       time.sleep(5)
       rotary_res = rotary(headers=headers, body=rotaryBody)
@@ -583,26 +583,26 @@ def run():
         if rotary_res['status'] == 0:
           break
         elif rotary_res['status'] == 1:
-          content += f'\n【转盘抽奖】+{rotary_res["data"]["score"]}个青豆 剩余{rotary_res["data"]["remainTurn"]}次'
-          if rotary_res['data']['doubleNum'] != 0:
+          content += f'\n【转盘抽奖】：+{rotary_res["data"]["score"]}个青豆 剩余{rotary_res["data"]["remainTurn"]}次'
+          if rotary_res['data']['doubleNum'] != 0 and rotary_res['data']['score'] > 0:
             double_rotary_res = doubleRotary(headers=headers, body=rotaryBody)
             if double_rotary_res:
-              content += f'\n【转盘双倍】+{double_rotary_res["score"]}青豆 剩余{double_rotary_res["doubleNum"]}次'
+              content += f'\n【转盘双倍】：+{double_rotary_res["score"]}青豆 剩余{double_rotary_res["doubleNum"]}次'
 
     rotaryChestReward(headers=headers, body=rotaryBody)
     stat_res = incomeStat(headers=headers)
     if stat_res['status'] == 0:
       for group in stat_res['history'][0]['group']:
-        content += f'\n【{group["name"]}】+{group["money"]}青豆'
+        content += f'\n【{group["name"]}】：+{group["money"]}青豆'
       today_score = int(stat_res["user"]["today_score"])
       score = int(stat_res["user"]["score"])
       total_score = int(stat_res["user"]["total_score"])
-      result += f'\n【今日收益】+{"{:4.2f}".format(today_score / 10000)}'
-      content += f'\n【今日收益】+{"{:4.2f}".format(today_score / 10000)}'
-      result += f'\n【账户剩余】{"{:4.2f}".format(score / 10000)}'
-      content += f'\n【账户剩余】{"{:4.2f}".format(score / 10000)}'
-      result += f'\n【历史收益】{"{:4.2f}".format(total_score / 10000)}\n\n'
-      content += f'\n【历史收益】{"{:4.2f}".format(total_score / 10000)}\n'
+      result += f'\n【今日收益】：+{"{:4.2f}".format(today_score / 10000)}'
+      content += f'\n【今日收益】：+{"{:4.2f}".format(today_score / 10000)}'
+      result += f'\n【账户剩余】：{"{:4.2f}".format(score / 10000)}'
+      content += f'\n【账户剩余】：{"{:4.2f}".format(score / 10000)}'
+      result += f'\n【历史收益】：{"{:4.2f}".format(total_score / 10000)}\n\n'
+      content += f'\n【历史收益】：{"{:4.2f}".format(total_score / 10000)}\n'
 
   print(content)
 
