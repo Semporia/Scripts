@@ -135,6 +135,8 @@ def qq_read_box():
     body = account['QQREAD_BODY']
 
     guid = re.search(r'ywguid\=(\d+)\;', headers['Cookie'])
+    content += f'【账号】：{guid.group(1)}'
+    result += f'【账号】：{guid.group(1)}'
     error_catch = 0
     if beijing_datetime.hour == 0:
         track_result = track(headers=headers, body=body)
@@ -169,8 +171,8 @@ def qq_read_box():
 
     # 输出任务列表中的信息
     if daily_tasks:
-        content += f'\n【宝箱任务】已开{daily_tasks["treasureBox"]["count"]}个宝箱，下一个宝箱{daily_tasks["treasureBox"]["tipText"]}'
-        result += f'\n【宝箱任务】已开{daily_tasks["treasureBox"]["count"]}个宝箱，下一个宝箱{daily_tasks["treasureBox"]["tipText"]}'
+        content += f'\n【宝箱任务】已开{daily_tasks["treasureBox"]["count"]}个宝箱，下一个宝箱{daily_tasks["treasureBox"]["tipText"]}\n\n'
+        result += f'\n【宝箱任务】已开{daily_tasks["treasureBox"]["count"]}个宝箱，下一个宝箱{daily_tasks["treasureBox"]["tipText"]}\n\n'
 
   print(content)
 
