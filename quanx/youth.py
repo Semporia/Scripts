@@ -569,7 +569,7 @@ def run():
       content += f'\n【观看视频】+{watch_ad_video_res["score"]}个青豆'
     watch_game_video_res = watchGameVideo(body=readBody)
     if watch_game_video_res:
-      content += f'\n【激励视频】+{watch_game_video_res["score"]}个青豆'
+      content += f'\n【激励视频】{watch_game_video_res["score"]}个青豆'
     article_red_res = articleRed(body=redBody)
     if article_red_res:
       content += f'\n【惊喜红包】+{article_red_res["score"]}个青豆'
@@ -594,12 +594,15 @@ def run():
     if stat_res['status'] == 0:
       for group in stat_res['history'][0]['group']:
         content += f'\n【{group["name"]}】+{group["money"]}青豆'
-      result += f'\n【今日收益】+{'{:4.2f}'.format(stat_res["user"]["today_score"] / 10000)}'
-      content += f'\n【今日收益】+{'{:4.2f}'.format(stat_res["user"]["today_score"] / 10000)}'
-      result += f'\n【账户剩余】{'{:4.2f}'.format(stat_res["user"]["score"] / 10000)}'
-      content += f'\n【账户剩余】{'{:4.2f}'.format(stat_res["user"]["score"] / 10000)}'
-      result += f'\n【历史收益】{'{:4.2f}'.format(stat_res["user"]["total_score"] / 10000)}\n\n'
-      content += f'\n【历史收益】{'{:4.2f}'.format(stat_res["user"]["total_score"] / 10000)}\n'
+      today_score = int(stat_res["user"]["today_score"])
+      score = int(stat_res["user"]["score"])
+      total_score = int(stat_res["user"]["total_score"])
+      result += f'\n【今日收益】+{"{:4.2f}".format(today_score / 10000)}'
+      content += f'\n【今日收益】+{"{:4.2f}".format(today_score / 10000)}'
+      result += f'\n【账户剩余】{"{:4.2f}".format(score / 10000)}'
+      content += f'\n【账户剩余】{"{:4.2f}".format(score / 10000)}'
+      result += f'\n【历史收益】{"{:4.2f}".format(total_score / 10000)}\n\n'
+      content += f'\n【历史收益】{"{:4.2f}".format(total_score / 10000)}\n'
 
   print(content)
 
