@@ -84,8 +84,6 @@ def run(body, index):
   print(f'\n【账号{index}中青结束】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
 
 def main():
-  title = f'📚中青看点'
-  result = ''
   with ProcessPoolExecutor(max_workers=3) as executor:
     for i in range(0, len(READ_BODYS)):
       executor.submit(run, READ_BODYS[i], i+1)

@@ -172,7 +172,7 @@ def qq_read_box():
     # 输出任务列表中的信息
     if daily_tasks:
         content += f'\n【宝箱任务】已开{daily_tasks["treasureBox"]["count"]}个宝箱，下一个宝箱{daily_tasks["treasureBox"]["tipText"]}\n\n'
-        result += f'\n【宝箱任务】已开{daily_tasks["treasureBox"]["count"]}个宝箱，下一个宝箱{daily_tasks["treasureBox"]["tipText"]}\n\n'
+        result += f'\n【宝箱任务】：已开{daily_tasks["treasureBox"]["count"]}个宝箱\n\n'
 
   print(content)
 
