@@ -18,10 +18,19 @@ from util import send, requests_session
 
 # 参考 https://github.com/Zero-S1/xmly_speed/blob/master/xmly_speed.py
 
-cookies1 = ""
+cookies1 = "domain=.ximalaya.com; path=/; channel=ios-b1; impl=com.ximalaya.tingLite; 1&_device=iPhone&023CA700-5417-4341-94D9-E738DD94D6BE&1.1.13; XUM=023CA700-5417-4341-94D9-E738DD94D6BE; idfa=00000000-0000-0000-0000-000000000000; device_model=iPhone 12; c-oper=%E6%9C%AA%E7%9F%A5; net-mode=WIFI; ip=2408:8506:126:177:b2:643:100:0; res=1170%2C2532; NSUP=; ainr=0; XD=6w0FgETqIKDt3tw4EOvUOVZcbNb09rkY4053nwwUnU0V1kPYIqQ27xzQP0j71V+86fvmSdt5+QEbMlXBY8yf2g==; 1&_token=177476793&439B6410240C9CE1A29CDEC2670B265EF15C07F3CC8CB351259B3AC07A854D6E43FCD5AB0FAC111M307478B89CA740E_"
+
 cookies2 = ""
 
 cookiesList = [cookies1, ]   # 多账号准备
+
+# 默认不自动提现
+autoTakeOut = False
+# 提现金额
+amount = 20
+takeOutType = 1
+# 提现账户: 1 -> 支付宝 2 -> 微信
+thirdPayType = 1
 
 # ac读取环境变量
 if "XMLY_SPEED_COOKIE" in os.environ:
@@ -35,6 +44,8 @@ if "XMLY_SPEED_COOKIE" in os.environ:
         if not line:
             continue
         cookiesList.append(line)
+if "AUTO_TAKE_OUT" in os.environ:
+    autoTakeOut = os.environ["AUTO_TAKE_OUT"]
 
 # 自定义设备命名,非必须 ;devices=["iPhone7P","huawei"];与cookiesList对应
 devices = []
@@ -925,6 +936,73 @@ def card(cookies, _datatime):
 def get_uid(cookies):
     return cookies["1&_token"].split("&")[0]
 
+def third_pay_info(cookies):
+    print("\n【获取提现账号信息】")
+    headers = {
+        'Host': 'm.ximalaya.com',
+        'Content-Type': 'application/json;charset=utf-8',
+        'Connection': 'keep-alive',
+        'Accept': 'application/json, text/plain, */*',
+        'User-Agent': UserAgent,
+        'Referer': 'https://m.ximalaya.com/growth-ssr-speed-welfare-center/page/withdraw',
+        'Accept-Language': 'zh-cn',
+        'Accept-Encoding': 'gzip, deflate, br',
+    }
+    try:
+        response = requests_session().get(
+            f'https://m.ximalaya.com/speed/web-earn/account/third-pay-account/{thirdPayType}', headers=headers, cookies=cookies).json()
+        print(response)
+        if response['code'] == 0:
+            return response['data'][0]
+        else:
+            return
+    except:
+        print("网络请求异常,为避免GitHub action报错,直接跳过")
+        return
+
+def task_out_info(cookies):
+    print("\n【获取提现信息】")
+    headers = {
+        'Host': 'm.ximalaya.com',
+        'Content-Type': 'application/json;charset=utf-8',
+        'Connection': 'keep-alive',
+        'Accept': 'application/json, text/plain, */*',
+        'User-Agent': UserAgent,
+        'Referer': 'https://m.ximalaya.com/growth-ssr-speed-welfare-center/page/withdraw',
+        'Accept-Language': 'zh-cn',
+        'Accept-Encoding': 'gzip, deflate, br',
+    }
+    try:
+        response = requests_session().get(
+            'https://m.ximalaya.com/speed/web-earn/account/take-out/info', headers=headers, cookies=cookies).json()
+        print(response)
+        if response['code'] == 0:
+            return response['data'][0]
+        else:
+            return
+    except:
+        print("网络请求异常,为避免GitHub action报错,直接跳过")
+        return
+
+def task_out(cookies, body):
+    print("\n【自动提现】")
+    headers = {
+        'Host': 'm.ximalaya.com',
+        'Content-Type': 'application/json;charset=utf-8',
+        'Connection': 'keep-alive',
+        'Accept': 'application/json, text/plain, */*',
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 iting/2.0.3 kdtunion_iting/1.0 iting(main)/2.0.3/ios_1',
+        'Referer': 'https://m.ximalaya.com/growth-ssr-speed-welfare-center/page/withdraw',
+        'Accept-Language': 'zh-cn',
+        'Accept-Encoding': 'gzip, deflate, br',
+    }
+    try:
+        response = requests_session().post(
+            'https://m.ximalaya.com/speed/web-earn/account/take-out', headers=headers, cookies=cookies, data=json.dumps(body).encode('utf-8')).json()
+        print(response)
+    except:
+        print("网络请求异常,为避免GitHub action报错,直接跳过")
+
 def run():
     print(f"喜马拉雅极速版 (https://github.com/Zero-S1/xmly_speed/blob/master/xmly_speed.md ) ,欢迎打赏¯\(°_o)/¯")
     mins, date_stamp, _datatime, _notify_time = get_time()
@@ -957,8 +1035,16 @@ def run():
         table.append((device, total, todayTotal,
                       historyTotal, continuousDays,))
 
+        if autoTakeOut and total >= amount:
+            pay_info = third_pay_info(cookies)
+            if pay_info and pay_info['name'] and pay_info['accountType'] and pay_info["accountNumber"]:
+                body = {"name": pay_info['name'],"accountType":pay_info['accountType'],"accountNumber":pay_info["accountNumber"],"amount":amount,"takeOutType":takeOutType}
+                task_out(cookies=cookies, body=body)
+            else:
+                send(title=title, content="请先绑定支付宝账号")
         print("###"*20)
         print("\n"*4)
+
     if int(_notify_time.split()[0]) == notify_time and int(_notify_time.split()[1]) < 5:
     # if 1:
         message = ''
