@@ -24,7 +24,6 @@ cookies1 = {
 cookies2 = {}
 
 COOKIELIST = [cookies1,]  # 多账号准备
-amount = 30000 #自动提现金额
 
 # ac读取环境变量
 if "YOUTH_HEADER1" in os.environ:
@@ -629,7 +628,7 @@ def run():
       score = int(stat_res["user"]["score"])
       total_score = int(stat_res["user"]["total_score"])
 
-      if score >= amount and withdrawBody:
+      if score >= 300000 and withdrawBody:
         with_draw_res = withdraw(body=withdrawBody)
         if with_draw_res:
           result += f'\n【自动提现】：发起提现30成功'
