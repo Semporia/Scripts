@@ -999,6 +999,8 @@ def task_out(cookies, body):
     try:
         response = requests_session().post(
             'https://m.ximalaya.com/speed/web-earn/account/take-out', headers=headers, cookies=cookies, data=json.dumps(body).encode('utf-8')).json()
+        if not response['errorCode']:
+            return True
         print(response)
     except:
         print("网络请求异常,为避免GitHub action报错,直接跳过")
@@ -1039,7 +1041,9 @@ def run():
             pay_info = third_pay_info(cookies)
             if pay_info and pay_info['name'] and pay_info['accountType'] and pay_info["accountNumber"]:
                 body = {"name": pay_info['name'],"accountType":pay_info['accountType'],"accountNumber":pay_info["accountNumber"],"amount":amount,"takeOutType":takeOutType}
-                task_out(cookies=cookies, body=body)
+                task_out_res = task_out(cookies=cookies, body=body)
+                if task_out_res:
+                    send(title=title, content=f"{device} 提现20元成功")
             else:
                 send(title=title, content="请先手动填写支付宝账号提现一次")
         print("###"*20)

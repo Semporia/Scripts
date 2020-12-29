@@ -35,16 +35,13 @@ if "YOUTH_HEADER1" in os.environ:
     redBodyVar = f'YOUTH_REDBODY{str(i+1)}'
     readTimeBodyVar = f'YOUTH_READTIMEBODY{str(i+1)}'
     withdrawBodyVar = f'YOUTH_WITHDRAWBODY{str(i+1)}'
-    if headerVar in os.environ and os.environ[headerVar] and readBodyVar in os.environ and os.environ[readBodyVar] and redBodyVar in os.environ and os.environ[redBodyVar] and readTimeBodyVar in os.environ and os.environ[readTimeBodyVar] and withdrawBodyVar in os.environ and os.environ[withdrawBodyVar]:
+    if headerVar in os.environ and os.environ[headerVar] and readBodyVar in os.environ and os.environ[readBodyVar] and redBodyVar in os.environ and os.environ[redBodyVar] and readTimeBodyVar in os.environ and os.environ[readTimeBodyVar]:
       globals()['cookies'+str(i + 1)]["YOUTH_HEADER"] = json.loads(os.environ[headerVar])
       globals()['cookies'+str(i + 1)]["YOUTH_READBODY"] = os.environ[readBodyVar]
       globals()['cookies'+str(i + 1)]["YOUTH_REDBODY"] = os.environ[redBodyVar]
       globals()['cookies' + str(i + 1)]["YOUTH_READTIMEBODY"] = os.environ[readTimeBodyVar]
       globals()['cookies' + str(i + 1)]["YOUTH_WITHDRAWBODY"] = os.environ[withdrawBodyVar]
       COOKIELIST.append(globals()['cookies'+str(i + 1)])
-    else:
-      print(f'账号{i+1}参数错误或者未提供账号')
-      continue
   print(COOKIELIST)
 
 cur_path = os.path.abspath(os.path.dirname(__file__))
@@ -631,8 +628,9 @@ def run():
       if score >= 300000 and withdrawBody:
         with_draw_res = withdraw(body=withdrawBody)
         if with_draw_res:
-          result += f'\n【自动提现】：发起提现30成功'
-          content += f'\n【自动提现】：发起提现30成功'
+          result += f'\n【自动提现】：发起提现30元成功'
+          content += f'\n【自动提现】：发起提现30元成功'
+          send(title=title, content="发起提现30元成功")
 
       result += f'\n【今日收益】：+{"{:4.2f}".format(today_score / 10000)}'
       content += f'\n【今日收益】：+{"{:4.2f}".format(today_score / 10000)}'

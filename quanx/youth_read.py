@@ -79,8 +79,8 @@ def run(body, index):
   print(f'\n【中青看点账号{index}】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
   print(f'\n【中青看点账号{index}】总共{len(bodyList)}个body')
   for i in range(0, len(bodyList)):
-    print(f'\n账号{index}开始中青看点第{i}次阅读')
-    read(body=bodyList[i], i=i)
+    print(f'\n账号{index}开始中青看点第{i+1}次阅读')
+    read(body=bodyList[i], i=i+1)
   print(f'\n【账号{index}中青结束】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
 
 def main():
