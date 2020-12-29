@@ -78,7 +78,7 @@ def serverJ(title, content):
         "desp": content.replace("\n", "\n\n")
     }
     response = requests.post(f"https://sc.ftqq.com/{SCKEY}.send", data=data).json()
-    if response['code'] == 200:
+    if response['errno'] == 0:
         print('推送成功！')
     else:
         print('推送失败！')
