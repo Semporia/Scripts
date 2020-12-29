@@ -75,7 +75,7 @@ def serverJ(title, content):
     print("serverJ服务启动")
     data = {
         "text": title,
-        "desp": content.replace("\n", "\n\n")+"\n\n [打赏作者](https://github.com/Zero-S1/xmly_speed/blob/master/thanks.md)"
+        "desp": content.replace("\n", "\n\n")
     }
     response = requests.post(f"https://sc.ftqq.com/{SCKEY}.send", data=data).json()
     if response['code'] == 200:
@@ -140,7 +140,7 @@ def send(title, content):
             continue
         if i == 'sc_key':
             if SCKEY:
-                bark(title=title, content=content)
+                serverJ(title=title, content=content)
             else:
                 print('未启用 Server酱')
             continue
