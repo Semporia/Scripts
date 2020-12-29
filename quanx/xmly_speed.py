@@ -1041,7 +1041,7 @@ def run():
                 body = {"name": pay_info['name'],"accountType":pay_info['accountType'],"accountNumber":pay_info["accountNumber"],"amount":amount,"takeOutType":takeOutType}
                 task_out(cookies=cookies, body=body)
             else:
-                send(title=title, content="请先绑定支付宝账号")
+                send(title=title, content="请先手动填写支付宝账号提现一次")
         print("###"*20)
         print("\n"*4)
 
