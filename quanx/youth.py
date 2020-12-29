@@ -12,16 +12,19 @@ import os
 from util import send, requests_session
 from datetime import datetime, timezone, timedelta
 
-# YOUTH_HEADER 为对象, 其他参数为字符串
+# YOUTH_HEADER 为对象, 其他参数为字符串，自动提现需要自己抓包
+# 选择微信提现30元，立即兑换，在请求包中找到withdraw2的请求，拷贝请求body类型 p=****** 的字符串，放入下面对应参数即可
 cookies1 = {
   'YOUTH_HEADER': {},
   'YOUTH_READBODY': '',
   'YOUTH_REDBODY': '',
-  'YOUTH_READTIMEBODY': ''
+  'YOUTH_READTIMEBODY': '',
+  'YOUTH_WITHDRAWBODY': ''
 }
 cookies2 = {}
 
-COOKIELIST = [cookies1, ]   # 多账号准备
+COOKIELIST = [cookies1,]  # 多账号准备
+amount = 30000 #自动提现金额
 
 # ac读取环境变量
 if "YOUTH_HEADER1" in os.environ:
@@ -32,11 +35,13 @@ if "YOUTH_HEADER1" in os.environ:
     readBodyVar = f'YOUTH_READBODY{str(i+1)}'
     redBodyVar = f'YOUTH_REDBODY{str(i+1)}'
     readTimeBodyVar = f'YOUTH_READTIMEBODY{str(i+1)}'
-    if headerVar in os.environ and os.environ[headerVar] and readBodyVar in os.environ and os.environ[readBodyVar] and redBodyVar in os.environ and os.environ[redBodyVar] and readTimeBodyVar in os.environ and os.environ[readTimeBodyVar]:
+    withdrawBodyVar = f'YOUTH_WITHDRAWBODY{str(i+1)}'
+    if headerVar in os.environ and os.environ[headerVar] and readBodyVar in os.environ and os.environ[readBodyVar] and redBodyVar in os.environ and os.environ[redBodyVar] and readTimeBodyVar in os.environ and os.environ[readTimeBodyVar] and withdrawBodyVar in os.environ and os.environ[withdrawBodyVar]:
       globals()['cookies'+str(i + 1)]["YOUTH_HEADER"] = json.loads(os.environ[headerVar])
       globals()['cookies'+str(i + 1)]["YOUTH_READBODY"] = os.environ[readBodyVar]
       globals()['cookies'+str(i + 1)]["YOUTH_REDBODY"] = os.environ[redBodyVar]
       globals()['cookies' + str(i + 1)]["YOUTH_READTIMEBODY"] = os.environ[readTimeBodyVar]
+      globals()['cookies' + str(i + 1)]["YOUTH_WITHDRAWBODY"] = os.environ[withdrawBodyVar]
       COOKIELIST.append(globals()['cookies'+str(i + 1)])
     else:
       print(f'账号{i+1}参数错误或者未提供账号')
@@ -521,6 +526,30 @@ def incomeStat(headers):
     print(traceback.format_exc())
     return
 
+def withdraw(body):
+  """
+  自动提现
+  :param headers:
+  :return:
+  """
+  time.sleep(0.3)
+  url = 'https://ios.baertt.com/v5/wechat/withdraw2.json'
+  headers = {
+    'User-Agent': 'KDApp/1.8.0 (iPhone; iOS 14.2; Scale/3.00)',
+    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+  }
+  try:
+    response = requests_session().post(url=url, headers=headers, data=body, timeout=30).json()
+    print('自动提现')
+    print(response)
+    if response['success'] == True:
+      return response['items']
+    else:
+      return
+  except:
+    print(traceback.format_exc())
+    return
+
 def run():
   title = f'📚中青看点'
   content = ''
@@ -533,6 +562,7 @@ def run():
     readBody = account['YOUTH_READBODY']
     redBody = account['YOUTH_REDBODY']
     readTimeBody = account['YOUTH_READTIMEBODY']
+    withdrawBody = account['YOUTH_WITHDRAWBODY']
     rotaryBody = f'{headers["Referer"].split("&")[15]}&{headers["Referer"].split("&")[8]}'
     sign_res = sign(headers=headers)
     if sign_res and sign_res['status'] == 1:
@@ -598,6 +628,13 @@ def run():
       today_score = int(stat_res["user"]["today_score"])
       score = int(stat_res["user"]["score"])
       total_score = int(stat_res["user"]["total_score"])
+
+      if score >= amount and withdrawBody:
+        with_draw_res = withdraw(body=withdrawBody)
+        if with_draw_res:
+          result += f'\n【自动提现】：发起提现30成功'
+          content += f'\n【自动提现】：发起提现30成功'
+
       result += f'\n【今日收益】：+{"{:4.2f}".format(today_score / 10000)}'
       content += f'\n【今日收益】：+{"{:4.2f}".format(today_score / 10000)}'
       result += f'\n【账户剩余】：{"{:4.2f}".format(score / 10000)}'
