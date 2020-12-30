@@ -667,8 +667,8 @@ def qq_read():
                     withdraw_result = withdraw_to_wallet(
                         headers=headers, amount=100000)
                     if withdraw_result == True:
-                        content += f'\n【满额提现】提现10元成功！'
-                        send(title=title, content=f"【满额提现】提现10元成功！")
+                        content += f'\n【账号】：{guid.group(1)} 提现10元成功！'
+                        send(title=title, content=f"【账号】：{guid.group(1)} 提现10元成功！")
                     else:
                         content += f'\n【满额提现】提现失败！原因：{withdraw_result}'
                 else:

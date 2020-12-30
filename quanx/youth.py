@@ -630,7 +630,7 @@ def run():
         if with_draw_res:
           result += f'\n【自动提现】：发起提现30元成功'
           content += f'\n【自动提现】：发起提现30元成功'
-          send(title=title, content="发起提现30元成功")
+          send(title=title, content=f'【账号】: {sign_info["user"]["nickname"]} 发起提现30元成功')
 
       result += f'\n【今日收益】：+{"{:4.2f}".format(today_score / 10000)}'
       content += f'\n【今日收益】：+{"{:4.2f}".format(today_score / 10000)}'
