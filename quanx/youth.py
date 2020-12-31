@@ -199,8 +199,8 @@ def shareArticle(headers):
   :return:
   """
   time.sleep(0.3)
-  url = 'https://focu.youth.cn/article/s?signature=0Z3Jgv96wqmVPeM7obRdNpHXgAmRhxNPJ6y4jpGDnANbo8KXQr&uid=46308484&phone_code=26170a068d9b9563e7028f197c8a4a2b&scid=33007686&time=1602937887&app_version=1.7.8&sign=d21dd80d0c6563f6f810dd76d7e0aef2'
-  readUrl = 'https://focus.youth.cn/article/s?signature=0Z3Jgv96wqmVPeM7obRdNpHXgAmRhxNPJ6y4jpGDnANbo8KXQr&uid=46308484&phone_code=26170a068d9b9563e7028f197c8a4a2b&scid=33007686&time=1602937887&app_version=1.7.8&sign=d21dd80d0c6563f6f810dd76d7e0aef2'
+  url = 'https://focu.youth.cn/article/s?signature=QqvZWbEKpA2yrNR1MnyjPetpZpz2TLdDDw849VGjJl8gXB5keP&uid=52242968&phone_code=4aa0b274198dafebe5c214ea6097d12b&scid=35438728&time=1609414747&app_version=1.8.2&sign=17fe0351fa6378a602c2afd55d6a47c8'
+  readUrl = 'https://focus.youth.cn/article/s?signature=QqvZWbEKpA2yrNR1MnyjPetpZpz2TLdDDw849VGjJl8gXB5keP&uid=52242968&phone_code=4aa0b274198dafebe5c214ea6097d12b&scid=35438728&time=1609414747&app_version=1.8.2&sign=17fe0351fa6378a602c2afd55d6a47c8'
   try:
     response1 = requests_session().post(url=url, headers=headers, timeout=30)
     print('分享文章1')
@@ -546,6 +546,26 @@ def withdraw(body):
     print(traceback.format_exc())
     return
 
+def bereadRed(headers):
+  """
+  时段红包
+  :param headers:
+  :return:
+  """
+  time.sleep(0.3)
+  url = f'{YOUTH_HOST}Task/receiveBereadRed'
+  try:
+    response = requests_session().post(url=url, headers=headers, timeout=30).json()
+    print('时段红包')
+    print(response)
+    if response['code'] == 1:
+      return response['data']
+    else:
+      return
+  except:
+    print(traceback.format_exc())
+    return
+
 def run():
   title = f'📚中青看点'
   content = ''
@@ -603,6 +623,10 @@ def run():
     read_time_res = readTime(body=readTimeBody)
     if read_time_res:
       content += f'\n【阅读时长】：共计{read_time_res["time"] // 60}分钟'
+    if (hour >= 6 and hour <= 8) or (hour >= 11 and hour <= 13) or (hour >= 19 and hour <= 21):
+      beread_red_res = bereadRed(headers=headers)
+      if beread_red_res:
+        content += f'\n【时段红包】：+{beread_red_res["score"]}个青豆'
     for i in range(0, 5):
       time.sleep(5)
       rotary_res = rotary(headers=headers, body=rotaryBody)
