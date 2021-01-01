@@ -131,9 +131,10 @@ function getTaskList() {
 
 function  browserTask() {
   return new Promise(async resolve => {
-    const times = Math.max(...[...$.allTask].map(x => x.limit));
-    for (let i = 0; i < $.allTask.length; i++) {
-      const task = $.allTask[i];
+    const tasks = $.allTask.filter(x => x.tasklevel !== 6);
+    const times = Math.max(...[...tasks].map(x => x.limit));
+    for (let i = 0; i < tasks.length; i++) {
+      const task = tasks[i];
       $.log(`\n开始第${i + 1}个任务：${task.taskname}`);
       const status = [0];
       for (let i = 0; i < times; i++) {
@@ -178,13 +179,13 @@ function answerTask() {
         try {
           const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];
           let { ret, retmsg } = JSON.parse(res);
-          retmsg = retmsg === '' ? retmsg : 'success';
+          retmsg = retmsg !== '' ? retmsg : 'success';
           $.log(
             `\n${taskname}[做任务]：${retmsg.indexOf('活动太火爆了') !== -1 ? '任务进行中或者未到任务时间' : retmsg}${
               $.showLog ? '\n' + res : ''
             }`,
           );
-          if (ret === 0) {
+          if (ret === 0 && right === 1) {
             $.drip += eachtimeget;
           }
           if (((ret !== 0 && ret !== 1029) || retmsg === 'ans err') && $.answer < 4) {
@@ -218,7 +219,7 @@ function doTask({ tasklevel, left, taskname, eachtimeget }) {
         try {
           const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];
           let { ret, retmsg } = JSON.parse(res);
-          retmsg = retmsg === '' ? retmsg : 'success';
+          retmsg = retmsg !== '' ? retmsg : 'success';
           $.log(
             `\n${taskname}[做任务]：${retmsg.indexOf('活动太火爆了') !== -1 ? '任务进行中或者未到任务时间' : retmsg}${
               $.showLog ? '\n' + res : ''

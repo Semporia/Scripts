@@ -24,7 +24,7 @@ const $ = new Env("京东赚赚");
 
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 const JD_API_HOST = "https://api.m.jd.com";
-$.exchangePrize = parseInt($.getdata("jd_zzExchangePrize")) || 0;
+$.exchangePrize = parseInt($.getdata("jd_zzExchangePrize")) || '';
 $.showLog = $.getdata("zz_showLog")
   ? $.getdata("zz_showLog") === "true"
   : false;
@@ -235,13 +235,19 @@ function getExchangePrizeList() {
 
 function exchangePrize() {
   return new Promise((resolve) => {
-    if ($.exchangePrize === 0) {
+    if (!$.exchangePrize) {
+      $.result.push(`【兑换红包】未设置兑换红包金额`)
       resolve();
       return;
     }
-    const { prizeId } = $.allExchangeList[$.exchangePrize - 1];
+    const prize = $.allExchangeList.find(x => x.prizeAmount === $.exchangePrize);
+    if (!prize) {
+      $.result.push(`【兑换红包】为找到设置的红包金额`)
+      resolve();
+      return;
+    }
     $.post(
-      taskPostUrl("exchangePrize", `prizeId=${prizeId}`),
+      taskPostUrl("exchangePrize", { prizeId: prize.prizeId }),
       (err, resp, _data) => {
         try {
           const { data = {}, message } = JSON.parse(_data);
@@ -280,10 +286,10 @@ function taskUrl(functionId, body = {}) {
   }
 }
 
-function taskPostUrl(function_id, body = "") {
+function taskPostUrl(function_id, body = {}) {
   return {
     url: `${JD_API_HOST}/client.action?functionIdTest=${function_id}`,
-    body: `functionId=${function_id}&body=${encodeURIComponent(body)}&client=wh5&clientVersion=1.0.0`,
+    body: `functionId=${function_id}&body=${encodeURIComponent(JSON.stringify(body))}&client=wh5&clientVersion=1.0.0`,
     headers: {
       "Cookie": $.currentCookie,
       'Content-Type': 'application/x-www-form-urlencoded',

@@ -210,7 +210,7 @@ def daily_sign(headers):
     :param headers:
     :return:
     """
-    url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/clock_in/page'
+    url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/clock_in'
     try:
         response = requests_session().get(url=url, headers=headers, timeout=30).json()
         if response['code'] == 0:
