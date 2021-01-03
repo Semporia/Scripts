@@ -197,6 +197,7 @@ def ans_receive(cookies, paperId, lastTopicId, receiveType):
     return response.json()
 
 def stage(cookies):
+    print("\n【新手任务】")
     headers = {
         'Host': 'm.ximalaya.com',
         'Accept': 'application/json, text/plain, */*',
