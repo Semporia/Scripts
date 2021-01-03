@@ -69,7 +69,7 @@ def str2dict(str_cookie):
 
         assert dict_cookie["1&_token"].split("&")[0]
         regex = r"&\d\.\d\.\d+"
-        appid = "&1.1.9"
+        appid = "&1.0.12"
         dict_cookie["1&_device"] = re.sub(
             regex, appid, dict_cookie["1&_device"], 0, re.MULTILINE)
         print(dict_cookie["1&_device"])
@@ -196,6 +196,47 @@ def ans_receive(cookies, paperId, lastTopicId, receiveType):
         return 0
     return response.json()
 
+def stage(cookies):
+    headers = {
+        'Host': 'm.ximalaya.com',
+        'Accept': 'application/json, text/plain, */*',
+        'Connection': 'keep-alive',
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 iting/2.0.9 kdtunion_iting/1.0 iting(main)/2.0.9/ios_1',
+        'Accept-Language': 'zh-cn',
+        'Referer': 'https://m.ximalaya.com/growth-ssr-speed-welfare-center/page/welfare',
+        'Accept-Encoding': 'gzip, deflate, br',
+    }
+    try:
+        response = requests.get(
+            'https://m.ximalaya.com/speed/web-earn/task/stage-rewards-daily', headers=headers, cookies=cookies)
+    except:
+        print("网络请求异常,为避免GitHub action报错,直接跳过")
+        return
+    data = response.json()["data"]
+    if not data:
+        return
+    stageRewards = data["stageRewards"]
+    for k, v in enumerate(stageRewards, 1):
+        print(k, v)
+        if v["status"] == 1:
+            headers = {
+                'Host': 'm.ximalaya.com',
+                'Content-Type': 'application/json',
+                'Accept': '*/*',
+                'Connection': 'keep-alive',
+                'User-Agent': 'ting_v2.0.9_c5(CFNetwork, iOS 14.3, iPhone9,2)',
+                'Accept-Language': 'zh-Hans-CN;q=1, en-CN;q=0.9',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+            params = (('stage', f'{k}'),)
+            try:
+                response = requests.get('https://m.ximalaya.com/speed/web-earn/task/stage-reward/receive',
+                                        headers=headers, params=params, cookies=cookies)
+            except:
+                print("网络请求异常,为避免GitHub action报错,直接跳过")
+                return
+            print(response.text)
 
 def ans_restore(cookies):
     headers = {
@@ -1016,6 +1057,7 @@ def run():
         if XMLY_ACCUMULATE_TIME == 1:
             saveListenTime(cookies, date_stamp)
             listenData(cookies, date_stamp)
+        stage(cookies) # 新手任务
         read(cookies)  # 阅读
         bubble(cookies)  # 收金币气泡
         # continue
