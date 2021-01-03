@@ -207,7 +207,7 @@ def stage(cookies):
         'Accept-Encoding': 'gzip, deflate, br',
     }
     try:
-        response = requests.get(
+        response = requests_session().get(
             'https://m.ximalaya.com/speed/web-earn/task/stage-rewards-daily', headers=headers, cookies=cookies)
     except:
         print("网络请求异常,为避免GitHub action报错,直接跳过")
