@@ -10,6 +10,7 @@ import os
 import math
 from util import send, requests_session
 from datetime import datetime, timezone, timedelta
+from concurrent.futures import ProcessPoolExecutor
 
 # 实例 body 和 head 都为对象
 cookies1 = {
@@ -74,7 +75,6 @@ def open_treasure_box(headers):
     url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/treasure_box'
     try:
         response = requests_session().get(url=url, headers=headers, timeout=30).json()
-        time.sleep(15)
         if response['code'] == 0:
             return response['data']
         else:
@@ -92,7 +92,6 @@ def watch_treasure_box_ads(headers):
     url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/treasure_box_video'
     try:
         response = requests_session().get(url=url, headers=headers, timeout=30).json()
-        time.sleep(15)
         if response['code'] == 0:
             return response['data']
         else:
@@ -124,19 +123,16 @@ def track(headers, body):
         print(traceback.format_exc())
         return
 
-def qq_read_box():
-  title = f'📚企鹅读书'
-  content = ''
-  result = ''
-  beijing_datetime = get_standard_time()
-  print(f'\n【企鹅读书】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}\n')
-  for account in COOKIELIST:
+def account_read(account):
+    title = '📚企鹅读书'
+    beijing_datetime = get_standard_time()
+
     headers = account['QQREAD_TIMEHD']
     body = account['QQREAD_BODY']
 
     guid = re.search(r'ywguid\=(\d+)\;', headers['Cookie'])
-    content += f'【账号】：{guid.group(1)}'
-    result += f'【账号】：{guid.group(1)}'
+    content = f'【账号】：{guid.group(1)}'
+    result = f'【账号】：{guid.group(1)}'
     error_catch = 0
     if beijing_datetime.hour == 0:
         track_result = track(headers=headers, body=body)
@@ -147,11 +143,11 @@ def qq_read_box():
 
     # 获取任务列表，查询金币余额
     daily_tasks = get_daily_tasks(headers=headers)
-
+    boxTimeInterval = daily_tasks['treasureBox']['timeInterval']
     # 开宝箱领金币
-    if daily_tasks['treasureBox']['timeInterval'] <= 5000:
-        print(f"等待{math.ceil(daily_tasks['treasureBox']['timeInterval'] / 1000)}秒，开启宝箱")
-        time.sleep(math.ceil(daily_tasks['treasureBox']['timeInterval'] / 1000))
+    if boxTimeInterval <= 10000:
+        print(f"等待{math.ceil(boxTimeInterval / 1000)}秒，开启宝箱")
+        time.sleep(math.ceil(boxTimeInterval / 1000))
         treasure_box_reward = open_treasure_box(headers=headers)
         if treasure_box_reward:
             content += f"\n【开启第{treasure_box_reward['count']}个宝箱】获得{treasure_box_reward['amount']}金币"
@@ -159,7 +155,12 @@ def qq_read_box():
 
     # 宝箱金币奖励翻倍
     daily_tasks = get_daily_tasks(headers=headers)
-    if daily_tasks['treasureBox']['videoDoneFlag'] == 0:
+    doubleBoxTimeInterval = boxTimeInterval - 600000
+    if doubleBoxTimeInterval < 0:
+        doubleBoxTimeInterval = 0
+    if doubleBoxTimeInterval <= 10000:
+        print(f"等待{math.ceil(doubleBoxTimeInterval/ 1000)}秒，开启宝箱")
+        time.sleep(math.ceil(doubleBoxTimeInterval / 1000))
         treasure_box_ads_reward = watch_treasure_box_ads(
             headers=headers)
         if treasure_box_ads_reward:
@@ -174,15 +175,31 @@ def qq_read_box():
         content += f'\n【宝箱任务】已开{daily_tasks["treasureBox"]["count"]}个宝箱，下一个宝箱{daily_tasks["treasureBox"]["tipText"]}\n\n'
         result += f'\n【宝箱任务】：已开{daily_tasks["treasureBox"]["count"]}个宝箱\n\n'
 
-  print(content)
+    print(content)
+    return result
 
-  # 每天 23:00 发送消息推送
-  if beijing_datetime.hour == 23 and beijing_datetime.minute < 5:
-      send(title=title, content=result)
-  elif not beijing_datetime.hour == 23:
-      print('未进行消息推送，原因：没到对应的推送时间点\n')
-  else:
-      print('未在规定的时间范围内\n')
+def qq_read_box():
+    title = f'📚企鹅读书'
+    result = ''
+    beijing_datetime = get_standard_time()
+    obj_l=[]
+    print(f'\n【企鹅读书】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}\n')
+    with ProcessPoolExecutor(max_workers=5) as executor:
+      for i in range(0, len(COOKIELIST)):
+        obj = executor.submit(account_read, COOKIELIST[i])
+        obj_l.append(obj)
+      executor.shutdown(wait=True)
+
+    for future in obj_l:
+      result += future.result()
+
+    # 每天 23:00 发送消息推送
+    if beijing_datetime.hour == 23 and beijing_datetime.minute < 5:
+        send(title=title, content=result)
+    elif not beijing_datetime.hour == 23:
+        print('未进行消息推送，原因：没到对应的推送时间点\n')
+    else:
+        print('未在规定的时间范围内\n')
 
 
 def main():

@@ -11,17 +11,35 @@ import sys
 import os
 from util import send, requests_session
 from datetime import datetime, timezone, timedelta
+
+# 自动提现10元
+withdraw = False
 # 实例 body 和 head 都为对象
 cookies1 = {
   'QQREAD_BODY': {},
   'QQREAD_TIMEURL': '',
-  'QQREAD_TIMEHD': {},
-  'WITHDRAW': False,
-  'HOSTING_MODE': False
+  'QQREAD_TIMEHD': {}
 }
 cookies2 = {}
 
 COOKIELIST = [cookies1, ]   # 多账号准备
+
+# ac读取环境变量
+if "QQREAD_BODY1" in os.environ:
+    print("执行自GitHub action")
+    COOKIELIST = []
+    for i in range(5):
+        timeHeaderVar = f'QQREAD_TIMEHD{str(i+1)}'
+        timeUrlVar = f'QQREAD_TIMEURL{str(i+1)}'
+        readBodyVar = f'QQREAD_BODY{str(i+1)}'
+        if timeHeaderVar in os.environ and os.environ[timeHeaderVar] and timeUrlVar in os.environ and os.environ[timeUrlVar] and readBodyVar in os.environ and os.environ[readBodyVar]:
+            globals()['cookies'+str(i + 1)]["QQREAD_TIMEHD"] = json.loads(os.environ[timeHeaderVar])
+            globals()['cookies'+str(i + 1)]["QQREAD_BODY"] = json.loads(os.environ[readBodyVar])
+            globals()['cookies'+str(i + 1)]["QQREAD_TIMEURL"] = os.environ[timeUrlVar]
+            COOKIELIST.append(globals()['cookies'+str(i + 1)])
+    print(COOKIELIST)
+if "WITHDRAW" in os.environ:
+    withdraw = os.environ["WITHDRAW"]
 
 upload_time = 5 # 每次上传阅读时长（单位分钟）
 max_read_time = 600  # 每日最大阅读时长（单位分钟）
@@ -416,19 +434,6 @@ def get_withdraw_list(headers):
         print(traceback.format_exc())
         return
 
-def get_withdraw_info(headers):
-    try:
-        url = 'https://mqqapi.reader.qq.com/mqq/red_packet/user/withdraw/page'
-        response = requests_session().get(url=url, headers=headers, timeout=30).json()
-        if response['code'] == 0:
-            return response['data']['configList']
-        else:
-            return
-    except:
-        print(traceback.format_exc())
-        return
-
-
 def withdraw_to_wallet(headers, amount):
     try:
         url = f"https://mqqapi.reader.qq.com/mqq/red_packet/user/withdraw?amount={amount}"
@@ -531,16 +536,16 @@ def qq_read():
                 error_catch = read_time_reward['amount']
 
     # 立即阅读《xxx》
-    if daily_tasks['taskList'][0]['enableFlag']:
+    if daily_tasks['taskList'][0]['doneFlag'] == 0:
         read_now_reward = read_now(headers=headers)
         if read_now_reward:
             content += f'\n【{daily_tasks["taskList"][0]["title"]}】获得{read_now_reward["amount"]}金币'
             error_catch = read_now_reward['amount']
 
     # 阅读任务
-    if daily_tasks['taskList'][1]['enableFlag']:
+    if daily_tasks['taskList'][1]['doneFlag'] == 0:
         for task in daily_tasks['taskList'][1]['config']:
-            if task['enableFlag'] and not task['doneFlag']:
+            if task['doneFlag'] == 0:
                 read_reward = read_tasks(
                     headers=headers, seconds=task['seconds'])
                 if read_reward and read_reward['amount'] > 0:
@@ -548,7 +553,7 @@ def qq_read():
                     error_catch = read_reward['amount']
 
     # 今日打卡
-    if daily_tasks['taskList'][2]['enableFlag']:
+    if daily_tasks['taskList'][2]['doneFlag'] == 0:
         sign_reward = daily_sign(headers=headers)
         if sign_reward:
             content += f"\n【{daily_tasks['taskList'][2]['title']}】获得{sign_reward['todayAmount']}金币，已连续签到{sign_reward['clockInDays']}天"
@@ -559,7 +564,7 @@ def qq_read():
                 content += f"\n【打卡翻倍】获得{sign_ads_reward['amount']}金币"
 
     # 看视频
-    if daily_tasks['taskList'][3]['enableFlag']:
+    if daily_tasks['taskList'][3]['doneFlag'] == 0:
         finish_count = int(daily_tasks["taskList"][3]["subTitle"][1:2])
         total_count = int(daily_tasks["taskList"][3]["subTitle"][3:4])
         # for i in range(1, total_count+1):
@@ -579,22 +584,6 @@ def qq_read():
                 if reward:
                     content += f"\n【周时长奖励】领取{week_read_reward['readTime']}时长奖励成功"
 
-    # 开宝箱领金币
-    if daily_tasks['treasureBox']['doneFlag'] == 0:
-        treasure_box_reward = open_treasure_box(headers=headers)
-        if treasure_box_reward:
-            content += f"\n【开启第{treasure_box_reward['count']}个宝箱】获得{treasure_box_reward['amount']}金币"
-            error_catch = treasure_box_reward['amount']
-
-    # 宝箱金币奖励翻倍
-    daily_tasks = get_daily_tasks(headers=headers)
-    if daily_tasks['treasureBox']['videoDoneFlag'] == 0:
-        treasure_box_ads_reward = watch_treasure_box_ads(
-            headers=headers)
-        if treasure_box_ads_reward:
-            content += f"\n【宝箱奖励翻倍】获得{treasure_box_ads_reward['amount']}金币"
-            error_catch = treasure_box_ads_reward['amount']
-
     # 读书刷时长
     if max_read_time > today_read_time["todayReadSeconds"] // 60:
         read_book = read_books(
@@ -610,73 +599,17 @@ def qq_read():
     else:
         content += f'\n【数据跟踪】跟踪失败！请重新抓取你的参数 body '
 
-    if withdraw:
-        # 获取提现信息
-        withdraw_info = get_withdraw_info(headers=headers)
-        transform_info = []
-        if withdraw_info:
-            for i in withdraw_info:
-                if i['amount'] == 6000:
-                    transform_info.append({
-                        'amount': i['amount'],
-                        'withdraw_time': 1
-                    })
-                elif i['amount'] == 10000 or i['amount'] == 20000:
-                    withdraw_time = re.findall('\d+', i['tipText'])
-                    transform_info.append({
-                        'amount': i['amount'],
-                        'withdraw_time': int(withdraw_time[0])
-                    })
-                else:
-                    transform_info.append({
-                        'amount': i['amount'],
-                        'withdraw_time': 999
-                    })
-
-        # 提现
-        if withdraw and beijing_datetime.hour == 23:
-            if hosting_mode:
-                # 先把0.6元提现了
-                if daily_tasks["user"]["amount"] >= 6000 and transform_info[0]['amount'] == 6000 and \
-                        transform_info[0]['withdraw_time'] > 0:
-                    withdraw_result = withdraw_to_wallet(
-                        headers=headers, amount=6000)
-                    if withdraw_result == True:
-                        content += f'\n【托管提现】提现0.6元成功！'
-                        # 提现成功后，如果 notify 打开就发推送
-                        send(title=title, content=f"【托管提现】提现0.6元成功！")
-                    else:
-                        content += f'\n【托管提现】提现失败！原因：{withdraw_result}'
-                elif daily_tasks["user"]["amount"] >= 10000:
-                    transform_info.reverse()  # 提现尝试 大额度->小额度
-                    for i in transform_info:
-                        if daily_tasks["user"]["amount"] >= i['amount'] and i['withdraw_time'] > 0:
-                            withdraw_result = withdraw_to_wallet(
-                                headers=headers, amount=i['amount'])
-                            if withdraw_result == True:
-                                content += f"\n【托管提现】提现{i['amount'] // 10000}元成功！"
-                                send(
-                                    title=title, content=f"【托管提现】提现{i['amount'] // 10000}元成功！")
-                            else:
-                                content += f'\n【托管提现】提现失败！原因：{withdraw_result}'
-                            break
-                else:
-                    content += f'\n【托管提现】余额不足或低金额提现次数耗尽，无法提现！'
-            else:
-                if daily_tasks["user"]["amount"] >= 100000:
-                    withdraw_result = withdraw_to_wallet(
-                        headers=headers, amount=100000)
-                    if withdraw_result == True:
-                        content += f'\n【账号】：{guid.group(1)} 提现10元成功！'
-                        send(title=title, content=f"【账号】：{guid.group(1)} 提现10元成功！")
-                    else:
-                        content += f'\n【满额提现】提现失败！原因：{withdraw_result}'
-                else:
-                    content += f'\n【满额提现】余额不足10元，未打开托管模式，不提现！'
+    # 提现
+    if withdraw and daily_tasks["user"]["amount"] >= 100000:
+        withdraw_result = withdraw_to_wallet(
+            headers=headers, amount=100000)
+        if withdraw_result == True:
+            content += f'\n【账号】：{guid.group(1)} 提现10元成功！'
+            send(title=title, content=f"【账号】：{guid.group(1)} 提现10元成功！")
         else:
-            content += f'\n【自动提现】未到23点'
+            content += f'\n【满额提现】提现失败！原因：{withdraw_result}'
     else:
-        content += f'\n【自动提现】未启用该功能'
+        content += f'\n【满额提现】余额不足10元，未打开托管模式，不提现！'
 
     # 历史收益
     history_coins_total = daily_tasks["user"]["amount"]
