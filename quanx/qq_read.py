@@ -2,6 +2,7 @@
 # _*_ coding:utf-8 _*_
 
 # 此脚本参考 https://raw.githubusercontent.com/TNanko/Scripts/master/scripts/qq_read.py
+# 此脚本参考 https://raw.githubusercontent.com/ziye12/JavaScript/master/Task/qqreadnode.js
 
 import traceback
 import time

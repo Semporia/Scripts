@@ -154,7 +154,6 @@ def account_read(account):
             error_catch = treasure_box_reward['amount']
 
     # 宝箱金币奖励翻倍
-    daily_tasks = get_daily_tasks(headers=headers)
     doubleBoxTimeInterval = boxTimeInterval - 600000
     if doubleBoxTimeInterval < 0:
         doubleBoxTimeInterval = 0
