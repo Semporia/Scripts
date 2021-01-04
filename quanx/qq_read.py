@@ -607,7 +607,7 @@ def qq_read():
         else:
             content += f'\n【满额提现】提现失败！原因：{withdraw_result}'
     else:
-        content += f'\n【满额提现】余额不足10元，未打开托管模式，不提现！'
+        content += f'\n【满额提现】余额不足10元'
 
     # 历史收益
     history_coins_total = daily_tasks["user"]["amount"]
