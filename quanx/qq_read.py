@@ -37,7 +37,7 @@ if "QQREAD_BODY1" in os.environ:
             globals()['cookies'+str(i + 1)]["QQREAD_BODY"] = json.loads(os.environ[readBodyVar])
             globals()['cookies'+str(i + 1)]["QQREAD_TIMEURL"] = os.environ[timeUrlVar]
             COOKIELIST.append(globals()['cookies'+str(i + 1)])
-    print(COOKIELIST)
+    print(f"GitHub action中共有{len(COOKIELIST)}个账户")
 if "WITHDRAW" in os.environ:
     withdraw = os.environ["WITHDRAW"]
 
@@ -457,8 +457,6 @@ def qq_read():
     book_url = account['QQREAD_TIMEURL']
     headers = account['QQREAD_TIMEHD']
     body = account['QQREAD_BODY']
-    withdraw = account['WITHDRAW']
-    hosting_mode = account['HOSTING_MODE']
 
     start_time = time.time()
     error_catch = 0

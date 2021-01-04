@@ -23,15 +23,15 @@ COOKIELIST = [cookies1,]  # 多账号准备
 
 # ac读取环境变量
 if "QQREAD_BODY1" in os.environ:
-  print("执行自GitHub action")
-  COOKIELIST = []
-  for i in range(5):
-    headerVar = f'QQREAD_TIMEHD{str(i+1)}'
-    readBodyVar = f'QQREAD_BODY{str(i+1)}'
-    if headerVar in os.environ and os.environ[headerVar] and readBodyVar in os.environ and os.environ[readBodyVar]:
-      globals()['cookies'+str(i + 1)]["QQREAD_TIMEHD"] = json.loads(os.environ[headerVar])
-      globals()['cookies'+str(i + 1)]["QQREAD_BODY"] = json.loads(os.environ[readBodyVar])
-      COOKIELIST.append(globals()['cookies'+str(i + 1)])
+    print("执行自GitHub action")
+    COOKIELIST = []
+    for i in range(5):
+        headerVar = f'QQREAD_TIMEHD{str(i+1)}'
+        readBodyVar = f'QQREAD_BODY{str(i+1)}'
+        if headerVar in os.environ and os.environ[headerVar] and readBodyVar in os.environ and os.environ[readBodyVar]:
+            globals()['cookies'+str(i + 1)]["QQREAD_TIMEHD"] = json.loads(os.environ[headerVar])
+            globals()['cookies'+str(i + 1)]["QQREAD_BODY"] = json.loads(os.environ[readBodyVar])
+            COOKIELIST.append(globals()['cookies'+str(i + 1)])
 
 cur_path = os.path.abspath(os.path.dirname(__file__))
 root_path = os.path.split(cur_path)[0]
