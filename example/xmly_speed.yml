@@ -1,0 +1,28 @@
+name: 喜马拉雅极速版
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  watch:
+    types: [started]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: 'Set up Python'
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+
+      - name: 'Install requests'
+        run: pip install requests
+
+      - name: 'run 中青阅读'
+        # xmly_speed.py目录自己修改
+        run: python3 quanx/xmly_speed.py
+        env:
+            XMLY_SPEED_COOKIE: ${{ secrets.XMLY_SPEED_COOKIE }}  #必须 cookie 多账号 \n 分割
+            AUTO_TAKE_OUT: ${{ secrets.AUTO_TAKE_OUT }}  #非必须 是否自动提现支付宝20
