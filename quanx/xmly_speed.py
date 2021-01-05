@@ -1055,7 +1055,7 @@ def run():
                 if task_out_res:
                     send(title=title, content=f"{device} 提现到账户【{pay_info['accountNumber']}】20元成功")
             else:
-                send(title=title, content="请先手动填写支付宝账号提现一次")
+                send(title=title, content=f"请先手动填写【账号{k+1}】支付宝账号提现一次")
         print("###"*20)
         print("\n"*4)
 
