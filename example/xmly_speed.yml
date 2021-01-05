@@ -18,8 +18,9 @@ jobs:
           python-version: 3.7
 
       - name: 'Install requests'
-        run: pip install requests
-        run: pip install rsa
+        run: |
+          pip install requests
+          pip install rsa
 
       - name: 'run 中青阅读'
         # xmly_speed.py目录自己修改
