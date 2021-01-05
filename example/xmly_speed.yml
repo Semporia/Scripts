@@ -22,7 +22,7 @@ jobs:
           pip install requests
           pip install rsa
 
-      - name: 'run 中青阅读'
+      - name: 'run 喜马拉雅极速版'
         # xmly_speed.py目录自己修改
         run: python3 quanx/xmly_speed.py
         env:
