@@ -961,7 +961,7 @@ def third_pay_info(cookies):
             f'https://m.ximalaya.com/speed/web-earn/account/third-pay-account/{thirdPayType}', headers=headers, cookies=cookies).json()
         print(response)
         if response['code'] == 0:
-            return response['data'][0]
+            return response['data'][-1]
         else:
             return
     except:
@@ -985,7 +985,7 @@ def task_out_info(cookies):
             'https://m.ximalaya.com/speed/web-earn/account/take-out/info', headers=headers, cookies=cookies).json()
         print(response)
         if response['code'] == 0:
-            return response['data'][0]
+            return response['data'][-1]
         else:
             return
     except:
@@ -1053,7 +1053,7 @@ def run():
                         "accountNumber": pay_info["accountNumber"], "amount": amount, "takeOutType": takeOutType}
                 task_out_res = task_out(cookies=cookies, body=body)
                 if task_out_res:
-                    send(title=title, content=f"{device} 提现20元成功")
+                    send(title=title, content=f"{device} 提现到账户【{pay_info["accountNumber"]}】20元成功")
             else:
                 send(title=title, content="请先手动填写支付宝账号提现一次")
         print("###"*20)
