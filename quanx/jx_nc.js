@@ -178,7 +178,7 @@ function answerTask() {
       async (err, resp, data) => {
         try {
           const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];
-          let { ret, retmsg } = JSON.parse(res);
+          let { ret, retmsg, right } = JSON.parse(res);
           retmsg = retmsg !== '' ? retmsg : 'success';
           $.log(
             `\n${taskname}[做任务]：${retmsg.indexOf('活动太火爆了') !== -1 ? '任务进行中或者未到任务时间' : retmsg}${
