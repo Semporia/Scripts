@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-08 16:55:19
+ * @LastEditTime: 2021-01-09 17:17:31
  * 本脚本包含京喜耗时任务，默认自动执行，一天执行一两次即可，防止漏网之鱼，可以在box中关闭，然后自己设置定时任务，目前包括
  * 拾取好友与自己零件
  * 厂长翻倍任务
@@ -45,6 +45,7 @@ $.waitTime = 1000;
         $.currentCookie.match(/pt_pin=(.+?);/) && $.currentCookie.match(/pt_pin=(.+?);/)[1],
       );
       $.log(`\n开始【京东账号${i + 1}】${userName}`);
+      $.result.push(`\n【京东账号${i + 1}】${userName}`);
       const beginInfo = await getUserInfo();
       await $.wait(500);
       await getMyComponent();
@@ -52,9 +53,9 @@ $.waitTime = 1000;
       await getFriends();
       await $.wait(500);
       const endInfo = await getUserInfo();
-      // await clickManage();
-      // await $.wait(500);
-      // await getReadyCard();
+      await clickManage();
+      await $.wait(500);
+      await getReadyCard();
       $.result.push(
         `拾取前能量：${beginInfo.user.electric} 拾取后能量：${endInfo.user.electric}`,
         `获得零件能量：${endInfo.user.electric - beginInfo.user.electric}`,
@@ -115,7 +116,7 @@ async function getMyComponent() {
     meStatus[0] = await pickUserComponents($.info.user.encryptPin, true);
   }
   if (!meStatus[0] && $.authExecute) {
-    await $.wait(5000);
+    await $.wait(3000);
     await getMyComponent();
   }
 }
@@ -131,7 +132,7 @@ function getFriends() {
           const { encryptPin } = list[i];
           let status = [false];
           if (!status[0]) {
-            $.wait(5000);
+            await $.wait(3000);
             status[0] = await pickUserComponents(encryptPin);
             statusArr.push(status[0]);
           }
@@ -140,7 +141,7 @@ function getFriends() {
           }
         }
         if (!statusArr[statusArr.length - 1] && $.authExecute) {
-          await $.wait(5000);
+          await $.wait(3000);
           await getFriends();
         }
       } catch (e) {
@@ -164,7 +165,7 @@ function pickUserComponents(pin, isMe) {
             const { placeId } = componentList[i];
             let status = [false];
             if (!status[0]) {
-              $.wait(2000);
+              await $.wait(1000);
               status[0] = await pickUpComponent(placeId, pin, isMe);
               statusArr.push(status[0]);
             }
@@ -177,6 +178,8 @@ function pickUserComponents(pin, isMe) {
           } else {
             resolve(false);
           }
+        } else if (isMe) {
+          resolve(true);
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -189,7 +192,7 @@ function pickUserComponents(pin, isMe) {
 
 function pickUpComponent(placeId, pin, isMe) {
   return new Promise(async resolve => {
-    $.get(taskUrl('usermaterial/PickUpComponent', `pin=${pin}&placeId=${placeId}`), (err, resp, data) => {
+    $.get(taskUrl('usermaterial/PickUpComponent', `pin=${pin}&placeId=${placeId}&_stk=_time%2Cpin%2CplaceId%2Czone`), (err, resp, data) => {
       try {
         const { msg, data: { increaseElectric } = {} } = JSON.parse(data);
         $.log(
