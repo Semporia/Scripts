@@ -66,11 +66,11 @@ $.userTuanInfo = {};
       await $.wait(500);
       const endInfo = await getUserInfo();
       $.info.commodityInfo && $.result.push(
-        `名称：${$.info.commodityInfo.name}`,
-        `任务前电力：${beginInfo.user.electric} 任务后电力：${endInfo.user.electric}`,
-        `获得电力：${endInfo.user.electric - beginInfo.user.electric} 还需电力：${
+        `【名称】：${$.info.commodityInfo.name}`,
+        `【电力】：获得(${beginInfo.user.electric}) 还需(${
           endInfo.productionInfo.needElectric - beginInfo.productionInfo.investedElectric
-        }`,
+        })`,
+        `【账户剩余】：${endInfo.user.electric}`,
       );
       await $.wait(500);
       await investElectric();
@@ -79,12 +79,12 @@ $.userTuanInfo = {};
       await submitInviteId(userName);
       await $.wait(500);
       await createAssistUser();
-      await $.wait(500);
-      await getTuanId();
-      await $.wait(500);
-      await submitTuanId(userName);
-      await $.wait(500);
-      await joinTuan();
+      // await $.wait(500);
+      // await getTuanId();
+      // await $.wait(500);
+      // await submitTuanId(userName);
+      // await $.wait(500);
+      // await joinTuan();
     }
   }
   await showMsg();
@@ -197,7 +197,7 @@ function collectElectricity(facId, master) {
     $.get(
       taskUrl(
         'generator/CollectCurrentElectricity',
-        `factoryid=${facId}&master=${master ? master : ''}&apptoken=&pgtimestamp=&phoneID=&doubleflag=1`,
+        `factoryid=${facId}&master=${master ? master : ''}&apptoken=&pgtimestamp=&phoneID=&doubleflag=1&_stk=_time%2Capptoken%2Cdoubleflag%2Cfactoryid%2Cpgtimestamp%2CphoneID%2CtimeStamp%2Czone`,
       ),
       (err, resp, data) => {
         try {
@@ -355,7 +355,7 @@ function doTask({ taskId, completedTimes, configTargetTimes, taskName }) {
 function investElectric() {
   return new Promise(async resolve => {
     if (!$.autoCharge) {
-      $.result.push('未打开自动投入');
+      $.result.push('【投入电力】：未打开自动投入');
       resolve();
       return;
     }
@@ -365,7 +365,7 @@ function investElectric() {
         try {
           const { msg, data: { investElectric } = {} } = JSON.parse(data);
           $.log(`\n投入电力: ${investElectric ? investElectric : ''} ${msg}\n${$.showLog ? data : ''}`);
-          $.result.push(`本次投入电力 ${investElectric}`);
+          $.result.push(`【投入电力】：${investElectric}`);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -399,7 +399,7 @@ function getHireRewardList() {
 
 function hireAward(body) {
   return new Promise(async resolve => {
-    $.get(taskUrl('friend/HireAward', `${body}&type=0`), async (err, resp, data) => {
+    $.get(taskUrl('friend/HireAward', `${body}&_stk=_time%2Cdate%2Ctype%2Czone`), async (err, resp, data) => {
       try {
         const { msg, data: { investElectric } = {} } = JSON.parse(data);
         $.log(`\n收取打工电力：${msg}\n${$.showLog ? data : ''}`);
@@ -465,7 +465,7 @@ function submitInviteId(userName) {
           const { data = {} } = JSON.parse(_data);
           $.log(`\n邀请码提交：${data.value}\n${$.showLog ? _data : ''}`);
           if (data.value) {
-            $.result.push('邀请码提交成功！');
+            $.result.push('【邀请码】：提交成功！');
           }
         } catch (e) {
           $.logErr(e, resp);
