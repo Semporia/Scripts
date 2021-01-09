@@ -1,176 +1,97 @@
 /*
  * @Author: whyour
  * @Github: https://github.com/whyour
- * @Date: 2020-11-16 20:35:13
+ * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 13:10:47
- */
+ * @LastEditTime: 2021-01-09 16:02:30
+ * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
+ * 目前支持签到和福利金抽奖
 
-const $ = new Env("滴滴出行");
-const didiTokenKey = "didi_token";
-const didiCityIdKey = "didi_city_id";
-const didiLidKey = "didi_lid";
-const didiMySourceIdKey = "didi_my_source_id";
-const didiActivityIdKey = "didi_activity_id";
-const didiChannelIdKey = "didi_channel_id";
-const sourceIdConf = {
-  "7mO4XP93fb84VMSC8Xk5vg%3D%3D": 7,
-  "pDmWW7HoWUkNu2nmJ3HJEQ%3D%3D": 3,
-};
-$.cityId = $.getdata(didiCityIdKey);
-$.token = $.getdata(didiTokenKey);
-$.lid = $.getdata(didiLidKey);
-$.channelId = $.getdata(didiChannelIdKey);
-$.activityId = $.getdata(didiActivityIdKey);
-$.sourceId = $.getdata(didiMySourceIdKey);
+  hostname = api.didialift.com, as.xiaojukeji.com, bosp-api.xiaojukeji.com
+
+  quanx:
+  [task_local]
+  0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js, tag=滴滴出行, img-url=https://raw.githubusercontent.com/Orz-3/task/master/didi.png, enabled=true
+  [rewrite_local]
+  ^https?:\/\/api\.didialift\.com\/beatles\/userapi\/user\/user\/getuserinfo?.*city_id=(\d+).*&token=([^&]*) url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
+  ^https:\/\/as\.xiaojukeji\.com\/ep\/as\/toggles\?.*city=(\d*)&.*ticket=(.*)& url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
+  ^https?:\/\/bosp-api\.xiaojukeji\.com\/bosp-api\/lottery\/info?.*lid=([^&]*) url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
+
+  loon:
+  [Script]
+  http-request ^https?:\/\/api\.didialift\.com\/beatles\/userapi\/user\/user\/getuserinfo?.*city_id=(\d+).*&token=([^&]*) script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js, requires-body=false, timeout=10, tag=滴滴出行cookie
+  http-request ^https:\/\/as\.xiaojukeji\.com\/ep\/as\/toggles\?.*city=(\d*)&.*ticket=(.*)& script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js, requires-body=false, timeout=10, tag=滴滴出行cookie
+  http-request ^https?:\/\/bosp-api\.xiaojukeji\.com\/bosp-api\/lottery\/info?.*lid=([^&]*) script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js, requires-body=false, timeout=10, tag=滴滴出行cookie
+  cron "0 9 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js, tag=滴滴出行
+
+  surge:
+  [Script]
+  滴滴出行 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js
+  滴滴出行cookie = type=http-request,pattern=^https?:\/\/api\.didialift\.com\/beatles\/userapi\/user\/user\/getuserinfo?.*city_id=(\d+).*&token=([^&]*),requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
+  滴滴出行cookie = type=http-request,pattern=^https:\/\/as\.xiaojukeji\.com\/ep\/as\/toggles\?.*city=(\d*)&.*ticket=(.*)&,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
+  滴滴出行cookie = type=http-request,pattern=^https?:\/\/bosp-api\.xiaojukeji\.com\/bosp-api\/lottery\/info?.*lid=([^&]*),requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
+ *
+ **/
+
+const $ = new Env('滴滴出行');
+const API_HOST = 'https://bosp-api.xiaojukeji.com/';
+$.showLog = $.getdata('nc_showLog') ? $.getdata('nc_showLog') === 'true' : false;
+$.token = $.getdata('didi_token');
+$.cityId = $.getdata('didi_city_id');
+$.lid = $.getdata('didi_lid');
 $.clientId = 1;
 $.result = [];
 
 !(async () => {
   if (!getCookies()) return;
   await checkIn();
-  await collectPoint();
   await goldLottery();
-  await dayLottery();
-  await getOrderGold();
   await showMsg();
 })()
-  .catch((e) => $.logErr(e))
+  .catch(e => $.logErr(e))
   .finally(() => $.done());
 
 function getCookies() {
   if (!$.token || !$.cityId) {
-    $.msg($.name, "【提示】请先获取滴滴Token");
+    $.msg($.name, '【提示】请先获取滴滴Token');
     return false;
   }
   return true;
 }
 
 function checkIn() {
-  return new Promise((resolve) => {
-    const source_id = getSourceId();
-    const sourceStr = source_id ? `&share_source_id=${source_id}` : "";
-    const url = `https://bosp-api.xiaojukeji.com/wechat/benefit/public/index?city_id=${
-      $.cityId
-    }${sourceStr}&share_date=${$.time("yyyy-MM-dd")}`;
-    $.log(`当前使用的source_id：${source_id}`);
-    const options = {
-      url: url,
-      headers: {
-        "Didi-Ticket": $.token,
-      },
-      body: "",
-    };
-    $.get(options, (err, resp, data) => {
-      try {
-        $.log(`滴滴签到接口响应：${data}`);
-        let {
-          errno,
-          data: { share, sign, welfare },
-        } = JSON.parse(data);
-        if (errno == 0) {
-          if (share && share["source_id"]) {
-            $.setdata(didiMySourceIdKey, share.source_id);
-            $.log(`您的source_id：${share.source_id}`);
-          }
+  return new Promise(resolve => {
+    $.get(
+      taskUrl('wechat/benefit/public/index', `city_id=${$.cityId}&share_source_id=&share_date=${$.time('yyyy-MM-dd')}`),
+      (err, resp, data) => {
+        try {
+          let { errmsg, data: { share = {}, sign = {}, welfare = {} } = {} } = JSON.parse(data);
+          errmsg = errmsg ? errmsg : '成功';
+          $.log(`\n签到：${errmsg}\n${$.showLog ? data : ''}`);
+          $.log(`您的source_id：${share.source_id}`);
           if (sign.sign) {
-            let subsidy = Number(
-              sign.sign.subsidy_state.subsidy_amount +
-                sign.sign.subsidy_state.extra_subsidy_amount
-            );
-            $.result.push(
-              `🚕[签到] 签到成功！获得${subsidy}福利金！账户共${welfare.balance}福利金`
-            );
+            let subsidy = Number(sign.sign.subsidy_state.subsidy_amount + sign.sign.subsidy_state.extra_subsidy_amount);
+            $.result.push(`🚕[签到] 签到成功！获得${subsidy}福利金！账户共${welfare.balance}福利金`);
           } else {
-            $.result.push(
-              `🚕[签到] 今天已经签到过了。账户共${welfare.balance}福利金`
-            );
+            $.result.push(`🚕[签到] 今天已经签到过了。账户共${welfare.balance}福利金`);
           }
-        } else {
-          $.result.push(`🚕[签到] 签到失败，${obj.errmsg}`);
+        } catch (err) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
         }
-      } catch (err) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
-      }
-    });
-  });
-}
-
-// 随机获取SourceId
-function getSourceId() {
-  let mySourceId = $.getdata(didiMySourceIdKey);
-  if (!!mySourceId) {
-    delete sourceIdConf[mySourceId];
-  }
-  sourceIdList = Object.keys(sourceIdConf);
-  let newSourceIdList = [];
-  for (sourceId in sourceIdConf) {
-    let sourceIdArray = new Array(sourceIdConf[sourceId]).fill(sourceId);
-    newSourceIdList = newSourceIdList.concat(sourceIdArray);
-  }
-  return newSourceIdList[
-    Math.round(Math.random() * (newSourceIdList.length - 1))
-  ];
-}
-
-function collectPoint() {
-  return new Promise((resolve) => {
-    let options = {
-      url: `https://quartz.xiaojukeji.com/volcano/quartz/points/collect?ts=${new Date().getTime()}`,
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "zh-cn",
-        Connection: "keep-alive",
-        "Content-Length": "238",
-        "Content-Type": "application/x-www-form-urlencoded",
-        Host: "quartz.xiaojukeji.com",
-        Origin: "https://page.udache.com",
-        Referer: "https://page.udache.com/activity/apps/gain-points/index.html",
-        "User-Agent":
-          "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.0.12 FusionKit/1.2.14",
       },
-      body: `app_id=common&token=${$.token}`,
-    };
-    $.post(options, async (err, resp, data) => {
-      try {
-        $.log(`领取积分接口响应：${data}`);
-        let obj = JSON.parse(data);
-        const {
-          account: {
-            dcoin: { coin, expire_balance, expire_date },
-          },
-        } = await getUserInfo();
-        if (obj.errno === 0) {
-          $.result.push(
-            `🚕[积分] 领取成功, 账户共有积分${coin}\n${expire_balance}积分在${expire_date}过期`
-          );
-        } else {
-          $.result.push(
-            `🚕[积分] 领取失败, 账户共有积分${coin}\n${expire_balance}积分在${expire_date}过期`
-          );
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
-      }
-    });
+    );
   });
 }
 
-// 福利金抽奖
 function goldLottery() {
-  return new Promise(async (resolve) => {
+  return new Promise(async resolve => {
     if ($.lid) {
       const drawCount = await getDrawAmount();
-      if (drawCount > 0) {
-        for (let i = 0; i < drawCount; i++) {
-          await $.wait(5000);
-          await lotteryDraw(i);
-        }
+      for (let i = 0; i < drawCount; i++) {
+        await $.wait(5000);
+        await lotteryDraw(i);
       }
     } else {
       resolve();
@@ -179,18 +100,13 @@ function goldLottery() {
 }
 
 function getDrawAmount() {
-  return new Promise((resolve) => {
-    let url = `https://bosp-api.xiaojukeji.com/bosp-api/lottery/info?lid=${$.lid}&token=${$.token}&lucky_users=0`;
-    $.get(url, (err, resp, data) => {
+  return new Promise(resolve => {
+    $.get(taskUrl('bosp-api/lottery/info', `lid=${$.lid}&token=${$.token}&lucky_users=0`), (err, resp, data) => {
       try {
-        $.log(`福利金抽奖，接口响应：${data}`);
-        let obj = JSON.parse(data);
-        if (obj.code == 0) {
-          $.log(`福利金抽奖次数：${obj.data.eliminate_info.base_share_amount}`);
-          $.result.push(
-            `🚕[福利金抽奖] 次数：${obj.data.eliminate_info.base_share_amount}`
-          );
-        }
+        let { message, data: { eliminate_info: { base_share_amount } = {} } = {} } = JSON.parse(data);
+        message = message ? message : '成功';
+        $.log(`\n福利金次数：${message}, 共${base_share_amount || 0}\n${$.showLog ? data : ''}`);
+        resolve(base_share_amount || 0);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -201,136 +117,15 @@ function getDrawAmount() {
 }
 
 function lotteryDraw(index) {
-  return new Promise((resolve) => {
-    let url = `https://bosp-api.xiaojukeji.com/bosp-api/lottery/draw?lid=${$.lid}&token=${$.token}`;
-    $.get(url, (err, resp, data) => {
+  return new Promise(resolve => {
+    $.get(taskUrl('bosp-api/lottery/draw', `lid=${$.lid}&token=${$.token}`), (err, resp, data) => {
       try {
         $.log(`福利金抽奖，接口响应：${data}`);
-        let obj = JSON.parse(data);
-        if (obj.code === 0) {
-          $.result.push(`🚕[福利金抽奖] 第${index}次：${obj.data.prize.name}`);
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
-      }
-    });
-  });
-}
-
-// 天天有奖
-function dayLottery() {
-  return new Promise((resolve) => {
-    if ($.channelId && $.activityId) {
-      let options = {
-        url:
-          "https://manhattan.webapp.xiaojukeji.com/marvel/api/manhattan-signin-task/signIn/execute",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: $.token,
-          channelId: $.channelId,
-          activityId: $.activityId,
-          clientId: $.clientId,
-        }),
-      };
-      $.post(options, (err, resp, data) => {
-        try {
-          $.log(`天天有奖，接口响应：${data}`);
-          const obj = JSON.parse(data);
-          if (obj.errorCode === 0) {
-            obj.data.giftDetail.forEach((gift) => {
-              $.log(
-                `天天有奖签到结果：${gift.displayJson.displayName} ${gift.displayValue} ${gift.displayUnit}`
-              );
-              $.result.push(
-                `🚕[天天有奖] ${gift.displayJson.displayName} ${gift.displayValue} ${gift.displayUnit} 过期 ${gift.giftEndDate}`
-              );
-            });
-          }
-          // else if (obj.errorCode === 500000 && obj.errorMsg === "断签") {
-          // await DailyLotteryRestart(token, activityId, clientId);
-          // }
-          else {
-            $.log(`天天有奖签到失败，${obj.errorMsg}`);
-            $.result.push(`🚕[天天有奖] 签到失败，${obj.errorMsg}`);
-          }
-        } catch (e) {
-          $.logErr(e, resp);
-        } finally {
-          resolve();
-        }
-      });
-    } else {
-      resolve();
-    }
-  });
-}
-
-// 领取福利金
-function getOrderGold() {
-  return new Promise(async (resolve) => {
-    let orderList = await getOrderList();
-    if (orderList.length === 0) {
-      $.result.push(`🚕[订单福利金] 今天没有忘记领取的福利金`);
-      resolve();
-    }
-    let rewardList = [];
-    let total = 0;
-    orderList.forEach((element) => {
-      total += Number(element.bonus_info.amount);
-      rewardList.push(getRewards(element.oid));
-    });
-
-    await Promise.all(rewardList);
-
-    $.result.push(`🚕[订单福利金] 捡回遗忘的福利金 ${total}。`);
-    resolve();
-  });
-}
-
-function getOrderList() {
-  return new Promise((resolve) => {
-    let url = `https://api.udache.com/gulfstream/passenger/v2/other/pListReward?token=${$.token}`;
-    $.get({ url }, (err, resp, data) => {
-      $.log(`获取待领取的福利金，接口响应：${data}`);
-      try {
-        let obj = JSON.parse(data);
-        if (obj.errno == 0) {
-          resolve(obj.data || []);
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve([]);
-      }
-    });
-  });
-}
-
-function getRewards(orderId) {
-  return new Promise((resolve) => {
-    let url = `https://api.udache.com/gulfstream/passenger/v2/otherpGetRewards?order_id=${orderId}&token=${$.token}`;
-    $.get(url, (err, resp, data) => {
-      $.log(`领取福利金，接口响应：${data}`);
-      resolve();
-    });
-  });
-}
-
-function getUserInfo() {
-  return new Promise((resolve) => {
-    let url = `https://quartz.xiaojukeji.com/volcano/quartz/user/info?ts=${new Date().getTime()}&app_id=common&token=${
-      $.token
-    }&source_id=wdcn_1000&partition_id=1007`;
-    $.get({ url }, (err, resp, data) => {
-      $.log(`获取用户信息，接口响应：${data}`);
-      try {
-        let obj = JSON.parse(data);
-        if (obj.errno === 0) {
-          resolve(obj.data);
+        let { code, message, data: { prize } = {} } = JSON.parse(data);
+        message = message ? message : '成功';
+        $.log(`\n福利金抽奖：${message} \n${$.showLog ? data : ''}`);
+        if (code === 0) {
+          $.result.push(`🚕[福利金抽奖] 第${index}次：获得${prize.name}`);
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -342,10 +137,27 @@ function getUserInfo() {
 }
 
 function showMsg() {
-  return new Promise((resolve) => {
-    $.msg($.name, "", $.result.join("\n"));
+  return new Promise(resolve => {
+    $.msg($.name, '', $.result.join('\n'));
     resolve();
   });
+}
+
+function taskUrl(function_path, body) {
+  return {
+    url: `${API_HOST}${function_path}?${body}`,
+    headers: {
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Accept-Language': 'zh-cn',
+      'Didi-Ticket': $.token,
+      Host: 'bosp-api.xiaojukeji.com',
+      Origin: 'https://page.udache.com',
+      Referer: 'https://page.udache.com/',
+      Accept: 'application/json, text/plain, */*',
+      'User-Agent':
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.0.12 FusionKit/1.2.14',
+    },
+  };
 }
 
 // prettier-ignore
