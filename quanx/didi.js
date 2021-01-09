@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-09 16:02:30
+ * @LastEditTime: 2021-01-09 16:26:58
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
@@ -33,9 +33,10 @@
  *
  **/
 
-const $ = new Env('滴滴出行');
+const $ = new Env('🚕滴滴出行');
 const API_HOST = 'https://bosp-api.xiaojukeji.com/';
-$.showLog = $.getdata('nc_showLog') ? $.getdata('nc_showLog') === 'true' : false;
+$.showLog = $.getdata('didi_showLog') ? $.getdata('didi_showLog') === 'true' : false;
+$.didiLottery = $.getdata('didi_lottery') ? $.getdata('didi_lottery') === 'true' : false;
 $.token = $.getdata('didi_token');
 $.cityId = $.getdata('didi_city_id');
 $.lid = $.getdata('didi_lid');
@@ -65,16 +66,15 @@ function checkIn() {
       taskUrl('wechat/benefit/public/index', `city_id=${$.cityId}&share_source_id=&share_date=${$.time('yyyy-MM-dd')}`),
       (err, resp, data) => {
         try {
-          let { errmsg, data: { share = {}, sign = {}, welfare = {} } = {} } = JSON.parse(data);
+          let { errmsg, data: { share = {}, sign = {}, welfare = {}, notification } = {} } = JSON.parse(data);
           errmsg = errmsg ? errmsg : '成功';
           $.log(`\n签到：${errmsg}\n${$.showLog ? data : ''}`);
           $.log(`您的source_id：${share.source_id}`);
+          let str = '已经签到';
           if (sign.sign) {
-            let subsidy = Number(sign.sign.subsidy_state.subsidy_amount + sign.sign.subsidy_state.extra_subsidy_amount);
-            $.result.push(`🚕[签到] 签到成功！获得${subsidy}福利金！账户共${welfare.balance}福利金`);
-          } else {
-            $.result.push(`🚕[签到] 今天已经签到过了。账户共${welfare.balance}福利金`);
+            str = `签到成功！获得${Number(sign.sign.subsidy_state.subsidy_amount + sign.sign.subsidy_state.extra_subsidy_amount)}福利金！`
           }
+          $.result.push(`【签到】${str}`, `【账户】${welfare.balance}福利金`, `【通知】${notification}`);
         } catch (err) {
           $.logErr(e, resp);
         } finally {
@@ -89,6 +89,10 @@ function goldLottery() {
   return new Promise(async resolve => {
     if ($.lid) {
       const drawCount = await getDrawAmount();
+      if (drawCount === 0) {
+        resolve();
+        return;
+      }
       for (let i = 0; i < drawCount; i++) {
         await $.wait(5000);
         await lotteryDraw(i);
@@ -105,7 +109,7 @@ function getDrawAmount() {
       try {
         let { message, data: { eliminate_info: { base_share_amount } = {} } = {} } = JSON.parse(data);
         message = message ? message : '成功';
-        $.log(`\n福利金次数：${message}, 共${base_share_amount || 0}\n${$.showLog ? data : ''}`);
+        $.log(`\n福利金次数：${message}, 共${base_share_amount || 0}次 \n${$.showLog ? data : ''}`);
         resolve(base_share_amount || 0);
       } catch (e) {
         $.logErr(e, resp);
@@ -125,7 +129,7 @@ function lotteryDraw(index) {
         message = message ? message : '成功';
         $.log(`\n福利金抽奖：${message} \n${$.showLog ? data : ''}`);
         if (code === 0) {
-          $.result.push(`🚕[福利金抽奖] 第${index}次：获得${prize.name}`);
+          $.result.push(`【福利金抽奖】第${index}次：获得${prize.name}`);
         }
       } catch (e) {
         $.logErr(e, resp);

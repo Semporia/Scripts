@@ -217,40 +217,6 @@
       ]
     },
     {
-      "id": "jx_gcPlus",
-      "name": "京喜工厂延时任务",
-      "settings": [
-        {
-          "id": "gc_plusShowLog",
-          "name": "日志开关",
-          "val": false,
-          "type": "boolean",
-          "desc": "是否打开接口返回详情日志打印，默认关闭"
-        },
-        {
-          "id": "gc_authExecute",
-          "name": "自动拾取好友与自己的零件",
-          "val": true,
-          "type": "boolean",
-          "desc": "打开时，脚本只需执行一次，会一直循环拾取知道达到上限，关闭时，需要自己设置定时来执行脚本，脚本只拾取一次，默认关闭"
-        },
-        {
-          "id": "cz_autoUpgrade",
-          "name": "金牌厂长自动升级",
-          "val": false,
-          "type": "boolean",
-          "desc": "打开时，会一直升级到钞票不够20000，默认关闭"
-        }
-      ],
-      "author": "@whyour",
-      "repo": "https://github.com/whyour/hundun/blob/master/quanx/jx_factory_component.js",
-      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory_component.js",
-      "icons": [
-        "https://raw.githubusercontent.com/58xinian/icon/master/jdgc_mini.png",
-        "https://raw.githubusercontent.com/58xinian/icon/master/jdgc.png"
-      ]
-    },
-    {
       "id": "jx_cfd",
       "name": "京喜财富岛",
       "settings": [
@@ -296,6 +262,34 @@
       "icons": [
         "https://raw.githubusercontent.com/58xinian/icon/master/jxnc_mini.png",
         "https://raw.githubusercontent.com/58xinian/icon/master/jxnc.png"
+      ]
+    },
+    {
+      "id": "didi",
+      "name": "滴滴出行",
+      "keys": ["didi_showLog", "didi_lottery"],
+      "settings": [
+        {
+          "id": "didi_showLog",
+          "name": "日志开关",
+          "val": false,
+          "type": "boolean",
+          "desc": "是否打开接口返回详情日志打印，默认关闭"
+        },
+        {
+          "id": "didi_lottery",
+          "name": "抽奖开关",
+          "val": false,
+          "type": "boolean",
+          "desc": "是否打开福利金抽奖，默认关闭"
+        }
+      ],
+      "author": "@whyour",
+      "repo": "https://github.com/whyour/hundun/blob/master/quanx/didi.js",
+      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js",
+      "icons": [
+        "https://raw.githubusercontent.com/Orz-3/mini/master/didi.png",
+        "https://raw.githubusercontent.com/Orz-3/task/master/didi.png"
       ]
     }
   ]
