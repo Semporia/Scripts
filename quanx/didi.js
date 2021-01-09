@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-09 16:26:58
+ * @LastEditTime: 2021-01-09 17:48:13
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
@@ -70,11 +70,11 @@ function checkIn() {
           errmsg = errmsg ? errmsg : '成功';
           $.log(`\n签到：${errmsg}\n${$.showLog ? data : ''}`);
           $.log(`您的source_id：${share.source_id}`);
-          let str = '已经签到';
           if (sign.sign) {
-            str = `签到成功！获得${Number(sign.sign.subsidy_state.subsidy_amount + sign.sign.subsidy_state.extra_subsidy_amount)}福利金！`
+            let str = `签到成功！获得${Number(sign.sign.subsidy_state.subsidy_amount + sign.sign.subsidy_state.extra_subsidy_amount)}福利金！`
+            $.result.push(`【签到】${str}`);
           }
-          $.result.push(`【签到】${str}`, `【账户】${welfare.balance}福利金`, `【通知】${notification}`);
+          $.result.push(`【账户剩余】${welfare.balance}福利金`, `【通知】${notification}`);
         } catch (err) {
           $.logErr(e, resp);
         } finally {

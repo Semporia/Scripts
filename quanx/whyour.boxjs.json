@@ -53,18 +53,6 @@
       ]
     },
     {
-      "id": "didi",
-      "name": "滴滴出行",
-      "keys": ["didi_city_id", "didi_token", "didi_lid", "didi_activity_id", "didi_channel_id"],
-      "author": "@whyour",
-      "repo": "https://github.com/whyour/hundun/blob/master/quanx/didi.js",
-      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js",
-      "icons": [
-        "https://raw.githubusercontent.com/Orz-3/mini/master/didi.png",
-        "https://raw.githubusercontent.com/Orz-3/task/master/didi.png"
-      ]
-    },
-    {
       "id": "jd_ddxw",
       "name": "东东小窝",
       "keys": ["jd_ddxw_name1", "jd_ddxw_name2"],
@@ -267,7 +255,7 @@
     {
       "id": "didi",
       "name": "滴滴出行",
-      "keys": ["didi_showLog", "didi_lottery"],
+      "keys": ["didi_token", "didi_city_id", "didi_lid", ""],
       "settings": [
         {
           "id": "didi_showLog",
