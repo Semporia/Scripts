@@ -3,8 +3,8 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-10 21:04:32
- * 打开京喜农场，手动完成任意任务，提示获取cookie成功，然后退出跑任务脚本
+ * @LastEditTime: 2021-01-10 23:33:30
+ * 打开京喜农场，添加下面的重写，手动完成任意任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
 
