@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-25 18:26:29
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-06 15:10:10
+ * @LastEditTime: 2021-01-10 20:09:25
 
   参考自： https://raw.githubusercontent.com/799953468/Quantumult-X/master/Scripts/JD/jd_factory.js
   增加随机助力，每次随机助力一位
@@ -47,6 +47,7 @@ $.factoryInfo = {};
         cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]
       );
       $.log(`\n开始【京东账号${i + 1}】${userName}`);
+      $.result.push(`【京东账号${i + 1}】${userName}`);
       const startHomeInfo = await getFactoryInfo(cookie);
       await getAllTask(cookie);
       await browserTask(cookie);
@@ -61,11 +62,9 @@ $.factoryInfo = {};
       await $.wait(500);
       await createAssistUser(cookie);
       startHomeInfo && $.result.push(
-        `名称：${startHomeInfo.name}  剩余:${startHomeInfo.couponCount}`,
-        `任务前电量：${startHomeInfo.remainScore} 任务后电量：${endHomeInfo.remainScore}`,
-        `获得电量：${
-          endHomeInfo.remainScore - startHomeInfo.remainScore
-        } 还需电量：${endHomeInfo.totalScore - endHomeInfo.remainScore}`
+        `【名称】：${startHomeInfo.name}  剩余 ${startHomeInfo.couponCount}`,
+        `【电力】：获得(${endHomeInfo.remainScore - startHomeInfo.remainScore}) 还需(${endHomeInfo.totalScore - endHomeInfo.remainScore})`,
+        `【账户剩余】：${endHomeInfo.remainScore}`,
       );
     }
   }
@@ -244,7 +243,7 @@ function submitInviteId(userName) {
           const { data = {} } = JSON.parse(_data);
           $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
           if (data.value) {
-            $.result.push("邀请码提交成功！");
+            $.result.push("【邀请码】：提交成功！");
           }
         } catch (e) {
           $.logErr(e, resp);

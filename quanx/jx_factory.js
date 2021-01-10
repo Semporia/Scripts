@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-09 13:53:17
+ * @LastEditTime: 2021-01-10 19:04:37
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -67,7 +67,7 @@ $.userTuanInfo = {};
       const endInfo = await getUserInfo();
       $.info.commodityInfo && $.result.push(
         `【名称】：${$.info.commodityInfo.name}`,
-        `【电力】：获得(${beginInfo.user.electric}) 还需(${
+        `【电力】：获得(${endInfo.user.electric - beginInfo.user.electric}) 还需(${
           endInfo.productionInfo.needElectric - beginInfo.productionInfo.investedElectric
         })`,
         `【账户剩余】：${endInfo.user.electric}`,
