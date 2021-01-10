@@ -3,8 +3,8 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-16 10:12:54
- * 打开京喜农场，手动完成去工厂任务，提示获取cookie成功，然后退出跑任务脚本
+ * @LastEditTime: 2021-01-10 21:04:32
+ * 打开京喜农场，手动完成任意任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
 
@@ -46,6 +46,9 @@ if (getTokenRegex.test(url)) {
     }
     if (!headers['Cookie']) {
       $.logErr(`京喜农场写入Token失败，未从headers中获取到cookie`);
+    }
+    if (!obj['farm_jstoken'] || !obj.phoneid || !obj.timestamp) {
+      $.logErr(`京喜农场写入Token失败，未获取到token请手动完成其他任务`);
     }
     let pin = headers['Cookie'].match(/pt_pin\=(\S*)\;/)[1];
     pin = pin.split(';')[0];
