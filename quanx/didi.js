@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-09 17:48:13
+ * @LastEditTime: 2021-01-11 17:31:36
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
@@ -87,7 +87,7 @@ function checkIn() {
 
 function goldLottery() {
   return new Promise(async resolve => {
-    if ($.lid) {
+    if ($.lid && $.didiLottery) {
       const drawCount = await getDrawAmount();
       if (drawCount === 0) {
         resolve();
@@ -97,9 +97,8 @@ function goldLottery() {
         await $.wait(5000);
         await lotteryDraw(i);
       }
-    } else {
-      resolve();
     }
+    resolve();
   });
 }
 
@@ -124,12 +123,11 @@ function lotteryDraw(index) {
   return new Promise(resolve => {
     $.get(taskUrl('bosp-api/lottery/draw', `lid=${$.lid}&token=${$.token}`), (err, resp, data) => {
       try {
-        $.log(`福利金抽奖，接口响应：${data}`);
         let { code, message, data: { prize } = {} } = JSON.parse(data);
         message = message ? message : '成功';
         $.log(`\n福利金抽奖：${message} \n${$.showLog ? data : ''}`);
         if (code === 0) {
-          $.result.push(`【福利金抽奖】第${index}次：获得${prize.name}`);
+          $.result.push(`【福利金抽奖】第${index + 1}次：获得${prize.name}`);
         }
       } catch (e) {
         $.logErr(e, resp);
