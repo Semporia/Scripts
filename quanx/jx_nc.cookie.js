@@ -58,7 +58,7 @@ if (getTokenRegex.test(url)) {
     var accountOne = token1 ? JSON.parse(token1) ? JSON.parse(token1)['pin'] : null : null
     var accountTwo = token2 ? JSON.parse(token2) ? JSON.parse(token2)['pin'] : null : null
     var cookieName = " [账号一] ";
-    var cookieKey = "CookieJD";
+    var cookieKey = "";
     if (!accountOne || obj.pin == accountOne) {
       cookieName = " [账号一] ";
       cookieKey = jxNcTokenKey1;
@@ -69,9 +69,14 @@ if (getTokenRegex.test(url)) {
     const oldValue = $.getdata(cookieKey);
     if (oldValue == result) {
       console.log(`\n账号: ${pin} \n与历史京东${cookieName}Cookie相同, 跳过写入 ⚠️`)
-    } else {
+    } else if (cookieKey) {
       $.setdata(result, cookieKey);
+      $.log(`账号: ${pin} token: ${result}`);
       $.msg($.name,`账号: ${pin} 设备: ${obj.phoneid.slice(0,10)}...`, `${oldValue?`更新`:`写入`}京喜农场${cookieName} Cookie成功 🎉`);
+    }
+    if (!cookieKey) {
+      $.log(`账号: ${pin} token: ${result}`);
+      $.logErr($.name, '更新京东Cookie失败, 非历史写入账号 ‼️, 去日志查看token');
     }
   } catch (err) {
     $.logErr(`京喜农场写入Token失败，执行异常：${err}。`);
