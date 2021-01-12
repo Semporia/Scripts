@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-12 10:57:39
+ * @LastEditTime: 2021-01-12 11:05:26
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
@@ -38,8 +38,8 @@ const API_HOST = 'https://bosp-api.xiaojukeji.com/';
 const REWARD_API_HOST = 'https://rewards.xiaojukeji.com/loyalty_credit/bonus/';
 $.showLog = $.getdata('didi_showLog') ? $.getdata('didi_showLog') === 'true' : false;
 $.didiLottery = $.getdata('didi_lottery') ? $.getdata('didi_lottery') === 'true' : false;
-$.token = $.getdata('didi_token');
-$.cityId = $.getdata('didi_city_id');
+$.token = $.getdata('didi_token') || '';
+$.cityId = $.getdata('didi_city_id') || '';
 $.lid = $.getdata('didi_lid');
 $.clientId = 1;
 $.result = [];
@@ -65,7 +65,7 @@ function getCookies() {
 function bonusInfo() {
   return new Promise(resolve => {
     $.get(
-      rewardTaskUrl('getWelfareUsage4Wallet'),
+      rewardTaskUrl('getWelfareUsage4Wallet', `city_id=${$.cityId}`),
       (err, resp, data) => {
         try {
           let { errmsg, data: { balance, recent_expire_time, recent_expire_amount } = {} } = JSON.parse(data);
