@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-11 17:31:36
+ * @LastEditTime: 2021-01-12 10:57:39
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
@@ -35,6 +35,7 @@
 
 const $ = new Env('🚕滴滴出行');
 const API_HOST = 'https://bosp-api.xiaojukeji.com/';
+const REWARD_API_HOST = 'https://rewards.xiaojukeji.com/loyalty_credit/bonus/';
 $.showLog = $.getdata('didi_showLog') ? $.getdata('didi_showLog') === 'true' : false;
 $.didiLottery = $.getdata('didi_lottery') ? $.getdata('didi_lottery') === 'true' : false;
 $.token = $.getdata('didi_token');
@@ -47,6 +48,7 @@ $.result = [];
   if (!getCookies()) return;
   await checkIn();
   await goldLottery();
+  await bonusInfo();
   await showMsg();
 })()
   .catch(e => $.logErr(e))
@@ -60,13 +62,36 @@ function getCookies() {
   return true;
 }
 
+function bonusInfo() {
+  return new Promise(resolve => {
+    $.get(
+      rewardTaskUrl('getWelfareUsage4Wallet'),
+      (err, resp, data) => {
+        try {
+          let { errmsg, data: { balance, recent_expire_time, recent_expire_amount } = {} } = JSON.parse(data);
+          errmsg = errmsg ? errmsg : '成功';
+          $.log(`\n账户信息：${errmsg}\n${$.showLog ? data : ''}`);
+          const notification = `您有${recent_expire_amount}个福利金将在${
+            new Date(recent_expire_time).getMonth() + 1
+          }.${new Date(recent_expire_time).getDate()}过期，请尽快使用哦`;
+          $.result.push(`【账户剩余】${balance}福利金`, `【通知】${notification}`);
+        } catch (err) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      },
+    );
+  });
+}
+
 function checkIn() {
   return new Promise(resolve => {
     $.get(
       taskUrl('wechat/benefit/public/index', `city_id=${$.cityId}&share_source_id=&share_date=${$.time('yyyy-MM-dd')}`),
       (err, resp, data) => {
         try {
-          let { errmsg, data: { share = {}, sign = {}, welfare = {}, notification } = {} } = JSON.parse(data);
+          let { errmsg, data: { share = {}, sign = {} } = {} } = JSON.parse(data);
           errmsg = errmsg ? errmsg : '成功';
           $.log(`\n签到：${errmsg}\n${$.showLog ? data : ''}`);
           $.log(`您的source_id：${share.source_id}`);
@@ -74,7 +99,6 @@ function checkIn() {
             let str = `签到成功！获得${Number(sign.sign.subsidy_state.subsidy_amount + sign.sign.subsidy_state.extra_subsidy_amount)}福利金！`
             $.result.push(`【签到】${str}`);
           }
-          $.result.push(`【账户剩余】${welfare.balance}福利金`, `【通知】${notification}`);
         } catch (err) {
           $.logErr(e, resp);
         } finally {
@@ -145,7 +169,24 @@ function showMsg() {
   });
 }
 
-function taskUrl(function_path, body) {
+function rewardTaskUrl(function_path, body = '') {
+  return {
+    url: `${REWARD_API_HOST}${function_path}?${body}&token=${$.token}`,
+    headers: {
+      'Accept-Encoding': 'gzip, deflate, br',
+      'Accept-Language': 'zh-cn',
+      'Didi-Ticket': $.token,
+      Host: 'rewards.xiaojukeji.com',
+      Origin: 'https://page.udache.com',
+      Referer: 'https://page.udache.com/',
+      Accept: 'application/json, text/plain, */*',
+      'User-Agent':
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 didi.passenger/6.0.12 FusionKit/1.2.14',
+    },
+  };
+}
+
+function taskUrl(function_path, body = '') {
   return {
     url: `${API_HOST}${function_path}?${body}`,
     headers: {
