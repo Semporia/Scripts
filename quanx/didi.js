@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-12 22:26:19
+ * @LastEditTime: 2021-01-12 23:49:55
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
@@ -38,15 +38,15 @@ const API_HOST = 'https://bosp-api.xiaojukeji.com/';
 const REWARD_API_HOST = 'https://rewards.xiaojukeji.com/loyalty_credit/bonus/';
 $.showLog = $.getdata('didi_showLog') ? $.getdata('didi_showLog') === 'true' : false;
 $.didiLottery = $.getdata('didi_lottery') ? $.getdata('didi_lottery') === 'true' : false;
-$.token = $.getdata('didi_token') || 'sx0cPiD_zVrY-9zsdXo84J3QEoEteZy77CJbsps1fEUkzDtuw0AMANG7TE0IJJfMatmmzx3yUT7NBrDhSvDdDcnlAIO3M5WiLboowjTKhOmUqaoKs1HWc3h4jOjWhjCDshfrI1bPo5Pi9Q3hnQLhg_K1ZYRpDos2UviiPIWN2rn-3y6fG6V34fu01Lqf1g-FZXNT9eGB8Ps0_479EQAA__8%3D';
-$.cityId = $.getdata('didi_city_id') || '1';
+$.token = $.getdata('didi_token') || '';
+$.cityId = $.getdata('didi_city_id') || '';
 $.lid = $.getdata('didi_lid');
 $.clientId = 1;
 $.result = [];
 
 !(async () => {
   if (!getCookies()) return;
-  await checkIn();
+  await createAssistUser();
   await goldLottery();
   await bonusInfo();
   await showMsg();
@@ -85,19 +85,71 @@ function bonusInfo() {
   });
 }
 
-function checkIn() {
+function submitInviteId(share_source_id = '') {
+  return new Promise(resolve => {
+    if (!share_source_id) {
+      resolve();
+      return;
+    }
+    $.post(
+      {
+        url: `https://api.ninesix.cc/api/didi/${share_source_id}/${encodeURIComponent($.token.substr(0,6))}`,
+      },
+      (err, resp, _data) => {
+        try {
+          const { code, data = {} } = JSON.parse(_data);
+          $.log(`\n邀请码提交：${code}\n${$.showLog ? _data : ''}`);
+          if (data.value) {
+            $.result.push('【邀请码】提交成功！');
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve();
+        }
+      },
+    );
+  });
+}
+
+function createAssistUser() {
+  return new Promise(resolve => {
+    $.get({ url: `https://api.ninesix.cc/api/didi` }, async (err, resp, _data) => {
+      try {
+        const { code, data = {} } = JSON.parse(_data);
+        console.log(_data)
+        $.log(`\n获取随机助力码${code}\n${$.showLog ? _data : ''}`);
+        await checkIn(data.value || '');
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    });
+  });
+}
+
+function checkIn(share_source_id = '') {
+  let sourceStr = share_source_id ? `share_source_id=${share_source_id}` : `share_source_id=`;
   return new Promise(resolve => {
     $.get(
-      taskUrl('wechat/benefit/public/index', `city_id=${$.cityId}&share_source_id=&share_date=${$.time('yyyy-MM-dd')}`),
-      (err, resp, data) => {
+      taskUrl('wechat/benefit/public/index', `city_id=${$.cityId}&${sourceStr}&share_date=${$.time('yyyy-MM-dd')}`),
+      async (err, resp, data) => {
         try {
           let { errmsg, data: { share = {}, sign = {} } = {} } = JSON.parse(data);
           errmsg = errmsg ? errmsg : '成功';
           $.log(`\n签到：${errmsg}\n${$.showLog ? data : ''}`);
-          $.log(`您的source_id：${share.source_id}`);
-          if (sign.sign) {
-            let str = `签到成功！获得${Number(sign.sign.subsidy_state.subsidy_amount + sign.sign.subsidy_state.extra_subsidy_amount)}福利金！`
-            $.result.push(`【签到】${str}`);
+          if (!share.source_id) {
+            await checkIn();
+          } else {
+            $.log(`您的source_id：${share.source_id}`);
+            if (sign.sign) {
+              let str = `签到成功！获得${Number(sign.sign.subsidy_state.subsidy_amount + sign.sign.subsidy_state.extra_subsidy_amount)}福利金！`
+              $.result.push(`【签到】${str}`);
+            }
+          }
+          if (share.source_id) {
+            await submitInviteId(share.source_id);
           }
         } catch (err) {
           $.logErr(e, resp);
