@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-12 11:05:26
+ * @LastEditTime: 2021-01-12 22:26:19
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
@@ -38,8 +38,8 @@ const API_HOST = 'https://bosp-api.xiaojukeji.com/';
 const REWARD_API_HOST = 'https://rewards.xiaojukeji.com/loyalty_credit/bonus/';
 $.showLog = $.getdata('didi_showLog') ? $.getdata('didi_showLog') === 'true' : false;
 $.didiLottery = $.getdata('didi_lottery') ? $.getdata('didi_lottery') === 'true' : false;
-$.token = $.getdata('didi_token') || '';
-$.cityId = $.getdata('didi_city_id') || '';
+$.token = $.getdata('didi_token') || 'sx0cPiD_zVrY-9zsdXo84J3QEoEteZy77CJbsps1fEUkzDtuw0AMANG7TE0IJJfMatmmzx3yUT7NBrDhSvDdDcnlAIO3M5WiLboowjTKhOmUqaoKs1HWc3h4jOjWhjCDshfrI1bPo5Pi9Q3hnQLhg_K1ZYRpDos2UviiPIWN2rn-3y6fG6V34fu01Lqf1g-FZXNT9eGB8Ps0_479EQAA__8%3D';
+$.cityId = $.getdata('didi_city_id') || '1';
 $.lid = $.getdata('didi_lid');
 $.clientId = 1;
 $.result = [];
@@ -72,8 +72,8 @@ function bonusInfo() {
           errmsg = errmsg ? errmsg : '成功';
           $.log(`\n账户信息：${errmsg}\n${$.showLog ? data : ''}`);
           const notification = `您有${recent_expire_amount}个福利金将在${
-            new Date(recent_expire_time).getMonth() + 1
-          }.${new Date(recent_expire_time).getDate()}过期，请尽快使用哦`;
+            recent_expire_time.split(' ')[0].replace(/\-/g, '.')
+          }过期，请尽快使用哦`;
           $.result.push(`【账户剩余】${balance}福利金`, `【通知】${notification}`);
         } catch (err) {
           $.logErr(e, resp);
