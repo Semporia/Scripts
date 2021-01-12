@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-13 00:43:56
+ * @LastEditTime: 2021-01-13 00:49:29
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
@@ -117,7 +117,6 @@ function createAssistUser() {
     $.get({ url: `https://api.ninesix.cc/api/didi` }, async (err, resp, _data) => {
       try {
         const { code, data = {} } = JSON.parse(_data);
-        console.log(_data)
         $.log(`\n获取随机助力码${code}\n${$.showLog ? _data : ''}`);
         await checkIn(data.value || '', data.name || '');
       } catch (e) {
