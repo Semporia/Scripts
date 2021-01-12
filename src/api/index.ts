@@ -11,6 +11,7 @@ import jxCfdGroup from './routes/jxCfdGroup';
 import jxNc from './routes/jxNc';
 import jdZz from './routes/jdZz';
 import jdZjdTuan from './routes/jdZjdTuan';
+import didi from './routes/didi';
 import agendash from './routes/agendash';
 
 export default () => {
@@ -20,14 +21,14 @@ export default () => {
 	jxFactory(app);
 	yiYan(app);
 	jxFactoryTuan(app);
-  shiCi(app);
-  jxCfd(app);
-  jxNc(app);
-  jdZz(app);
-  jxStory(app);
-  jxCfdGroup(app);
-  jdZjdTuan(app);
+	shiCi(app);
+	jxCfd(app);
+	jxNc(app);
+	jdZz(app);
+	jxStory(app);
+	jxCfdGroup(app);
+	jdZjdTuan(app);
 	agendash(app);
-
+	didi(app);
 	return app
 }
