@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-12 23:49:55
+ * @LastEditTime: 2021-01-13 00:43:56
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
@@ -85,15 +85,15 @@ function bonusInfo() {
   });
 }
 
-function submitInviteId(share_source_id = '') {
+function submitInviteId(share_source_id = '', new_share_source_id = '') {
   return new Promise(resolve => {
-    if (!share_source_id) {
+    if (!share_source_id || !new_share_source_id) {
       resolve();
       return;
     }
     $.post(
       {
-        url: `https://api.ninesix.cc/api/didi/${share_source_id}/${encodeURIComponent($.token.substr(0,6))}`,
+        url: `https://api.ninesix.cc/api/didi/${share_source_id}/${new_share_source_id}`,
       },
       (err, resp, _data) => {
         try {
@@ -119,7 +119,7 @@ function createAssistUser() {
         const { code, data = {} } = JSON.parse(_data);
         console.log(_data)
         $.log(`\n获取随机助力码${code}\n${$.showLog ? _data : ''}`);
-        await checkIn(data.value || '');
+        await checkIn(data.value || '', data.name || '');
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -129,17 +129,18 @@ function createAssistUser() {
   });
 }
 
-function checkIn(share_source_id = '') {
+function checkIn(share_source_id = '', new_share_source_id = '') {
   let sourceStr = share_source_id ? `share_source_id=${share_source_id}` : `share_source_id=`;
+  let newSourceStr = new_share_source_id ? `new_share_source_id=${new_share_source_id}` : `new_share_source_id=`;
   return new Promise(resolve => {
     $.get(
-      taskUrl('wechat/benefit/public/index', `city_id=${$.cityId}&${sourceStr}&share_date=${$.time('yyyy-MM-dd')}`),
+      taskUrl('wechat/benefit/public/v2/index', `city_id=${$.cityId}&${sourceStr}&${newSourceStr}&share_date=${$.time('yyyy-MM-dd')}&&share_type=invite_sign&source_from=source_from_wechat`),
       async (err, resp, data) => {
         try {
           let { errmsg, data: { share = {}, sign = {} } = {} } = JSON.parse(data);
           errmsg = errmsg ? errmsg : '成功';
           $.log(`\n签到：${errmsg}\n${$.showLog ? data : ''}`);
-          if (!share.source_id) {
+          if (!share.source_id ||!share.new_source_id) {
             await checkIn();
           } else {
             $.log(`您的source_id：${share.source_id}`);
@@ -148,8 +149,8 @@ function checkIn(share_source_id = '') {
               $.result.push(`【签到】${str}`);
             }
           }
-          if (share.source_id) {
-            await submitInviteId(share.source_id);
+          if (share.source_id && share.new_source_id) {
+            await submitInviteId(share.source_id, share.new_source_id);
           }
         } catch (err) {
           $.logErr(e, resp);
