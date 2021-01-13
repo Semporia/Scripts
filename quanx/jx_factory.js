@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-10 19:04:37
+ * @LastEditTime: 2021-01-13 23:38:00
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -79,12 +79,12 @@ $.userTuanInfo = {};
       await submitInviteId(userName);
       await $.wait(500);
       await createAssistUser();
-      // await $.wait(500);
-      // await getTuanId();
-      // await $.wait(500);
-      // await submitTuanId(userName);
-      // await $.wait(500);
-      // await joinTuan();
+      await $.wait(500);
+      await getTuanId();
+      await $.wait(500);
+      await submitTuanId(userName);
+      await $.wait(500);
+      await joinTuan();
     }
   }
   await showMsg();
@@ -265,7 +265,7 @@ function pickUpComponent(placeId, pin, isMe) {
 
 function getTaskList() {
   return new Promise(async resolve => {
-    $.get(taskListUrl('GetUserTaskStatusList'), async (err, resp, data) => {
+    $.get(taskListUrl('GetUserTaskStatusList', `_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone%2CtaskId`), async (err, resp, data) => {
       try {
         const { ret, data: { userTaskStatusList = [] } = {}, msg } = JSON.parse(data);
         $.allTask = userTaskStatusList.filter(x => x.awardStatus !== 1);
@@ -307,7 +307,7 @@ function browserTask() {
 
 function awardTask({ taskId, taskName }) {
   return new Promise(resolve => {
-    $.get(taskListUrl('Award', `taskId=${taskId}`), (err, resp, data) => {
+    $.get(taskListUrl('Award', `taskId=${taskId}&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone%2CtaskId`), (err, resp, data) => {
       try {
         const { msg, ret, data: { prizeInfo = '' } = {} } = JSON.parse(data);
         let str = '';
@@ -334,7 +334,7 @@ function doTask({ taskId, completedTimes, configTargetTimes, taskName }) {
       $.log(`\n${taskName}[做任务]： mission success`);
       return;
     }
-    $.get(taskListUrl('DoTask', `taskId=${taskId}`), (err, resp, data) => {
+    $.get(taskListUrl('DoTask', `taskId=${taskId}&_stk=_cfd_t%2CbizCode%2CconfigExtra%2CdwEnv%2Cptag%2Csource%2CstrZone%2CtaskId`), (err, resp, data) => {
       try {
         const { msg, ret } = JSON.parse(data);
         $.log(
@@ -502,7 +502,7 @@ function createAssistUser() {
 
 function getTuanId() {
   return new Promise(async resolve => {
-    $.get(taskUrl('tuan/QueryActiveConfig', `activeId=t2cdKwg2QPBzAqd5KMCNHg%3D%3D`), async (err, resp, data) => {
+    $.get(taskUrl('tuan/QueryActiveConfig', `activeId=TvjO5k4gaVqVHMRJIogd_g%3D%3D`), async (err, resp, data) => {
       try {
         const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
         $.log(`\n获取团id：${msg}\n${$.showLog ? data : ''}`);
@@ -528,7 +528,7 @@ function getTuanId() {
 
 function getTuanInfo(body) {
   return new Promise(async resolve => {
-    $.get(taskUrl('tuan/QueryTuan', `activeId=t2cdKwg2QPBzAqd5KMCNHg%3D%3D&${body}`), async (err, resp, data) => {
+    $.get(taskUrl('tuan/QueryTuan', `activeId=TvjO5k4gaVqVHMRJIogd_g%3D%3D&${body}`), async (err, resp, data) => {
       try {
         const { msg, data: { tuanInfo = [] } = {} } = JSON.parse(data);
         $.log(`\n获取开团信息：${msg}\n${$.showLog ? data : ''}`);
@@ -575,7 +575,7 @@ function submitTuanId(userName) {
 function createTuan() {
   return new Promise(async resolve => {
     $.get(
-      taskTuanUrl('tuan/CreateTuan', `activeId=t2cdKwg2QPBzAqd5KMCNHg%3D%3D&isOpenApp=2`),
+      taskTuanUrl('tuan/CreateTuan', `activeId=TvjO5k4gaVqVHMRJIogd_g%3D%3D&isOpenApp=2&_stk=_time%2CactiveId%2CisOpenApp`),
       async (err, resp, _data) => {
         try {
           const { msg, data = {} } = JSON.parse(_data);
@@ -600,7 +600,7 @@ function joinTuan() {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(
-          taskTuanUrl('tuan/JoinTuan', `activeId=t2cdKwg2QPBzAqd5KMCNHg%3D%3D&tuanId=${data.value}`),
+          taskTuanUrl('tuan/JoinTuan', `activeId=TvjO5k4gaVqVHMRJIogd_g%3D%3D&tuanId=${data.value}`),
           async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
