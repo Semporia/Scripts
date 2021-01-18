@@ -134,7 +134,7 @@ function getCookies() {
         hash[current.name] ? '' : hash[current.name] = true && arr.push(current);
         return arr
     }, [])
-    const CookiesJd = ($.getdata("CookiesJD") || []).map(x => x.cookie);
+    const CookiesJd = JSON.parse($.getdata("CookiesJD") || "[]").filter(x => !!x).map(x => x.cookie);
     $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || "", ...CookiesJd];
   }
   if (!$.cookieArr[0]) {

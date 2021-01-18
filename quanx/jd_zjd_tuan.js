@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-24 11:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-24 11:30:44
+ * @LastEditTime: 2021-01-18 14:05:25
  * 参考 shylocks https://github.com/shylocks
 
   quanx:
@@ -50,7 +50,7 @@ function getCookies() {
   if ($.isNode()) {
     $.cookieArr = Object.values(jdCookieNode);
   } else {
-    const CookiesJd = ($.getdata("CookiesJD") || []).map(x => x.cookie);
+    const CookiesJd = JSON.parse($.getdata("CookiesJD") || "[]").filter(x => !!x).map(x => x.cookie);
     $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || "", ...CookiesJd];
   }
   if (!$.cookieArr[0]) {
