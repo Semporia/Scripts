@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-13 00:49:29
+ * @LastEditTime: 2021-01-18 11:11:01
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
@@ -46,7 +46,10 @@ $.result = [];
 
 !(async () => {
   if (!getCookies()) return;
-  await createAssistUser();
+  const resultError = await createAssistUser();
+  if (resultError) {
+    return;
+  }
   await goldLottery();
   await bonusInfo();
   await showMsg();
@@ -118,7 +121,8 @@ function createAssistUser() {
       try {
         const { code, data = {} } = JSON.parse(_data);
         $.log(`\n获取随机助力码${code}\n${$.showLog ? _data : ''}`);
-        await checkIn(data.value || '', data.name || '');
+        const resultError = await checkIn(data.value || '', data.name || '');
+        resolve(resultError);
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -136,9 +140,14 @@ function checkIn(share_source_id = '', new_share_source_id = '') {
       taskUrl('wechat/benefit/public/v2/index', `city_id=${$.cityId}&${sourceStr}&${newSourceStr}&share_date=${$.time('yyyy-MM-dd')}&&share_type=invite_sign&source_from=source_from_wechat`),
       async (err, resp, data) => {
         try {
-          let { errmsg, data: { share = {}, sign = {} } = {} } = JSON.parse(data);
+          let { errno, errmsg, data: { share = {}, sign = {} } = {} } = JSON.parse(data);
           errmsg = errmsg ? errmsg : '成功';
           $.log(`\n签到：${errmsg}\n${$.showLog ? data : ''}`);
+          if (errno === 106 && errmsg.indexOf('登录错误') !== -1) {
+            $.msg($.name, '【提示】token失效，请先获取滴滴Token');
+            resolve(true);
+            return;
+          }
           if (!share.source_id ||!share.new_source_id) {
             await checkIn();
           } else {
