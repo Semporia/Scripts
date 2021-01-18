@@ -50,7 +50,8 @@ function getCookies() {
   if ($.isNode()) {
     $.cookieArr = Object.values(jdCookieNode);
   } else {
-    $.cookieArr = [$.getdata('CookieJD') || '', $.getdata('CookieJD2') || ''];
+    const CookiesJd = ($.getdata("CookiesJD") || []).map(x => x.cookie);
+    $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || "", ...CookiesJd];
   }
   if (!$.cookieArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {

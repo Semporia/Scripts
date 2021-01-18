@@ -22,7 +22,6 @@ READ_BODYS = [READ_BODY1, ]
 
 # ac读取环境变量
 if "YOUTH1_READ_BODY1" in os.environ:
-  print("执行自GitHub action")
   for i in range(3):
     firstVar = f'YOUTH{str(i+1)}_READ_BODY1'
     if firstVar in os.environ:

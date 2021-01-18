@@ -29,7 +29,8 @@ function getCookies() {
   if ($.isNode()) {
     $.cookieArr = Object.values(jdCookieNode);
   } else {
-    $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || ""];
+    const CookiesJd = ($.getdata("CookiesJD") || []).map(x => x.cookie);
+    $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || "", ...CookiesJd];
   }
   if (!$.cookieArr[0]) {
     $.msg(

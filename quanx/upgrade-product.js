@@ -55,7 +55,7 @@ async function upgrade(cookie) {
     if ($.onlyUpgradeCheapestProduct && canUpgradeProducts.length > 0 && canUpgradeProducts[0].upgradeCostGold <= 2000000) {
       canUpgradeProducts = [{ ...canUpgradeProducts[0] }];
     }
-    
+
     for (let item of canUpgradeProducts) {
       const { name, level, maxLevel, upgradeCostGold, productId } = item;
       console.log(
@@ -139,7 +139,8 @@ function getCookies() {
   if ($.isNode()) {
     $.cookieArr = Object.values(jdCookieNode);
   } else {
-    $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || ""];
+    const CookiesJd = ($.getdata("CookiesJD") || []).map(x => x.cookie);
+    $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || "", ...CookiesJd];
   }
   if (!$.cookieArr[0]) {
     $.msg(

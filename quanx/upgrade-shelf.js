@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-08 23:10:33
  * @LastEditors: whyour
- * @LastEditTime: 2020-11-30 13:12:56
+ * @LastEditTime: 2021-01-18 13:43:07
  */
 const $ = new Env("京东超市升级货架");
 const JD_API_HOST = 'https://api.m.jd.com/api';
@@ -129,7 +129,13 @@ function getCookies() {
   if ($.isNode()) {
     $.cookieArr = Object.values(jdCookieNode);
   } else {
-    $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || ""];
+    var hash = {};
+    Arr = Arr.reduce(function(arr, current) {
+        hash[current.name] ? '' : hash[current.name] = true && arr.push(current);
+        return arr
+    }, [])
+    const CookiesJd = ($.getdata("CookiesJD") || []).map(x => x.cookie);
+    $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || "", ...CookiesJd];
   }
   if (!$.cookieArr[0]) {
     $.msg(

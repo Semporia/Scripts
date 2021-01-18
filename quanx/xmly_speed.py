@@ -3,7 +3,7 @@ Author: whyour
 Github: https://github.com/whyour
 Date: 2020-11-19 23:25:22
 LastEditors: whyour
-LastEditTime: 2020-12-15 20:41:19
+LastEditTime: 2021-01-18 13:46:46
 '''
 import json
 import rsa
@@ -34,10 +34,6 @@ thirdPayType = 1
 
 # ac读取环境变量
 if "XMLY_SPEED_COOKIE" in os.environ:
-    """
-    判断是否运行自GitHub action,"XMLY_SPEED_COOKIE" 该参数与 repo里的Secrets的名称保持一致
-    """
-    print("执行自GitHub action")
     xmly_speed_cookie = os.environ["XMLY_SPEED_COOKIE"]
     cookiesList = []  # 重置cookiesList
     for line in xmly_speed_cookie.split('\n'):

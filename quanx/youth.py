@@ -27,7 +27,6 @@ COOKIELIST = [cookies1,]  # 多账号准备
 
 # ac读取环境变量
 if "YOUTH_HEADER1" in os.environ:
-  print("执行自GitHub action")
   COOKIELIST = []
   for i in range(5):
     headerVar = f'YOUTH_HEADER{str(i+1)}'

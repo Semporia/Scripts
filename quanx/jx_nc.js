@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-10 23:21:45
+ * @LastEditTime: 2021-01-18 13:43:28
  * 打开京喜农场，添加下面的重写，手动完成任意任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -80,7 +80,8 @@ function getCookies() {
   if ($.isNode()) {
     $.cookieArr = Object.values(jdCookieNode);
   } else {
-    $.cookieArr = [$.getdata('CookieJD') || '', $.getdata('CookieJD2') || ''];
+    const CookiesJd = ($.getdata("CookiesJD") || []).map(x => x.cookie);
+    $.cookieArr = [$.getdata("CookieJD") || "", $.getdata("CookieJD2") || "", ...CookiesJd];
   }
   if (!$.cookieArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
