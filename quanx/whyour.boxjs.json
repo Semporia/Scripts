@@ -184,7 +184,7 @@
         {
           "id": "gc_autoCharge",
           "name": "自动充能",
-          "val": false,
+          "val": true,
           "type": "boolean",
           "desc": "收取能量后自动充能，默认不自动充"
         },
