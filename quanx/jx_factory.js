@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-13 23:38:00
+ * @LastEditTime: 2021-01-20 15:18:00
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -576,7 +576,7 @@ function submitTuanId(userName) {
 function createTuan() {
   return new Promise(async resolve => {
     $.get(
-      taskTuanUrl('tuan/CreateTuan', `activeId=TvjO5k4gaVqVHMRJIogd_g%3D%3D&isOpenApp=2&_stk=_time%2CactiveId%2CisOpenApp`),
+      taskTuanUrl('tuan/CreateTuan', `activeId=TvjO5k4gaVqVHMRJIogd_g%3D%3D&isOpenApp=1&_stk=_time%2CactiveId%2CisOpenApp`),
       async (err, resp, _data) => {
         try {
           const { msg, data = {} } = JSON.parse(_data);
