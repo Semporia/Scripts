@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-20 15:18:00
+ * @LastEditTime: 2021-01-21 23:41:05
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -46,6 +46,10 @@ $.userTuanInfo = {};
       $.log(`\n开始【京东账号${i + 1}】${userName}`);
       $.result.push(`【京东账号${i + 1}】${userName}`);
       const beginInfo = await getUserInfo();
+      if (beginInfo && typeof beginInfo === 'boolean') {
+        $.result.push(`【账户】未选择商品，跳过`);
+        continue;
+      }
       await $.wait(500);
       await getCommodityDetail();
       if (checkProductProcess()) return;
@@ -114,6 +118,9 @@ function getUserInfo() {
       try {
         const { ret, data: { factoryList = [], productionList = [], user = {} } = {}, msg } = JSON.parse(data);
         $.log(`\n获取用户信息：${msg}\n${$.showLog ? data : ''}`);
+        if (!productionList || !productionList[0]) {
+          resolve(true);
+        }
         $.info = {
           ...$.info,
           factoryInfo: factoryList[0],
