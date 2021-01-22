@@ -140,7 +140,7 @@ def coolpush_bot(title, content):
     print("qq服务启动")
     url=f"https://push.xuthus.cc/{QQ_MODE}/{QQ_SKEY}"
     headers = {'Content-Type': 'application/json'}
-    payload = f"{text}\n\n{desp}"
+    payload = f"{title}\n\n{content}"
     response = requests.post(url=url, headers=headers, data=payload).json()
     if response['code'] == 200:
         print('推送成功！')
