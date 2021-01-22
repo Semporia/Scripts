@@ -179,6 +179,12 @@ def send(title, content):
             else:
                 print('未启用 telegram机器人')
             continue
+        elif i == 'coolpush_bot':
+            if QQ_SKEY and QQ_MODE:
+                coolpush_bot(title=title, content=content)
+            else:
+                print('未启用 QQ机器人')
+            continue
         else:
             print('此类推送方式不存在')
 
