@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-22 15:10:23
+ * @LastEditTime: 2021-01-22 16:56:23
  * 打开京喜农场，添加下面的重写，手动完成任意任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -281,7 +281,7 @@ function createAssistUser() {
           return;
         }
         $.get(
-          taskUrl('help', `active=${extra.name}&joinnum=${extra.joinnum}&smp=${value}`),
+          taskUrl('help', `active=${extra.active}&joinnum=${extra.joinnum}&smp=${value}`),
           async (err, resp, data) => {
             try {
               const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];
