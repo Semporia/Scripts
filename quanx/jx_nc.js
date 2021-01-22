@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-22 14:24:45
+ * @LastEditTime: 2021-01-22 14:27:59
  * 打开京喜农场，添加下面的重写，手动完成任意任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -275,7 +275,7 @@ function createAssistUser() {
       try {
         const { code, data: { name, value, extra = {} } = {} } = JSON.parse(_data);
         $.log(`\n获取随机助力码${code}\n${$.showLog ? _data : ''}`);
-        if (!data.value) {
+        if (!value) {
           $.result.push('获取助力码失败，请稍后再次手动执行脚本！');
           resolve();
           return;
