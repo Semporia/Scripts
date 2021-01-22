@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-18 13:43:28
+ * @LastEditTime: 2021-01-22 14:24:45
  * 打开京喜农场，添加下面的重写，手动完成任意任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -48,7 +48,7 @@ $.drip = 0;
   if (!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
     $.currentCookie = $.cookieArr[i];
-    $.currentToken = JSON.parse($.tokens[i] || '{}');
+    $.currentToken = JSON.parse($.tokens[0] || '{}');
     $.drip = 0;
     if ($.currentCookie) {
       const userName = decodeURIComponent(
@@ -250,7 +250,7 @@ function submitInviteId(userName) {
     $.log(`你的活动id: ${$.info.active}`);
     $.post(
       {
-        url: `https://api.ninesix.cc/api/jx-nc/${$.info.smp}/${encodeURIComponent(userName)}?active=${$.info.active}`,
+        url: `https://api.ninesix.cc/api/jx-nc/${$.info.smp}/${encodeURIComponent(userName)}?active=${$.info.active}&joinnum=${$.info.joinnum}`,
       },
       (err, resp, _data) => {
         try {
@@ -273,15 +273,15 @@ function createAssistUser() {
   return new Promise(resolve => {
     $.get({ url: `https://api.ninesix.cc/api/jx-nc?active=${$.info.active}` }, async (err, resp, _data) => {
       try {
-        const { code, data = {} } = JSON.parse(_data);
+        const { code, data: { name, value, extra = {} } = {} } = JSON.parse(_data);
         $.log(`\n获取随机助力码${code}\n${$.showLog ? _data : ''}`);
         if (!data.value) {
-          $.result.push('助力失败或者同活动助力码不存在，请再次手动执行脚本！');
+          $.result.push('获取助力码失败，请稍后再次手动执行脚本！');
           resolve();
           return;
         }
         $.get(
-          taskUrl('help', `active=${$.info.active}&joinnum=${$.info.joinnum}&smp=${data.value}`),
+          taskUrl('help', `active=${name}&joinnum=${extra.joinnum}&smp=${value}`),
           async (err, resp, data) => {
             try {
               const res = data.match(/try\{whyour\(([\s\S]*)\)\;\}catch\(e\)\{\}/)[1];

@@ -18,6 +18,7 @@ export default (app: Router) => {
       }),
       query: Joi.object({
         active: Joi.string().required(),
+        joinnum: Joi.string().required(),
       }),
     }),
     async (req: Request, res: Response, next: NextFunction) => {
