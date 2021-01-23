@@ -3,24 +3,22 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-18 11:11:01
+ * @LastEditTime: 2021-01-23 18:03:38
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
-  hostname = api.didialift.com, as.xiaojukeji.com, bosp-api.xiaojukeji.com
+  hostname = api.didialift.com, bosp-api.xiaojukeji.com
 
   quanx:
   [task_local]
   0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js, tag=滴滴出行, img-url=https://raw.githubusercontent.com/Orz-3/task/master/didi.png, enabled=true
   [rewrite_local]
   ^https?:\/\/api\.didialift\.com\/beatles\/userapi\/user\/user\/getuserinfo?.*city_id=(\d+).*&token=([^&]*) url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
-  ^https:\/\/as\.xiaojukeji\.com\/ep\/as\/toggles\?.*city=(\d*)&.*ticket=(.*)& url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
   ^https?:\/\/bosp-api\.xiaojukeji\.com\/bosp-api\/lottery\/info?.*lid=([^&]*) url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
 
   loon:
   [Script]
   http-request ^https?:\/\/api\.didialift\.com\/beatles\/userapi\/user\/user\/getuserinfo?.*city_id=(\d+).*&token=([^&]*) script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js, requires-body=false, timeout=10, tag=滴滴出行cookie
-  http-request ^https:\/\/as\.xiaojukeji\.com\/ep\/as\/toggles\?.*city=(\d*)&.*ticket=(.*)& script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js, requires-body=false, timeout=10, tag=滴滴出行cookie
   http-request ^https?:\/\/bosp-api\.xiaojukeji\.com\/bosp-api\/lottery\/info?.*lid=([^&]*) script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js, requires-body=false, timeout=10, tag=滴滴出行cookie
   cron "0 9 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js, tag=滴滴出行
 
@@ -28,7 +26,6 @@
   [Script]
   滴滴出行 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js
   滴滴出行cookie = type=http-request,pattern=^https?:\/\/api\.didialift\.com\/beatles\/userapi\/user\/user\/getuserinfo?.*city_id=(\d+).*&token=([^&]*),requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
-  滴滴出行cookie = type=http-request,pattern=^https:\/\/as\.xiaojukeji\.com\/ep\/as\/toggles\?.*city=(\d*)&.*ticket=(.*)&,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
   滴滴出行cookie = type=http-request,pattern=^https?:\/\/bosp-api\.xiaojukeji\.com\/bosp-api\/lottery\/info?.*lid=([^&]*),requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
  *
  **/
@@ -88,7 +85,7 @@ function bonusInfo() {
   });
 }
 
-function submitInviteId(share_source_id = '', new_share_source_id = '') {
+function submitInviteId(share_source_id = '', new_share_source_id = '', trace_id = '') {
   return new Promise(resolve => {
     if (!share_source_id || !new_share_source_id) {
       resolve();
@@ -96,7 +93,7 @@ function submitInviteId(share_source_id = '', new_share_source_id = '') {
     }
     $.post(
       {
-        url: `https://api.ninesix.cc/api/didi/${share_source_id}/${new_share_source_id}`,
+        url: `https://api.ninesix.cc/api/didi/${share_source_id}/${new_share_source_id}?trace_id=${trace_id}`,
       },
       (err, resp, _data) => {
         try {
@@ -119,9 +116,9 @@ function createAssistUser() {
   return new Promise(resolve => {
     $.get({ url: `https://api.ninesix.cc/api/didi` }, async (err, resp, _data) => {
       try {
-        const { code, data = {} } = JSON.parse(_data);
+        const { code, data: { value, name, extra = {} } = {} } = JSON.parse(_data);
         $.log(`\n获取随机助力码${code}\n${$.showLog ? _data : ''}`);
-        const resultError = await checkIn(data.value || '', data.name || '');
+        const resultError = await checkIn(value || '', name || '', extra.trace_id || '');
         resolve(resultError);
       } catch (e) {
         $.logErr(e, resp);
@@ -132,12 +129,16 @@ function createAssistUser() {
   });
 }
 
-function checkIn(share_source_id = '', new_share_source_id = '') {
-  let sourceStr = share_source_id ? `share_source_id=${share_source_id}` : `share_source_id=`;
-  let newSourceStr = new_share_source_id ? `new_share_source_id=${new_share_source_id}` : `new_share_source_id=`;
+function checkIn(share_source_id = '', new_share_source_id = '', share_trace_id = '') {
+  let shareStr;
+  if (share_source_id && new_share_source_id) {
+    shareStr = `share_source_id=${share_source_id}&new_share_source_id=${new_share_source_id}&share_trace_id=${share_trace_id}&share_date=${$.time('yyyy-MM-dd')}&&share_type=invite_sign&source_from=source_from_wechat`
+  } else {
+    shareStr = `new_share_source_id=&share_source_id=&share_trace_id=&share_date=&&share_type=&source_from=source_from_app&app_version=6.1.2`
+  }
   return new Promise(resolve => {
     $.get(
-      taskUrl('wechat/benefit/public/v2/index', `city_id=${$.cityId}&${sourceStr}&${newSourceStr}&share_date=${$.time('yyyy-MM-dd')}&&share_type=invite_sign&source_from=source_from_wechat`),
+      taskUrl('wechat/benefit/public/v2/index', `city_id=${$.cityId}&${shareStr}`),
       async (err, resp, data) => {
         try {
           let { errno, errmsg, data: { share = {}, sign = {} } = {} } = JSON.parse(data);
@@ -158,7 +159,7 @@ function checkIn(share_source_id = '', new_share_source_id = '') {
             }
           }
           if (share.source_id && share.new_source_id) {
-            await submitInviteId(share.source_id, share.new_source_id);
+            await submitInviteId(share.source_id, share.new_source_id, share.trace_id);
           }
         } catch (err) {
           $.logErr(e, resp);

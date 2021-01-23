@@ -3,24 +3,22 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-09 15:42:14
+ * @LastEditTime: 2021-01-23 18:04:14
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
-  hostname = api.didialift.com, as.xiaojukeji.com, bosp-api.xiaojukeji.com
+  hostname = api.didialift.com, bosp-api.xiaojukeji.com
 
   quanx:
   [task_local]
   0 9 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js, tag=滴滴出行, img-url=https://raw.githubusercontent.com/Orz-3/task/master/didi.png, enabled=true
   [rewrite_local]
   ^https?:\/\/api\.didialift\.com\/beatles\/userapi\/user\/user\/getuserinfo?.*city_id=(\d+).*&token=([^&]*) url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
-  ^https:\/\/as\.xiaojukeji\.com\/ep\/as\/toggles\?.*city=(\d*)&.*ticket=(.*)& url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
   ^https?:\/\/bosp-api\.xiaojukeji\.com\/bosp-api\/lottery\/info?.*lid=([^&]*) url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
 
   loon:
   [Script]
   http-request ^https?:\/\/api\.didialift\.com\/beatles\/userapi\/user\/user\/getuserinfo?.*city_id=(\d+).*&token=([^&]*) script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js, requires-body=false, timeout=10, tag=滴滴出行cookie
-  http-request ^https:\/\/as\.xiaojukeji\.com\/ep\/as\/toggles\?.*city=(\d*)&.*ticket=(.*)& script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js, requires-body=false, timeout=10, tag=滴滴出行cookie
   http-request ^https?:\/\/bosp-api\.xiaojukeji\.com\/bosp-api\/lottery\/info?.*lid=([^&]*) script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js, requires-body=false, timeout=10, tag=滴滴出行cookie
   cron "0 9 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js, tag=滴滴出行
 
@@ -28,7 +26,6 @@
   [Script]
   滴滴出行 = type=cron,cronexp=0 9 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.js
   滴滴出行cookie = type=http-request,pattern=^https?:\/\/api\.didialift\.com\/beatles\/userapi\/user\/user\/getuserinfo?.*city_id=(\d+).*&token=([^&]*),requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
-  滴滴出行cookie = type=http-request,pattern=^https:\/\/as\.xiaojukeji\.com\/ep\/as\/toggles\?.*city=(\d*)&.*ticket=(.*)&,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
   滴滴出行cookie = type=http-request,pattern=^https?:\/\/bosp-api\.xiaojukeji\.com\/bosp-api\/lottery\/info?.*lid=([^&]*),requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/didi.cookie.js
  *
  **/
