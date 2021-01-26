@@ -140,8 +140,8 @@ def coolpush_bot(title, content):
     print("qq服务启动")
     url=f"https://qmsg.zendee.cn/{QQ_MODE}/{QQ_SKEY}"
     payload = {'msg': f"{title}\n\n{content}".encode('utf-8')}
-    response = requests.post(url=url, params=).json()
-    if response['code'] == 200:
+    response = requests.post(url=url, params=payload).json()
+    if response['code'] == 0:
         print('推送成功！')
     else:
         print('推送失败！')
