@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-23 18:03:38
+ * @LastEditTime: 2021-01-29 11:23:49
  * api参考 https://github.com/zZPiglet/Task/blob/master/DiDi/DiDi.js
  * 目前支持签到和福利金抽奖
 
@@ -43,11 +43,11 @@ $.result = [];
 
 !(async () => {
   if (!getCookies()) return;
-  const resultError = await createAssistUser();
+  const resultError = await checkIn();
   if (resultError) {
     return;
   }
-  await goldLottery();
+  // await goldLottery();
   await bonusInfo();
   await showMsg();
 })()
