@@ -2,6 +2,9 @@
   "name": "hundun tasks",
   "task": [
     {
+      "config": "0 0-18 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd-818.js, tag=手机狂欢节, img-url=https://raw.githubusercontent.com/Orz-3/task/master/jd.png, enabled=true"
+    },
+    {
       "config": "0 9 * * * https://raw.githubusercontent.com/58xinian/Surge/master/Script/huke.js, tag=虎课网, img-url=https://raw.githubusercontent.com/58xinian/icon/master/huke.png, enabled=true"
     },
     {
