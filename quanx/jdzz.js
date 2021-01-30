@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-23 11:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-16 21:28:30
+ * @LastEditTime: 2021-01-30 15:07:20
  * 参考 shylocks 大佬修改ck和助力 https://github.com/shylocks
 
   quanx:
@@ -158,6 +158,7 @@ function createAssistUser() {
         );
       } catch (e) {
         $.logErr(e, resp);
+        resolve();
       }
     });
   });

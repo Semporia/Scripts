@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-21 23:41:05
+ * @LastEditTime: 2021-01-30 15:08:00
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -503,6 +503,7 @@ function createAssistUser() {
         });
       } catch (e) {
         $.logErr(e, resp);
+        resolve();
       }
     });
   });
@@ -626,6 +627,7 @@ function joinTuan() {
         );
       } catch (e) {
         $.logErr(e, resp);
+        resolve();
       }
     });
   });

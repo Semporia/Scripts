@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-25 18:26:29
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-10 20:09:25
+ * @LastEditTime: 2021-01-30 15:06:20
 
   参考自： https://raw.githubusercontent.com/799953468/Quantumult-X/master/Scripts/JD/jd_factory.js
   增加随机助力，每次随机助力一位
@@ -281,6 +281,7 @@ function createAssistUser(cookie) {
         );
       } catch (e) {
         $.logErr(e, resp);
+        resolve();
       }
     });
   });

@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-20 10:42:06
  * @LastEditors: whyour
- * @LastEditTime: 2020-12-10 15:14:24
+ * @LastEditTime: 2021-01-30 15:06:43
 
   quanx:
   [task_local]
@@ -368,6 +368,7 @@ function createAssistUser(token) {
         );
       } catch (e) {
         $.logErr(e, resp);
+        resolve()
       }
     })
   });

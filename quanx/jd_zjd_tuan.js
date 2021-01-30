@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-24 11:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-18 14:05:25
+ * @LastEditTime: 2021-01-30 15:07:06
  * 参考 shylocks https://github.com/shylocks
 
   quanx:
@@ -107,6 +107,7 @@ function helpFriendTuan() {
         });
       } catch (e) {
         $.logErr(e, resp);
+        resolve();
       }
     });
   });
