@@ -12,6 +12,7 @@ import jxNc from './routes/jxNc';
 import jdZz from './routes/jdZz';
 import jdZjdTuan from './routes/jdZjdTuan';
 import didi from './routes/didi';
+import jd818 from './routes/jd818';
 import agendash from './routes/agendash';
 
 export default () => {
@@ -30,5 +31,6 @@ export default () => {
 	jdZjdTuan(app);
 	agendash(app);
 	didi(app);
+	jd818(app);
 	return app
 }

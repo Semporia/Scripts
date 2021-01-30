@@ -22,5 +22,6 @@ export enum ShareCodeType {
   jxCfdGroup,
   jdZz,
   jdZjdTuan,
-  didi
+  didi,
+  jd818
 }
