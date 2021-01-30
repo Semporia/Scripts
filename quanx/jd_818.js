@@ -5,7 +5,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2021-01-30 20:00:00
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-30 22:29:18
+ * @LastEditTime: 2021-01-30 22:39:15
  活动地址: https://rdcseason.m.jd.com/#/index
 
  # quanx
@@ -43,7 +43,7 @@ $.currentCookie = '';
       $.risk = false;
       await getToday();
       if ($.risk) {
-        message += '活动太火爆了，快去买买买吧\n';
+        $.result.push('活动太火爆了，快去买买买吧');
         await showMsg();
         return;
       }
@@ -94,11 +94,11 @@ function getCookies() {
 
 function showMsg() {
   return new Promise(resolve => {
-    message += `本次运行获得${$.beans}京豆，${$.score}积分`;
+    $.result.push(`本次运行获得${$.beans}京豆，${$.score}积分`);
     if (!jdNotify) {
-      $.msg($.name, '', `${message}`);
+      $.msg($.name, '', `${$.result.join('\n')}`);
     } else {
-      $.log(`京东账号${$.index}${$.nickName}\n${message}`);
+      $.log(`京东账号${$.index}${$.nickName}\n${$.result.join('\n')}`);
     }
     resolve();
   });
@@ -106,7 +106,7 @@ function showMsg() {
 
 function createAssistUser() {
   return new Promise(resolve => {
-    $.get({ url: `https://api.ninesix.cc/api/jx-nc?active=${$.info.active}` }, async (err, resp, _data) => {
+    $.get({ url: `https://api.ninesix.cc/api/jx-818` }, async (err, resp, _data) => {
       try {
         const { code, data: { value, extra = {} } = {} } = JSON.parse(_data);
         $.log(`\n获取随机助力码${code}\n${$.showLog ? _data : ''}`);
@@ -177,7 +177,7 @@ function getActInfo() {
         } else {
           data = JSON.parse(data);
           if (data && data['code'] === 200) {
-            message += `用户当前积分：${data.data.integralNum}\n`;
+            $.result.push(`用户当前积分：${data.data.integralNum}`);
             $.log(`用户当前积分：${data.data.integralNum}`);
           } else {
             $.log(JSON.stringify(data));
@@ -446,7 +446,7 @@ function submitInviteId(userName) {
     }
     $.post(
       {
-        url: `https://api.ninesix.cc/api/jd-5g/${$.shareId}/${encodeURIComponent(userName)}`,
+        url: `https://api.ninesix.cc/api/jd-818/${$.shareId}/${encodeURIComponent(userName)}`,
       },
       (err, resp, _data) => {
         try {
