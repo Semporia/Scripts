@@ -5,7 +5,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2021-01-30 20:00:00
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-30 20:44:38
+ * @LastEditTime: 2021-01-30 22:29:18
  活动地址: https://rdcseason.m.jd.com/#/index
 
  # quanx
@@ -474,7 +474,7 @@ function myRank() {
         Host: 'rdcseason.m.jd.com',
         Accept: 'application/json, text/plain, */*',
         Connection: 'keep-alive',
-        Cookie: cookie,
+        Cookie: $.currentCookie,
         'User-Agent':
           'Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Mobile/15E148 Safari/604.1',
         'Accept-Language': 'zh-cn',
@@ -525,7 +525,7 @@ function saveJbean(id) {
         Host: 'rdcseason.m.jd.com',
         Accept: 'application/json, text/plain, */*',
         Connection: 'keep-alive',
-        Cookie: cookie,
+        Cookie: $.currentCookie,
         'User-Agent':
           'Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Mobile/15E148 Safari/604.1',
         'Accept-Language': 'zh-cn',
@@ -554,7 +554,7 @@ function taskUrl(function_id, body) {
   return {
     url,
     headers: {
-      Cookie: cookie,
+      Cookie: $.currentCookie,
       origin: 'https://rdcseason.m.jd.com',
       referer: 'https://rdcseason.m.jd.com/',
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -570,7 +570,7 @@ function taskPostUrl(function_id, body = '') {
     url,
     body: body,
     headers: {
-      Cookie: cookie,
+      Cookie: $.currentCookie,
       origin: 'https://rdcseason.m.jd.com',
       referer: 'https://rdcseason.m.jd.com/',
       'Content-Type': 'application/x-www-form-urlencoded',
