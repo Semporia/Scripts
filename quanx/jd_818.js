@@ -5,7 +5,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2021-01-30 20:00:00
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-30 22:39:15
+ * @LastEditTime: 2021-01-30 22:47:37
  活动地址: https://rdcseason.m.jd.com/#/index
 
  # quanx
@@ -95,18 +95,14 @@ function getCookies() {
 function showMsg() {
   return new Promise(resolve => {
     $.result.push(`本次运行获得${$.beans}京豆，${$.score}积分`);
-    if (!jdNotify) {
-      $.msg($.name, '', `${$.result.join('\n')}`);
-    } else {
-      $.log(`京东账号${$.index}${$.nickName}\n${$.result.join('\n')}`);
-    }
+    $.log(`京东账号${$.index}${$.nickName}\n${$.result.join('\n')}`);
     resolve();
   });
 }
 
 function createAssistUser() {
   return new Promise(resolve => {
-    $.get({ url: `https://api.ninesix.cc/api/jx-818` }, async (err, resp, _data) => {
+    $.get({ url: `https://api.ninesix.cc/api/jd-818` }, async (err, resp, _data) => {
       try {
         const { code, data: { value, extra = {} } = {} } = JSON.parse(_data);
         $.log(`\n获取随机助力码${code}\n${$.showLog ? _data : ''}`);
