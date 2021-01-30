@@ -5,7 +5,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2021-01-30 20:00:00
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-30 22:47:37
+ * @LastEditTime: 2021-01-30 22:59:09
  活动地址: https://rdcseason.m.jd.com/#/index
 
  # quanx
@@ -19,10 +19,8 @@
 */
 
 const $ = new Env('京东手机狂欢城');
-
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-
 const JD_API_HOST = 'https://rdcseason.m.jd.com/api/';
 $.result = [];
 $.cookieArr = [];
@@ -94,8 +92,8 @@ function getCookies() {
 
 function showMsg() {
   return new Promise(resolve => {
-    $.result.push(`本次运行获得${$.beans}京豆，${$.score}积分`);
-    $.log(`京东账号${$.index}${$.nickName}\n${$.result.join('\n')}`);
+    $.result.push(`【本次】获得${$.beans}京豆，${$.score}积分`);
+    $.log(`${$.result.join('\n')}`);
     resolve();
   });
 }
@@ -173,7 +171,7 @@ function getActInfo() {
         } else {
           data = JSON.parse(data);
           if (data && data['code'] === 200) {
-            $.result.push(`用户当前积分：${data.data.integralNum}`);
+            $.result.push(`【当前积分】：${data.data.integralNum}`);
             $.log(`用户当前积分：${data.data.integralNum}`);
           } else {
             $.log(JSON.stringify(data));
