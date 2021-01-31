@@ -5,7 +5,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2021-01-30 20:00:00
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-30 22:59:09
+ * @LastEditTime: 2021-01-31 15:12:00
  活动地址: https://rdcseason.m.jd.com/#/index
 
  # quanx
@@ -63,6 +63,7 @@ $.currentCookie = '';
       $.log(`去帮助好友`);
       await myRank(); //领取往期排名奖励
       await getActInfo();
+      await createAssistUser();
       await createAssistUser();
       await createAssistUser();
       await showMsg();
