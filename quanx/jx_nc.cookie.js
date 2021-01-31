@@ -3,39 +3,45 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-10 23:33:30
- * 打开京喜农场，添加下面的重写，手动完成任意任务，提示获取cookie成功，然后退出跑任务脚本
+ * @LastEditTime: 2021-01-31 17:29:59
+ * 打开京喜农场，手动完成任意任务，必须完成任务领到水滴，提示获取cookie成功
+ * 打开京喜工厂，收取电力，提示获取cookie成功
+ * 打开京喜财富岛，手动成功提现一次，提示获取cookie成功
 
-  hostname = wq.jd.com
+  hostname = wq.jd.com, m.jingxi.com
 
-  quanx:
-  [task_local]
-  0 9,12,18 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, tag=京喜农场, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxnc.png, enabled=true
+  # quanx
   [rewrite_local]
   ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
+  ^https\:\/\/m\.jingxi\.com\/dreamfactory\/generator\/CollectCurrentElectricity url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
+  ^https\:\/\/m\.jingxi\.com\/jxcfd\/consume\/CashOut url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
 
-  loon:
+  # loon
   [Script]
-  http-request ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js, requires-body=false, timeout=10, tag=京喜农场cookie
-  cron "0 9,12,18 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, tag=京喜农场
+  http-request ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js, requires-body=false, timeout=10, tag=京喜token
+  http-request ^https\:\/\/m\.jingxi\.com\/dreamfactory\/generator\/CollectCurrentElectricity script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js, requires-body=false, timeout=10, tag=京喜token
+  http-request ^^https\:\/\/m\.jingxi\.com\/jxcfd\/consume\/CashOut script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js, requires-body=false, timeout=10, tag=京喜token
 
-  surge:
+  # surge
   [Script]
-  京喜农场 = type=cron,cronexp=0 9,12,18 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js,
-  京喜农场cookie = type=http-request,pattern=^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
- *
+  京喜token = type=http-request,pattern=^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
+  京喜token = type=http-request,pattern=^https\:\/\/m\.jingxi\.com\/dreamfactory\/generator\/CollectCurrentElectricity,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
+  京喜token = type=http-request,pattern=^https\:\/\/m\.jingxi\.com\/jxcfd\/consume\/CashOut,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
  *
  **/
 
 const jxNcTokenKey1 = "jxnc_token1";
 const jxNcTokenKey2 = "jxnc_token2";
-const getTokenRegex = /^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask/;
-const $ = new Env("京喜农场Cookie");
+const jxTokens = "jx_tokens";
+const ncTokenRegex = /^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask/;
+const gcTokenRegex = /^https\:\/\/m\.jingxi\.com\/dreamfactory\/generator\/CollectCurrentElectricity/;
+const cfdTokenRegex = /^https\:\/\/m\.jingxi\.com\/jxcfd\/consume\/CashOut/;
+const $ = new Env("京喜token");
 
 const url = $request.url;
 const headers = $request.headers;
 
-if (getTokenRegex.test(url)) {
+if (ncTokenRegex.test(url)) {
   try {
     const query = url.split('?')[1];
     const params = query.split('&');
@@ -51,37 +57,106 @@ if (getTokenRegex.test(url)) {
       $.logErr(`京喜农场写入Token失败，未获取到token请手动完成其他任务`);
     }
     let pin = headers['Cookie'].match(/pt_pin\=(\S*)\;/)[1];
-    pin = pin.split(';')[0];
-    const result = JSON.stringify({ 'farm_jstoken': obj['farm_jstoken'], phoneid: obj.phoneid, timestamp: obj.timestamp, pin });
-    const token1 = $.getdata(jxNcTokenKey1)
-    const token2 = $.getdata(jxNcTokenKey2)
-    var accountOne = token1 ? JSON.parse(token1) ? JSON.parse(token1)['pin'] : null : null
-    var accountTwo = token2 ? JSON.parse(token2) ? JSON.parse(token2)['pin'] : null : null
-    var cookieName = " [账号一] ";
-    var cookieKey = "";
-    if (!accountOne || obj.pin == accountOne) {
-      cookieName = " [账号一] ";
-      cookieKey = jxNcTokenKey1;
-    } else if (!accountTwo || obj.pin == accountTwo) {
-      cookieName = " [账号二] ";
-      cookieKey = jxNcTokenKey2;
-    }
-    const oldValue = $.getdata(cookieKey);
-    if (oldValue == result) {
-      console.log(`\n账号: ${pin} \n与历史京东${cookieName}Cookie相同, 跳过写入 ⚠️`)
-    } else if (cookieKey) {
-      $.setdata(result, cookieKey);
-      $.log(`账号: ${pin} token: ${result}`);
-      $.msg($.name,`账号: ${pin} 设备: ${obj.phoneid.slice(0,10)}...`, `${oldValue?`更新`:`写入`}京喜农场${cookieName} Cookie成功 🎉`);
-    }
-    if (!cookieKey) {
-      $.log(`账号: ${pin} token: ${result}`);
-      $.logErr($.name, '更新京东Cookie失败, 非历史写入账号 ‼️, 去日志查看token');
-    }
+    pin = decodeURIComponent(pin.split(';')[0]);
+    writeToken(obj)
   } catch (err) {
     $.logErr(`京喜农场写入Token失败，执行异常：${err}。`);
     $.msg($.name, "❌京喜农场写入Token失败");
   }
+}
+
+if (gcTokenRegex.test(url)) {
+  try {
+    const query = url.split('?')[1];
+    const params = query.split('&');
+    let obj = {};
+    for (let i = 0; i < params.length; i++) {
+      const [key, value] = params[i].split('=');
+      obj[key] = value;
+    }
+    if (!headers['Cookie']) {
+      $.logErr(`京喜写入Token失败，未从headers中获取到cookie`);
+    }
+    if (!obj.apptoken || !obj.phoneID || !obj.pgtimestamp) {
+      $.logErr(`京喜写入Token失败，未获取到token请手动完成其他任务`);
+    }
+    let pin = headers['Cookie'].match(/pt_pin\=(\S*)\;/)[1];
+    pin = decodeURIComponent(pin.split(';')[0]);
+    const params = {
+      'farm_jstoken': obj.apptoken,
+      pin,
+      phoneid: obj.phoneID,
+      timestamp: obj.pgtimestamp
+    }
+    writeToken(params)
+  } catch (err) {
+    $.logErr(`京喜农场写入Token失败，执行异常：${err}。`);
+    $.msg($.name, "❌京喜农场写入Token失败");
+  }
+}
+
+if (cfdTokenRegex.test(url)) {
+  try {
+    const query = url.split('?')[1];
+    const params = query.split('&');
+    let obj = {};
+    for (let i = 0; i < params.length; i++) {
+      const [key, value] = params[i].split('=');
+      obj[key] = value;
+    }
+    if (!headers['Cookie']) {
+      $.logErr(`京喜写入Token失败，未从headers中获取到cookie`);
+    }
+    if (!obj.strPgUUNum || !obj.strPhoneID || !obj.strPgtimestamp) {
+      $.logErr(`京喜写入Token失败，未获取到token请手动完成其他任务`);
+    }
+    let pin = headers['Cookie'].match(/pt_pin\=(\S*)\;/)[1];
+    pin = decodeURIComponent(pin.split(';')[0]);
+    const params = {
+      'farm_jstoken': obj.strPgUUNum,
+      pin,
+      phoneid: obj.strPhoneID,
+      timestamp: obj.strPgtimestamp
+    }
+    writeToken(params)
+  } catch (err) {
+    $.logErr(`京喜写入Token失败，执行异常：${err}。`);
+    $.msg($.name, "❌京喜写入Token失败");
+  }
+}
+
+function writeToken(obj) {
+  const { pin, phoneid, timestamp } = obj;
+  const result = { 'farm_jstoken': obj['farm_jstoken'], phoneid, timestamp, pin };
+  const tokens = JSON.parse($.getdata(jxTokens) || '[]');
+
+  const token1 = JSON.parse($.getdata(jxNcTokenKey1) || '{}');
+  const token2 = JSON.parse($.getdata(jxNcTokenKey2) || '{}');
+  if (token2 && token2.pin) {
+    const token = tokens.find(x => x.pin === token2.pin);
+    if (token) {
+      tokens.unshift(token);
+    }
+  }
+  if (token1 && token1.pin) {
+    const token = tokens.find(x => x.pin === token1.pin);
+    if (token) {
+      tokens.unshift(token);
+    }
+  }
+
+  let tokenIndex = tokens.findIndex(x => x.pin === pin);
+  let tip = '写入';
+  if (tokenIndex === -1) {
+    tokenIndex = tokens.length + 1;
+    tokens.push(result);
+  } else {
+    tokens[tokenIndex] = result;
+    tip = '更新';
+  }
+  $.setdata(JSON.stringify(tokens), jxTokens);
+  $.log(`京喜【账号 ${tokenIndex}】: ${pin} \ntoken: ${result}`);
+  $.msg($.name,`账号: ${pin} 设备: ${obj.phoneid.slice(0,10)}...`, `${tip}京喜【账号 ${tokenIndex}】Cookie成功 🎉`);
 }
 
 $.done()
