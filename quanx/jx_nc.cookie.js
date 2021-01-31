@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-10 12:30:44
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-31 17:29:59
+ * @LastEditTime: 2021-01-31 19:03:46
  * 打开京喜农场，手动完成任意任务，必须完成任务领到水滴，提示获取cookie成功
  * 打开京喜工厂，收取电力，提示获取cookie成功
  * 打开京喜财富岛，手动成功提现一次，提示获取cookie成功
@@ -58,6 +58,7 @@ if (ncTokenRegex.test(url)) {
     }
     let pin = headers['Cookie'].match(/pt_pin\=(\S*)\;/)[1];
     pin = decodeURIComponent(pin.split(';')[0]);
+    obj.pin = pin;
     writeToken(obj);
   } catch (err) {
     $.logErr(`京喜农场写入Token失败，执行异常：${err}。`);
@@ -155,8 +156,8 @@ function writeToken(obj) {
     tip = '更新';
   }
   $.setdata(JSON.stringify(tokens), jxTokens);
-  $.log(`京喜【账号 ${tokenIndex}】: ${pin} \ntoken: ${result}`);
-  $.msg($.name, `账号: ${pin} 设备: ${obj.phoneid.slice(0, 10)}...`, `${tip}京喜【账号 ${tokenIndex}】Cookie成功 🎉`);
+  $.log(`京喜【账号 ${tokenIndex}】: ${pin} \ntoken: ${JSON.stringify(result)}`);
+  $.msg($.name, `账号: ${pin} 设备: ${obj.phoneid.slice(0, 10)}...`, `${tip}京喜【账号 ${tokenIndex+1}】Cookie成功 🎉`);
 }
 
 $.done();
