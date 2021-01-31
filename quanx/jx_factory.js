@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2021-01-30 15:08:00
+ * @LastEditTime: 2021-01-31 10:18:32
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -28,6 +28,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.autoCharge = $.getdata('gc_autoCharge') ? $.getdata('gc_autoCharge') === 'true' : false;
 $.showLog = $.getdata('gc_showLog') ? $.getdata('gc_showLog') === 'true' : false;
 $.notifyTime = $.getdata('gc_notifyTime');
+$.tokens = [$.getdata('jxnc_token1') || '{}', $.getdata('jxnc_token2') || '{}'];
 $.result = [];
 $.cookieArr = [];
 $.currentCookie = '';
@@ -39,6 +40,7 @@ $.userTuanInfo = {};
   if (!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
     $.currentCookie = $.cookieArr[i];
+    $.currentToken = JSON.parse($.tokens[i] || '{}');
     if ($.currentCookie) {
       const userName = decodeURIComponent(
         $.currentCookie.match(/pt_pin=(.+?);/) && $.currentCookie.match(/pt_pin=(.+?);/)[1],
@@ -205,7 +207,7 @@ function collectElectricity(facId, master) {
     $.get(
       taskUrl(
         'generator/CollectCurrentElectricity',
-        `factoryid=${facId}&master=${master ? master : ''}&apptoken=&pgtimestamp=&phoneID=&doubleflag=1&_stk=_time%2Capptoken%2Cdoubleflag%2Cfactoryid%2Cpgtimestamp%2CphoneID%2CtimeStamp%2Czone`,
+        `factoryid=${facId}&master=${master ? master : ''}&apptoken=${$.currentToken['farm_jstoken'] || ''}&pgtimestamp=${$.currentToken['timestamp'] || ''}&phoneID=${$.currentToken['phoneid'] || ''}&doubleflag=1&_stk=_time%2Capptoken%2Cdoubleflag%2Cfactoryid%2Cpgtimestamp%2CphoneID%2Czone`,
       ),
       (err, resp, data) => {
         try {
@@ -315,7 +317,7 @@ function browserTask() {
 
 function awardTask({ taskId, taskName }) {
   return new Promise(resolve => {
-    $.get(taskListUrl('Award', `taskId=${taskId}&_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone%2CtaskId`), (err, resp, data) => {
+    $.get(taskListUrl('Award', `taskId=${taskId}&_stk=_time%2CbizCode%2Csource%2CtaskId`), (err, resp, data) => {
       try {
         const { msg, ret, data: { prizeInfo = '' } = {} } = JSON.parse(data);
         let str = '';
@@ -342,7 +344,7 @@ function doTask({ taskId, completedTimes, configTargetTimes, taskName }) {
       $.log(`\n${taskName}[做任务]： mission success`);
       return;
     }
-    $.get(taskListUrl('DoTask', `taskId=${taskId}&_stk=_cfd_t%2CbizCode%2CconfigExtra%2CdwEnv%2Cptag%2Csource%2CstrZone%2CtaskId`), (err, resp, data) => {
+    $.get(taskListUrl('DoTask', `taskId=${taskId}&_stk=_time%2CbizCode%2CconfigExtra%2Csource%2CtaskId`), (err, resp, data) => {
       try {
         const { msg, ret } = JSON.parse(data);
         $.log(
