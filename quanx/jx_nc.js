@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2021-02-01 11:29:19
+ * @LastEditTime: 2021-02-01 20:48:45
  * 打开京喜农场，添加下面的重写，手动完成任意任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -29,7 +29,7 @@
 const $ = new Env('京喜农场');
 const JD_API_HOST = 'https://wq.jd.com/';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-$.tokens = $.getdata('jx_tokens');
+$.tokens = JSON.parse($.getdata('jx_tokens') || '[]');
 $.showLog = $.getdata('nc_showLog') ? $.getdata('nc_showLog') === 'true' : false;
 $.openUrl = `openjd://virtual?params=${encodeURIComponent(
   '{ "category": "jump", "des": "m", "url": "https://wqsh.jd.com/sns/201912/12/jxnc/detail.html?ptag=7155.9.32&smp=b47f4790d7b2a024e75279f55f6249b9&active=jdnc_1_chelizi1205_2"}',
@@ -48,7 +48,7 @@ $.drip = 0;
   if (!getCookies()) return;
   for (let i = 0; i < $.cookieArr.length; i++) {
     $.currentCookie = $.cookieArr[i];
-    $.currentToken = JSON.parse($.tokens[i] || '{}');
+    $.currentToken = $.tokens[i] || {};
     $.drip = 0;
     if ($.currentCookie) {
       const userName = decodeURIComponent(
