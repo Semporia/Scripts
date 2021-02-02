@@ -6,44 +6,9 @@
   "repo": "https://github.com/whyour/hundun",
   "apps": [
     {
-      "id": "supermarket",
-      "name": "京东超市",
-      "keys": ["zd_shelf_level", "zd_product_level"],
-      "settings": [
-        {
-          "id": "zd_upgrade_cheapest_product",
-          "name": "只升级等级最低的一件商品且消耗200万金币以下",
-          "val": true,
-          "type": "boolean",
-          "desc": "完成超市赚钱升级商品任务200万金币"
-        },
-        {
-          "id": "zd_product_level",
-          "name": "升级商品等级",
-          "val": "",
-          "type": "text",
-          "desc": "填写每次需要自动升级的商品的等级，默认自动升一级."
-        },
-        {
-          "id": "zd_shelf_level",
-          "name": "升级货架等级",
-          "val": "",
-          "type": "text",
-          "desc": "填写每次需要自动升级的货架的等级，默认自动升一级."
-        }
-      ],
-      "author": "@whyour",
-      "repo": "https://github.com/whyour/hundun/blob/master/quanx/shareCode-auto.js",
-      "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/shareCode-auto.js",
-      "icons": [
-        "https://raw.githubusercontent.com/58xinian/icon/master/jxc_mini.png",
-        "https://raw.githubusercontent.com/58xinian/icon/master/jxc.png"
-      ]
-    },
-    {
       "id": "caiyun",
       "name": "彩云天气",
-      "keys": ["caiyun_svip", "caiyun_location"],
+      "keys": ["caiyun_location"],
       "author": "@whyour",
       "repo": "https://github.com/whyour/hundun/blob/master/quanx/caiyun.js",
       "script": "https://raw.githubusercontent.com/whyour/hundun/master/quanx/caiyun.js",
@@ -55,7 +20,6 @@
     {
       "id": "jd_ddxw",
       "name": "东东小窝",
-      "keys": ["jd_ddxw_name1", "jd_ddxw_name2"],
       "settings": [
         {
           "id": "xw_showLog",
@@ -83,7 +47,6 @@
     {
       "id": "jdzz",
       "name": "京东赚赚小程序",
-      "keys": ["jdzz_token1", "jdzz_token2"],
       "settings": [
         {
           "id": "zz_showLog",
@@ -255,7 +218,7 @@
     {
       "id": "didi",
       "name": "滴滴出行",
-      "keys": ["didi_token", "didi_city_id", "didi_lid", ""],
+      "keys": ["didi_token", "didi_city_id", "didi_lid"],
       "settings": [
         {
           "id": "didi_showLog",
