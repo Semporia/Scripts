@@ -299,6 +299,26 @@ def friendSign(headers, uid):
     print(traceback.format_exc())
     return
 
+def sendTwentyScore(headers, action):
+  """
+  每日任务
+  :param headers:
+  :return:
+  """
+  time.sleep(0.3)
+  url = f'{YOUTH_HOST}NewTaskIos/sendTwentyScore?{headers["Referer"].split("?")[1]}&action={action}'
+  try:
+    response = requests_session().get(url=url, headers=headers, timeout=30).json()
+    print(f'每日任务 {action}')
+    print(response)
+    if response['status'] == 1:
+      return response
+    else:
+      return
+  except:
+    print(traceback.format_exc())
+    return
+
 def watchAdVideo(headers):
   """
   看广告视频
@@ -616,12 +636,12 @@ def run():
     watch_game_video_res = watchGameVideo(body=readBody)
     if watch_game_video_res:
       content += f'\n【激励视频】：{watch_game_video_res["score"]}个青豆'
-    article_red_res = articleRed(body=redBody)
-    if article_red_res:
-      content += f'\n【惊喜红包】：+{article_red_res["score"]}个青豆'
+    # article_red_res = articleRed(body=redBody)
+    # if article_red_res:
+    #   content += f'\n【惊喜红包】：+{article_red_res["score"]}个青豆'
     read_time_res = readTime(body=readTimeBody)
     if read_time_res:
-      content += f'\n【阅读时长】：共计{read_time_res["time"] // 60}分钟'
+      content += f'\n【阅读时长】：共计{int(read_time_res["time"]) // 60}分钟'
     if (hour >= 6 and hour <= 8) or (hour >= 11 and hour <= 13) or (hour >= 19 and hour <= 21):
       beread_red_res = bereadRed(headers=headers)
       if beread_red_res:
@@ -640,6 +660,9 @@ def run():
               content += f'\n【转盘双倍】：+{double_rotary_res["score"]}青豆 剩余{double_rotary_res["doubleNum"]}次'
 
     rotaryChestReward(headers=headers, body=rotaryBody)
+    for action in ['watch_article_reward', 'watch_video_reward', 'read_time_two_minutes', 'read_time_sixty_minutes', 'new_fresh_five_video_reward']:
+      time.sleep(5)
+      sendTwentyScore(headers=headers, action=action)
     stat_res = incomeStat(headers=headers)
     if stat_res['status'] == 0:
       for group in stat_res['history'][0]['group']:
