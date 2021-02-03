@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2021-02-01 20:48:45
+ * @LastEditTime: 2021-02-03 12:47:04
  * 打开京喜农场，添加下面的重写，手动完成任意任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -12,17 +12,17 @@
   [task_local]
   0 9,12,18 * * * https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, tag=京喜农场, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jxnc.png, enabled=true
   [rewrite_local]
-  ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
+  ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask url script-request-header https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_tokens.js
 
   loon:
   [Script]
-  http-request ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js, requires-body=false, timeout=10, tag=京喜农场cookie
+  http-request ^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_tokens.js, requires-body=false, timeout=10, tag=京喜农场cookie
   cron "0 9,12,18 * * *" script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js, tag=京喜农场
 
   surge:
   [Script]
   京喜农场 = type=cron,cronexp=0 9,12,18 * * *,timeout=60,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.js,
-  京喜农场cookie = type=http-request,pattern=^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_nc.cookie.js
+  京喜农场cookie = type=http-request,pattern=^https\:\/\/wq\.jd\.com\/cubeactive\/farm\/dotask,requires-body=0,max-size=0,script-path=https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_tokens.js
  *
  **/
 
