@@ -191,23 +191,72 @@ def luckDraw(headers):
     print(traceback.format_exc())
     return
 
+def timePacket(headers):
+  """
+  计时红包
+  :param headers:
+  :return:
+  """
+  time.sleep(0.3)
+  url = f'{YOUTH_HOST}TimePacket/getReward'
+  try:
+    response = requests_session().post(url=url, data=f'{headers["Referer"].split("?")[1]}', headers=headers, timeout=30).json()
+    print('计时红包')
+    print(response)
+    return
+  except:
+    print(traceback.format_exc())
+    return
+
+def watchWelfareVideo(headers):
+  """
+  观看福利视频
+  :param headers:
+  :return:
+  """
+  time.sleep(0.3)
+  url = f'{YOUTH_HOST}NewTaskIos/recordNum?{headers["Referer"].split("?")[1]}'
+  try:
+    response = requests_session().get(url=url, headers=headers, timeout=30).json()
+    print('观看福利视频')
+    print(response)
+    return
+  except:
+    print(traceback.format_exc())
+    return
+
 def shareArticle(headers):
   """
   分享文章
   :param headers:
   :return:
   """
-  time.sleep(0.3)
-  url = 'https://focu.youth.cn/article/s?signature=QqvZWbEKpA2yrNR1MnyjPetpZpz2TLdDDw849VGjJl8gXB5keP&uid=52242968&phone_code=4aa0b274198dafebe5c214ea6097d12b&scid=35438728&time=1609414747&app_version=1.8.2&sign=17fe0351fa6378a602c2afd55d6a47c8'
-  readUrl = 'https://focus.youth.cn/article/s?signature=QqvZWbEKpA2yrNR1MnyjPetpZpz2TLdDDw849VGjJl8gXB5keP&uid=52242968&phone_code=4aa0b274198dafebe5c214ea6097d12b&scid=35438728&time=1609414747&app_version=1.8.2&sign=17fe0351fa6378a602c2afd55d6a47c8'
+  url = 'https://ios.baertt.com/v2/article/share/put.json'
+  headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
+  body = 'article_id=36240926&channel=80000000&channel_code=80000000&cid=80000000&client_version=1.8.2&device_brand=iphone&device_id=49068313&device_model=iPhone&device_platform=iphone&device_type=iphone&from=7&is_hot=0&isnew=1&mobile_type=2&net_type=1&openudid=c18a9d1f15212eebb9b8dc4c2adcc563&os_version=14.3&phone_code=c18a9d1f15212eebb9b8dc4c2adcc563&phone_network=WIFI&platform=3&request_time=1612771954&resolution=750x1334&sign=67399e61370b3fa383a34ae8025d21cb&sm_device_id=202012191748479a7e5e957ab8f5f116ea95b19fd9120d012db4c3f2b435be&stype=WEIXIN&szlm_ddid=D2U6jGsDnrrijvOmzrEwZMyw/D7WvldETrECXmh7wlq7AXd0&time=1612771954&uid=52289573&uuid=c18a9d1f15212eebb9b8dc4c2adcc563'
   try:
-    response1 = requests_session().post(url=url, headers=headers, timeout=30)
-    print('分享文章1')
-    print(response1)
-    time.sleep(0.3)
-    response2 = requests_session().post(url=readUrl, headers=headers, timeout=30)
-    print('分享文章2')
-    print(response2)
+    response = requests_session().post(url=url, data=body, headers=headers, timeout=30).json()
+    print('分享文章')
+    print(response)
+    return
+  except:
+    print(traceback.format_exc())
+    return
+
+def threeShare(headers, action):
+  """
+  三餐分享
+  :param headers:
+  :return:
+  """
+  time.sleep(0.3)
+  url = f'{YOUTH_HOST}ShareNew/execExtractTask'
+  headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
+  body = f'{headers["Referer"].split("?")[1]}&action={action}'
+  try:
+    response = requests_session().post(url=url, data=body, headers=headers, timeout=30).json()
+    print('三餐分享')
+    print(response)
     return
   except:
     print(traceback.format_exc())
@@ -627,6 +676,9 @@ def run():
     if visit_reward_res:
       content += f'\n【回访奖励】：+{visit_reward_res["score"]}青豆'
     shareArticle(headers=headers)
+    for action in ['beread_extra_reward_one', 'beread_extra_reward_two', 'beread_extra_reward_three']:
+      time.sleep(5)
+      threeShare(headers=headers, action=action)
     open_box_res = openBox(headers=headers)
     if open_box_res:
       content += f'\n【开启宝箱】：+{open_box_res["score"]}青豆 下次奖励{open_box_res["time"] / 60}分钟'
@@ -660,7 +712,10 @@ def run():
               content += f'\n【转盘双倍】：+{double_rotary_res["score"]}青豆 剩余{double_rotary_res["doubleNum"]}次'
 
     rotaryChestReward(headers=headers, body=rotaryBody)
-    for action in ['watch_article_reward', 'watch_video_reward', 'read_time_two_minutes', 'read_time_sixty_minutes', 'new_fresh_five_video_reward']:
+    for i in range(5):
+      watchWelfareVideo(headers=headers)
+    timePacket(headers=headers)
+    for action in ['watch_article_reward', 'watch_video_reward', 'read_time_two_minutes', 'read_time_sixty_minutes', 'new_fresh_five_video_reward', 'first_share_article']:
       time.sleep(5)
       sendTwentyScore(headers=headers, action=action)
     stat_res = incomeStat(headers=headers)
