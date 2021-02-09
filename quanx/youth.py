@@ -233,7 +233,7 @@ def shareArticle(headers):
   """
   url = 'https://ios.baertt.com/v2/article/share/put.json'
   headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
-  body = 'article_id=36240926&channel=80000000&channel_code=80000000&cid=80000000&client_version=1.8.2&device_brand=iphone&device_id=49068313&device_model=iPhone&device_platform=iphone&device_type=iphone&from=7&is_hot=0&isnew=1&mobile_type=2&net_type=1&openudid=c18a9d1f15212eebb9b8dc4c2adcc563&os_version=14.3&phone_code=c18a9d1f15212eebb9b8dc4c2adcc563&phone_network=WIFI&platform=3&request_time=1612771954&resolution=750x1334&sign=67399e61370b3fa383a34ae8025d21cb&sm_device_id=202012191748479a7e5e957ab8f5f116ea95b19fd9120d012db4c3f2b435be&stype=WEIXIN&szlm_ddid=D2U6jGsDnrrijvOmzrEwZMyw/D7WvldETrECXmh7wlq7AXd0&time=1612771954&uid=52289573&uuid=c18a9d1f15212eebb9b8dc4c2adcc563'
+  body = 'access=WIFI&app_version=1.8.2&article_id=36240926&channel=80000000&channel_code=80000000&cid=80000000&client_version=1.8.2&device_brand=iphone&device_id=49068313&device_model=iPhone&device_platform=iphone&device_type=iphone&from=7&is_hot=0&isnew=1&mobile_type=2&net_type=1&openudid=c18a9d1f15212eebb9b8dc4c2adcc563&os_version=14.3&phone_code=c18a9d1f15212eebb9b8dc4c2adcc563&phone_network=WIFI&platform=3&request_time=1612771954&resolution=750x1334&sign=67399e61370b3fa383a34ae8025d21cb&sm_device_id=202012191748479a7e5e957ab8f5f116ea95b19fd9120d012db4c3f2b435be&stype=WEIXIN&szlm_ddid=D2U6jGsDnrrijvOmzrEwZMyw/D7WvldETrECXmh7wlq7AXd0&time=1612771954&uid=52289573&uuid=c18a9d1f15212eebb9b8dc4c2adcc563'
   try:
     response = requests_session().post(url=url, data=body, headers=headers, timeout=30).json()
     print('分享文章')
