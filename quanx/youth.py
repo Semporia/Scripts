@@ -14,12 +14,14 @@ from datetime import datetime, timezone, timedelta
 
 # YOUTH_HEADER 为对象, 其他参数为字符串，自动提现需要自己抓包
 # 选择微信提现30元，立即兑换，在请求包中找到withdraw2的请求，拷贝请求body类型 p=****** 的字符串，放入下面对应参数即可
+# 分享一篇文章，找到 put.json 的请求，拷贝请求体，放入对应参数
 cookies1 = {
   'YOUTH_HEADER': {},
   'YOUTH_READBODY': '',
   'YOUTH_REDBODY': '',
   'YOUTH_READTIMEBODY': '',
-  'YOUTH_WITHDRAWBODY': ''
+  'YOUTH_WITHDRAWBODY': '',
+  'YOUTH_SHAREBODY': ''
 }
 cookies2 = {}
 
@@ -34,12 +36,14 @@ if "YOUTH_HEADER1" in os.environ:
     redBodyVar = f'YOUTH_REDBODY{str(i+1)}'
     readTimeBodyVar = f'YOUTH_READTIMEBODY{str(i+1)}'
     withdrawBodyVar = f'YOUTH_WITHDRAWBODY{str(i+1)}'
+    shareBodyVar = f'YOUTH_SHAREBODY{str(i+1)}'
     if headerVar in os.environ and os.environ[headerVar] and readBodyVar in os.environ and os.environ[readBodyVar] and redBodyVar in os.environ and os.environ[redBodyVar] and readTimeBodyVar in os.environ and os.environ[readTimeBodyVar]:
       globals()['cookies'+str(i + 1)]["YOUTH_HEADER"] = json.loads(os.environ[headerVar])
       globals()['cookies'+str(i + 1)]["YOUTH_READBODY"] = os.environ[readBodyVar]
       globals()['cookies'+str(i + 1)]["YOUTH_REDBODY"] = os.environ[redBodyVar]
       globals()['cookies' + str(i + 1)]["YOUTH_READTIMEBODY"] = os.environ[readTimeBodyVar]
       globals()['cookies' + str(i + 1)]["YOUTH_WITHDRAWBODY"] = os.environ[withdrawBodyVar]
+      globals()['cookies' + str(i + 1)]["YOUTH_SHAREBODY"] = os.environ[shareBodyVar]
       COOKIELIST.append(globals()['cookies'+str(i + 1)])
   print(COOKIELIST)
 
@@ -225,7 +229,7 @@ def watchWelfareVideo(headers):
     print(traceback.format_exc())
     return
 
-def shareArticle(headers):
+def shareArticle(headers, body):
   """
   分享文章
   :param headers:
@@ -233,7 +237,6 @@ def shareArticle(headers):
   """
   url = 'https://ios.baertt.com/v2/article/share/put.json'
   headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
-  body = 'access=WIFI&app_version=1.8.2&article_id=36240926&channel=80000000&channel_code=80000000&cid=80000000&client_version=1.8.2&device_brand=iphone&device_id=49068313&device_model=iPhone&device_platform=iphone&device_type=iphone&from=7&is_hot=0&isnew=1&mobile_type=2&net_type=1&openudid=c18a9d1f15212eebb9b8dc4c2adcc563&os_version=14.3&phone_code=c18a9d1f15212eebb9b8dc4c2adcc563&phone_network=WIFI&platform=3&request_time=1612771954&resolution=750x1334&sign=67399e61370b3fa383a34ae8025d21cb&sm_device_id=202012191748479a7e5e957ab8f5f116ea95b19fd9120d012db4c3f2b435be&stype=WEIXIN&szlm_ddid=D2U6jGsDnrrijvOmzrEwZMyw/D7WvldETrECXmh7wlq7AXd0&time=1612771954&uid=52289573&uuid=c18a9d1f15212eebb9b8dc4c2adcc563'
   try:
     response = requests_session().post(url=url, data=body, headers=headers, timeout=30).json()
     print('分享文章')
@@ -647,6 +650,7 @@ def run():
     redBody = account['YOUTH_REDBODY']
     readTimeBody = account['YOUTH_READTIMEBODY']
     withdrawBody = account['YOUTH_WITHDRAWBODY']
+    shareBody = account['YOUTH_SHAREBODY']
     rotaryBody = f'{headers["Referer"].split("&")[15]}&{headers["Referer"].split("&")[8]}'
     sign_res = sign(headers=headers)
     if sign_res and sign_res['status'] == 1:
@@ -675,7 +679,7 @@ def run():
     visit_reward_res = visitReward(body=readBody)
     if visit_reward_res:
       content += f'\n【回访奖励】：+{visit_reward_res["score"]}青豆'
-    shareArticle(headers=headers)
+    shareArticle(headers=headers, body=shareBody)
     for action in ['beread_extra_reward_one', 'beread_extra_reward_two', 'beread_extra_reward_three']:
       time.sleep(5)
       threeShare(headers=headers, action=action)
