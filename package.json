@@ -7,6 +7,7 @@
     "build": "tsc",
     "start": "nodemon",
     "pm2": "npm run build && node build/app.js",
+    "bot": "npm run build && node build/bot/index.js",
     "inspect": "nodemon --inspect src/app.ts",
     "lint": "npm run lint:js ",
     "lint:eslint": "eslint --ignore-path .gitignore --ext .ts",
@@ -43,6 +44,8 @@
     "morgan": "^1.10.0",
     "node-fetch": "^2.6.1",
     "reflect-metadata": "^0.1.13",
+    "socks-proxy-agent": "^4.0.2",
+    "telegraf": "^4.0.3",
     "typedi": "^0.8.0",
     "winston": "^3.3.3"
   },
