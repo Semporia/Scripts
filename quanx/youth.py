@@ -24,7 +24,7 @@ cookies1 = {
   'YOUTH_READTIMEBODY': '',
   'YOUTH_WITHDRAWBODY': '',
   'YOUTH_SHAREBODY': '',
-  'YOUTH_STARTBODY': ''
+  'YOUTH_STARTBODY': 'access=WIFI&app_version=2.0.0&channel=80000000&channel_code=80000000&cid=80000000&client_version=2.0.0&device_brand=iphone&device_id=49023460&device_model=iPhone&device_platform=iphone&device_type=iphone&isnew=1&mobile_type=2&net_type=1&openudid=4aa0b274198dafebe5c214ea6097d12b&os_version=14.4&phone_code=4aa0b274198dafebe5c214ea6097d12b&phone_network=WIFI&platform=3&request_time=1613564334&resolution=780x1688&sm_device_id=20201217182246943bf1bd97a3f812320f5928fcb1f58a0193953a9e9b154d&szlm_ddid=D2ouM68JTfh3vGJ4s5ihdCCKhjoBOMPkUUECXmh7wlq7AXa0&time=1613564335&token=d55ed7b2787ff9c0ca2c10d28d2c86a9&uid=52242968&uuid=4aa0b274198dafebe5c214ea6097d12b'
 }
 cookies2 = {}
 
@@ -659,7 +659,7 @@ def startApp(headers, body):
     print('启动App')
     print(response)
     if response['success'] == True:
-      return response['items']
+      return response
     else:
       return
   except:
