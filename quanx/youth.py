@@ -12,16 +12,19 @@ import os
 from util import send, requests_session
 from datetime import datetime, timezone, timedelta
 
-# YOUTH_HEADER 为对象, 其他参数为字符串，自动提现需要自己抓包
-# 选择微信提现30元，立即兑换，在请求包中找到withdraw2的请求，拷贝请求body类型 p=****** 的字符串，放入下面对应参数即可
-# 分享一篇文章，找到 put.json 的请求，拷贝请求体，放入对应参数
+# YOUTH_HEADER 为对象, 其他参数为字符串
+# 选择微信提现30元，立即兑换，在请求包中找到withdraw2的请求，拷贝请求body类型 p=****** 的字符串，放入下面对应参数即可 YOUTH_WITHDRAWBODY
+# 分享一篇文章，找到 put.json 的请求，拷贝请求体，放入对应参数 YOUTH_SHAREBODY
+# 清除App后台，重新启动App，找到 start.json 的请求，拷贝请求体，放入对应参数 YOUTH_STARTBODY
+
 cookies1 = {
   'YOUTH_HEADER': {},
   'YOUTH_READBODY': '',
   'YOUTH_REDBODY': '',
   'YOUTH_READTIMEBODY': '',
   'YOUTH_WITHDRAWBODY': '',
-  'YOUTH_SHAREBODY': ''
+  'YOUTH_SHAREBODY': '',
+  'YOUTH_STARTBODY': ''
 }
 cookies2 = {}
 
@@ -37,6 +40,7 @@ if "YOUTH_HEADER1" in os.environ:
     readTimeBodyVar = f'YOUTH_READTIMEBODY{str(i+1)}'
     withdrawBodyVar = f'YOUTH_WITHDRAWBODY{str(i+1)}'
     shareBodyVar = f'YOUTH_SHAREBODY{str(i+1)}'
+    startBodyVar = f'YOUTH_STARTBODY{str(i+1)}'
     if headerVar in os.environ and os.environ[headerVar] and readBodyVar in os.environ and os.environ[readBodyVar] and redBodyVar in os.environ and os.environ[redBodyVar] and readTimeBodyVar in os.environ and os.environ[readTimeBodyVar]:
       globals()['cookies'+str(i + 1)]["YOUTH_HEADER"] = json.loads(os.environ[headerVar])
       globals()['cookies'+str(i + 1)]["YOUTH_READBODY"] = os.environ[readBodyVar]
@@ -44,6 +48,7 @@ if "YOUTH_HEADER1" in os.environ:
       globals()['cookies' + str(i + 1)]["YOUTH_READTIMEBODY"] = os.environ[readTimeBodyVar]
       globals()['cookies' + str(i + 1)]["YOUTH_WITHDRAWBODY"] = os.environ[withdrawBodyVar]
       globals()['cookies' + str(i + 1)]["YOUTH_SHAREBODY"] = os.environ[shareBodyVar]
+      globals()['cookies' + str(i + 1)]["YOUTH_STARTBODY"] = os.environ[startBodyVar]
       COOKIELIST.append(globals()['cookies'+str(i + 1)])
   print(COOKIELIST)
 
@@ -637,6 +642,30 @@ def bereadRed(headers):
     print(traceback.format_exc())
     return
 
+def startApp(headers, body):
+  """
+  启动App
+  :param headers:
+  :return:
+  """
+  time.sleep(0.3)
+  url = 'https://ios.baertt.com/v6/count/start.json'
+  headers = {
+    'User-Agent': 'KDApp/1.8.0 (iPhone; iOS 14.2; Scale/3.00)',
+    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+  }
+  try:
+    response = requests_session().post(url=url, headers=headers, data=body, timeout=30).json()
+    print('启动App')
+    print(response)
+    if response['success'] == True:
+      return response['items']
+    else:
+      return
+  except:
+    print(traceback.format_exc())
+    return
+
 def run():
   title = f'📚中青看点'
   content = ''
@@ -651,7 +680,11 @@ def run():
     readTimeBody = account['YOUTH_READTIMEBODY']
     withdrawBody = account['YOUTH_WITHDRAWBODY']
     shareBody = account['YOUTH_SHAREBODY']
+    startBody = account['YOUTH_STARTBODY']
     rotaryBody = f'{headers["Referer"].split("&")[15]}&{headers["Referer"].split("&")[8]}'
+
+    if startBody:
+      startApp(headers=headers, body=startBody)
     sign_res = sign(headers=headers)
     if sign_res and sign_res['status'] == 1:
       content += f'【签到结果】：成功 🎉 明日+{sign_res["nextScore"]}青豆'
@@ -679,10 +712,11 @@ def run():
     visit_reward_res = visitReward(body=readBody)
     if visit_reward_res:
       content += f'\n【回访奖励】：+{visit_reward_res["score"]}青豆'
-    shareArticle(headers=headers, body=shareBody)
-    for action in ['beread_extra_reward_one', 'beread_extra_reward_two', 'beread_extra_reward_three']:
-      time.sleep(5)
-      threeShare(headers=headers, action=action)
+    if shareBody:
+      shareArticle(headers=headers, body=shareBody)
+      for action in ['beread_extra_reward_one', 'beread_extra_reward_two', 'beread_extra_reward_three']:
+        time.sleep(5)
+        threeShare(headers=headers, action=action)
     open_box_res = openBox(headers=headers)
     if open_box_res:
       content += f'\n【开启宝箱】：+{open_box_res["score"]}青豆 下次奖励{open_box_res["time"] / 60}分钟'
