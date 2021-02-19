@@ -674,13 +674,13 @@ def run():
   print(f'\n【中青看点】{beijing_datetime.strftime("%Y-%m-%d %H:%M:%S")}')
   hour = beijing_datetime.hour
   for i, account in enumerate(COOKIELIST):
-    headers = account['YOUTH_HEADER']
-    readBody = account['YOUTH_READBODY']
-    redBody = account['YOUTH_REDBODY']
-    readTimeBody = account['YOUTH_READTIMEBODY']
-    withdrawBody = account['YOUTH_WITHDRAWBODY']
-    shareBody = account['YOUTH_SHAREBODY']
-    startBody = account['YOUTH_STARTBODY']
+    headers = account.get('YOUTH_HEADER')
+    readBody = account.get('YOUTH_READBODY')
+    redBody = account.get('YOUTH_REDBODY')
+    readTimeBody = account.get('YOUTH_READTIMEBODY')
+    withdrawBody = account.get('YOUTH_WITHDRAWBODY')
+    shareBody = account.get('YOUTH_SHAREBODY')
+    startBody = account.get('YOUTH_STARTBODY')
     rotaryBody = f'{headers["Referer"].split("&")[15]}&{headers["Referer"].split("&")[8]}'
 
     if startBody:
