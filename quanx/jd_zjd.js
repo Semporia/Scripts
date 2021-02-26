@@ -68,7 +68,7 @@ function getCookies() {
 
 function exchangeJd(i) {
   return new Promise((resolve) => {
-    $.get(
+    $.post(
       taskUrl("swat_game_exchangejingbean"),
       async (err, resp, _data) => {
         try {
@@ -94,7 +94,7 @@ function showMsg() {
 
 function taskUrl(function_path, body = {}) {
   return {
-    url: `${JD_API_HOST}?functionId=${function_path}&appid=swat_miniprogram&body=POST&client=tjj_m&screen=1920*1080&osVersion=5.0.0&networkType=wifi&sdkName=orderDetail&sdkVersion=1.0.0&clientVersion=3.1.3&area=11&fromType=wxapp&timestamp=${Date.now()}`,
+    url: `${JD_API_HOST}?functionId=${function_path}&fromType=wxapp&timestamp=${Date.now()}`,
     headers: {
       Cookie: $.currentCookie,
       Host: `api.m.jd.com`,
@@ -102,7 +102,8 @@ function taskUrl(function_path, body = {}) {
       Referer: `https://servicewechat.com/wxa5bf5ee667d91626/110/page-frame.html`,
       "Accept-Language": `zh-cn`,
       "Accept-Encoding": `gzip, deflate, br`,
-    }
+    },
+    body: `${JSON.stringify(body)}&appid=swat_miniprogram&body=POST&client=tjj_m&screen=1920*1080&osVersion=5.0.0&networkType=wifi&sdkName=orderDetail&sdkVersion=1.0.0&clientVersion=3.1.3&area=11`
   };
 }
 
