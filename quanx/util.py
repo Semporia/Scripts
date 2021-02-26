@@ -16,6 +16,7 @@ import base64
 import urllib.parse
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
+import re
 
 # 通知服务
 BARK = ''                                                                 # bark服务,自行搜索; secrets可填;
@@ -26,8 +27,7 @@ TG_PROXY_IP = ''                                                          # tg�
 TG_PROXY_PORT = ''                                                        # tg机器人的TG_PROXY_PORT; secrets可填
 DD_BOT_ACCESS_TOKEN = ''                                                  # 钉钉机器人的DD_BOT_ACCESS_TOKEN; secrets可填
 DD_BOT_SECRET = ''                                                        # 钉钉机器人的DD_BOT_SECRET; secrets可填
-QQ_SKEY = ''                                                              # qq机器人的QQ_SKEY; secrets可填
-QQ_MODE = ''                                                              # qq机器人的QQ_MODE; secrets可填
+QYWX_APP = ''                                                             # 企业微信应用的QYWX_APP; secrets可填 参考http://note.youdao.com/s/HMiudGkb
 
 notify_mode = []
 
@@ -42,9 +42,8 @@ if "TG_BOT_TOKEN" in os.environ and os.environ["TG_BOT_TOKEN"] and "TG_USER_ID" 
 if "DD_BOT_ACCESS_TOKEN" in os.environ and os.environ["DD_BOT_ACCESS_TOKEN"] and "DD_BOT_SECRET" in os.environ and os.environ["DD_BOT_SECRET"]:
     DD_BOT_ACCESS_TOKEN = os.environ["DD_BOT_ACCESS_TOKEN"]
     DD_BOT_SECRET = os.environ["DD_BOT_SECRET"]
-if "QQ_SKEY" in os.environ and os.environ["QQ_SKEY"] and "QQ_MODE" in os.environ and os.environ["QQ_MODE"]:
-    QQ_SKEY = os.environ["QQ_SKEY"]
-    QQ_MODE = os.environ["QQ_MODE"]
+if "QYWX_APP" in os.environ and os.environ["QYWX_APP"]:
+    QYWX_APP = os.environ["QYWX_APP"]
 
 if BARK:
     notify_mode.append('bark')
@@ -58,9 +57,9 @@ if TG_BOT_TOKEN and TG_USER_ID:
 if DD_BOT_ACCESS_TOKEN and DD_BOT_SECRET:
     notify_mode.append('dingding_bot')
     print("钉钉机器人 推送打开")
-if QQ_SKEY and QQ_MODE:
-    notify_mode.append('coolpush_bot')
-    print("QQ机器人 推送打开")
+if QYWX_APP:
+    notify_mode.append('qywxapp_bot')
+    print("企业微信应用 推送打开")
 
 def bark(title, content):
     print("\n")
@@ -132,19 +131,98 @@ def dingding_bot(title, content):
     else:
         print('推送失败！')
 
-def coolpush_bot(title, content):
+def qywxapp_bot(title, content):
     print("\n")
-    if not QQ_SKEY or not QQ_MODE:
-        print("qq服务的QQ_SKEY或者QQ_MODE未设置!!\n取消推送")
+    if not QYWX_APP:
+        print("企业微信应用的QYWX_APP未设置!!\n取消推送")
         return
-    print("qq服务启动")
-    url=f"https://qmsg.zendee.cn/{QQ_MODE}/{QQ_SKEY}"
-    payload = {'msg': f"{title}\n\n{content}".encode('utf-8')}
-    response = requests.post(url=url, params=payload).json()
-    if response['code'] == 0:
+    print("企业微信应用启动")
+    qywx_app_params = QYWX_APP.split(',')
+    url='https://qyapi.weixin.qq.com/cgi-bin/gettoken'
+    headers= {
+        'Content-Type': 'application/json',
+    }
+    payload = {
+        'corpid': qywx_app_params[0],
+        'corpsecret': qywx_app_params[1],
+    }
+    response = requests.post(url=url, headers=headers, data=json.dumps(payload), timeout=15).json()
+    accesstoken = response["access_token"]
+    html = content.replace("\n", "<br/>")
+
+    options = None
+    if not qywx_app_params[4]:
+        options = {
+            'msgtype': 'text',
+            'text': {
+                content: f'{title}\n\n${content}'
+            }
+        }
+    elif qywx_app_params[4] == '0':
+        options = {
+            'msgtype': 'textcard',
+            'textcard': {
+                title: f'{title}',
+                description: f'{content}',
+                btntxt: '更多'
+            }
+        }
+    elif qywx_app_params[4] == '1':
+        options = {
+            'msgtype': 'text',
+            'text': {
+                content: f'{title}\n\n${content}'
+            }
+        }
+    else:
+        options = {
+            'msgtype': 'mpnews',
+            'mpnews': {
+                'articles': [
+                    {
+                        'title': f'{title}',
+                        'thumb_media_id': f'{qywx_app_params[4]}',
+                        'author': '智能助手',
+                        'content_source_url': '',
+                        'content': f'{html}',
+                        'digest': f'{content}'
+                    }
+                ]
+            }
+        }
+
+    url=f"https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={accesstoken}"
+    data = {
+        'touser': f'{change_user_id(content)}',
+        'agentid': f'{qywx_app_params[3]}',
+        'safe': '0'
+    }
+    data.update(options)
+    headers = {
+        'Content-Type': 'application/json',
+    }
+    response = requests.post(url=url, headers=headers, data=json.dumps(data)).json()
+
+    if response['errcode'] == 0:
         print('推送成功！')
     else:
         print('推送失败！')
+
+def change_user_id(desp):
+    qywx_app_params = QYWX_APP.split(',')
+    if qywx_app_params[2]:
+        userIdTmp = qywx_app_params[2].split("|")
+        userId = ""
+        for i in range(len(userIdTmp)):
+            count1 = f"账号{i + 1}"
+            count2 = f"签到号{i + 1}"
+            if re.search(count1, desp) or re.search(count2, desp):
+                userId = userIdTmp[i]
+        if not userId:
+            userId = qywx_app_params[2]
+        return userId
+    else:
+        return "@all"
 
 def send(title, content):
     """
@@ -178,11 +256,11 @@ def send(title, content):
             else:
                 print('未启用 telegram机器人')
             continue
-        elif i == 'coolpush_bot':
-            if QQ_SKEY and QQ_MODE:
-                coolpush_bot(title=title, content=content)
+        elif i == 'qywxapp_bot':
+            if QYWX_APP:
+                qywxapp_bot(title=title, content=content)
             else:
-                print('未启用 QQ机器人')
+                print('未启用 企业微信应用推送')
             continue
         else:
             print('此类推送方式不存在')
