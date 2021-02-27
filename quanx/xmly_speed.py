@@ -18,7 +18,7 @@ from util import send, requests_session
 
 # 参考 https://github.com/Zero-S1/xmly_speed/blob/master/xmly_speed.py
 
-cookies1 = ""
+cookies1 = "domain=.ximalaya.com; path=/; channel=ios-b1; impl=com.ximalaya.tingLite; 1&_device=iPhone&023CA700-5417-4341-94D9-E738DD94D6BE&1.1.13; XUM=023CA700-5417-4341-94D9-E738DD94D6BE; idfa=00000000-0000-0000-0000-000000000000; device_model=iPhone 12; c-oper=%E6%9C%AA%E7%9F%A5; net-mode=WIFI; ip=2408:8506:126:177:b2:643:100:0; res=1170%2C2532; NSUP=; ainr=0; XD=6w0FgETqIKDt3tw4EOvUOVZcbNb09rkY4053nwwUnU0V1kPYIqQ27xzQP0j71V+86fvmSdt5+QEbMlXBY8yf2g==; 1&_token=177476793&439B6410240C9CE1A29CDEC2670B265EF15C07F3CC8CB351259B3AC07A854D6E43FCD5AB0FAC111M307478B89CA740E_"
 
 cookies2 = ""
 
@@ -1009,6 +1009,25 @@ def task_out(cookies, body):
     except:
         print("网络请求异常,为避免GitHub action报错,直接跳过")
 
+def user_info(cookies):
+    print("\n【用户信息】")
+    headers = {
+        'Host': 'mobile.ximalaya.com',
+        'Accept': '*/*',
+        'User-Agent': 'ting_v2.1.3_c5(CFNetwork, iOS 14.4, iPhone13,2)',
+        'Accept-Language': 'zh-cn',
+        'Accept-Encoding': 'gzip, deflate, br',
+    }
+    currentTimeMillis = int(time.time()*1000)-2
+    try:
+        response = requests_session().get(
+            f'https://mobile.ximalaya.com/fmobile-user/homePage/ts-{currentTimeMillis}', headers=headers, cookies=cookies).json()
+        print(response)
+        if response['ret'] == 0:
+            return response
+    except:
+        print("网络请求异常,为避免GitHub action报错,直接跳过")
+
 def run():
     print(f"喜马拉雅极速版 (https://github.com/Zero-S1/xmly_speed/blob/master/xmly_speed.md ) ,欢迎打赏¯\(°_o)/¯")
     mins, date_stamp, _datatime, _notify_time = get_time()
@@ -1017,6 +1036,7 @@ def run():
     for k, v in enumerate(cookiesList):
         print(f">>>>>>>【账号开始{k+1}】\n")
         cookies = str2dict(v)
+        user_info_res = user_info(cookies)
         if XMLY_ACCUMULATE_TIME == 1:
             saveListenTime(cookies, date_stamp)
             listenData(cookies, date_stamp)
@@ -1039,7 +1059,7 @@ def run():
         else:
             device = f"设备{k+1}"
 
-        table.append((device, total, todayTotal,
+        table.append((user_info_res['nickname'], total, todayTotal,
                       historyTotal, continuousDays,))
 
         if autoTakeOut and total >= amount:
@@ -1059,7 +1079,7 @@ def run():
     # if 1:
         message = ''
         for i in table:
-            message += f"【设备】：{i[0].replace(' ',''):<9}\n"
+            message += f"【账户】：{i[0].replace(' ',''):<9}\n"
             message += f"【当前剩余】：{i[1]:<6.2f}\n"
             message += f"【今天】：＋{i[2]:<4.2f}\n"
             message += f"【历史】：{i[3]:<7.2f}\n"
