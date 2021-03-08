@@ -1,10 +1,3 @@
-'''
-Author: whyour
-Github: https://github.com/whyour
-Date: 2020-11-19 23:25:22
-LastEditors: whyour
-LastEditTime: 2021-01-18 13:46:46
-'''
 import json
 import rsa
 import base64
@@ -18,7 +11,7 @@ from util import send, requests_session
 
 # 参考 https://github.com/Zero-S1/xmly_speed/blob/master/xmly_speed.py
 
-cookies1 = "domain=.ximalaya.com; path=/; channel=ios-b1; impl=com.ximalaya.tingLite; 1&_device=iPhone&023CA700-5417-4341-94D9-E738DD94D6BE&1.1.13; XUM=023CA700-5417-4341-94D9-E738DD94D6BE; idfa=00000000-0000-0000-0000-000000000000; device_model=iPhone 12; c-oper=%E6%9C%AA%E7%9F%A5; net-mode=WIFI; ip=2408:8506:126:177:b2:643:100:0; res=1170%2C2532; NSUP=; ainr=0; XD=6w0FgETqIKDt3tw4EOvUOVZcbNb09rkY4053nwwUnU0V1kPYIqQ27xzQP0j71V+86fvmSdt5+QEbMlXBY8yf2g==; 1&_token=177476793&439B6410240C9CE1A29CDEC2670B265EF15C07F3CC8CB351259B3AC07A854D6E43FCD5AB0FAC111M307478B89CA740E_"
+cookies1 = ""
 
 cookies2 = ""
 
@@ -1069,9 +1062,9 @@ def run():
                         "accountNumber": pay_info["accountNumber"], "amount": amount, "takeOutType": takeOutType}
                 task_out_res = task_out(cookies=cookies, body=body)
                 if task_out_res:
-                    send(title=title, content=f"{device} 提现到账户【{pay_info['accountNumber']}】20元成功")
+                    send(title=title, content=f"{user_info_res['nickname']} 提现到账户【{pay_info['accountNumber']}】20元成功")
             else:
-                send(title=title, content=f"请先手动填写【账号{k+1}】支付宝账号提现一次")
+                send(title=title, content=f"请先手动填写【user_info_res['nickname']】支付宝账号提现一次")
         print("###"*20)
         print("\n"*4)
 
