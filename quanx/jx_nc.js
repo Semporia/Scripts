@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-12-06 11:11:11
  * @LastEditors: whyour
- * @LastEditTime: 2021-02-03 12:47:04
+ * @LastEditTime: 2021-03-13 18:33:10
  * 打开京喜农场，添加下面的重写，手动完成任意任务，提示获取cookie成功，然后退出跑任务脚本
 
   hostname = wq.jd.com
@@ -174,7 +174,7 @@ function answerTask() {
         'dotask',
         `active=${$.info.active}&answer=${$.info.indexday}:${['A', 'B', 'C', 'D'][$.answer]}:0&joinnum=${
           $.info.joinnum
-        }&tasklevel=${tasklevel}`,
+        }&tasklevel=${tasklevel}&_stk=active%2Canswer%2Cch%2Cfarm_jstoken%2Cjoinnum%2Cphoneid%2Ctasklevel%2Ctimestamp`,
       ),
       async (err, resp, data) => {
         try {
@@ -214,7 +214,7 @@ function doTask({ tasklevel, left, taskname, eachtimeget }) {
     $.get(
       taskUrl(
         'dotask',
-        `active=${$.info.active}&answer=${$.info.indexday}:D:0&joinnum=${$.info.joinnum}&tasklevel=${tasklevel}`,
+        `active=${$.info.active}&answer=${$.info.indexday}:D:0&joinnum=${$.info.joinnum}&tasklevel=${tasklevel}&_stk=active%2Canswer%2Cch%2Cfarm_jstoken%2Cjoinnum%2Cphoneid%2Ctasklevel%2Ctimestamp`,
       ),
       (err, resp, data) => {
         try {

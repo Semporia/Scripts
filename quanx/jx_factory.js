@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2021-03-01 18:16:46
+ * @LastEditTime: 2021-03-13 18:34:52
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301
  * 添加随机助力
  * 自动开团助力
@@ -513,7 +513,7 @@ function createAssistUser() {
 
 function getTuanId() {
   return new Promise(async resolve => {
-    $.get(taskUrl('tuan/QueryActiveConfig', `activeId=MUdRsCXI13_DDYMcnD8v7g%3D%3D`), async (err, resp, data) => {
+    $.get(taskUrl('tuan/QueryActiveConfig', `activeId=X3vrsg9SABO2P_zyeiqJSw%3D%3D`), async (err, resp, data) => {
       try {
         const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
         $.log(`\n获取团id：${msg}\n${$.showLog ? data : ''}`);
@@ -539,7 +539,7 @@ function getTuanId() {
 
 function getTuanInfo(body) {
   return new Promise(async resolve => {
-    $.get(taskUrl('tuan/QueryTuan', `activeId=MUdRsCXI13_DDYMcnD8v7g%3D%3D&${body}`), async (err, resp, data) => {
+    $.get(taskUrl('tuan/QueryTuan', `activeId=X3vrsg9SABO2P_zyeiqJSw%3D%3D&${body}`), async (err, resp, data) => {
       try {
         const { msg, data: { tuanInfo = [] } = {} } = JSON.parse(data);
         $.log(`\n获取开团信息：${msg}\n${$.showLog ? data : ''}`);
@@ -586,7 +586,7 @@ function submitTuanId(userName) {
 function createTuan() {
   return new Promise(async resolve => {
     $.get(
-      taskTuanUrl('tuan/CreateTuan', `activeId=MUdRsCXI13_DDYMcnD8v7g%3D%3D&isOpenApp=1&_stk=_time%2CactiveId%2CisOpenApp`),
+      taskTuanUrl('tuan/CreateTuan', `activeId=X3vrsg9SABO2P_zyeiqJSw%3D%3D&isOpenApp=1&_stk=_time%2CactiveId%2CisOpenApp`),
       async (err, resp, _data) => {
         try {
           const { msg, data = {} } = JSON.parse(_data);
@@ -611,7 +611,7 @@ function joinTuan() {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(
-          taskTuanUrl('tuan/JoinTuan', `activeId=MUdRsCXI13_DDYMcnD8v7g%3D%3D&tuanId=${data.value}`),
+          taskTuanUrl('tuan/JoinTuan', `activeId=X3vrsg9SABO2P_zyeiqJSw%3D%3D&tuanId=${data.value}`),
           async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
