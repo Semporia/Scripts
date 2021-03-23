@@ -613,7 +613,7 @@ function joinTuan() {
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(
-          taskTuanUrl('tuan/JoinTuan', `activeId=KfUjD48K74J2JAwvQSyoDw%3D%3D&tuanId=${data.value}`),
+          taskTuanUrl('tuan/JoinTuan', `activeId=KfUjD48K74J2JAwvQSyoDw%3D%3D&tuanId=${data.value}`, '_time,activeId,tuanId'),
           async (err, resp, data) => {
             try {
               const { msg } = JSON.parse(data);
@@ -644,7 +644,7 @@ function awardTuan() {
       return;
     }
     $.get(
-      taskTuanUrl('tuan/Award', `activeId=cKw-LGBsjl0XLu9coQ0d4A%3D%3D&tuanId=${$.userTuanInfo.tuanId}`),
+      taskTuanUrl('tuan/Award', `activeId=cKw-LGBsjl0XLu9coQ0d4A%3D%3D&tuanId=${$.userTuanInfo.tuanId}`, '_time,activeId,tuanId'),
       async (err, resp, data) => {
         try {
           const { ret, msg, data: { electric = 0 } = {} } = JSON.parse(data);
@@ -741,7 +741,7 @@ function taskAssistUrl(function_path, body) {
   };
 }
 
-function taskTuanUrl(function_path, body) {
+function taskTuanUrl(function_path, body, stk) {
   let url = `${JD_API_HOST}dreamfactory/${function_path}?${body}&zone=dream_factory&sceneval=2&g_login_type=1&_time=${Date.now()}&_=${Date.now()}&_ste=1`
   url += `&h5st=${decrypt(Date.now(), stk || '', '', url)}`
   if (stk) {
@@ -762,8 +762,7 @@ function taskTuanUrl(function_path, body) {
   };
 }
 
-function getUrlQueryParams(url_string, param)
-{
+function getUrlQueryParams(url_string, param) {
   let  url = new URL(url_string);
   let data = url.searchParams.get(param);
   return data ? data : '';
