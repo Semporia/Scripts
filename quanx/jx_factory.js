@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2021-03-23 20:00:14
+ * @LastEditTime: 2021-03-23 21:11:28
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301, https://www.orzlee.com/web-development/2021/03/03/lxk0301-jingdong-signin-scriptjingxi-factory-solves-the-problem-of-unable-to-signin.html
  * 添加随机助力
  * 自动开团助力
@@ -516,7 +516,7 @@ function createAssistUser() {
 
 function getTuanId() {
   return new Promise(async resolve => {
-    $.get(taskUrl('tuan/QueryActiveConfig', `activeId=KfUjD48K74J2JAwvQSyoDw%3D%3D`), async (err, resp, data) => {
+    $.get(taskUrl('tuan/QueryActiveConfig', `activeId=KfUjD48K74J2JAwvQSyoDw%3D%3D`, `_time,activeId,tuanId`), async (err, resp, data) => {
       try {
         const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
         $.log(`\n获取团id：${msg}\n${$.showLog ? data : ''}`);
@@ -542,7 +542,7 @@ function getTuanId() {
 
 function getTuanInfo(body) {
   return new Promise(async resolve => {
-    $.get(taskUrl('tuan/QueryTuan', `activeId=KfUjD48K74J2JAwvQSyoDw%3D%3D&${body}`), async (err, resp, data) => {
+    $.get(taskUrl('tuan/QueryTuan', `activeId=KfUjD48K74J2JAwvQSyoDw%3D%3D&${body}`, `_time,activeId,tuanId`), async (err, resp, data) => {
       try {
         const { msg, data: { tuanInfo = [] } = {} } = JSON.parse(data);
         $.log(`\n获取开团信息：${msg}\n${$.showLog ? data : ''}`);
@@ -589,7 +589,7 @@ function submitTuanId(userName) {
 function createTuan() {
   return new Promise(async resolve => {
     $.get(
-      taskTuanUrl('tuan/CreateTuan', `activeId=KfUjD48K74J2JAwvQSyoDw%3D%3D&isOpenApp=1&_stk=_time%2CactiveId%2CisOpenApp`),
+      taskTuanUrl('tuan/CreateTuan', `activeId=KfUjD48K74J2JAwvQSyoDw%3D%3D&isOpenApp=1`, '_time,activeId,isOpenApp'),
       async (err, resp, _data) => {
         try {
           const { msg, data = {} } = JSON.parse(_data);
@@ -742,8 +742,13 @@ function taskAssistUrl(function_path, body) {
 }
 
 function taskTuanUrl(function_path, body) {
+  let url = `${JD_API_HOST}dreamfactory/${function_path}?${body}&zone=dream_factory&sceneval=2&g_login_type=1&_time=${Date.now()}&_=${Date.now()}&_ste=1`
+  url += `&h5st=${decrypt(Date.now(), stk || '', '', url)}`
+  if (stk) {
+    url += `&_stk=${encodeURIComponent(stk)}`;
+  }
   return {
-    url: `${JD_API_HOST}dreamfactory/${function_path}?${body}&zone=dream_factory&sceneval=2&g_login_type=1&_time=${Date.now()}&_=${Date.now()}`,
+    url,
     headers: {
       Cookie: $.currentCookie,
       Accept: `*/*`,
