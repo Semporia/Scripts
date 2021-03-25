@@ -763,9 +763,12 @@ function taskTuanUrl(function_path, body, stk) {
 }
 
 function getUrlQueryParams(url_string, param) {
-  let  url = new URL(url_string);
-  let data = url.searchParams.get(param);
-  return data ? data : '';
+  let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  let r = url_string.split('?')[1].substr(1).match(reg);
+  if (r != null) {
+      return decodeURIComponent(r[2]);
+  };
+  return '';
 }
 
 function format(a, time) {
