@@ -73,13 +73,18 @@ $.userTuanInfo = {};
       await awardTuan();
       await $.wait(500);
       const endInfo = await getUserInfo();
-      $.info.commodityInfo && $.result.push(
-        `【名称】：${$.info.commodityInfo.name}`,
-        `【电力】：获得(${endInfo.user.electric - beginInfo.user.electric}) 还需(${
-          endInfo.productionInfo.needElectric - beginInfo.productionInfo.investedElectric
-        })`,
-        `【账户剩余】：${endInfo.user.electric}`,
-      );
+      $.info.commodityInfo &&
+        $.result.push(
+          `【名称】：${$.info.commodityInfo.name}`,
+          `【电力】：获得(${endInfo.user.electric - beginInfo.user.electric}) 还需(${(
+            (endInfo.productionInfo.needElectric - beginInfo.productionInfo.investedElectric) /
+            10000.0
+          ).toFixed(2)}万) 生产进度${(
+            (endInfo.productionInfo.investedElectric / endInfo.productionInfo.needElectric) *
+            100
+          ).toFixed(2)}%`,
+          `【账户剩余】：${endInfo.user.electric}`,
+        );
       await $.wait(500);
       await investElectric();
       if (checkProductProcess()) return;
