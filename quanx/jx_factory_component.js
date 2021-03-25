@@ -384,7 +384,7 @@ function taskStroyUrl(function_path, body) {
 }
 
 function getUrlQueryParams(url_string, param) {
-  let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  let reg = new RegExp("(^|&)" + param + "=([^&]*)(&|$)", "i");
   let r = url_string.split('?')[1].substr(1).match(reg);
   if (r != null) {
       return decodeURIComponent(r[2]);
