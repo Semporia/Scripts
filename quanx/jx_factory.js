@@ -3,7 +3,7 @@
  * @Github: https://github.com/whyour
  * @Date: 2020-11-29 13:14:19
  * @LastEditors: whyour
- * @LastEditTime: 2021-03-23 21:11:28
+ * @LastEditTime: 2021-03-31 14:41:56
  * 多谢： https://github.com/MoPoQAQ, https://github.com/lxk0301, https://www.orzlee.com/web-development/2021/03/03/lxk0301-jingdong-signin-scriptjingxi-factory-solves-the-problem-of-unable-to-signin.html
  * 添加随机助力
  * 自动开团助力
@@ -37,9 +37,11 @@ $.currentCookie = '';
 $.allTask = [];
 $.info = {};
 $.userTuanInfo = {};
+$.appId = 10001;
 
 !(async () => {
   if (!getCookies()) return;
+  await requestAlgo();
   for (let i = 0; i < $.cookieArr.length; i++) {
     $.currentCookie = $.cookieArr[i];
     $.currentToken = JSON.parse($.tokens[i] || '{}');
@@ -769,9 +771,9 @@ function taskTuanUrl(function_path, body, stk) {
 
 function getUrlQueryParams(url_string, param) {
   let reg = new RegExp("(^|&)" + param + "=([^&]*)(&|$)", "i");
-  let r = url_string.split('?')[1].substr(1).match(reg);
+  let r = url_string.split('?')[1].substr(0).match(reg);
   if (r != null) {
-      return decodeURIComponent(r[2]);
+    return decodeURIComponent(r[2]);
   };
   return '';
 }
@@ -813,25 +815,82 @@ function format(a, time) {
 function decrypt(time, stk, type, url) {
   stk = stk || (url ? getUrlQueryParams(url, '_stk') : '')
   if (stk) {
-    // 京喜app抓包 request_algo
-    const random = '1Z6cIX4F9p3e';
-    let token = `tk01wd2d71c75a8nTjBzdEJqcEpRy5WoQ6b1aku1lI81Kjgjsl9UWieyyiV5XU42zHHibexfgIo3rJb3bWne0244p6W1`;
-    let fingerprint = 6307299513986161;
-
-
     const timestamp = format("yyyyMMddhhmmssSSS", time);
-    const appId = 10001;
-    const str = `${token}${fingerprint}${timestamp}${appId}${random}`;
-    const hash1 = $.CryptoJS.HmacSHA512(str, token).toString($.CryptoJS.enc.Hex);
+    const hash1 = $.genKey($.token, $.fp.toString(), timestamp.toString(), $.appId.toString(), $.CryptoJS).toString($.CryptoJS.enc.Hex);
     let st = '';
     stk.split(',').map((item, index) => {
       st += `${item}:${getUrlQueryParams(url, item)}${index === stk.split(',').length -1 ? '' : '&'}`;
     })
-    const hash2 = $.CryptoJS.HmacSHA256(st, hash1).toString($.CryptoJS.enc.Hex);
-    return ["".concat(timestamp.toString()), "".concat(fingerprint.toString()), "".concat(appId.toString()), "".concat(token), "".concat(hash2)].join(";")
+    const hash2 = $.CryptoJS.HmacSHA256(st, hash1.toString()).toString($.CryptoJS.enc.Hex);
+    return encodeURIComponent(["".concat(timestamp.toString()), "".concat($.fp.toString()), "".concat($.appId.toString()), "".concat($.token), "".concat(hash2)].join(";"))
   } else {
     return '20210121201915905;8410347712257161;10001;tk01wa5bd1b5fa8nK2drQ3o3azhyhItRUb1DBNK57SQnGlXj9kmaV/iQlhKdXuz1RME5H/+NboJj8FAS9N+FcoAbf6cB;3c567a551a8e1c905a8d676d69e873c0bc7adbd8277957f90e95ab231e1800f2'
   }
+}
+
+function getRandomIDPro() {
+  var e,
+    t,
+    a = void 0 === (n = (t = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : {}).size) ? 10 : n,
+    n = void 0 === (n = t.dictType) ? 'number' : n,
+    i = '';
+  if ((t = t.customDict) && 'string' == typeof t) e = t;
+  else
+    switch (n) {
+      case 'alphabet':
+        e = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        break;
+      case 'max':
+        e = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
+        break;
+      case 'number':
+      default:
+        e = '0123456789';
+    }
+  for (; a--; ) i += e[(Math.random() * e.length) | 0];
+  return i;
+}
+
+async function requestAlgo() {
+  $.fp = (getRandomIDPro({ size: 13 }) + Date.now()).slice(0, 16);
+  const options = {
+    "url": `https://cactus.jd.com/request_algo?g_ty=ajax`,
+    headers: {
+      'Authority': 'cactus.jd.com',
+      'Pragma': 'no-cache',
+      'Cache-Control': 'no-cache',
+      'Accept': 'application/json',
+      'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
+      'Content-Type': 'application/json',
+      'Origin': 'https://st.jingxi.com',
+      'Sec-Fetch-Site': 'cross-site',
+      'Sec-Fetch-Mode': 'cors',
+      'Sec-Fetch-Dest': 'empty',
+      'Referer': 'https://st.jingxi.com/',
+      'Accept-Language': 'zh-CN,zh;q=0.9,zh-TW;q=0.8,en;q=0.7'
+    },
+    'body': JSON.stringify({
+      "version": "1.0",
+      "fp": $.fp,
+      "appId": $.appId,
+      "timestamp": Date.now(),
+      "platform": "web",
+      "expandParams": ""
+    })
+  }
+  return new Promise(async resolve => {
+    $.post(options, (err, resp, data) => {
+      try {
+        const { ret, msg, data: { result } = {} } = JSON.parse(data);
+        $.token = result.tk;
+        $.genKey = new Function(`return ${result.algo}`)();
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    })
+  })
 }
 
 // prettier-ignore
