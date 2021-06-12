@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "nodemon",
-    "pm2": "npm run build && node build/app.js",
+    "pm2": "npm run build && node build/src/app.js",
     "bot": "npm run build && node build/bot/index.js",
     "inspect": "nodemon --inspect src/app.ts",
     "lint": "npm run lint:js ",
