@@ -20,9 +20,9 @@ export default class ShiCiService {
       3: this.lunYu
     }
     const random = Math.floor(Math.random() * 4);
-    const [record] = await obj[random].aggregate([{ $sample: { size: 1 } }]);
+    let [record] = await obj[random].aggregate([{ $sample: { size: 1 } }]);
     if (!record) {
-      throw new Error('get shici error');
+      record = {};
     }
     return { shici: record };
   }

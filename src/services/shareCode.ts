@@ -7,9 +7,9 @@ export default class ShareCodeService {
   constructor(@Inject('shareCode') private shareCode: Models.ICommonModel, @Inject('logger') private logger) {}
 
   public async getCode(type: ShareCodeType, body = {}): Promise<{ code: ICommon }> {
-    const [record] = await this.shareCode.aggregate([{ $match: { type, ...body } }, { $sample: { size: 1 } }]);
+    let [record] = await this.shareCode.aggregate([{ $match: { type, ...body } }, { $sample: { size: 1 } }]);
     if (!record) {
-      throw new Error(`get ${ShareCodeType[type]} code error`);
+      record = {};
     }
     return { code: record };
   }
@@ -18,7 +18,7 @@ export default class ShareCodeService {
     { name, code, type }: { name: string; code: string; type: ShareCodeType },
     body = {},
   ): Promise<{ code: ICommon & Document }> {
-    const record = await this.shareCode.findOneAndUpdate(
+    let record = await this.shareCode.findOneAndUpdate(
       {
         $or: [
           { name, type },
@@ -30,12 +30,12 @@ export default class ShareCodeService {
         name: name,
         type,
         ...body,
-        extra: body
+        extra: body,
       },
       { upsert: true, new: true, setDefaultsOnInsert: true },
     );
     if (!record) {
-      throw new Error(`create ${ShareCodeType[type]} code error`);
+      record = {} as any;
     }
     return { code: record };
   }

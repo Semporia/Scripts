@@ -10,9 +10,9 @@ export default class YiYanService {
   }
 
   public async getYiYan(): Promise<{ yiYan: IContent }> {
-    const [yiYanRecord] = await this.yiYan.aggregate([{ $sample: { size: 1 } }]);
+    let [yiYanRecord] = await this.yiYan.aggregate([{ $sample: { size: 1 } }]);
     if (!yiYanRecord) {
-      throw new Error('get yiYan error');
+      yiYanRecord = {};
     }
     return { yiYan: yiYanRecord };
   }
