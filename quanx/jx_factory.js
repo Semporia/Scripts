@@ -137,7 +137,7 @@ function getUserInfo() {
   return new Promise(resolve => {
     $.get(taskUrl('userinfo/GetUserInfo'), async (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
@@ -176,7 +176,7 @@ function getCommodityDetail() {
       taskUrl('diminfo/GetCommodityDetails', `commodityId=${$.info.productionInfo.commodityDimId}`),
       (err, resp, data) => {
         try {
-          if (typeof data !== 'object') {
+          if (data.startsWith('<')) {
             resolve();
             return;
           }
@@ -216,7 +216,7 @@ function getCurrentElectricity() {
       taskUrl('generator/QueryCurrentElectricityQuantity', `factoryid=${$.info.factoryInfo.factoryId}`),
       async (err, resp, data) => {
         try {
-          if (typeof data !== 'object') {
+          if (data.startsWith('<')) {
             resolve();
             return;
           }
@@ -249,7 +249,7 @@ function collectElectricity(facId, master) {
       ),
       (err, resp, data) => {
         try {
-          if (typeof data !== 'object') {
+          if (data.startsWith('<')) {
             resolve();
             return;
           }
@@ -269,7 +269,7 @@ function pickUserComponents(pin, isMe) {
   return new Promise(async resolve => {
     $.get(taskUrl('usermaterial/GetUserComponent', `pin=${pin}`), async (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
@@ -301,7 +301,7 @@ function pickUpComponent(placeId, pin, isMe) {
   return new Promise(async resolve => {
     $.get(taskUrl('usermaterial/PickUpComponent', `pin=${pin}&placeId=${placeId}`), (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
@@ -327,7 +327,7 @@ function getTaskList() {
   return new Promise(async resolve => {
     $.get(taskListUrl('GetUserTaskStatusList', `_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone%2CtaskId`), async (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
@@ -373,7 +373,7 @@ function awardTask({ taskId, taskName }) {
   return new Promise(resolve => {
     $.get(taskListUrl('Award', `taskId=${taskId}&_stk=_time%2CbizCode%2Csource%2CtaskId`), (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
@@ -404,7 +404,7 @@ function doTask({ taskId, completedTimes, configTargetTimes, taskName }) {
     }
     $.get(taskListUrl('DoTask', `taskId=${taskId}`, '_time,bizCode,configExtra,source,taskId'), (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
@@ -435,7 +435,7 @@ function investElectric() {
       taskUrl('userinfo/InvestElectric', `productionId=${$.info.productionInfo.productionId}`),
       (err, resp, data) => {
         try {
-          if (typeof data !== 'object') {
+          if (data.startsWith('<')) {
             resolve();
             return;
           }
@@ -456,7 +456,7 @@ function getHireRewardList() {
   return new Promise(async resolve => {
     $.get(taskUrl('friend/QueryHireReward'), async (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
@@ -481,7 +481,7 @@ function hireAward(body) {
   return new Promise(async resolve => {
     $.get(taskUrl('friend/HireAward', `${body}`, '_time,date,type,zone'), async (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
@@ -500,7 +500,7 @@ function getFriends() {
   return new Promise(async resolve => {
     $.get(taskUrl('friend/QueryFactoryManagerList'), async (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
@@ -523,7 +523,7 @@ function getFactoryIdByPin(pin) {
   return new Promise((resolve, reject) => {
     $.get(taskUrl('userinfo/GetUserInfoByPin', `pin=${pin}`), (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
@@ -554,7 +554,7 @@ function submitInviteId(userName) {
       },
       (err, resp, _data) => {
         try {
-          if (typeof _data !== 'object') {
+          if (_data.startsWith('<')) {
             resolve();
             return;
           }
@@ -577,7 +577,7 @@ function createAssistUser() {
   return new Promise(resolve => {
     $.get({ url: 'https://api.ninesix.cc/api/jx-factory' }, (err, resp, _data) => {
       try {
-        if (typeof _data !== 'object') {
+        if (_data.startsWith('<')) {
           resolve();
           return;
         }
@@ -585,7 +585,7 @@ function createAssistUser() {
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(taskAssistUrl('friend/AssistFriend', `sharepin=${data.value}`), async (err, resp, data) => {
           try {
-            if (typeof data !== 'object') {
+            if (data.startsWith('<')) {
               resolve();
               return;
             }
@@ -609,7 +609,7 @@ function getTuanId() {
   return new Promise(async resolve => {
     $.get(taskUrl('tuan/QueryActiveConfig', `activeId=bozIUUFcANuUdWpw3QdvPw%3D%3D`, `_time,activeId,tuanId`), async (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
@@ -639,7 +639,7 @@ function getTuanInfo(body) {
   return new Promise(async resolve => {
     $.get(taskUrl('tuan/QueryTuan', `activeId=bozIUUFcANuUdWpw3QdvPw%3D%3D&${body}`, `_time,activeId,tuanId`), async (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
@@ -670,7 +670,7 @@ function submitTuanId(userName) {
       },
       (err, resp, _data) => {
         try {
-          if (typeof _data !== 'object') {
+          if (_data.startsWith('<')) {
             resolve();
             return;
           }
@@ -695,7 +695,7 @@ function createTuan() {
       taskTuanUrl('tuan/CreateTuan', `activeId=bozIUUFcANuUdWpw3QdvPw%3D%3D&isOpenApp=1`, '_time,activeId,isOpenApp'),
       async (err, resp, _data) => {
         try {
-          if (typeof _data !== 'object') {
+          if (_data.startsWith('<')) {
             resolve();
             return;
           }
@@ -717,7 +717,7 @@ function joinTuan() {
   return new Promise(async resolve => {
     $.get({ url: 'https://api.ninesix.cc/api/jx-factory-tuan' }, (err, resp, _data) => {
       try {
-        if (typeof _data !== 'object') {
+        if (_data.startsWith('<')) {
           resolve();
           return;
         }
@@ -727,7 +727,7 @@ function joinTuan() {
           taskTuanUrl('tuan/JoinTuan', `activeId=bozIUUFcANuUdWpw3QdvPw%3D%3D&tuanId=${data.value}`, '_time,activeId,tuanId'),
           async (err, resp, data) => {
             try {
-              if (typeof data !== 'object') {
+              if (data.startsWith('<')) {
                 resolve();
                 return;
               }
@@ -762,7 +762,7 @@ function awardTuan() {
       taskTuanUrl('tuan/Award', `activeId=cKw-LGBsjl0XLu9coQ0d4A%3D%3D&tuanId=${$.userTuanInfo.tuanId}`, '_time,activeId,tuanId'),
       async (err, resp, data) => {
         try {
-          if (typeof data !== 'object') {
+          if (data.startsWith('<')) {
             resolve();
             return;
           }
@@ -1002,7 +1002,7 @@ async function requestAlgo() {
   return new Promise(async resolve => {
     $.post(options, (err, resp, data) => {
       try {
-        if (typeof data !== 'object') {
+        if (data.startsWith('<')) {
           resolve();
           return;
         }
