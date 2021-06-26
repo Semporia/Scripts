@@ -137,6 +137,10 @@ function getUserInfo() {
   return new Promise(resolve => {
     $.get(taskUrl('userinfo/GetUserInfo'), async (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { ret, data: { factoryList = [], productionList = [], user = {} } = {}, msg } = JSON.parse(data);
         $.log(`\n获取用户信息：${msg}\n${$.showLog ? data : ''}`);
         if (!productionList || !productionList[0]) {
@@ -172,6 +176,10 @@ function getCommodityDetail() {
       taskUrl('diminfo/GetCommodityDetails', `commodityId=${$.info.productionInfo.commodityDimId}`),
       (err, resp, data) => {
         try {
+          if (typeof data !== 'object') {
+            resolve();
+            return;
+          }
           const { ret, data: { commodityList = [] } = {}, msg } = JSON.parse(data);
           $.log(`\n获取商品详情：${msg}\n${$.showLog ? data : ''}`);
           $.info.commodityInfo = commodityList[0];
@@ -195,7 +203,7 @@ function checkProductProcess() {
       if ($.isNode()) {
         notify.sendNotify($.name, `${userName}\n【提示】商品 ${$.info.commodityInfo.name} 已生产完成，请前往京喜工厂兑换并选择新商品！`, {}, '\n\n本脚本免费使用 By：https://github.com/whyour/qinglong')
       }
-      $.msg($.name, `${userName}\n【提示】商品 ${$.info.commodityInfo.name} 已生产完成，请前往京喜工厂兑换并选择新商品！`);
+      $.msg($.name, `${userName}`, `【提示】商品 ${$.info.commodityInfo.name} 已生产完成，请前往京喜工厂兑换并选择新商品！`);
       return true;
     }
   }
@@ -208,6 +216,10 @@ function getCurrentElectricity() {
       taskUrl('generator/QueryCurrentElectricityQuantity', `factoryid=${$.info.factoryInfo.factoryId}`),
       async (err, resp, data) => {
         try {
+          if (typeof data !== 'object') {
+            resolve();
+            return;
+          }
           const {
             ret,
             data: { currentElectricityQuantity, doubleElectricityFlag, maxElectricityQuantity } = {},
@@ -237,6 +249,10 @@ function collectElectricity(facId, master) {
       ),
       (err, resp, data) => {
         try {
+          if (typeof data !== 'object') {
+            resolve();
+            return;
+          }
           const { ret, data: { CollectElectricity, loginPinCollectElectricity } = {}, msg } = JSON.parse(data);
           $.log(`${master ? '偷取好友' : '收取'} ${CollectElectricity} 电力 ${msg} \n${$.showLog ? data : ''}`);
         } catch (e) {
@@ -253,6 +269,10 @@ function pickUserComponents(pin, isMe) {
   return new Promise(async resolve => {
     $.get(taskUrl('usermaterial/GetUserComponent', `pin=${pin}`), async (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { msg, data: { componentList = [] } = {} } = JSON.parse(data);
         $.log(`\n获取${isMe ? '自己' : '好友'}零件：${msg}\n${$.showLog ? data : ''}`);
         if (componentList.length > 0) {
@@ -281,6 +301,10 @@ function pickUpComponent(placeId, pin, isMe) {
   return new Promise(async resolve => {
     $.get(taskUrl('usermaterial/PickUpComponent', `pin=${pin}&placeId=${placeId}`), (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { msg, data: { increaseElectric } = {} } = JSON.parse(data);
         $.log(
           `\n拾取${isMe ? '自己' : '好友'}零件：${msg}，获得电力 ${increaseElectric || 0}\n${$.showLog ? data : ''}`,
@@ -303,6 +327,10 @@ function getTaskList() {
   return new Promise(async resolve => {
     $.get(taskListUrl('GetUserTaskStatusList', `_stk=_cfd_t%2CbizCode%2CdwEnv%2Cptag%2Csource%2CstrZone%2CtaskId`), async (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { ret, data: { userTaskStatusList = [] } = {}, msg } = JSON.parse(data);
         $.allTask = userTaskStatusList.filter(x => x.awardStatus !== 1);
         $.log(`\n获取任务列表 ${msg}，总共${$.allTask.length}个任务！`);
@@ -345,6 +373,10 @@ function awardTask({ taskId, taskName }) {
   return new Promise(resolve => {
     $.get(taskListUrl('Award', `taskId=${taskId}&_stk=_time%2CbizCode%2Csource%2CtaskId`), (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { msg, ret, data: { prizeInfo = '' } = {} } = JSON.parse(data);
         let str = '';
         if (msg.indexOf('活动太火爆了') !== -1) {
@@ -372,6 +404,10 @@ function doTask({ taskId, completedTimes, configTargetTimes, taskName }) {
     }
     $.get(taskListUrl('DoTask', `taskId=${taskId}`, '_time,bizCode,configExtra,source,taskId'), (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { msg, ret } = JSON.parse(data);
         $.log(
           `\n${taskName}[做任务]：${msg.indexOf('活动太火爆了') !== -1 ? '任务进行中或者未到任务时间' : msg}${
@@ -399,6 +435,10 @@ function investElectric() {
       taskUrl('userinfo/InvestElectric', `productionId=${$.info.productionInfo.productionId}`),
       (err, resp, data) => {
         try {
+          if (typeof data !== 'object') {
+            resolve();
+            return;
+          }
           const { msg, data: { investElectric } = {} } = JSON.parse(data);
           $.log(`\n投入电力: ${investElectric ? investElectric : ''} ${msg}\n${$.showLog ? data : ''}`);
           $.result.push(`【投入电力】：${investElectric}`);
@@ -416,6 +456,10 @@ function getHireRewardList() {
   return new Promise(async resolve => {
     $.get(taskUrl('friend/QueryHireReward'), async (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { ret, data: { hireReward = [] } = {}, msg } = JSON.parse(data);
         $.log(`\n获取打工奖励列表：${msg}\n${$.showLog ? data : ''}`);
         if (hireReward && hireReward.length > 0) {
@@ -437,6 +481,10 @@ function hireAward(body) {
   return new Promise(async resolve => {
     $.get(taskUrl('friend/HireAward', `${body}`, '_time,date,type,zone'), async (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { msg, data: { investElectric } = {} } = JSON.parse(data);
         $.log(`\n收取打工电力：${msg}\n${$.showLog ? data : ''}`);
       } catch (e) {
@@ -452,6 +500,10 @@ function getFriends() {
   return new Promise(async resolve => {
     $.get(taskUrl('friend/QueryFactoryManagerList'), async (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { msg, data: { list = [] } = {} } = JSON.parse(data);
         $.log(`\n获取工厂好友：${msg}\n${$.showLog ? data : ''}`);
         for (let i = 0; i < list.length; i++) {
@@ -471,6 +523,10 @@ function getFactoryIdByPin(pin) {
   return new Promise((resolve, reject) => {
     $.get(taskUrl('userinfo/GetUserInfoByPin', `pin=${pin}`), (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { msg, data: { factoryList = [] } = {} } = JSON.parse(data);
         $.log(`\n获取工厂信息：${msg}\n${$.showLog ? data : ''}`);
         if (factoryList && factoryList[0]) {
@@ -498,6 +554,10 @@ function submitInviteId(userName) {
       },
       (err, resp, _data) => {
         try {
+          if (typeof _data !== 'object') {
+            resolve();
+            return;
+          }
           const { data = {} } = JSON.parse(_data);
           $.log(`\n邀请码提交：${data.value}\n${$.showLog ? _data : ''}`);
           if (data.value) {
@@ -517,10 +577,18 @@ function createAssistUser() {
   return new Promise(resolve => {
     $.get({ url: 'https://api.ninesix.cc/api/jx-factory' }, (err, resp, _data) => {
       try {
+        if (typeof _data !== 'object') {
+          resolve();
+          return;
+        }
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(taskAssistUrl('friend/AssistFriend', `sharepin=${data.value}`), async (err, resp, data) => {
           try {
+            if (typeof data !== 'object') {
+              resolve();
+              return;
+            }
             const { msg } = JSON.parse(data);
             $.log(`\n${msg}\n${$.showLog ? data : ''}`);
           } catch (e) {
@@ -539,8 +607,12 @@ function createAssistUser() {
 
 function getTuanId() {
   return new Promise(async resolve => {
-    $.get(taskUrl('tuan/QueryActiveConfig', `activeId=0_pzMedR7KhclCkMIgkTkg%3D%3D`, `_time,activeId,tuanId`), async (err, resp, data) => {
+    $.get(taskUrl('tuan/QueryActiveConfig', `activeId=bozIUUFcANuUdWpw3QdvPw%3D%3D`, `_time,activeId,tuanId`), async (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { msg, data: { userTuanInfo } = {} } = JSON.parse(data);
         $.log(`\n获取团id：${msg}\n${$.showLog ? data : ''}`);
         if (!userTuanInfo || !userTuanInfo.tuanId) {
@@ -565,8 +637,12 @@ function getTuanId() {
 
 function getTuanInfo(body) {
   return new Promise(async resolve => {
-    $.get(taskUrl('tuan/QueryTuan', `activeId=0_pzMedR7KhclCkMIgkTkg%3D%3D&${body}`, `_time,activeId,tuanId`), async (err, resp, data) => {
+    $.get(taskUrl('tuan/QueryTuan', `activeId=bozIUUFcANuUdWpw3QdvPw%3D%3D&${body}`, `_time,activeId,tuanId`), async (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { msg, data: { tuanInfo = [] } = {} } = JSON.parse(data);
         $.log(`\n获取开团信息：${msg}\n${$.showLog ? data : ''}`);
         if (tuanInfo && tuanInfo[0]) {
@@ -594,6 +670,10 @@ function submitTuanId(userName) {
       },
       (err, resp, _data) => {
         try {
+          if (typeof _data !== 'object') {
+            resolve();
+            return;
+          }
           const { data = {} } = JSON.parse(_data);
           $.log(`\n团码提交成功：${data.value}\n${$.showLog ? _data : ''}`);
           if (data.value) {
@@ -612,9 +692,13 @@ function submitTuanId(userName) {
 function createTuan() {
   return new Promise(async resolve => {
     $.get(
-      taskTuanUrl('tuan/CreateTuan', `activeId=0_pzMedR7KhclCkMIgkTkg%3D%3D&isOpenApp=1`, '_time,activeId,isOpenApp'),
+      taskTuanUrl('tuan/CreateTuan', `activeId=bozIUUFcANuUdWpw3QdvPw%3D%3D&isOpenApp=1`, '_time,activeId,isOpenApp'),
       async (err, resp, _data) => {
         try {
+          if (typeof _data !== 'object') {
+            resolve();
+            return;
+          }
           const { msg, data = {} } = JSON.parse(_data);
           $.log(`\n开团信息：${msg}\n${$.showLog ? _data : ''}`);
           if (data) {
@@ -633,12 +717,20 @@ function joinTuan() {
   return new Promise(async resolve => {
     $.get({ url: 'https://api.ninesix.cc/api/jx-factory-tuan' }, (err, resp, _data) => {
       try {
+        if (typeof _data !== 'object') {
+          resolve();
+          return;
+        }
         const { data = {} } = JSON.parse(_data);
         $.log(`\n${data.value}\n${$.showLog ? _data : ''}`);
         $.get(
-          taskTuanUrl('tuan/JoinTuan', `activeId=0_pzMedR7KhclCkMIgkTkg%3D%3D&tuanId=${data.value}`, '_time,activeId,tuanId'),
+          taskTuanUrl('tuan/JoinTuan', `activeId=bozIUUFcANuUdWpw3QdvPw%3D%3D&tuanId=${data.value}`, '_time,activeId,tuanId'),
           async (err, resp, data) => {
             try {
+              if (typeof data !== 'object') {
+                resolve();
+                return;
+              }
               const { msg } = JSON.parse(data);
               $.log(
                 `\n参团：${msg.indexOf('成功参团') !== -1 ? '您已参过此团或者参团失败' : msg}\n${
@@ -670,6 +762,10 @@ function awardTuan() {
       taskTuanUrl('tuan/Award', `activeId=cKw-LGBsjl0XLu9coQ0d4A%3D%3D&tuanId=${$.userTuanInfo.tuanId}`, '_time,activeId,tuanId'),
       async (err, resp, data) => {
         try {
+          if (typeof data !== 'object') {
+            resolve();
+            return;
+          }
           const { ret, msg, data: { electric = 0 } = {} } = JSON.parse(data);
           if (ret === 0) {
             $.log(`\n领取开团奖励：${msg}，获得电力 ${electric}\n${$.showLog ? data : ''}`);
@@ -906,6 +1002,10 @@ async function requestAlgo() {
   return new Promise(async resolve => {
     $.post(options, (err, resp, data) => {
       try {
+        if (typeof data !== 'object') {
+          resolve();
+          return;
+        }
         const { ret, msg, data: { result } = {} } = JSON.parse(data);
         $.token = result.tk;
         $.genKey = new Function(`return ${result.algo}`)();
@@ -918,5 +1018,3 @@ async function requestAlgo() {
   })
 }
 
-// prettier-ignore
-function Env(t,e){class s{constructor(t){this.env=t}send(t,e="GET"){t="string"==typeof t?{url:t}:t;let s=this.get;return"POST"===e&&(s=this.post),new Promise((e,i)=>{s.call(this,t,(t,s,r)=>{t?i(t):e(s)})})}get(t){return this.send.call(this.env,t)}post(t){return this.send.call(this.env,t,"POST")}}return new class{constructor(t,e){this.name=t,this.http=new s(this),this.data=null,this.dataFile="box.dat",this.logs=[],this.isMute=!1,this.isNeedRewrite=!1,this.logSeparator="\n",this.startTime=(new Date).getTime(),Object.assign(this,e),this.log("",`\ud83d\udd14${this.name}, \u5f00\u59cb!`)}isNode(){return"undefined"!=typeof module&&!!module.exports}isQuanX(){return"undefined"!=typeof $task}isSurge(){return"undefined"!=typeof $httpClient&&"undefined"==typeof $loon}isLoon(){return"undefined"!=typeof $loon}toObj(t,e=null){try{return JSON.parse(t)}catch{return e}}toStr(t,e=null){try{return JSON.stringify(t)}catch{return e}}getjson(t,e){let s=e;const i=this.getdata(t);if(i)try{s=JSON.parse(this.getdata(t))}catch{}return s}setjson(t,e){try{return this.setdata(JSON.stringify(t),e)}catch{return!1}}getScript(t){return new Promise(e=>{this.get({url:t},(t,s,i)=>e(i))})}runScript(t,e){return new Promise(s=>{let i=this.getdata("@chavy_boxjs_userCfgs.httpapi");i=i?i.replace(/\n/g,"").trim():i;let r=this.getdata("@chavy_boxjs_userCfgs.httpapi_timeout");r=r?1*r:20,r=e&&e.timeout?e.timeout:r;const[o,h]=i.split("@"),a={url:`http://${h}/v1/scripting/evaluate`,body:{script_text:t,mock_type:"cron",timeout:r},headers:{"X-Key":o,Accept:"*/*"}};this.post(a,(t,e,i)=>s(i))}).catch(t=>this.logErr(t))}loaddata(){if(!this.isNode())return{};{this.fs=this.fs?this.fs:require("fs"),this.path=this.path?this.path:require("path");const t=this.path.resolve(this.dataFile),e=this.path.resolve(process.cwd(),this.dataFile),s=this.fs.existsSync(t),i=!s&&this.fs.existsSync(e);if(!s&&!i)return{};{const i=s?t:e;try{return JSON.parse(this.fs.readFileSync(i))}catch(t){return{}}}}}writedata(){if(this.isNode()){this.fs=this.fs?this.fs:require("fs"),this.path=this.path?this.path:require("path");const t=this.path.resolve(this.dataFile),e=this.path.resolve(process.cwd(),this.dataFile),s=this.fs.existsSync(t),i=!s&&this.fs.existsSync(e),r=JSON.stringify(this.data);s?this.fs.writeFileSync(t,r):i?this.fs.writeFileSync(e,r):this.fs.writeFileSync(t,r)}}lodash_get(t,e,s){const i=e.replace(/\[(\d+)\]/g,".$1").split(".");let r=t;for(const t of i)if(r=Object(r)[t],void 0===r)return s;return r}lodash_set(t,e,s){return Object(t)!==t?t:(Array.isArray(e)||(e=e.toString().match(/[^.[\]]+/g)||[]),e.slice(0,-1).reduce((t,s,i)=>Object(t[s])===t[s]?t[s]:t[s]=Math.abs(e[i+1])>>0==+e[i+1]?[]:{},t)[e[e.length-1]]=s,t)}getdata(t){let e=this.getval(t);if(/^@/.test(t)){const[,s,i]=/^@(.*?)\.(.*?)$/.exec(t),r=s?this.getval(s):"";if(r)try{const t=JSON.parse(r);e=t?this.lodash_get(t,i,""):e}catch(t){e=""}}return e}setdata(t,e){let s=!1;if(/^@/.test(e)){const[,i,r]=/^@(.*?)\.(.*?)$/.exec(e),o=this.getval(i),h=i?"null"===o?null:o||"{}":"{}";try{const e=JSON.parse(h);this.lodash_set(e,r,t),s=this.setval(JSON.stringify(e),i)}catch(e){const o={};this.lodash_set(o,r,t),s=this.setval(JSON.stringify(o),i)}}else s=this.setval(t,e);return s}getval(t){return this.isSurge()||this.isLoon()?$persistentStore.read(t):this.isQuanX()?$prefs.valueForKey(t):this.isNode()?(this.data=this.loaddata(),this.data[t]):this.data&&this.data[t]||null}setval(t,e){return this.isSurge()||this.isLoon()?$persistentStore.write(t,e):this.isQuanX()?$prefs.setValueForKey(t,e):this.isNode()?(this.data=this.loaddata(),this.data[e]=t,this.writedata(),!0):this.data&&this.data[e]||null}initGotEnv(t){this.got=this.got?this.got:require("got"),this.cktough=this.cktough?this.cktough:require("tough-cookie"),this.ckjar=this.ckjar?this.ckjar:new this.cktough.CookieJar,t&&(t.headers=t.headers?t.headers:{},void 0===t.headers.Cookie&&void 0===t.cookieJar&&(t.cookieJar=this.ckjar))}get(t,e=(()=>{})){t.headers&&(delete t.headers["Content-Type"],delete t.headers["Content-Length"]),this.isSurge()||this.isLoon()?(this.isSurge()&&this.isNeedRewrite&&(t.headers=t.headers||{},Object.assign(t.headers,{"X-Surge-Skip-Scripting":!1})),$httpClient.get(t,(t,s,i)=>{!t&&s&&(s.body=i,s.statusCode=s.status),e(t,s,i)})):this.isQuanX()?(this.isNeedRewrite&&(t.opts=t.opts||{},Object.assign(t.opts,{hints:!1})),$task.fetch(t).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>e(t))):this.isNode()&&(this.initGotEnv(t),this.got(t).on("redirect",(t,e)=>{try{if(t.headers["set-cookie"]){const s=t.headers["set-cookie"].map(this.cktough.Cookie.parse).toString();s&&this.ckjar.setCookieSync(s,null),e.cookieJar=this.ckjar}}catch(t){this.logErr(t)}}).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>{const{message:s,response:i}=t;e(s,i,i&&i.body)}))}post(t,e=(()=>{})){if(t.body&&t.headers&&!t.headers["Content-Type"]&&(t.headers["Content-Type"]="application/x-www-form-urlencoded"),t.headers&&delete t.headers["Content-Length"],this.isSurge()||this.isLoon())this.isSurge()&&this.isNeedRewrite&&(t.headers=t.headers||{},Object.assign(t.headers,{"X-Surge-Skip-Scripting":!1})),$httpClient.post(t,(t,s,i)=>{!t&&s&&(s.body=i,s.statusCode=s.status),e(t,s,i)});else if(this.isQuanX())t.method="POST",this.isNeedRewrite&&(t.opts=t.opts||{},Object.assign(t.opts,{hints:!1})),$task.fetch(t).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>e(t));else if(this.isNode()){this.initGotEnv(t);const{url:s,...i}=t;this.got.post(s,i).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>{const{message:s,response:i}=t;e(s,i,i&&i.body)})}}time(t){let e={"M+":(new Date).getMonth()+1,"d+":(new Date).getDate(),"H+":(new Date).getHours(),"m+":(new Date).getMinutes(),"s+":(new Date).getSeconds(),"q+":Math.floor(((new Date).getMonth()+3)/3),S:(new Date).getMilliseconds()};/(y+)/.test(t)&&(t=t.replace(RegExp.$1,((new Date).getFullYear()+"").substr(4-RegExp.$1.length)));for(let s in e)new RegExp("("+s+")").test(t)&&(t=t.replace(RegExp.$1,1==RegExp.$1.length?e[s]:("00"+e[s]).substr((""+e[s]).length)));return t}msg(e=t,s="",i="",r){const o=t=>{if(!t)return t;if("string"==typeof t)return this.isLoon()?t:this.isQuanX()?{"open-url":t}:this.isSurge()?{url:t}:void 0;if("object"==typeof t){if(this.isLoon()){let e=t.openUrl||t.url||t["open-url"],s=t.mediaUrl||t["media-url"];return{openUrl:e,mediaUrl:s}}if(this.isQuanX()){let e=t["open-url"]||t.url||t.openUrl,s=t["media-url"]||t.mediaUrl;return{"open-url":e,"media-url":s}}if(this.isSurge()){let e=t.url||t.openUrl||t["open-url"];return{url:e}}}};if(this.isMute||(this.isSurge()||this.isLoon()?$notification.post(e,s,i,o(r)):this.isQuanX()&&$notify(e,s,i,o(r))),!this.isMuteLog){let t=["","==============\ud83d\udce3\u7cfb\u7edf\u901a\u77e5\ud83d\udce3=============="];t.push(e),s&&t.push(s),i&&t.push(i),console.log(t.join("\n")),this.logs=this.logs.concat(t)}}log(...t){t.length>0&&(this.logs=[...this.logs,...t]),console.log(t.join(this.logSeparator))}logErr(t,e){const s=!this.isSurge()&&!this.isQuanX()&&!this.isLoon();s?this.log("",`\u2757\ufe0f${this.name}, \u9519\u8bef!`,t.stack):this.log("",`\u2757\ufe0f${this.name}, \u9519\u8bef!`,t)}wait(t){return new Promise(e=>setTimeout(e,t))}done(t={}){const e=(new Date).getTime(),s=(e-this.startTime)/1e3;this.log("",`\ud83d\udd14${this.name}, \u7ed3\u675f! \ud83d\udd5b ${s} \u79d2`),this.log(),(this.isSurge()||this.isQuanX()||this.isLoon())&&$done(t)}}(t,e)}
