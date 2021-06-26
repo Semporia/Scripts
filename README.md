@@ -3,8 +3,14 @@
 
 
 参考：JDHelloWorld-jd_scripts
+
+
 删除脚本内inviteCodes
+
+
 自动提交助力码
+
+
 其他未修改，用法与原版相同
 
 
