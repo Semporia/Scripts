@@ -95,7 +95,7 @@ async function jdPlantBean() {
       const shareUrl = $.plantBeanIndexResult.data.jwordShareInfo.shareUrl
       $.myPlantUuid = getParam(shareUrl, 'plantUuid')
       console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${$.myPlantUuid}\n`);
-      const submitCodeRes = await readShareCode();
+      const submitCodeRes = await submitCode();
       if (submitCodeRes && submitCodeRes.code === 200) {
          console.log(`🥑种豆得豆-互助码提交成功！🥑`);
       }
