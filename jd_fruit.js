@@ -88,6 +88,12 @@ async function jdFruit() {
       // option['media-url'] = $.farmInfo.farmUserPro.goodsImage;
       message = `【水果名称】${$.farmInfo.farmUserPro.name}\n`;
       console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${$.farmInfo.farmUserPro.shareCode}\n`);
+      const submitCodeRes = await submitCode();
+      if (submitCodeRes && submitCodeRes.code === 200) {
+         console.log(`🐔东东农场-互助码提交成功！🐔`);
+      }else if (submitCodeRes.code === 300) {
+         console.log(`🐔东东农场-互助码已提交！🐔`);
+      }
       console.log(`\n【已成功兑换水果】${$.farmInfo.farmUserPro.winTimes}次\n`);
       message += `【已兑换水果】${$.farmInfo.farmUserPro.winTimes}次\n`;
       await masterHelpShare();//助力好友
@@ -1250,7 +1256,7 @@ function timeFormat(time) {
 }
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `http://api.sharecode.ga/api/farm/${randomCount}`, timeout: 10000,}, (err, resp, data) => {
+    $.get({url: `http://www.helpu.cf/jdcodes/getcode.php?type=farm&num=${randomCount}`, timeout: 10000,}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -1268,6 +1274,30 @@ function readShareCode() {
       }
     })
     await $.wait(10000);
+    resolve()
+  })
+}
+//提交互助码
+function submitCode() {
+    return new Promise(async resolve => {
+    $.get({url: `http://www.helpu.cf/jdcodes/submit.php?code=${$.farmInfo.farmUserPro.shareCode}&type=farm`, timeout: 10000}, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            //console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
+            data = JSON.parse(data);
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+    await $.wait(15000);
     resolve()
   })
 }
