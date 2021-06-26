@@ -47,6 +47,7 @@ if ($.isNode()) {
 let wantProduct = ``;//心仪商品名称
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 const inviteCodes = [''];
+let myInviteCode;
 !(async () => {
   await requireConfig();
   if (!cookiesArr[0]) {
@@ -447,6 +448,13 @@ function jdfactory_getTaskDetail() {
               $.taskVos.map(item => {
                 if (item.taskType === 14) {
                   console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${item.assistTaskDetailVo.taskToken}\n`)
+                  myInviteCode = item.assistTaskDetailVo.taskToken;
+                  const submitCodeRes = await submitCode();
+                  if (submitCodeRes && submitCodeRes.code === 200) {
+                      console.log(`🏭东东工厂-互助码提交成功！🏭`);
+                  }else if (submitCodeRes.code === 300) {
+                      console.log(`🏭东东工厂-互助码已提交！🏭`);
+                  }
                 }
               })
             }
@@ -643,7 +651,7 @@ function readShareCode() {
 //提交互助码
 function submitCode() {
     return new Promise(async resolve => {
-    $.get({url: `http://www.helpu.cf/jdcodes/submit.php?code=${$.myPlantUuid}&type=ddfactory`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `http://www.helpu.cf/jdcodes/submit.php?code=${myInviteCode}&type=ddfactory`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
