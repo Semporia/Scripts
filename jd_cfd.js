@@ -41,7 +41,7 @@ $.notifyTime = $.getdata("cfd_notifyTime");
 $.result = [];
 $.shareCodes = [];
 let cookiesArr = [], cookie = '', token;
-
+let myInviteCode;
 const randomCount = $.isNode() ? 3 : 3;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -261,6 +261,13 @@ function getUserInfo(showInvite = true) {
           if (showInvite && strMyShareId) {
             console.log(`财富岛好友互助码每次运行都变化,旧的可继续使用`);
             $.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${strMyShareId}\n\n`);
+            myInviteCode = strMyShareId;
+            const submitCodeRes = await submitCode();
+            if (submitCodeRes && submitCodeRes.code === 200) {
+              console.log(`🗻财富岛-互助码提交成功！🗻`);
+            }else if (submitCodeRes.code === 300) {
+              console.log(`🗻财富岛-互助码已提交！🗻`);
+            }
           }
           $.info = {
             ...$.info,
@@ -1156,7 +1163,7 @@ function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
     $.get({
-      url: `http://api.sharecode.ga/api/jxcfd/${randomCount}`,
+      url: `http://www.helpu.cf/jdcodes/getcode.php?type=jxcfd&num=${randomCount}`,
       'timeout': 10000
     }, (err, resp, data) => {
       try {
@@ -1176,6 +1183,30 @@ function readShareCode() {
       }
     })
     await $.wait(10000);
+    resolve()
+  })
+}
+//提交互助码
+function submitCode() {
+    return new Promise(async resolve => {
+    $.get({url: `http://www.helpu.cf/jdcodes/submit.php?code=${myInviteCode}&type=jxcfd`, timeout: 10000}, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            //console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
+            data = JSON.parse(data);
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+    await $.wait(15000);
     resolve()
   })
 }
