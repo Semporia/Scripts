@@ -124,6 +124,13 @@ $.appId = 10009;
 async function cfd() {
   try {
     const beginInfo = await getUserInfo();
+    
+    const submitCodeRes = await submitCode();
+    if (submitCodeRes && submitCodeRes.code === 200) {
+      console.log(`🗻财富岛-互助码提交成功！🗻`);
+    }else if (submitCodeRes.code === 300) {
+      console.log(`🗻财富岛-互助码已提交！🗻`);
+    }
 
     await $.wait(2000);
     await querySignList();
@@ -262,12 +269,6 @@ function getUserInfo(showInvite = true) {
             console.log(`财富岛好友互助码每次运行都变化,旧的可继续使用`);
             $.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${strMyShareId}\n\n`);
             myInviteCode = strMyShareId;
-            const submitCodeRes = await submitCode();
-            if (submitCodeRes && submitCodeRes.code === 200) {
-              console.log(`🗻财富岛-互助码提交成功！🗻`);
-            }else if (submitCodeRes.code === 300) {
-              console.log(`🗻财富岛-互助码已提交！🗻`);
-            }
           }
           $.info = {
             ...$.info,
