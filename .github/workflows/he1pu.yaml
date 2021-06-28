@@ -1,0 +1,32 @@
+name: he1pu-sync
+on:
+  push:
+      branches:
+        - main
+  schedule:
+    #  每三小时的01分开始执行
+    - cron: '1 */3 * * *'
+  workflow_dispatch:
+  watch:
+    types: started
+  repository_dispatch:
+    types: sync-he1pu-hundun
+jobs:
+  repo-sync:
+    env:
+      PAT: ${{ secrets.PAT }} 
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: sync he1pu-hundun
+        uses: repo-sync/github-sync@v2
+        if: env.PAT
+        with:
+          source_repo: "https://github.com/he1pu/JDHelp.git"
+          source_branch: "main"
+          destination_branch: "he1pu"
+          github_token: ${{ secrets.PAT }}
