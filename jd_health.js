@@ -30,7 +30,7 @@ let cookiesArr = [],
   cookie = "",
   message;
 let myInviteCode;
-const inviteCodes = [];
+const inviteCodes = [''];
 const randomCount = $.isNode() ? 20 : 5;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
