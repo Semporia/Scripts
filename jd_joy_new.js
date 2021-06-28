@@ -1,6 +1,6 @@
 /**
- 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
- IOS用户支持京东双账号,NodeJs用户支持N个京东账号
+ 脚本兼容:  Node.js
+ NodeJs用户支持N个京东账号
  更新时间：2021-06-21
  活动入口：京东APP我的-宠汪汪
 
@@ -18,7 +18,7 @@ const stream = $.isNode() ? require('stream') : '';
 const zlib = $.isNode() ? require('zlib') : '';
 const vm =  $.isNode() ? require('vm') : '';
 const PNG = $.isNode() ?  require('png-js') : '';
-const UA = $.isNode() ? require('./USER_AGENTS.js').USER_AGENT : '';
+const UA = $.isNode() ? require('./USER_AGENTS.js').USER_AGENT : ''; 
 
 
 Math.avg = function average() {
