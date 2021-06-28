@@ -40,7 +40,7 @@ const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
 $.showLog = $.getdata("cfd_showLog") ? $.getdata("cfd_showLog") === "true" : false;
 $.notifyTime = $.getdata("cfd_notifyTime");
 $.result = [];
-$.shareCodes = [''];
+$.shareCodes = ['']; 
 let cookiesArr = [], cookie = '', token;
 let myInviteCode;
 const randomCount = $.isNode() ? 3 : 3;
