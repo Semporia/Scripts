@@ -12,13 +12,13 @@
 const $ = new Env("宠汪汪二代目")
 console.log('\n====================Hello World====================\n')
 
-const https = require('https');
-const http = require('http');
-const stream = require('stream');
-const zlib = require('zlib');
-const vm = require('vm');
-const PNG = require('png-js');
-const UA = require('./USER_AGENTS.js').USER_AGENT;
+const https = $.isNode() ? require('https') : '';
+const http =  $.isNode() ? require('http') : '';
+const stream = $.isNode() ? require('stream') : '';
+const zlib = $.isNode() ? require('zlib') : '';
+const vm =  $.isNode() ? require('vm') : '';
+const PNG = $.isNode() ?  require('png-js') : '';
+const UA = $.isNode() ? require('./USER_AGENTS.js').USER_AGENT : '';
 
 
 Math.avg = function average() {
