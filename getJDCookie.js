@@ -6,6 +6,7 @@ const $ = new Env('扫码获取京东cookie');
 const qrcode = require('qrcode-terminal');
 let s_token, cookies, guid, lsid, lstoken, okl_token, token
 const ua = require('USER_AGENTS').USER_AGENT
+console.log(ua);
 !(async () => {
   await loginEntrance();
   await generateQrcode();
