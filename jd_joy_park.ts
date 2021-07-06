@@ -1,5 +1,5 @@
 /*
-入口 极速版 旺财乐园 
+入口： 极速版 汪汪乐园
 新用户第一次想设置主号拉邀请就先分享到QQ查看邀请码 inviter就是
 运行脚本查看邀请码
 #自定义邀请码变量 
@@ -7,8 +7,7 @@ export joyinviterPin="" //IANWqUmbgQVF9ePHGsGFA2m-zSTLKmHFbE-IW-Waarw
 
 ====================
 [task_local]
-#汪汪乐园
-*/5 * * * * 
+#汪汪乐园 */5 * * * * 
 */
 
 
