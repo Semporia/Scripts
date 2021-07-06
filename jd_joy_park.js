@@ -4,9 +4,7 @@
 运行脚本查看邀请码
 #自定义邀请码变量 
 export joyinviterPin="" //IANWqUmbgQVF9ePHGsGFA2m-zSTLKmHFbE-IW-Waarw
-cron：*/5 * * * *
 */
-
 
 const $ = new Env('汪汪乐园');
 const notify = $.isNode() ? require('./sendNotify') : '';
