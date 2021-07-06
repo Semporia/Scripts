@@ -4,11 +4,7 @@
 运行脚本查看邀请码
 #自定义邀请码变量 
 export joyinviterPin="" //IANWqUmbgQVF9ePHGsGFA2m-zSTLKmHFbE-IW-Waarw
-
-====================
-[task_local]
-#汪汪乐园
-*/5 * * * * jd_joy_park.ts, tag = 汪汪乐园
+cron：*/5 * * * *
 */
 
 
