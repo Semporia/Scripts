@@ -7,7 +7,8 @@ export joyinviterPin="" //IANWqUmbgQVF9ePHGsGFA2m-zSTLKmHFbE-IW-Waarw
 
 ====================
 [task_local]
-#汪汪乐园 */5 * * * * 
+#汪汪乐园
+*/5 * * * * jd_joy_park.ts, tag = 汪汪乐园
 */
 
 
