@@ -20,7 +20,6 @@ const zlib = require('zlib');
 const vm = require('vm');
 const PNG = require('png-js');
 const UA = require('./USER_AGENTS.js').USER_AGENT;
-const fetch = require('node-fetch');
 const fs = require("fs");
 
 
@@ -605,7 +604,7 @@ $.post = injectToRequest($.post.bind($))
           for (let t of tp.followGoodList) {
             if (!t.status) {
               console.log('┖', t.skuName)
-              await beforeTask('folow_good', t.sku)
+              await beforeTask('follow_good', t.sku)
               await $.wait(1000)
               await doTask(`sku=${t.sku}`, 'followGood')
               await $.wait(3000)
@@ -869,8 +868,10 @@ function run(fn = 'match') {
           } else if (race === 'unreceive') {
             console.log('开始领奖')
             await run('receive')
+          } else if (race === 'time_over') {
+            console.log('不在比赛时间')
           } else {
-            console.log('这是什么！')
+            console.log('这是什么！', data)
           }
         }
       } catch (e) {
