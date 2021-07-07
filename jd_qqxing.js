@@ -398,7 +398,7 @@ function getUid() {
                     data = JSON.parse(data);
                         if (data.result) {                           
                            if(data.data.openCardStatus !=3){
-                           console.log("当前未开卡,无法助力和兑换奖励哦");
+                           console.log("当前未开卡,无法助力和兑换奖励哦。入口-->22.0复制整段话 Https:/Jt3uI8tUnEYKNg星系牧场养牛牛，可获得DHA专属奶！%N6beE2Em6a!后扌丁开乛倞崬");
                            }                           
                             console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${$.shareuuid}\n`);
                         }
