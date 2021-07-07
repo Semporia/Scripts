@@ -398,7 +398,7 @@ function getUid() {
                     data = JSON.parse(data);
                         if (data.result) {                           
                            if(data.data.openCardStatus !=3){
-                           console.log("当前未开卡,无法助力和兑换奖励哦")
+                           console.log("当前未开卡,无法助力和兑换奖励哦\n${data}")
                            }                           
                             console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${$.shareuuid}\n`);
                         }
