@@ -29,7 +29,7 @@ if ($.isNode()) {
 }
 
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
-message = ""
+message = "df20c57134084b92b0b87d45de6d1a75"
 $.shareuuid = ""
     !(async () => {
         if (!cookiesArr[0]) {
