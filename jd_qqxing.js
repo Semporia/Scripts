@@ -29,8 +29,8 @@ if ($.isNode()) {
 }
 
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
-message = "df20c57134084b92b0b87d45de6d1a75"
-$.shareuuid = ""
+message = ""
+$.shareuuid = "df20c57134084b92b0b87d45de6d1a75"
     !(async () => {
         if (!cookiesArr[0]) {
             $.msg($.name, '【提示】请先获取cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
