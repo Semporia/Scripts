@@ -3,7 +3,7 @@
 新用户第一次想设置主号拉邀请就先分享到QQ查看邀请码 inviter就是
 运行脚本查看邀请码
 #自定义邀请码变量 
-export joyinviterPin="" //IANWqUmbgQVF9ePHGsGFA2m-zSTLKmHFbE-IW-Waarw
+export joyinviterPin="" //Po5dNTlp8QMCY9HFIDOLxn7i10nrKRlYtvu1TM6DHwc
 */
 
 const $ = new Env('汪汪乐园');
@@ -17,7 +17,7 @@ let cookiesArr = [], cookie = '', message;
 let codeList = []
 let codeList1 = []
 
-let joyinviterPin = '';
+let joyinviterPin = 'Po5dNTlp8QMCY9HFIDOLxn7i10nrKRlYtvu1TM6DHwc';
 if (process.env.joyinviterPin) {
   joyinviterPin = process.env.joyinviterPin;
 }
