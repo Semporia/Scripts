@@ -53,7 +53,7 @@ const UA = $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT :
       '本脚本只助力SH\n' +
       '百元守卫战 开启时间早上8点过后\n' +
       '活动时间：2021-07-08至2021-08-08\n' +
-      '脚本更新时间：2021年7月10日 02点00分\n'
+      '脚本更新时间：2021年7月10日 12点00分\n'
       );
       if(Number(summer_movement_ShHelpFlag) === 1){
         console.log('您设置了 【百元守卫战SH】✅ || 互助✅')
@@ -83,10 +83,12 @@ const UA = $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT :
   let res = [], res2 = [];
   $.innerShInviteList = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/smiek2221/scripts/master/summer_movement_one.json');
   res2 = await getAuthorShareCode('https://ghproxy.com/https://raw.githubusercontent.com/smiek2221/scripts/master/summer_movement.json');
+  $.ShInviteLists = []
   if (ShHelpAuthorFlag) {
-    $.ShInviteLists = []
     $.innerShInviteLists = getRandomArrayElements([...res, ...res2], [...res, ...res2].length);
     $.ShInviteLists.push(...$.ShInviteList,...$.innerShInviteList,...$.innerShInviteLists);
+  }else{
+    $.ShInviteLists.push(...$.ShInviteList);
   }
   for (let i = 0; i < cookiesArr.length; i++) {
     $.cookie = cookiesArr[i];
