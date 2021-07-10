@@ -19,6 +19,7 @@ cron "20 9 * * *" script-path=jd_joypark_open.js,tag=汪汪乐园开工位
 ============小火箭=========
 汪汪乐园开工位 = type=cron,script-path=jd_joypark_open.js, cronexpr="20 9 * * *", timeout=3600, enable=true
 */
+
 const $ = new Env('汪汪乐园开工位');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
