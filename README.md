@@ -18,11 +18,9 @@
 
 
 __青龙拉取__<br>
-'''
-
+```
 ql repo https://github.com/he1pu/JDHelp.git "jd_|jx_|getJDCookie" "activity|backUp|jd_delCoupon" "^jd[^_]|USER|MovementFaker|JDJRValidator_Pure|sign_graphics_validate|ZooFaker_Necklace"
-
-'''
+```
 
 # Warning
 ### 带助力功能的脚本要使用本仓库的，其他仓库的没有适配新助力池
