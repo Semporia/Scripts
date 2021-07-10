@@ -17,7 +17,7 @@
 其他未修改，用法与原版相同
 
 
-__青龙拉取__
+__青龙拉取__<br>
 '''
 ql repo https://github.com/he1pu/JDHelp.git "jd_|jx_|getJDCookie" "activity|backUp|jd_delCoupon" "^jd[^_]|USER|MovementFaker|JDJRValidator_Pure|sign_graphics_validate|ZooFaker_Necklace"
 '''
