@@ -28,9 +28,7 @@ let cookiesArr = [];
 $.cookie = '';
 $.secretpInfo = {};
 $.ShInviteList = [];
-$.innerShInviteList = [
-  'H8mphLbwLg73eYHLF9Nm0sLE1r7kmq7N'
-];
+$.innerShInviteList = [];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -82,7 +80,7 @@ const UA = $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT :
   }
   // 助力
   let res = [], res2 = [];
-  $.ShInviteLists = [];
+  $.ShInviteLists = ['H8mphLbwLg73eYHLF9Nm0sLE1r7kmq7N'];
   if (ShHelpAuthorFlag) {
     $.innerShInviteLists = getRandomArrayElements([...res, ...res2], [...res, ...res2].length);
     $.ShInviteLists.push(...$.ShInviteList,...$.innerShInviteList,...$.innerShInviteLists);
