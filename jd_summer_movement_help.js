@@ -29,6 +29,7 @@ $.cookie = '';
 $.secretpInfo = {};
 $.ShInviteList = [];
 $.innerShInviteList = [
+  'H8mphLbwLg73eYHLF9Nm0sLE1r7kmq7N'
 ];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
