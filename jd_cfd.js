@@ -17,6 +17,7 @@ const CryptoJS = require('crypto-js')
 let appId = 10028, fingerprint, token, enCryptMethodJD;
 let cookie= '', cookiesArr= [], res = '', shareCodes = [];
 let myShareCode = '';
+
 let UserName, index, isLogin, nickName;
 !(async () => {
   await requestAlgo();
