@@ -38,22 +38,82 @@ let UserName, index, isLogin, nickName;
     await readShareCode();
     await makeShareCodes();
 
+     // 导游
+    res = await api('user/EmployTourGuideInfo', '_cfd_t,bizCode,dwEnv,ptag,source,strZone')
+    if (!res.TourGuideList) {
+        console.log('账号尚未完成新手指引，跳过账号');
+        continue
+    } 
+
+    await submitCode(myShareCode);
+    let cfdFixDY = process.env.cfdFixDY ? process.env.cfdFixDY : 'food';
+    for (let e of res.TourGuideList) {
+        if (e.strBuildIndex !== cfdFixDY && e.ddwRemainTm === 0) {
+            let employ = await api('user/EmployTourGuide', '_cfd_t,bizCode,ddwConsumeCoin,dwEnv,dwIsFree,ptag,source,strBuildIndex,strZone',
+            {ddwConsumeCoin: e.ddwCostCoin, dwIsFree: 0, strBuildIndex: e.strBuildIndex})
+            if (employ.sErrMsg.length) {
+                console.log(employ.sErrMsg.length);
+            }else {
+                console.log('雇佣导游成功');
+            }
+            //console.log(employ)
+            await wait(3000)
+        }
+    }
+    
+
+    let dwUserId = 1
+    // 助力奖励
+    while (1) {
+      res = await api('story/helpdraw', '_cfd_t,bizCode,dwEnv,dwUserId,ptag,source,strZone', {dwUserId: dwUserId})
+      dwUserId++
+      if (res.iRet === 0) {
+        console.log('助力奖励领取成功', res.Data.ddwCoin)
+      } else if (res.iRet === 1000)
+        break
+      else {
+        console.log('助力奖励领取:', res.sErrMsg)
+        break
+      }
+      await wait(2000)
+    }
+
+    // 清空背包
+    res = await api('story/querystorageroom', '_cfd_t,bizCode,dwEnv,ptag,source,strZone')
+    console.log(res)
+    let bags = []
+    for (let s of res.Data.Office) {
+      console.log(s.dwCount, s.dwType)
+      bags.push(s.dwType)
+      bags.push(s.dwCount)
+    }
+    await wait(1000)
+    let strTypeCnt = ''
+    for (let n = 0; n < bags.length; n++) {
+      if (n % 2 === 0)
+        strTypeCnt += `${bags[n]}:`
+      else
+        strTypeCnt += `${bags[n]}|`
+    }
+    res = await api('story/sellgoods', '_cfd_t,bizCode,dwEnv,dwSceneId,ptag,source,strTypeCnt,strZone',
+      {dwSceneId: '1', strTypeCnt: strTypeCnt})
+    //console.log(res);
+    console.log('卖贝壳收入:', res.Data.ddwCoin, res.Data.ddwMoney)
+
     // 任务1
     let tasks;
-    /*
-     tasks= await api('story/GetActTask', '_cfd_t,bizCode,dwEnv,ptag,source,strZone')
-    for (let t of tasks.Data.TaskList) {
-      if (t.dwCompleteNum === t.dwTargetNum && t.dwAwardStatus === 2) {
-        res = await api('Award', '_cfd_t,bizCode,dwEnv,ptag,source,strZone,taskId', {taskId: t.ddwTaskId})
-        if (res.ret === 0) {
-          console.log(`${t.strTaskName}领奖成功:`, res.data.prizeInfo)
-        }
-        await wait(1000)
-      }
-    }
-     */
-
-
+    
+    // tasks= await api('story/GetActTask', '_cfd_t,bizCode,dwEnv,ptag,source,strZone')
+    // for (let t of tasks.Data.TaskList) {
+    //   if (t.dwCompleteNum === t.dwTargetNum && t.dwAwardStatus === 2) {
+    //     res = await api('Award', '_cfd_t,bizCode,dwEnv,ptag,source,strZone,taskId', {taskId: t.ddwTaskId})
+    //     if (res.ret === 0) {
+    //       console.log(`${t.strTaskName}领奖成功:`, res.data.prizeInfo)
+    //     }
+    //     await wait(1000)
+    //   }
+    // }
+     
     // res = await api('story/SpecialUserOper',
     //   '_cfd_t,bizCode,ddwTriggerDay,dwEnv,dwType,ptag,source,strStoryId,strZone,triggerType',
     //   {strStoryId: 'stroy_1626065998453014_1', dwType: '2', triggerType: 0, ddwTriggerDay: 1626019200})
@@ -64,22 +124,8 @@ let UserName, index, isLogin, nickName;
     //   {strStoryId: 'stroy_1626065998453014_1', dwType: '3', triggerType: 0, ddwTriggerDay: 1626019200})
     // console.log('下船:', res)
 
-    // 导游
-    res = await api('user/EmployTourGuideInfo', '_cfd_t,bizCode,dwEnv,ptag,source,strZone')
-    if (!res.TourGuideList) {
-        console.log('账号尚未完成新手指引，跳过账号')
-        continue
-    }
-    await submitCode(myShareCode);
-    for (let e of res.TourGuideList) {
-      if (e.strBuildIndex !== 'food' && e.ddwRemainTm === 0) {
-        let employ = await api('user/EmployTourGuide', '_cfd_t,bizCode,ddwConsumeCoin,dwEnv,dwIsFree,ptag,source,strBuildIndex,strZone',
-          {ddwConsumeCoin: e.ddwCostCoin, dwIsFree: 0, strBuildIndex: e.strBuildIndex})
-        console.log(employ)
-        await wait(3000)
-      }
-    }
-
+   
+    // 任务⬇️
     tasks = await mainTask('GetUserTaskStatusList', '_cfd_t,bizCode,dwEnv,ptag,source,strZone,taskId', {taskId: 0});
     for (let t of tasks.data.userTaskStatusList) {
       if (t.dateType === 2) {
@@ -87,7 +133,7 @@ let UserName, index, isLogin, nickName;
         if (t.awardStatus === 2 && t.completedTimes === t.targetTimes) {
           console.log(1, t.taskName)
           res = await mainTask('Award', '_cfd_t,bizCode,dwEnv,ptag,source,strZone,taskId', {taskId: t.taskId})
-          console.log(res)
+          //console.log(res)
           if (res.ret === 0) {
             console.log(`${t.taskName}领奖成功:`, res.data.prizeInfo)
           }
@@ -120,17 +166,23 @@ let UserName, index, isLogin, nickName;
   // if (cookiesArr.length === shareCodes.length) {
     
   // }
-  for (let i = 0; i < cookiesArr.length; i++) {
-      for (let j = 0; j < shareCodeDic[`${i}`].length; j++) {
-        cookie = cookiesArr[i]
-        res = await api('story/helpbystage', '_cfd_t,bizCode,dwEnv,ptag,source,strShareId,strZone', {strShareId: shareCodeDic[`${i}`][j]})
-        console.log(res)
-        await wait(1000)
-        if (Number(res.iRet) === 2235) {
-            console.log('当前账号没有助力次数了')
+
+    for (let i = 0; i < cookiesArr.length; i++) {
+        console.log(`====账号${i+1}开始互助====`);
+        if (!(shareCodeDic[`${i}`] instanceof Array)) {
+            console.log('获取互助码时出错了...');
             continue
         }
-      }
+        for (let j = 0; j < shareCodeDic[`${i}`].length; j++) {
+            cookie = cookiesArr[i]
+            res = await api('story/helpbystage', '_cfd_t,bizCode,dwEnv,ptag,source,strShareId,strZone', {strShareId: shareCodeDic[`${i}`][j]})
+            console.log(`互助结果：${res.sErrMsg}`)
+            await wait(1000)
+            // if (Number(res.iRet) === 2235) {
+            //     console.log('当前账号没有助力次数了')
+            //     continue
+            // }
+        }
     }
 })()
 
@@ -207,7 +259,7 @@ function makeShareCodes() {
     res = await api('user/QueryUserInfo', '_cfd_t,bizCode,ddwTaskId,dwEnv,ptag,source,strShareId,strZone', {ddwTaskId: '', strShareId: '', strMarkList: 'undefined'})
     console.log('助力码:', res.strMyShareId)
     myShareCode = res.strMyShareId;
-    //shareCodes.push(Math.random() > 0.5 ? res.strMyShareId : '3305BEE9252E92904754D911FE0232E0968B01C5C66EAD643B45F78D20E40E40')
+    //shareCodes.push(Math.random() > 0.5 ? res.strMyShareId : '')
     resolve()
   })
 }
