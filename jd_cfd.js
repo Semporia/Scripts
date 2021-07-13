@@ -123,7 +123,7 @@ let UserName, index, isLogin, nickName;
   for (let i = 0; i < cookiesArr.length; i++) {
       for (let j = 0; j < shareCodeDic[`${i}`].length; j++) {
         cookie = cookiesArr[i]
-        res = await api('story/helpbystage', '_cfd_t,bizCode,dwEnv,ptag,source,strShareId,strZone', {strShareId: shareCodes[j]})
+        res = await api('story/helpbystage', '_cfd_t,bizCode,dwEnv,ptag,source,strShareId,strZone', {strShareId: shareCodeDic[`${i}`][j]})
         console.log(res)
         await wait(1000)
         if (Number(res.iRet) === 2235) {
