@@ -31,7 +31,6 @@ let UserName, index, isLogin, nickName;
     await TotalBean();
     console.log(`\n开始【京东账号${index}】${nickName || UserName}\n`);
     
-    await readShareCode();
     await makeShareCodes();
 
     // 任务1
@@ -66,6 +65,8 @@ let UserName, index, isLogin, nickName;
         console.log('账号尚未完成新手指引，跳过账号')
         continue
     }
+    await readShareCode();
+    
     for (let e of res.TourGuideList) {
       if (e.strBuildIndex !== 'food' && e.ddwRemainTm === 0) {
         let employ = await api('user/EmployTourGuide', '_cfd_t,bizCode,ddwConsumeCoin,dwEnv,dwIsFree,ptag,source,strBuildIndex,strZone',
