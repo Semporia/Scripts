@@ -120,6 +120,7 @@ let UserName, index, isLogin, nickName;
   // if (cookiesArr.length === shareCodes.length) {
     
   // }
+  console.log(shareCodeDic);
   for (let i = 0; i < cookiesArr.length; i++) {
       for (let j = 0; j < shareCodeDic.i.length; j++) {
         cookie = cookiesArr[i]
