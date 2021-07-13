@@ -80,7 +80,7 @@ let UserName, index, isLogin, nickName;
 
     // 清空背包
     res = await api('story/querystorageroom', '_cfd_t,bizCode,dwEnv,ptag,source,strZone')
-    console.log(res)
+    //console.log(res)
     let bags = []
     for (let s of res.Data.Office) {
       console.log(s.dwCount, s.dwType)
