@@ -120,9 +120,8 @@ let UserName, index, isLogin, nickName;
   // if (cookiesArr.length === shareCodes.length) {
     
   // }
-  console.log(shareCodeDic);
   for (let i = 0; i < cookiesArr.length; i++) {
-      for (let j = 0; j < shareCodeDic.i.length; j++) {
+      for (let j = 0; j < shareCodeDic[`${i}`].length; j++) {
         cookie = cookiesArr[i]
         res = await api('story/helpbystage', '_cfd_t,bizCode,dwEnv,ptag,source,strShareId,strZone', {strShareId: shareCodes[j]})
         console.log(res)
@@ -243,7 +242,6 @@ function submitCode(myInviteCode) {
   })
 }
 function readShareCode() {
-  console.log(`开始`)
   return new Promise(async resolve => {
     $.get({
       url: `http://www.helpu.cf/jdcodes/getcode.php?type=jxcfd&num=10`,
@@ -257,7 +255,7 @@ function readShareCode() {
           if (data) {
             data = JSON.parse(data);
             console.log(`随机取10个码放到您固定的互助码后面(不影响已有固定互助)`);
-            shareCodeDic.currentIndex = data.data;
+            shareCodeDic[`${currentIndex}`] = data.data;
             console.log(`${data.data}`);
           }
         }
