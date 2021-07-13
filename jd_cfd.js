@@ -16,7 +16,7 @@ const CryptoJS = require('crypto-js')
 
 let appId = 10028, fingerprint, token, enCryptMethodJD;
 let cookie= '', cookiesArr= [], res = '', shareCodes = [];
-
+let myShareCode = '';
 let UserName, index, isLogin, nickName;
 !(async () => {
   await requestAlgo();
@@ -66,7 +66,7 @@ let UserName, index, isLogin, nickName;
         continue
     }
     await readShareCode();
-    
+    await submitCode(myShareCode);
     for (let e of res.TourGuideList) {
       if (e.strBuildIndex !== 'food' && e.ddwRemainTm === 0) {
         let employ = await api('user/EmployTourGuide', '_cfd_t,bizCode,ddwConsumeCoin,dwEnv,dwIsFree,ptag,source,strBuildIndex,strZone',
@@ -202,8 +202,8 @@ function makeShareCodes() {
   return new Promise(async resolve => {
     res = await api('user/QueryUserInfo', '_cfd_t,bizCode,ddwTaskId,dwEnv,ptag,source,strShareId,strZone', {ddwTaskId: '', strShareId: '', strMarkList: 'undefined'})
     console.log('助力码:', res.strMyShareId)
+    myShareCode = res.strMyShareId;
     //shareCodes.push(Math.random() > 0.5 ? res.strMyShareId : '3305BEE9252E92904754D911FE0232E0968B01C5C66EAD643B45F78D20E40E40')
-    submitCode(res.strMyShareId);
     resolve()
   })
 }
