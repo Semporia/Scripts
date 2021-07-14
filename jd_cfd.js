@@ -177,11 +177,10 @@ let UserName, index, isLogin, nickName;
             cookie = cookiesArr[i]
             res = await api('story/helpbystage', '_cfd_t,bizCode,dwEnv,ptag,source,strShareId,strZone', {strShareId: shareCodeDic[`${i}`][j]})
             console.log(`互助结果：${res.sErrMsg}`)
+            if (res.iRet === 2232 || res.sErrMsg === '今日助力次数达到上限，明天再来帮忙吧~') {
+              break
+            }
             await wait(1000)
-            // if (Number(res.iRet) === 2235) {
-            //     console.log('当前账号没有助力次数了')
-            //     continue
-            // }
         }
     }
 })()
