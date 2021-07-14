@@ -462,10 +462,10 @@ async function queryRubbishInfo() {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} QueryRubbishInfo API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          console.log(`倒垃圾`)
-          if (data.Data.StoryInfo.StoryList.length !== 0) {
+         } else {
+           data = JSON.parse(data);
+           console.log(`倒垃圾`)
+           if (data.Data.StoryInfo.StoryList.length !== 0) {
              for (let key of Object.keys(data.Data.StoryInfo.StoryList)) {
                let vo = data.Data.StoryInfo.StoryList[key]
                if (vo.Rubbish && vo.Rubbish.dwIsFirstGame === 1) {
@@ -489,10 +489,9 @@ async function queryRubbishInfo() {
              }
            } else {
              console.log(`当前暂无垃圾\n`)
-            }
-          }
-        }
-      } catch (e) {
+           }
+         }
+       } catch (e) {
         $.logErr(e, resp);
       } finally {
         resolve();
