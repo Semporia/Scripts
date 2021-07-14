@@ -57,7 +57,7 @@ let UserName, index, isLogin, nickName;
             console.log('卖贝壳收入:', bapRes.Data.ddwCoin, bapRes.Data.ddwMoney)
         }
         
-
+        await wait(getRandomNumberByRange(1000, 1500))
         console.log('今日热气球:', res.dwTodaySpeedPeople, '/', 20)
         let shell = await speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strZone')
         if (shell.Data.hasOwnProperty('NormShell')) {
