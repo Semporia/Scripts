@@ -24,11 +24,9 @@ let UserName, index, isLogin, nickName;
         index = i + 1;
         isLogin = true;
         nickName = '';
-        await TotalBean();
         console.log(`\n开始【京东账号${index}】${nickName || UserName}\n`);
 
         res = await speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strBuildIndex,strZone')
-        //console.log(res)
         if(Number(res.iRet) !== 0) {
           console.log('请手动完成新手教程！');
           continue
