@@ -32,7 +32,6 @@ let UserName, index, isLogin, nickName;
           continue
         }
 
-
         // 清空背包
         bapRes = await api('story/querystorageroom', '_cfd_t,bizCode,dwEnv,ptag,source,strZone')
         //console.log(res)
