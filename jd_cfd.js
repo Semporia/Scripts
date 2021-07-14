@@ -178,7 +178,8 @@ let UserName, index, isLogin, nickName;
             res = await api('story/helpbystage', '_cfd_t,bizCode,dwEnv,ptag,source,strShareId,strZone', {strShareId: shareCodeDic[`${i}`][j]})
             if(res && res.iRet == 0){
               console.log(`助力成功: 获得${res.Data && res.Data.GuestPrizeInfo && res.Data.GuestPrizeInfo.strPrizeName || ''}`)
-            }else if (res.iRet === 2232 || res.sErrMsg === '今日助力次数达到上限，明天再来帮忙吧~') {
+            }else if (res.iRet == 2232 || res.sErrMsg === '今日助力次数达到上限，明天再来帮忙吧~') {
+              console.log(`互助结果：${res.sErrMsg}`)
               break
             }else {
               console.log(`互助结果：${res.sErrMsg}`)
