@@ -34,11 +34,14 @@ if ($.isNode() && process.env.summer_movement_HelpHelpHelpFlag) {
 }
 
 
-const ShHelpAuthorFlag = true;//是否助力作者SH  true 助力，false 不助力
+const ShHelpAuthorFlag = true;//是否助力作者  true 助力，false 不助力
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [];
 $.cookie = '';
-$.inviteList = ['HcmphLbwLg73eYHLF9Nm0uFhusphNoZddN2PHfKc_E6RIoyUqNqwAlJo4SEnJ4AClAzIyCACXbo3XL7I0wxIsQ'];
+$.inviteList = [];
+if(ShHelpAuthorFlag){
+  $.inviteList = ['HcmphLbwLg73eYHLF9Nm0uFhusphNoZddN2PHfKc_E6RIoyUqNqwAlJo4SEnJ4AClAzIyCACXbo3XL7I0wxIsQ'];
+}
 $.secretpInfo = {};
 $.ShInviteList = [];
 $.innerShInviteList = [];
