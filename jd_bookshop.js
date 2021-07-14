@@ -24,12 +24,12 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
-const ACT_ID = 'dz2010100034444201', shareUuid = ''
-let ADD_CART = false
+const ACT_ID = 'dz2010100034444201', shareUuid = '85ecd51344fb4b38a892797036e30417'
+let ADD_CART = true
 ADD_CART = $.isNode() ? (process.env.PURCHASE_SHOPS ? process.env.PURCHASE_SHOPS : ADD_CART) : ($.getdata("ADD_CART") ? $.getdata("ADD_CART") : ADD_CART);
 // 加入购物车开关，与东东小窝共享
 
-let inviteCodes = ['']
+let inviteCodes = ['85ecd51344fb4b38a892797036e30417']
 
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {

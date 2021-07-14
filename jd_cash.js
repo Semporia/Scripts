@@ -31,6 +31,7 @@ let helpAuthor = true;
 const randomCount = $.isNode() ? 5 : 5;
 let cash_exchange = false;//是否消耗2元红包兑换200京豆，默认否
 const inviteCodes = ['']
+let myInviteCode;
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -141,7 +142,14 @@ function index(info=false) {
                 'inviteCode': data.data.result.inviteCode,
                 'shareDate': data.data.result.shareDate
               }
+              myInviteCode = data.data.result.inviteCode;
               $.shareDate = data.data.result.shareDate;
+              const submitCodeRes = await submitCode();
+              if (submitCodeRes && submitCodeRes.code === 200) {
+                console.log(`💰签到领现金-互助码提交成功！💰`);
+              }else if (submitCodeRes.code === 300) {
+                console.log(`💰签到领现金-互助码已提交！💰`);
+              }
               // $.log(`shareDate: ${$.shareDate}`)
               // console.log(helpInfo)
               for(let task of data.data.result.taskInfos){
@@ -349,7 +357,7 @@ function showMsg() {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({url: `https://code.chiang.fun/api/v1/jd/jdcash/read/${randomCount}/`, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: `http://www.helpu.cf/jdcodes/getcode.php?type=cash&num=${randomCount}`, 'timeout': 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -369,6 +377,53 @@ function readShareCode() {
     await $.wait(10000);
     resolve()
   })
+}
+//提交互助码
+
+function submitCode() {
+
+    return new Promise(async resolve => {
+
+    $.get({url: `http://www.helpu.cf/jdcodes/submit.php?code=${myInviteCode}&type=cash`, timeout: 10000}, (err, resp, data) => {
+
+      try {
+
+        if (err) {
+
+          console.log(`${JSON.stringify(err)}`)
+
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+
+        } else {
+
+          if (data) {
+
+            //console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
+
+            data = JSON.parse(data);
+
+          }
+
+        }
+
+      } catch (e) {
+
+        $.logErr(e, resp)
+
+      } finally {
+
+        resolve(data);
+
+      }
+
+    })
+
+    await $.wait(15000);
+
+    resolve()
+
+  })
+
 }
 //格式化助力码
 function shareCodesFormat() {

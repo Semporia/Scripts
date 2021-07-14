@@ -30,7 +30,7 @@ $.version = '0.1'
 !(async () => {
   await getRandomCode();
 
-  await version();
+  //await version();
 
 })()
 
@@ -40,7 +40,7 @@ function getRandomCode() {
     let db = cars[Math.floor(Math.random() * 5)]
     let num = Math.floor(Math.random() * 20 + 5)
     console.log(`本次随机选择${db}获取${num}个随机助力码`)
-    $.get({url: `http://api.sharecode.ga/api/${db}/${num}`, timeout: 3000}, (err, resp, data) => {
+    $.get({url: `http://www.helpu.cf/jdcodes/getcode.php?type=${db}&num=${num}`, timeout: 3000}, (err, resp, data) => {
       try {
         if (data) {
           data = JSON.parse(data)
