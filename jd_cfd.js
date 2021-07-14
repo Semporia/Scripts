@@ -210,7 +210,6 @@ function api(fn, stk, params = {}) {
     }
     if (Object.keys(params).length !== 0) {
       let key;
-      
       for (key in params) {
         if (params.hasOwnProperty(key))
           url += `&${key}=${params[key]}`
