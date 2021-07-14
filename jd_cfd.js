@@ -873,19 +873,15 @@ function getUserInfo(showInvite = true) {
         } else {
           data = JSON.parse(data);
           const {
-            
             buildInfo = {},
             ddwRichBalance,
             ddwCoinBalance,
-            
             sErrMsg,
             strMyShareId,
-            
             dwLandLvl,
             Fund = {},
             StoryInfo = {}
           } = data;
-          const dwIsJxNewUser = JxUserWelfare["dwIsJxNewUser"]
           if (showInvite) {
             console.log(`\n获取用户信息：${sErrMsg}\n${$.showLog ? data : ""}`);
             console.log(`\n当前等级:${dwLandLvl},金币:${ddwCoinBalance},财富值:${ddwRichBalance}\n`)
@@ -893,7 +889,6 @@ function getUserInfo(showInvite = true) {
           if (showInvite && strMyShareId) {
             console.log(`财富岛好友互助码每次运行都变化,旧的可继续使用`);
             console.log(`\n【京东账号${$.index} ${$.UserName} 的${$.name}好友互助码】${strMyShareId}\n\n`);
-            submitCode(strMyShareId)
             $.shareCodes.push(strMyShareId)
           }
           $.info = {
@@ -901,9 +896,7 @@ function getUserInfo(showInvite = true) {
             buildInfo,
             ddwRichBalance,
             ddwCoinBalance,
-            
             strMyShareId,
-            
             dwLandLvl,
             Fund,
             StoryInfo
@@ -912,9 +905,7 @@ function getUserInfo(showInvite = true) {
             buildInfo,
             ddwRichBalance,
             ddwCoinBalance,
-            
             strMyShareId,
-            strNickName,
             Fund,
             StoryInfo
           });
