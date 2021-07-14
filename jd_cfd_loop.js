@@ -205,7 +205,7 @@ function wait(t) {
   })
 }
 
-function getRandomNumberByRange(start: number, end: number): number {
+function getRandomNumberByRange(start, end) {
   return Math.floor(Math.random() * (end - start) + start)
 }
 
