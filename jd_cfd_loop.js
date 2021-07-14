@@ -28,14 +28,22 @@ let UserName, index, isLogin, nickName;
         console.log(`\n开始【京东账号${index}】${nickName || UserName}\n`);
 
         res = await speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strBuildIndex,strZone')
-        console.log(res)
-        if(Number(res.iRet) !== 0) continue
+        //console.log(res)
+        if(Number(res.iRet) !== 0) {
+          console.log('请手动完成新手教程！');
+          continue
+        }
         console.log('今日热气球:', res.dwTodaySpeedPeople, '/', 20)
         let shell = await speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strZone')
-        for (let s of shell.Data.NormShell) {
-          for (let j = 0; j < s.dwNum; j++) {
-            await speedUp('_cfd_t,bizCode,dwEnv,dwType,ptag,source,strZone', s.dwType)
-            await wait(1000)
+        if (shell.Data.hasOwnProperty('NormShell')) {
+          for (let s of shell.Data.NormShell) {
+            for (let j = 0; j < s.dwNum; j++) {
+              res = await speedUp('_cfd_t,bizCode,dwEnv,dwType,ptag,source,strZone', s.dwType)
+              if (res.iRet !== 0)
+                break
+              console.log('捡贝壳:', res.Data.strFirstDesc)
+              await wait(500)
+            }
           }
         }
       }
@@ -43,7 +51,8 @@ let UserName, index, isLogin, nickName;
       console.log(e)
       break
     }
-    await wait(10000)
+    let t = getRandomNumberByRange(1000, 1500)
+    await wait(t)
   }
 })()
 
@@ -195,3 +204,8 @@ function wait(t) {
     }, t)
   })
 }
+
+function getRandomNumberByRange(start: number, end: number): number {
+  return Math.floor(Math.random() * (end - start) + start)
+}
+
