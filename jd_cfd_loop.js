@@ -42,7 +42,8 @@ let UserName, index, isLogin, nickName;
               if (res.iRet !== 0)
                 break
               console.log('捡贝壳:', res.Data.strFirstDesc)
-              await wait(500)
+              let tt = getRandomNumberByRange(500, 1000)
+              await wait(tt)
             }
           }
         }
@@ -51,7 +52,7 @@ let UserName, index, isLogin, nickName;
       console.log(e)
       break
     }
-    let t = getRandomNumberByRange(1000, 1500)
+    let t = getRandomNumberByRange(1000, 3500)
     await wait(t)
   }
 })()
