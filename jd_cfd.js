@@ -176,9 +176,12 @@ let UserName, index, isLogin, nickName;
         for (let j = 0; j < shareCodeDic[`${i}`].length; j++) {
             cookie = cookiesArr[i]
             res = await api('story/helpbystage', '_cfd_t,bizCode,dwEnv,ptag,source,strShareId,strZone', {strShareId: shareCodeDic[`${i}`][j]})
-            console.log(`互助结果：${res.sErrMsg}`)
-            if (res.iRet === 2232 || res.sErrMsg === '今日助力次数达到上限，明天再来帮忙吧~') {
+            if(res && res.iRet == 0){
+              console.log(`助力成功: 获得${res.Data && res.Data.GuestPrizeInfo && res.Data.GuestPrizeInfo.strPrizeName || ''}`)
+            }else if (res.iRet === 2232 || res.sErrMsg === '今日助力次数达到上限，明天再来帮忙吧~') {
               break
+            }else {
+              console.log(`互助结果：${res.sErrMsg}`)
             }
             await wait(1000)
         }
