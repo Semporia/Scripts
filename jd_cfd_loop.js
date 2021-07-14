@@ -28,9 +28,36 @@ let UserName, index, isLogin, nickName;
 
         res = await speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strBuildIndex,strZone')
         if(Number(res.iRet) !== 0) {
-          console.log('请手动完成新手教程！');
+          console.log('请完成新手教程！');
           continue
         }
+
+
+        // 清空背包
+        bapRes = await api('story/querystorageroom', '_cfd_t,bizCode,dwEnv,ptag,source,strZone')
+        //console.log(res)
+        let bags = []
+        for (let s of bapRes.Data.Office) {
+          //console.log(s.dwCount, s.dwType)
+          bags.push(s.dwType)
+          bags.push(s.dwCount)
+        }
+        await wait(1000)
+        let strTypeCnt = ''
+        for (let n = 0; n < bags.length; n++) {
+          if (n % 2 === 0)
+            strTypeCnt += `${bags[n]}:`
+          else
+            strTypeCnt += `${bags[n]}|`
+        }
+        bapRes = await api('story/sellgoods', '_cfd_t,bizCode,dwEnv,dwSceneId,ptag,source,strTypeCnt,strZone',
+          {dwSceneId: '1', strTypeCnt: strTypeCnt})
+        //console.log(`清空背包：${bapRes}`);
+        if (bapRes.Data.ddwCoin) {
+            console.log('卖贝壳收入:', bapRes.Data.ddwCoin, bapRes.Data.ddwMoney)
+        }
+        
+
         console.log('今日热气球:', res.dwTodaySpeedPeople, '/', 20)
         let shell = await speedUp('_cfd_t,bizCode,dwEnv,ptag,source,strZone')
         if (shell.Data.hasOwnProperty('NormShell')) {
@@ -54,6 +81,33 @@ let UserName, index, isLogin, nickName;
     await wait(t)
   }
 })()
+
+function api(fn, stk, params = {}) {
+  return new Promise(async resolve => {
+    let url = `https://m.jingxi.com/jxbfd/${fn}?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${Date.now()}&ptag=&_ste=1&_=${Date.now()}&sceneval=2&_stk=${encodeURIComponent(stk)}`
+    if (['GetUserTaskStatusList', 'Award', 'DoTask'].includes(fn)) {
+      console.log('api2')
+      url = `https://m.jingxi.com/newtasksys/newtasksys_front/${fn}?strZone=jxbfd&bizCode=jxbfddch&source=jxbfd&dwEnv=7&_cfd_t=${Date.now()}&ptag=&_stk=${encodeURIComponent(stk)}&_ste=1&_=${Date.now()}&sceneval=2`
+    }
+    if (Object.keys(params).length !== 0) {
+      let key;
+      for (key in params) {
+        if (params.hasOwnProperty(key))
+          url += `&${key}=${params[key]}`
+      }
+    }
+    url += '&h5st=' + decrypt(stk, url)
+    let {data} = await axios.get(url, {
+      headers: {
+        'Host': 'm.jingxi.com',
+        'Referer': 'https://st.jingxi.com/',
+        'User-Agent': USER_AGENT,
+        'Cookie': cookie
+      }
+    })
+    resolve(data)
+  })
+}
 
 function speedUp(stk, dwType) {
   return new Promise(async resolve => {
