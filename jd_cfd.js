@@ -155,8 +155,9 @@ async function cfd() {
     await getTakeAggrPage('helpdraw')
 
     //卖贝壳
-    await $.wait(2000)
-    await querystorageroom()
+    console.log('为防止接口冲突jd_cfd_loop脚本已内置卖贝壳');
+    //await $.wait(2000)
+    //await querystorageroom()
 
     //每日任务领奖
     await $.wait(2000)
