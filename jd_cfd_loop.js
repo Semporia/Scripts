@@ -539,6 +539,10 @@ function decrypt(time, stk, type, url) {
   }
 }
 
+function getRandomNumberByRange(start, end) {
+  return Math.floor(Math.random() * (end - start) + start)
+}
+
 /**
  * 获取url参数值
  * @param url
