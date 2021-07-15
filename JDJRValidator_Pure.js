@@ -202,7 +202,7 @@ const DATA = {
   "product": "embed",
   "lang": "zh_CN",
 };
-const SERVER = '202.77.129.45';
+const SERVER = 'iv.jd.com';
 
 class JDJRValidator {
   constructor() {
