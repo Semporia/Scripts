@@ -64,7 +64,7 @@ class MovementFaker {
   }
 }
 
-$.inviteList = [];
+$.inviteList = ['HcmphLbwLg73eYHLF9Nm0uFhusphNoZddN2PHfKc_E6RIoyUqNqwAlJo4SEnJ4AClAzIyCACXbo3XL7I0wxIsQ'];
 $.byInviteList = [];
 let uuid = 8888;
 let cookiesArr = [];
