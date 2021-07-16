@@ -115,7 +115,7 @@ async function querystorageroom() {
                 strTypeCnt += `${bags[j]}|`
               }
             }
-            await $.wait(getRandomNumberByRange(1000, 1500))
+            await $.wait(getRandomNumberByRange(1000, 1100))
             await sellgoods(`strTypeCnt=${strTypeCnt}&dwSceneId=1`)
           } else {
             console.log(`背包是空的，快去捡贝壳吧\n`)
@@ -167,7 +167,7 @@ async function queryshell() {
             let vo = data.Data.NormShell[key]
             for (let j = 0; j < vo.dwNum; j++) {
               await pickshell(`dwType=${vo.dwType}`)
-              await $.wait(getRandomNumberByRange(600, 1000))
+              await $.wait(getRandomNumberByRange(1000, 1100))
             }
           }
           console.log('')
@@ -211,7 +211,7 @@ async function pickshell(body) {
           } else if (data.iRet === 5403 || data.sErrMsg === '这种小贝壳背包放不下啦，先去卖掉一些吧~') {
             console.log(`捡贝壳失败：${data.sErrMsg}`)
             await querystorageroom()
-            await $.wait(getRandomNumberByRange(600, 1000))
+            await $.wait(getRandomNumberByRange(1000, 1100))
           } else {
             console.log(`捡贝壳失败：${data.sErrMsg}`)
           }
