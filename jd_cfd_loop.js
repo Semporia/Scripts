@@ -1,7 +1,7 @@
 /*
 京喜财富岛热气球挂机
 
-更新时间：2021-7-13
+更新时间：2021-7-17
 活动入口：京喜APP-我的-京喜财富岛
 */
 !function (t, r) { "object" == typeof exports ? module.exports = exports = r() : "function" == typeof define && define.amd ? define([], r) : t.CryptoJS = r() }(this, function () {
@@ -51,21 +51,16 @@ $.appId = 10028;
         $.index = i + 1;
         $.nickName = '';
         $.isLogin = true;
-        $.nickName = '';
         await TotalBean();
         console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
         if (!$.isLogin) {
-          // $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
-  
-          // if ($.isNode()) {
-          //   await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
-          // }
+          $.log($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"})
           continue
         }
         $.info = {}
         await cfd();
-        //let time = process.env.CFD_LOOP_SLEEPTIME ? process.env.CFD_LOOP_SLEEPTIME : 2000
-        await $.wait(getRandomNumberByRange(2000, 2500))
+        let time = process.env.CFD_LOOP_SLEEPTIME ? process.env.CFD_LOOP_SLEEPTIME : 2000
+        await $.wait(time)
       }
     }
   }
@@ -80,9 +75,9 @@ async function cfd() {
       console.log(`还未开通活动，请先开通\n`)
       return
     }
-    await $.wait(getRandomNumberByRange(2000, 2500))
+    await $.wait(2000)
     await speedUp()
-    await $.wait(getRandomNumberByRange(2000, 2500))
+    await $.wait(2000)
     await queryshell()
   } catch (e) {
     $.logErr(e)
@@ -115,7 +110,7 @@ async function querystorageroom() {
                 strTypeCnt += `${bags[j]}|`
               }
             }
-            await $.wait(getRandomNumberByRange(1000, 1100))
+            await $.wait(1000)
             await sellgoods(`strTypeCnt=${strTypeCnt}&dwSceneId=1`)
           } else {
             console.log(`背包是空的，快去捡贝壳吧\n`)
@@ -166,7 +161,7 @@ async function queryshell() {
           for (let key of Object.keys(data.Data.NormShell)) {
             let vo = data.Data.NormShell[key]
             for (let j = 0; j < vo.dwNum; j++) {
-              await $.wait(getRandomNumberByRange(1000, 1100))
+              await $.wait(1000)
               await pickshell(`dwType=${vo.dwType}`)
             }
           }
@@ -210,7 +205,7 @@ async function pickshell(body) {
             console.log(`捡贝壳成功：捡到了${dwName}`)
           } else if (data.iRet === 5403 || data.sErrMsg === '这种小贝壳背包放不下啦，先去卖掉一些吧~') {
             console.log(`捡贝壳失败：${data.sErrMsg}`)
-            await $.wait(getRandomNumberByRange(1000, 1100))
+            await $.wait(1000)
             await querystorageroom()
           } else {
             console.log(`捡贝壳失败：${data.sErrMsg}`)
@@ -493,9 +488,9 @@ async function requestAlgo() {
               let enCryptMethodJDString = data.data.result.algo;
               if (enCryptMethodJDString) $.enCryptMethodJD = new Function(`return ${enCryptMethodJDString}`)();
               console.log(`获取签名参数成功！`)
-              //console.log(`fp: ${$.fingerprint}`)
-              //console.log(`token: ${$.token}`)
-              //console.log(`enCryptMethodJD: ${enCryptMethodJDString}`)
+              console.log(`fp: ${$.fingerprint}`)
+              console.log(`token: ${$.token}`)
+              console.log(`enCryptMethodJD: ${enCryptMethodJDString}`)
             } else {
               console.log(`fp: ${$.fingerprint}`)
               console.log('request_algo 签名参数API请求失败:')
@@ -537,10 +532,6 @@ function decrypt(time, stk, type, url) {
   } else {
     return '20210318144213808;8277529360925161;10001;tk01w952a1b73a8nU0luMGtBanZTHCgj0KFVwDa4n5pJ95T/5bxO/m54p4MtgVEwKNev1u/BUjrpWAUMZPW0Kz2RWP8v;86054c036fe3bf0991bd9a9da1a8d44dd130c6508602215e50bb1e385326779d'
   }
-}
-
-function getRandomNumberByRange(start, end) {
-  return Math.floor(Math.random() * (end - start) + start)
 }
 
 /**
