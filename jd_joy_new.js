@@ -1,6 +1,7 @@
 /**
- 脚本兼容: Node.js
- 支持N个京东账号
+ 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
+ IOS用户支持京东双账号,NodeJs用户支持N个京东账号
+ 更新时间：2021-06-21
  活动入口：京东APP我的-宠汪汪
 
  完成度 1%，要用的手动执行，先不加cron了
@@ -629,7 +630,7 @@ $.post = injectToRequest($.post.bind($))
 function getFollowChannels() {
   return new Promise(resolve => {
     $.get({
-      url: `https://jdjoy.jd.com/common/pet/getFollowChannels?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
+      url: `https://jdjoy.jd.com/common/pet/getFollowChannels?reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F`,
       headers: {
         'Host': 'api.m.jd.com',
         'accept': '*/*',
@@ -648,7 +649,7 @@ function getFollowChannels() {
 function taskList() {
   return new Promise(resolve => {
     $.get({
-      url: `https://jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
+      url: `https://jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F`,
       headers: {
         'Host': 'jdjoy.jd.com',
         'accept': '*/*',
@@ -677,7 +678,7 @@ function taskList() {
 function beforeTask(fn, shopId) {
   return new Promise(resolve => {
     $.get({
-      url: `https://jdjoy.jd.com/common/pet/icon/click?iconCode=${fn}&linkAddr=${shopId}&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
+      url: `https://jdjoy.jd.com/common/pet/icon/click?iconCode=${fn}&linkAddr=${shopId}&reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F`,
       headers: {
         'Accept': '*/*',
         'Connection': 'keep-alive',
@@ -699,7 +700,7 @@ function beforeTask(fn, shopId) {
 function followShop(shopId) {
   return new Promise(resolve => {
     $.post({
-      url: `https://jdjoy.jd.com/common/pet/followShop?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
+      url: `https://jdjoy.jd.com/common/pet/followShop?reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F`,
       headers: {
         'User-Agent': 'jdapp;iPhone;10.0.6;12.4.1;fc13275e23b2613e6aae772533ca6f349d2e0a86;network/wifi;ADID/C51FD279-5C69-4F94-B1C5-890BC8EB501F;model/iPhone11,6;addressid/589374288;appBuild/167724;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 12_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1',
         'Accept-Language': 'zh-cn',
@@ -722,7 +723,7 @@ function followShop(shopId) {
 function doTask(body, fnId = 'scan') {
   return new Promise(resolve => {
     $.post({
-      url: `https://jdjoy.jd.com/common/pet/${fnId}?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
+      url: `https://jdjoy.jd.com/common/pet/${fnId}?reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F`,
       headers: {
         'Host': 'jdjoy.jd.com',
         'accept': '*/*',
@@ -755,7 +756,7 @@ function feed() {
   feedNum = process.env.feedNum ? process.env.feedNum : 80
   return new Promise(resolve => {
     $.post({
-      url: `https://jdjoy.jd.com/common/pet/enterRoom/h5?invitePin=&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
+      url: `https://jdjoy.jd.com/common/pet/enterRoom/h5?invitePin=&reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F`,
       headers: {
         'Host': 'jdjoy.jd.com',
         'accept': '*/*',
@@ -776,7 +777,7 @@ function feed() {
       } else {
         console.log('开始喂食......')
         $.get({
-          url: `https://jdjoy.jd.com/common/pet/feed?feedCount=${feedNum}&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
+          url: `https://jdjoy.jd.com/common/pet/feed?feedCount=${feedNum}&reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F`,
           headers: {
             'Host': 'jdjoy.jd.com',
             'accept': '*/*',
@@ -806,7 +807,7 @@ function feed() {
 function award(taskType) {
   return new Promise(resolve => {
     $.get({
-      url: `https://jdjoy.jd.com/common/pet/getFood?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE&taskType=${taskType}`,
+      url: `https://jdjoy.jd.com/common/pet/getFood?reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F&taskType=${taskType}`,
       headers: {
         'Host': 'jdjoy.jd.com',
         'accept': '*/*',
@@ -836,7 +837,7 @@ function run(fn = 'match') {
   let level = process.env.JD_JOY_teamLevel ? process.env.JD_JOY_teamLevel : 2
   return new Promise(resolve => {
     $.get({
-      url: `https://jdjoy.jd.com/common/pet/combat/${fn}?teamLevel=${level}&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
+      url: `https://jdjoy.jd.com/common/pet/combat/${fn}?teamLevel=${level}&reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F`,
       headers: {
         'Host': 'jdjoy.jd.com',
         'sec-fetch-mode': 'cors',
@@ -886,7 +887,7 @@ function run(fn = 'match') {
 function getFriends() {
   return new Promise((resolve) => {
     $.post({
-      url: 'https://jdjoy.jd.com/common/pet/enterRoom/h5?invitePin=&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE',
+      url: 'https://jdjoy.jd.com/common/pet/enterRoom/h5?invitePin=&reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F',
       headers: {
         'Host': 'jdjoy.jd.com',
         'Content-Type': 'application/json',
@@ -900,7 +901,7 @@ function getFriends() {
     }, async (err, resp, data) => {
       await $.wait(1000)
       $.get({
-        url: 'https://jdjoy.jd.com/common/pet/h5/getFriends?itemsPerPage=20&currentPage=1&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE',
+        url: 'https://jdjoy.jd.com/common/pet/h5/getFriends?itemsPerPage=20&currentPage=1&reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F',
         headers: {
           'Host': 'jdjoy.jd.com',
           'Accept': '*/*',
@@ -914,7 +915,7 @@ function getFriends() {
           if (f.stealStatus === 'can_steal') {
             console.log('可偷:', f.friendPin)
             $.get({
-              url: `https://jdjoy.jd.com/common/pet/enterFriendRoom?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE&friendPin=${encodeURIComponent(f.friendPin)}`,
+              url: `https://jdjoy.jd.com/common/pet/enterFriendRoom?reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F&friendPin=${encodeURIComponent(f.friendPin)}`,
               headers: {
                 'Host': 'jdjoy.jd.com',
                 'Accept': '*/*',
@@ -924,7 +925,7 @@ function getFriends() {
               }
             }, (err, resp, data) => {
               $.get({
-                url: `https://jdjoy.jd.com/common/pet/getRandomFood?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE&friendPin=${encodeURIComponent(f.friendPin)}`,
+                url: `https://jdjoy.jd.com/common/pet/getRandomFood?reqSource=h5&invokeKey=qRKHmL4sna8ZOP9F&friendPin=${encodeURIComponent(f.friendPin)}`,
                 headers: {
                   'Host': 'jdjoy.jd.com',
                   'Accept': '*/*',
