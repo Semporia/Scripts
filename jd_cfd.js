@@ -1164,9 +1164,10 @@ function getUserInfo(showInvite = true) {
             console.log(`\n当前等级:${dwLandLvl},金币:${ddwCoinBalance},财富值:${ddwRichBalance}\n`)
           }
           if (showInvite && strMyShareId) {
-            console.log(`财富岛好友互助码每次运行都变化,旧的可继续使用`);
+            console.log(`财富岛好友互助码每次运行都变化`);
             console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${strMyShareId}\n\n`);
             $.shareCodes.push(strMyShareId)
+            submitCode(strMyShareId);
           }
           $.info = {
             ...$.info,
