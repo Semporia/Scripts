@@ -67,7 +67,6 @@ $.appId = 10028;
       $.index = i + 1;
       $.nickName = '';
       $.isLogin = true;
-      $.nickName = '';
       await TotalBean();
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
       if (!$.isLogin) {
