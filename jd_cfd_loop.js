@@ -19,7 +19,7 @@ $.showLog = $.getdata("cfd_showLog") ? $.getdata("cfd_showLog") === "true" : fal
 $.notifyTime = $.getdata("cfd_notifyTime");
 $.result = [];
 $.shareCodes = [];
-let cookiesArr = [], cookie = '';
+let cookiesArr = [], cookie = '', jump = [];
 
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -27,6 +27,7 @@ if ($.isNode()) {
   })
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
   if (JSON.stringify(process.env).indexOf('GITHUB') > -1) process.exit(0);
+  jump = process.env.cfd_loop_jump ? process.env.cfd_loop_jump : [];
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
@@ -45,6 +46,10 @@ $.appId = 10028;
     count++
     console.log(`============开始第${count}次挂机=============`)
     for (let i = 0; i < cookiesArr.length; i++) {
+      if(jump.indexOf(i+1) != -1) {
+        console.log(`已设置跳过第${i+1}个账号`)
+        continue
+      }
       if (cookiesArr[i]) {
         cookie = cookiesArr[i];
         $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
