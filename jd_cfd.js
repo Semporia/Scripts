@@ -67,7 +67,6 @@ $.appId = 10028;
       $.index = i + 1;
       $.nickName = '';
       $.isLogin = true;
-      $.nickName = '';
       await TotalBean();
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
       if (!$.isLogin) {
@@ -680,7 +679,11 @@ function helpdraw(dwUserId) {
         } else {
           data = JSON.parse(data);
           if (data.iRet === 0 || data.sErrMsg === "success") {
-            console.log(`领取助力奖励成功：获得${data.Data.ddwCoin}金币`)
+            if (data.Data.StagePrizeInfo) {
+              console.log(`领取助力奖励成功：获得${data.Data.ddwCoin}金币 ${data.Data.StagePrizeInfo.ddwMoney}财富 ${data.Data.StagePrizeInfo.strPrizeName && !data.Data.StagePrizeInfo.ddwMoney || `0元`}红包`)
+            } else {
+              console.log(`领取助力奖励成功：获得${data.Data.ddwCoin}金币`)
+            }
           } else {
             console.log(`领取助力奖励失败：${data.sErrMsg}`)
           }
@@ -709,19 +712,28 @@ async function queryRubbishInfo() {
             for (let key of Object.keys(data.Data.StoryInfo.StoryList)) {
               let vo = data.Data.StoryInfo.StoryList[key]
               if (vo.Rubbish) {
-                console.log(`获取到垃圾信息`)
                 await $.wait(2000)
                 let rubbishOperRes = await rubbishOper('1')
-                for (let key of Object.keys(rubbishOperRes.Data.ThrowRubbish.Game.RubbishList)) {
-                  let vo = rubbishOperRes.Data.ThrowRubbish.Game.RubbishList[key]
-                  await $.wait(2000)
-                  var rubbishOperTwoRes = await rubbishOper('2', `dwRubbishId=${vo.dwId}`)
-                }
-                if (rubbishOperTwoRes.iRet === 0) {
-                  let AllRubbish = rubbishOperTwoRes.Data.RubbishGame.AllRubbish
-                  console.log(`倒垃圾成功：获得${AllRubbish.ddwCoin}金币 ${AllRubbish.ddwMoney}财富\n`)
+                if (Object.keys(rubbishOperRes.Data.ThrowRubbish.Game).length) {
+                  console.log(`获取垃圾信息成功：本次需要垃圾分类`)
+                  for (let key of Object.keys(rubbishOperRes.Data.ThrowRubbish.Game.RubbishList)) {
+                    let vo = rubbishOperRes.Data.ThrowRubbish.Game.RubbishList[key]
+                    await $.wait(2000)
+                    var rubbishOperTwoRes = await rubbishOper('2', `dwRubbishId=${vo.dwId}`)
+                  }
+                  if (rubbishOperTwoRes.iRet === 0) {
+                    let AllRubbish = rubbishOperTwoRes.Data.RubbishGame.AllRubbish
+                    console.log(`倒垃圾成功：获得${AllRubbish.ddwCoin}金币 ${AllRubbish.ddwMoney}财富\n`)
+                  } else {
+                    console.log(`倒垃圾失败：${rubbishOperTwoRes.sErrMsg}\n`)
+                  }
                 } else {
-                  console.log(`倒垃圾失败：${rubbishOperTwoRes.sErrMsg}\n`)
+                  console.log(`获取垃圾信息成功：本次不需要垃圾分类`)
+                  if (rubbishOperRes.iRet === 0 || rubbishOperRes.sErrMsg === "success") {
+                    console.log(`倒垃圾成功：获得${rubbishOperRes.Data.ThrowRubbish.ddwCoin}金币\n`)
+                  } else {
+                    console.log(`倒垃圾失败：${rubbishOperRes.sErrMsg}\n`)
+                  }
                 }
               } else {
                 console.log(`当前暂无垃圾\n`)
@@ -1161,10 +1173,10 @@ function getUserInfo(showInvite = true) {
             console.log(`\n当前等级:${dwLandLvl},金币:${ddwCoinBalance},财富值:${ddwRichBalance}\n`)
           }
           if (showInvite && strMyShareId) {
-            console.log(`财富岛好友互助码每次运行都变化,旧的可继续使用`);
-            console.log(`\n【京东账号${$.index} ${$.UserName} 的${$.name}好友互助码】${strMyShareId}\n\n`);
-            submitCode(strMyShareId);
+            console.log(`财富岛好友互助码每次运行都变化`);
+            console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${strMyShareId}\n\n`);
             $.shareCodes.push(strMyShareId)
+            submitCode(strMyShareId);
           }
           $.info = {
             ...$.info,
@@ -1608,9 +1620,9 @@ function requireConfig() {
 function TotalBean() {
   return new Promise(async resolve => {
     const options = {
-      url: "https://me-api.jd.com/user_new/info/GetJDUserInfoUnion",
+      url: "https://wq.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2",
       headers: {
-        Host: "me-api.jd.com",
+        Host: "wq.jd.com",
         Accept: "*/*",
         Connection: "keep-alive",
         Cookie: cookie,
@@ -1627,11 +1639,11 @@ function TotalBean() {
         } else {
           if (data) {
             data = JSON.parse(data);
-            if (data['retcode'] === "1001") {
+            if (data['retcode'] === 1001) {
               $.isLogin = false; //cookie过期
               return;
             }
-            if (data['retcode'] === "0" && data.data && data.data.hasOwnProperty("userInfo")) {
+            if (data['retcode'] === 0 && data.data && data.data.hasOwnProperty("userInfo")) {
               $.nickName = data.data.userInfo.baseInfo.nickname;
             }
           } else {
