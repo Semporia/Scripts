@@ -120,7 +120,7 @@ async function cfd() {
       await $.wait(2000)
     }
 
-    const beginInfo = await getUserInfo(false);
+    const beginInfo = await getUserInfo()
     if (beginInfo.Fund.ddwFundTargTm === 0) {
       console.log(`还未开通活动，请先开通\n`)
       return
@@ -128,29 +128,27 @@ async function cfd() {
 
     console.log(`获取提现资格`)
     await cashOutQuali()
-    console.log(`提现`)
-    console.log(`提现金额：按库存轮询提现，0点场提1元以上，12点场提0.5元以上，12点后不做限制`)
-    await userCashOutState()
 
     await showMsg()
-
   } catch (e) {
     $.logErr(e)
   }
 }
 
 // 提现
-function cashOutQuali() {
-  return new Promise((resolve) => {
-    $.get(taskUrl(`user/CashOutQuali`, `strPgUUNum=${token['farm_jstoken']}&strPgtimestamp=${token['timestamp']}&strPhoneID=${token['phoneid']}`), (err, resp, data) => {
+async function cashOutQuali() {
+  return new Promise(async (resolve) => {
+    $.get(taskUrl(`user/CashOutQuali`, `strPgUUNum=${token['farm_jstoken']}&strPgtimestamp=${token['timestamp']}&strPhoneID=${token['phoneid']}`), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} CashOutQuali API请求失败，请检查网路重试`)
         } else {
-          data = JSON.parse(data);
-          if (data.iRet === 0) {
-            console.log(`获取提现资格成功\n`)
+          data = JSON.parse(data)
+          if (data.iRet === 0 || data.iRet === 2034) {
+            console.log(data.iRet === 0 ? `获取提现资格成功\n` : `获取提现资格失败：${data.sErrMsg}\n`)
+            console.log(`提现\n提现金额：按库存轮询提现，0点场提1元以上，12点场提0.5元以上，12点后不做限制\n`)
+            await userCashOutState()
           } else {
             console.log(`获取提现资格失败：${data.sErrMsg}\n`)
           }
@@ -178,21 +176,23 @@ async function userCashOutState(type = true) {
                 nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000)
                 if (nowTimes.getHours() >= 0 && nowTimes.getHours() < 12) {
                   data.UsrCurrCashList = data.UsrCurrCashList.filter((x) => x.ddwMoney / 100 >= 1)
-                } else if (nowTimes.getHours() === 12 && nowTimes.getMinutes() <= 10) {
+                } else if (nowTimes.getHours() === 12 && nowTimes.getMinutes() <= 5) {
                   data.UsrCurrCashList = data.UsrCurrCashList.filter((x) => x.ddwMoney / 100 >= 0.5)
                 }
                 for (let key of Object.keys(data.UsrCurrCashList).reverse()) {
                   let vo = data.UsrCurrCashList[key]
-                  if (vo.dwDefault === 1) {
+                  if (vo.dwRemain > 0) {
                     let cashOutRes = await cashOut(vo.ddwMoney, vo.ddwPaperMoney)
                     if (cashOutRes.iRet === 0) {
                       $.money = vo.ddwMoney / 100
-                      console.log(`提现成功获得：${$.money}元`)
+                      console.log(`提现成功：获得${$.money}元`)
+                      break
                     } else {
+                      console.log(`提现失败：${cashOutRes.sErrMsg}`)
                       await userCashOutState()
                     }
                   } else {
-                    console.log(`${vo.ddwMoney / 100}元库存不足`)
+                    console.log(`提现失败：${vo.ddwMoney / 100}元库存不足`)
                   }
                 }
               } else {
@@ -201,7 +201,7 @@ async function userCashOutState(type = true) {
                 for(let key of Object.keys($.info.buildInfo.buildList)) {
                   let vo = $.info.buildInfo.buildList[key]
                   let body = `strBuildIndex=${vo.strBuildIndex}`
-                  let getBuildInfoRes = await getBuildInfo(body, vo)
+                  let getBuildInfoRes = await getBuildInfo(body)
                   let buildNmae;
                   switch(vo.strBuildIndex) {
                     case 'food':
@@ -219,14 +219,14 @@ async function userCashOutState(type = true) {
                       break
                   }
                   console.log(`升级建筑`)
-                  console.log(`【${buildNmae}】当前等级：${vo.dwLvl} 升级获得财富：${getBuildInfoRes.ddwLvlRich}`)
-                  console.log(`【${buildNmae}】升级需要${getBuildInfoRes.ddwNextLvlCostCoin}金币，当前拥有${$.info.ddwCoinBalance}`)
+                  console.log(`【${buildNmae}】当前等级：${vo.dwLvl}`)
+                  console.log(`【${buildNmae}】升级需要${getBuildInfoRes.ddwNextLvlCostCoin}金币，当前拥有${$.info.ddwCoinBalance}金币`)
                   if(getBuildInfoRes.dwCanLvlUp > 0 && $.info.ddwCoinBalance >= getBuildInfoRes.ddwNextLvlCostCoin) {
                     console.log(`【${buildNmae}】满足升级条件，开始升级`)
                     const body = `ddwCostCoin=${getBuildInfoRes.ddwNextLvlCostCoin}&strBuildIndex=${getBuildInfoRes.strBuildIndex}`
-                    let buildLvlUpRes = await buildLvlUp(body)
+                    var buildLvlUpRes = await buildLvlUp(body)
                     if (buildLvlUpRes.iRet === 0) {
-                      console.log(`【${buildNmae}】升级成功\n`)
+                      console.log(`【${buildNmae}】升级成功：获得${getBuildInfoRes.ddwLvlRich}财富\n`)
                       break
                     } else {
                       console.log(`【${buildNmae}】升级失败：${buildLvlUpRes.sErrMsg}\n`)
@@ -235,8 +235,7 @@ async function userCashOutState(type = true) {
                     console.log(`【${buildNmae}】不满足升级条件，跳过升级\n`)
                   }
                 }
-                let userCashOutStateRes = await userCashOutState(false)
-                if (userCashOutStateRes.ddwUsrTodayGetRich >= userCashOutStateRes.ddwTodayTargetUnLockRich) {
+                if (buildLvlUpRes.iRet === 0) {
                   await userCashOutState()
                 } else {
                   console.log(`今日还未赚够${userCashOutStateRes.ddwTodayTargetUnLockRich}财富，无法提现`)
@@ -313,7 +312,7 @@ function buildLvlUp(body) {
 }
 
 // 获取用户信息
-function getUserInfo(showInvite = true) {
+function getUserInfo() {
   return new Promise(async (resolve) => {
     $.get(taskUrl(`user/QueryUserInfo`, `strPgUUNum=${token['farm_jstoken']}&strPgtimestamp=${token['timestamp']}&strPhoneID=${token['phoneid']}`), (err, resp, data) => {
       try {
@@ -324,40 +323,19 @@ function getUserInfo(showInvite = true) {
           data = JSON.parse(data);
           const {
             buildInfo = {},
-            ddwRichBalance,
             ddwCoinBalance,
-            sErrMsg,
-            strMyShareId,
-            dwLandLvl,
-            Fund = {},
-            StoryInfo = {}
+            Fund = {}
           } = data;
-          if (showInvite) {
-            console.log(`\n获取用户信息：${sErrMsg}\n${$.showLog ? data : ""}`);
-            console.log(`\n当前等级:${dwLandLvl},金币:${ddwCoinBalance},财富值:${ddwRichBalance}\n`)
-          }
-          if (showInvite && strMyShareId) {
-            console.log(`财富岛好友互助码每次运行都变化,旧的可继续使用`);
-            console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${strMyShareId}\n\n`);
-            $.shareCodes.push(strMyShareId)
-          }
           $.info = {
             ...$.info,
             buildInfo,
-            ddwRichBalance,
             ddwCoinBalance,
-            strMyShareId,
-            dwLandLvl,
-            Fund,
-            StoryInfo
+            Fund
           };
           resolve({
             buildInfo,
-            ddwRichBalance,
             ddwCoinBalance,
-            strMyShareId,
-            Fund,
-            StoryInfo
+            Fund
           });
         }
       } catch (e) {
@@ -394,7 +372,11 @@ function taskUrl(function_path, body = '') {
 
 function showMsg() {
   return new Promise(resolve => {
-    message += `提现成功：获得${$.money}元`
+    if ($.money > 0) {
+      message += `提现成功：获得${$.money}元`
+    } else {
+      message += `提现失败：获得空气`
+    }
     if($.money > 0) {
         allMessage += `【京东账号${$.index}】${$.nickName || $.UserName}\n${message}${$.index !== cookiesArr.length ? '\n\n' : '\n\n'}`;
     }
@@ -406,9 +388,9 @@ function showMsg() {
 function TotalBean() {
   return new Promise(async resolve => {
     const options = {
-      url: "https://wq.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2",
+      url: "https://me-api.jd.com/user_new/info/GetJDUserInfoUnion",
       headers: {
-        Host: "wq.jd.com",
+        Host: "me-api.jd.com",
         Accept: "*/*",
         Connection: "keep-alive",
         Cookie: cookie,
@@ -425,11 +407,11 @@ function TotalBean() {
         } else {
           if (data) {
             data = JSON.parse(data);
-            if (data['retcode'] === 1001) {
+            if (data['retcode'] === "1001") {
               $.isLogin = false; //cookie过期
               return;
             }
-            if (data['retcode'] === 0 && data.data && data.data.hasOwnProperty("userInfo")) {
+            if (data['retcode'] === "0" && data.data && data.data.hasOwnProperty("userInfo")) {
               $.nickName = data.data.userInfo.baseInfo.nickname;
             }
           } else {
