@@ -16,7 +16,7 @@
 guaopencard4="true"
 
 入口
-https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/832865?activityId=c225ad5922cf4ac8b4a68fd37f486088&shareUuid=8eef88dbbb5e4a11b04f222b78b195c8
+https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/832865?activityId=c225ad5922cf4ac8b4a68fd37f486088&shareUuid=930faf33cd2f42e399e8ad605e437546
 
 ============Quantumultx===============
 [task_local]
@@ -58,17 +58,19 @@ message = ""
     });
     return;
   }
-  if ($.isNode()) {
-    if (!process.env.guaopencard4 || process.env.guaopencard4 == "false") {
-      console.log('如需执行脚本请设置环境变量[guaopencard4]为"true"')
-      return
-    }
-  }
-  guaopencard_addSku4 = process.env.guaopencard_addSku4
-  if (!process.env.guaopencard_addSku4 || process.env.guaopencard_addSku4 == "false") {
-    console.log('如需加购请设置环境变量[guaopencard_addSku4]为"true"')
-  }
-  $.shareUuid = ''
+//   if ($.isNode()) {
+//     if (!process.env.guaopencard4 || process.env.guaopencard4 == "false") {
+//       console.log('如需执行脚本请设置环境变量[guaopencard4]为"true"')
+//       return
+//     }
+//   }
+  guaopencard_addSku4 = process.env.guaopencard_addSku4 ? process.env.guaopencard_addSku4 : true;
+  if (process.env.guaopencard_addSku4) {
+    console.log('加购请设置环境变量[guaopencard_addSku4]当前为"true"')
+  }else {
+      console.log('加购请设置环境变量[guaopencard_addSku4]当前为"false"')
+  } 
+  $.shareUuid = '930faf33cd2f42e399e8ad605e437546'
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/832865?activityId=c225ad5922cf4ac8b4a68fd37f486088&shareUuid=${$.shareUuid}`)
   // 134
   for (let i = 0; i < cookiesArr.length; i++) {
