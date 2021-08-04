@@ -1,4 +1,7 @@
 /*
+入口复制到jd：
+21.0复制整段话 https:/JRagUJKPiy6h8T 母婴大牌甄选，惊喜好礼免费送#eBAy78Ufqb@扌丁开→鯨咚A/P P
+
 一天只能领100豆1个ck10豆  不设置变量默认只会运行到ck11
 一天只能领100豆1个ck10豆  不设置变量默认只会运行到ck11
 一天只能领100豆1个ck10豆  不设置变量默认只会运行到ck11
@@ -9,11 +12,7 @@
 
 第一个账号助力我 其他依次助力CK1
 第一个CK失效应该全都会助力我，亲注意一下
-入口复制到jd：
-22.0复制整段话 http:/JZkHLzK3y0opDM 母婴大牌甄选，惊喜好礼免费送￥65iIe76yzb￥咑開京岽app
 
-
-更新地址：https://github.com/Tsukasa007/my_script
 ============Quantumultx===============
 [task_local]
 #7.28-8.9 夏日呵护 母音甄选
@@ -66,7 +65,7 @@ if (!process.env.JD_SUMMER_MOM_OPENCARD) {
     });
     return;
   }
-  $.shareUuid = ''
+  $.shareUuid = '5b9bdd0a512f4ad7bff7dd3276594a6f'
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     if (cookie) {
