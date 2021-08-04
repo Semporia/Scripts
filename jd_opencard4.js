@@ -21,17 +21,17 @@ https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/832865?activityId=c
 ============Quantumultx===============
 [task_local]
 #8.4-8.12 大牌联合 冰爽一夏
-36 0,8 4-12 8 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard4.js, tag=8.4-8.12 大牌联合 冰爽一夏, enabled=true
+16 0,8 4-12 8 * https://raw.githubusercontent.com/smiek2221/scripts/master/gua_opencard4.js, tag=8.4-8.12 大牌联合 冰爽一夏, enabled=true
 
 ================Loon==============
 [Script]
-cron "36 0,8 4-12 8 *" script-path=gua_opencard4.js,tag=8.4-8.12 大牌联合 冰爽一夏
+cron "16 0,8 4-12 8 *" script-path=gua_opencard4.js,tag=8.4-8.12 大牌联合 冰爽一夏
 
 ===============Surge=================
-8.4-8.12 大牌联合 冰爽一夏 = type=cron,cronexp="36 0,8 4-12 8 *",wake-system=1,timeout=3600,script-path=gua_opencard4.js
+8.4-8.12 大牌联合 冰爽一夏 = type=cron,cronexp="16 0,8 4-12 8 *",wake-system=1,timeout=3600,script-path=gua_opencard4.js
 
 ============小火箭=========
-8.4-8.12 大牌联合 冰爽一夏 = type=cron,script-path=gua_opencard4.js, cronexpr="36 0,8 4-12 8 *", timeout=3600, enable=true
+8.4-8.12 大牌联合 冰爽一夏 = type=cron,script-path=gua_opencard4.js, cronexpr="16 0,8 4-12 8 *", timeout=3600, enable=true
 */
 const $ = new Env('8.4-8.12 大牌联合 冰爽一夏');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
