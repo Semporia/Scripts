@@ -21,17 +21,17 @@
 ============Quantumultx===============
 [task_local]
 #8.2-8.12 奶爸盛典 爸气全开(跑完手动领取100豆)
-11 2,11 * * * jd_opencard_Daddy.js, tag=8.2-8.12 奶爸盛典 爸气全开(跑完手动领取100豆), img-url=https://raw.githubusercontent.com/tsukasa007/icon/master/jd_opencard_Daddy.png, enabled=true
+41 1,10 * * * jd_opencard_Daddy.js, tag=8.2-8.12 奶爸盛典 爸气全开(跑完手动领取100豆), img-url=https://raw.githubusercontent.com/tsukasa007/icon/master/jd_opencard_Daddy.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "11 2,11 * * *" script-path=jd_opencard_Daddy.js,tag=8.2-8.12 奶爸盛典 爸气全开(跑完手动领取100豆)
+cron "41 1,10 * * *" script-path=jd_opencard_Daddy.js,tag=8.2-8.12 奶爸盛典 爸气全开(跑完手动领取100豆)
 
 ===============Surge=================
-8.2-8.12 奶爸盛典 爸气全开(跑完手动领取100豆) = type=cron,cronexp="11 2,11 * * *",wake-system=1,timeout=3600,script-path=jd_opencard_Daddy.js
+8.2-8.12 奶爸盛典 爸气全开(跑完手动领取100豆) = type=cron,cronexp="41 1,10 * * *",wake-system=1,timeout=3600,script-path=jd_opencard_Daddy.js
 
 ============小火箭=========
-8.2-8.12 奶爸盛典 爸气全开(跑完手动领取100豆) = type=cron,script-path=jd_opencard_Daddy.js, cronexpr="11 2,11 * * *", timeout=3600, enable=true
+8.2-8.12 奶爸盛典 爸气全开(跑完手动领取100豆) = type=cron,script-path=jd_opencard_Daddy.js, cronexpr="41 1,10 * * *", timeout=3600, enable=true
 */
 const $ = new Env('8.2-8.12 奶爸盛典 爸气全开(跑完手动领取100豆)');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
