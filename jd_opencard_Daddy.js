@@ -2,7 +2,7 @@
 
 跑完脚本
 复制链接 到京东
-21.0复制整段话 http:/J1ApayERsNEA3p 奶爸盛典重磅福利！惊喜京豆立即领取，更多实物惊喜大奖#v8JE652j6a@扌丁kai鶁崠
+20.0复制整段话 http:/JIMNn3FbzhXZ9v 奶爸盛典重磅福利！惊喜京豆立即领取，更多实物惊喜大奖#iCYfiAu7ub@しǎι【京東】ＡΡΡの
 下拉到福利三，领取邀请5人奖励好像是100豆
 我不知道一天可以有多少个20豆自己测试吧 = =
 我不知道一天可以有多少个20豆自己测试吧 = =
@@ -14,7 +14,7 @@
 第一个账号助力我 其他依次助力CK1
 第一个CK失效应该全都会助力我，亲注意一下
 入口复制到jd：
-29.0复制整段话 Https:/JU6oTzeFZn9XjH 奶爸盛典重磅福利！惊喜京豆立即领取，更多实物惊喜大奖#2CNZV9rVba@祛→亰岽逛逛GO
+20.0复制整段话 http:/JIMNn3FbzhXZ9v 奶爸盛典重磅福利！惊喜京豆立即领取，更多实物惊喜大奖#iCYfiAu7ub@しǎι【京東】ＡΡΡの
 
 
 更新地址：https://github.com/Tsukasa007/my_script
@@ -72,7 +72,7 @@ if (!$.isNode() || !process.env.JD_OPENCARD_DADDY) {
         });
         return;
     }
-    $.shareUuid = ''
+    $.shareUuid = 'e23655650c974dacbccb080f5cc4c1a3'
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i];
         if (cookie) {
