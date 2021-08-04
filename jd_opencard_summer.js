@@ -16,17 +16,17 @@
 ============Quantumultx===============
 [task_local]
 #7.28-8.9 夏日呵护 母音甄选
-50 0,10 * * * jd_summer_mom_opencard.js, tag=7.28-8.9 夏日呵护 母音甄选, img-url=https://raw.githubusercontent.com/tsukasa007/icon/master/jd_summer_mom_opencard.png, enabled=true
+30 0,9 * * * jd_summer_mom_opencard.js, tag=7.28-8.9 夏日呵护 母音甄选, img-url=https://raw.githubusercontent.com/tsukasa007/icon/master/jd_summer_mom_opencard.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "50 0,10 * * *" script-path=jd_summer_mom_opencard.js,tag=7.28-8.9 夏日呵护 母音甄选
+cron "30 0,9 * * *" script-path=jd_summer_mom_opencard.js,tag=7.28-8.9 夏日呵护 母音甄选
 
 ===============Surge=================
-7.28-8.9 夏日呵护 母音甄选 = type=cron,cronexp="50 0,10 * * *",wake-system=1,timeout=3600,script-path=jd_summer_mom_opencard.js
+7.28-8.9 夏日呵护 母音甄选 = type=cron,cronexp="30 0,9 * * *",wake-system=1,timeout=3600,script-path=jd_summer_mom_opencard.js
 
 ============小火箭=========
-7.28-8.9 夏日呵护 母音甄选 = type=cron,script-path=jd_summer_mom_opencard.js, cronexpr="50 0,10 * * *", timeout=3600, enable=true
+7.28-8.9 夏日呵护 母音甄选 = type=cron,script-path=jd_summer_mom_opencard.js, cronexpr="30 0,9 * * *", timeout=3600, enable=true
 */
 const $ = new Env('7.28-8.9 夏日呵护 母音甄选');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
