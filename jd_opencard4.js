@@ -58,12 +58,12 @@ message = ""
     });
     return;
   }
-  if ($.isNode()) {
-    if (!process.env.guaopencard4 || process.env.guaopencard4 == "false") {
-      console.log('如需执行脚本请设置环境变量[guaopencard4]为"true"')
-      return
-    }
-  }
+//   if ($.isNode()) {
+//     if (!process.env.guaopencard4 || process.env.guaopencard4 == "false") {
+//       console.log('如需执行脚本请设置环境变量[guaopencard4]为"true"')
+//       return
+//     }
+//   }
   guaopencard_addSku4 = process.env.guaopencard_addSku4
   if (!process.env.guaopencard_addSku4 || process.env.guaopencard_addSku4 == "false") {
     console.log('如需加购请设置环境变量[guaopencard_addSku4]为"true"')
