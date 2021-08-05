@@ -54,6 +54,7 @@ message = ""
   //    return
   //  }
   //}
+  console.log('入口：22.0复制整段话 Http:/JIaujN74OHOcKw 一起奔跑 为奥运加油 分千万京豆万元大奖￥Y072n3YR7a￥dakai鯨·=·岽A P/P')
   $.shareUuid = 'b63e738d69af4ad0941eb17c1c417659'
   // 232 23
   for (let i = 0; i < cookiesArr.length; i++) {
