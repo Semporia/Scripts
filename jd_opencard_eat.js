@@ -64,6 +64,7 @@ if (!$.isNode() || !process.env.JD_OPENCARD_EAT_OPEN_OPENCARD) {
         });
         return;
     }
+    console.log('入口：25.0复制整段话 Https:/JofDQqLP9W0sRu 大牌联合送福利，免费领京豆￥q2j6I8aYVb%dakai》猄】崠】')
     $.shareUuid = '598ff3d2d8b14cebbb5b522ff109e039'
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i];
