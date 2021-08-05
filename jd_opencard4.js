@@ -68,7 +68,7 @@ message = ""
     console.log('如需加购请设置环境变量[guaopencard_addSku4]为"true"')
   } 
   $.shareUuid = '930faf33cd2f42e399e8ad605e437546'
-  console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/832865?activityId=c225ad5922cf4ac8b4a68fd37f486088&shareUuid=${$.shareUuid}`)
+  console.log(`入口:\n23.0复制整段话 http:/J6jSbEyA8HknJO 速来瓜分千万京豆，赢取万元豪礼！#39fi2ArBIa@扌丁开→鯨咚A/P P`)
   // 134
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
