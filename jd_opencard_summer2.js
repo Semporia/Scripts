@@ -15,9 +15,8 @@
 如需执行脚本请设置环境变量
 guaopencard5="true"
 
-入口
-8.5-8.12 冰爽夏日 钜惠送好礼 (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/2611148?activityId=5a1b7bc1f22e4bc5b5686bb54749de2e&shareUuid=)
-
+入口8.5-8.12 冰爽夏日 钜惠送好礼:
+23.0复制整段话 Https:/JKXl9xOXGoN7jl 速来瓜分千万京豆，赢取豪华礼包#U8jYRAjUVb%dakai鯨·=·岽A P/P
 ============Quantumultx===============
 [task_local]
 #8.5-8.12 冰爽夏日 钜惠送好礼
@@ -68,9 +67,9 @@ message = ""
   if (!process.env.guaopencard_addSku5 || process.env.guaopencard_addSku5 == "false") {
     console.log('如需加购请设置环境变量[guaopencard_addSku5]为"true"')
   }
-  $.shareUuid = ''
+  $.shareUuid = '91e3fa1aa1f14f1e886a8fdb7fcc7370'
   $.activityId = '5a1b7bc1f22e4bc5b5686bb54749de2e'
-  console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/2611148?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
+  console.log(`入口:\n23.0复制整段话 Https:/JKXl9xOXGoN7jl 速来瓜分千万京豆，赢取豪华礼包#U8jYRAjUVb%dakai鯨·=·岽A P/P`)
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     if (cookie) {
