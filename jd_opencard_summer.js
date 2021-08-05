@@ -65,6 +65,7 @@ if (!process.env.JD_SUMMER_MOM_OPENCARD) {
     });
     return;
   }
+  console.log('入口：21.0复制整段话 https:/JRagUJKPiy6h8T 母婴大牌甄选，惊喜好礼免费送#eBAy78Ufqb@扌丁开→鯨咚A/P P')
   $.shareUuid = '5b9bdd0a512f4ad7bff7dd3276594a6f'
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
