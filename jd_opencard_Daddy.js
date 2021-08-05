@@ -73,6 +73,7 @@ if (!$.isNode() || !process.env.JD_OPENCARD_DADDY) {
         return;
     }
     $.shareUuid = 'e23655650c974dacbccb080f5cc4c1a3'
+    console.log('入口：20.0复制整段话 http:/JIMNn3FbzhXZ9v 奶爸盛典重磅福利！惊喜京豆立即领取，更多实物惊喜大奖#iCYfiAu7ub@しǎι【京東】ＡΡΡの')
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i];
         if (cookie) {
