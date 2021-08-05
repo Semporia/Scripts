@@ -6,7 +6,7 @@
 第11个之后是不会有京豆的
 
 入口
-https://lzdz1-isv.isvjcloud.com/dingzhi/personal/care/activity/6685289?activityId=dz210768869312&shareUuid=58d4dd7248884e2b8ce01393e81b74d0
+https://lzdz1-isv.isvjcloud.com/dingzhi/personal/care/activity/6685289?activityId=dz210768869312&shareUuid=8e80195a37fb4529942d1ef2f4a742d7
 
 ============Quantumultx===============
 [task_local]
@@ -54,7 +54,7 @@ message = ""
   //    return
   //  }
   //}
-  $.shareUuid = ''
+  $.shareUuid = '8e80195a37fb4529942d1ef2f4a742d7'
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     if (cookie) {
