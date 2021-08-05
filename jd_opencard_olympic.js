@@ -6,7 +6,8 @@
 第11个之后是不会有京豆的
 
 入口
-https://lzdz1-isv.isvjcloud.com/dingzhi/personal/care/activity/6685289?activityId=dz210768869312&shareUuid=8e80195a37fb4529942d1ef2f4a742d7
+
+23.0复制整段话 http:/J9rVe8IaZkTZhA 看精彩奥运，玩夺金游戏，天天领福利￥20rBA5Qbub￥大家买买买都→猄栋
 
 ============Quantumultx===============
 [task_local]
