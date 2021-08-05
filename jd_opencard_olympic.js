@@ -55,6 +55,7 @@ message = ""
   //    return
   //  }
   //}
+  console.log('入口：23.0复制整段话 http:/J9rVe8IaZkTZhA 看精彩奥运，玩夺金游戏，天天领福利￥20rBA5Qbub￥大家买买买都→猄栋')
   $.shareUuid = '8e80195a37fb4529942d1ef2f4a742d7'
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
