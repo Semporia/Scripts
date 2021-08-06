@@ -20,7 +20,7 @@ const unifiedGatewayName = 'https://api.m.jd.com'
 
 // 请先配置 token!!!最好抓APP的！
 let tokens = ''
-
+console.log(`\n如果提示：不要频繁点击！请参考：\nhttps://github.com/ZCY01/daily_scripts/tree/main/jd\n设置token`);
 $.HyperParam = {
     sid_hid: '',
     type_hid: '3',
