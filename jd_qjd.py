@@ -2,18 +2,18 @@
 # -*- coding: utf-8 -*
 #全民抢京豆（8.6-8.16)
 '''
-项目名称:jd_qjd
+项目名称: jd_qjd
 功能：全民抢京豆（8.6-8.16）
     满160豆需要20人助力，每个用户目前只能助力2次不同的用户。
 
-建议cron: 0 0 * * *  python3 jd_qjd.py
+建议cron: 0 0 6-16 8 *  python3 jd_qjd.py
 new Env('全民抢京豆 8.6-8.16');
 * 修复了助力活动不存在、增加了随机UA（如果未定义ua则启用随机UA）
 * 新增推送
 * 修复0点不能开团
 * 兼容pin为中文转码编码
 '''
-# print("全民抢京豆(8.6-8.16）--活动已结束\n")
+# print("全民抢京豆(7.22-7.31）--活动已结束\n")
 # exit(0)
 #ck 优先读取【JDCookies.txt】 文件内的ck  再到 ENV的 变量 JD_COOKIE='ck1&ck2' 最后才到脚本内 cookies=ck
 cookies = ''
