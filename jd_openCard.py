@@ -1,18 +1,17 @@
 #!/bin/env python3
 # -*- coding: utf-8 -*
 '''
-项目名称: JD_OpenCard
-Author: Curtin
+项目名称: jd_openCard.py
+
 功能：JD入会开卡领取京豆
 CreateDate: 2021/5/4 下午1:47
 UpdateTime: 2021/6/19
-建议cron: 2 8,15 * * *  python3 jd_OpenCard.py
+建议cron: 2 8,15 * * *  python3 jd_openCard.py
 new Env('开卡有礼');
 '''
 version = 'v1.2.2'
 readmes = """
 # JD入会领豆小程序
-![JD入会领豆小程序](https://raw.githubusercontent.com/curtinlv/JD-Script/main/OpenCrad/resultCount.png)
 
 ## 使用方法
 #### [手机用户（参考） https://mp.weixin.qq.com/s/ih6aOURXWM-iKrhvMyR3mw](https://mp.weixin.qq.com/s/ih6aOURXWM-iKrhvMyR3mw)
@@ -144,16 +143,12 @@ readmes = """
 
 ###### [GitHub仓库 https://github.com/curtinlv/JD-Script](https://github.com/curtinlv/JD-Script) 
 ###### [Gitee仓库 https://gitee.com/curtinlv/JD-Script](https://gitee.com/curtinlv/JD-Script)
-###### [TG频道 https://t.me/TopStyle2021](https://t.me/TopStyle2021)
-###### [TG群 https://t.me/topStyle996](https://t.me/topStyle996)
-###### 关注公众号【TopStyle】回复：shopid
-![TopStyle](https://gitee.com/curtinlv/img/raw/master/gzhcode.jpg)
 # 
     @Last Version: %s
 
     @Last Time: 2021-06-19 13:55
 
-    @Author: Curtin
+    @Author: h
 #### **仅以学习交流为主，请勿商业用途、禁止违反国家法律 ，转载请留个名字，谢谢!** 
 
 # End.
@@ -178,7 +173,7 @@ scriptHeader = """
 ║                                      ║
 ════════════════════════════════════════
 @Version: {}""".format(version)
-remarks = '\n\n\tTG交流 : https://t.me/topstyle996\n\n\tTG频道 : https://t.me/TopStyle2021\n\n\t公众号 : TopStyle\n\n\t\t\t--By Curtin\n'
+remarks = '\n\n'
 
 timestamp = int(round(time.time() * 1000))
 today = datetime.datetime.now().strftime('%Y-%m-%d')
