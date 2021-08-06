@@ -31,7 +31,7 @@ if ($.isNode()) {
 
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
-$.shareuuid = "" //
+$.shareuuid = "7eaf779f13f64e2cbb2b1a55fd1de09f" //
     !(async () => {
         console.log(`入口：21.0复制整段话 Http:/JnE0bflXQPzN4R 伊利云养一头牛，赢1分钱得牛奶一提！坚持打卡~每日多个好礼相送哟！快来云养的牛宝宝吧！#f1EQN5nQJa%去【椋〣崬】\n`)
         if (!cookiesArr[0]) {
