@@ -29,7 +29,7 @@ const zooFaker = require('./JDJRValidator_Pure.js');
 let allMessage = '';
 //是否兑换京豆，默认500；20为兑换20京豆,500为兑换500京豆，0为不兑换京豆。数量有限先到先得
 //可通过joyRewardCount环境变量设置
-let joyRewardName = process.evn.joyRewardCount ? process.evn.joyRewardCount : 500;
+let joyRewardName = process.env.joyRewardCount ? process.env.joyRewardCount : 500;
 
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
