@@ -2,14 +2,11 @@
 # -*- coding: utf-8 -*
 '''
 项目名称: JD-Script / jd_zjd 
-Author: Curtin
+
 功能：微信小程序-赚京豆-瓜分10亿京豆自动助力，默认给账号1助力，多账号才能玩~
-Date: 2021/6/25 下午9:16
-TG交流 https://t.me/topstyle996
-TG频道 https://t.me/TopStyle2021
-updateTime: 2021.7.24 14:22
+
 '''
-print("赚京豆-瓜分10亿京豆自动助力--活动已结束\nTG交流 https://t.me/topstyle996\nTG频道 https://t.me/TopStyle2021")
+print("赚京豆-瓜分10亿京豆自动助力--活动已结束\n")
 exit(0)
 #####
 #ck 优先读取【JDCookies.txt】 文件内的ck  再到 ENV的 变量 JD_COOKIE='ck1&ck2' 最后才到脚本内 cookies=ck
