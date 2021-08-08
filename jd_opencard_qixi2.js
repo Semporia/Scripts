@@ -66,7 +66,7 @@ message = ""
   if (!process.env.guaopencard_addSku7 || process.env.guaopencard_addSku7 == "false") {
     console.log('如需加购请设置环境变量[guaopencard_addSku7]为"true"')
   }
-  $.shareUuid = ''
+  $.shareUuid = '12f911cd98fe40918d449fdbc3fd5009'
   $.activityId = 'dz2108100001616201'
   console.log(`入口:\n28.0复制整段话 https:/J6txjMXQD7FoLz 免费抽万元大奖 千万京豆￥64u3b9ujyb￥大家买买买都→猄栋\n`)
   for (let i = 0; i < cookiesArr.length; i++) {
