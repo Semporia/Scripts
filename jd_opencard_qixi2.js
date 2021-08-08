@@ -15,22 +15,22 @@
 若是手机用户(不是nodejs环境) 是默认直接执行脚本的
 没有适配加购变量 所以是不加购
 ————————————————
-入口：[8.8-8.14 七夕会员福利社 (https://lzdz1-isv.isvjcloud.com/dingzhi/shop/league/activity/7277549?activityId=dz2108100001616201)]
+入口：28.0复制整段话 https:/J6txjMXQD7FoLz 免费抽万元大奖 千万京豆￥64u3b9ujyb￥大家买买买都→猄栋
 
 ============Quantumultx===============
 [task_local]
 #8.8-8.14 七夕会员福利社
-28 0,22 8-14 8 * jd_opencard_qixi2.js, tag=8.8-8.14 七夕会员福利社, enabled=true
+18 0,22 8-14 8 * jd_opencard_qixi2.js, tag=8.8-8.14 七夕会员福利社, enabled=true
 
 ================Loon==============
 [Script]
-cron "28 0,22 8-14 8 *" script-path=jd_opencard_qixi2.js,tag=8.8-8.14 七夕会员福利社
+cron "18 0,22 8-14 8 *" script-path=jd_opencard_qixi2.js,tag=8.8-8.14 七夕会员福利社
 
 ===============Surge=================
-8.8-8.14 七夕会员福利社 = type=cron,cronexp="28 0,22 8-14 8 *",wake-system=1,timeout=3600,script-path=jd_opencard_qixi2.js
+8.8-8.14 七夕会员福利社 = type=cron,cronexp="18 0,22 8-14 8 *",wake-system=1,timeout=3600,script-path=jd_opencard_qixi2.js
 
 ============小火箭=========
-8.8-8.14 七夕会员福利社 = type=cron,script-path=jd_opencard_qixi2.js, cronexpr="28 0,22 8-14 8 *", timeout=3600, enable=true
+8.8-8.14 七夕会员福利社 = type=cron,script-path=jd_opencard_qixi2.js, cronexpr="18 0,22 8-14 8 *", timeout=3600, enable=true
 */
 const $ = new Env('8.8-8.14 七夕会员福利社');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -68,7 +68,7 @@ message = ""
   }
   $.shareUuid = ''
   $.activityId = 'dz2108100001616201'
-  console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/shop/league/activity/7277549?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
+  console.log(`入口:\n28.0复制整段话 https:/J6txjMXQD7FoLz 免费抽万元大奖 千万京豆￥64u3b9ujyb￥大家买买买都→猄栋\n`)
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     if (cookie) {
