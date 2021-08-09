@@ -594,7 +594,7 @@ function getHelp() {
           data = JSON.parse(data);
           if (data.code === 200) {
             console.log(`\n\n${$.name}互助码每天都变化,旧的不可继续使用`);
-            $.log(`【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${data.data.shareId}\n\n`);
+            $.log(`【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${data.data.shareId}\n`);
             $.temp.push(data.data.shareId);
             submitCode(data.data.shareId);
           } else {
