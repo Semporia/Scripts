@@ -47,7 +47,7 @@ if ($.isNode()) {
 }
 let inviteCodes = [];
 $.shareCodesArr = [];
-$.updatePkActivityIdRes = ['ece29e04-0319-4c47-8a73-9d6bc3525e15'];
+
 const JD_API_HOST = 'https://api.m.jd.com/api';
 const activeEndTime = '2021/08/28 23:59:59+08:00';//活动结束时间
 let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
