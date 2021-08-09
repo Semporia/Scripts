@@ -74,7 +74,7 @@ const JD_API_HOST = `https://api.m.jd.com`;
                     $.inviter = dyjStr[1]
                 }
             }
-            await help('', '', 1, true) //用你开包的号给我助力一次
+            await help('e83886265ab9477eb4206ba94764e4b520721628474935213', 'TcRo9GSFphN6X-DAuLLTzkXJgjiVoUJzlYLUvgszEh0', 1, true) //用你开包的号给我助力一次
         }
     }
 
@@ -88,7 +88,6 @@ const JD_API_HOST = `https://api.m.jd.com`;
             console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
         }
         if ($.rid && $.inviter && $.needhelp) {
-            console.log(`\nrid:${$.rid}\ninviter:${$.inviter}`)
             await help($.rid, $.inviter, $.helptype)
         } else {
             console.log("没获取到助力码,停止运行")
