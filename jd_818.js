@@ -769,6 +769,9 @@ function readShareCode() {
             data = JSON.parse(data);
             //console.log(`随机取10个码放到您固定的互助码后面(不影响已有固定互助)`);
             $.updatePkActivityIdRes = data.data;
+
+            shareCodesFormat();
+
             //shareCodeDic[`${currentIndex}`] = data.data;
             //console.log(`${data.data}`);
           }
