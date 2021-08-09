@@ -1,7 +1,7 @@
 /**
  *  活动路径  手机馆---》IQOO大牌日---〉左下角金机馆
  cron "43 2,5 8-20 8 *" jd_goldPhone.js
- *  
+ *  脚本会加入脚本内置的团
  */
 const $ = new Env('金机奖投票');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -24,7 +24,7 @@ $.authorCode = '';
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         return;
     }
-    let res = [];
+    let res = ["6110e268e499027441"];
     if(res.length > 0){
         $.authorCode = getRandomArrayElements(res,1)[0];
     }
