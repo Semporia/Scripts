@@ -555,7 +555,7 @@ async function doHelp() {
   }
 }
 //助力API
-function toHelp(code = "ddd345fb-57bb-4ece-968b-7bf4c92be7cc") {
+function toHelp(code = "ece29e04-0319-4c47-8a73-9d6bc3525e15") {
   return new Promise(resolve => {
     const body = {"shareId":`${code}`};
     const options = taskPostUrl('/khc/task/doSupport', body)
