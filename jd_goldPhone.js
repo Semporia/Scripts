@@ -1,6 +1,6 @@
 /**
  *  活动路径  手机馆---》IQOO大牌日---〉左下角金机馆
- cron "33 3,6 8-20 8 *" jd_golden_machine.js
+ cron "43 2,5 8-20 8 *" jd_goldPhone.js
  *  
  */
 const $ = new Env('金机奖投票');
