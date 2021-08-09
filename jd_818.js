@@ -824,9 +824,9 @@ function taskPostUrl(a,t = {}) {
 
 async function showMsg() {
   if ($.beans) {
-    allMessage += `京东账号${$.index} ${$.nickName || $.UserName}\n本次运行获得：${$.beans}京豆\n${message}活动地址：https://carnivalcity.m.jd.com/#/home?shareId=ddd345fb-57bb-4ece-968b-7bf4c92be7cc&t=${Date.now()}${$.index !== cookiesArr.length ? '\n\n' : ''}`
+    allMessage += `京东账号${$.index} ${$.nickName || $.UserName}\n本次运行获得：${$.beans}京豆\n${message}活动地址：https://carnivalcity.m.jd.com/#/home?shareId=ece29e04-0319-4c47-8a73-9d6bc3525e15&t=${Date.now()}${$.index !== cookiesArr.length ? '\n\n' : ''}`
   }
-  $.msg($.name, `京东账号${$.index} ${$.nickName || $.UserName}`, `${message}具体详情点击弹窗跳转后即可查看`, {"open-url": "https://carnivalcity.m.jd.com/#/home?shareId=ddd345fb-57bb-4ece-968b-7bf4c92be7cc&t="+Date.now()});
+  $.msg($.name, `京东账号${$.index} ${$.nickName || $.UserName}`, `${message}具体详情点击弹窗跳转后即可查看`, {"open-url": "https://carnivalcity.m.jd.com/#/home?shareId=ece29e04-0319-4c47-8a73-9d6bc3525e15&t="+Date.now()});
 }
 
 function getUA(){
