@@ -10,7 +10,7 @@ on:
   watch:
     types: started
   repository_dispatch:
-    types: sync-ChuheGit-1
+    types: sync-ChuheGit/1
 jobs:
   repo-sync:
     env:
@@ -22,7 +22,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: sync ChuheGit-1
+      - name: sync ChuheGit/1
         uses: repo-sync/github-sync@v2
         if: env.PAT
         with:

@@ -10,7 +10,7 @@ on:
   watch:
     types: started
   repository_dispatch:
-    types: sync-lowking-Scripts
+    types: sync-lowking/Scripts
 jobs:
   repo-sync:
     env:
@@ -22,7 +22,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: sync lowking-Scripts
+      - name: sync lowking/Scripts
         uses: repo-sync/github-sync@v2
         if: env.PAT
         with:

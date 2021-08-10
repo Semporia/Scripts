@@ -10,7 +10,7 @@ on:
   watch:
     types: started
   repository_dispatch:
-    types: sync-he1pu-hundun
+    types: sync-he1pu/JDHelp
 jobs:
   repo-sync:
     env:
@@ -22,7 +22,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: sync he1pu-hundun
+      - name: sync he1pu/JDHelp
         uses: repo-sync/github-sync@v2
         if: env.PAT
         with:

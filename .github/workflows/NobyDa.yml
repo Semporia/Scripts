@@ -10,7 +10,7 @@ on:
   watch:
     types: started
   repository_dispatch:
-    types: sync-NobyDa-Script
+    types: sync-NobyDa/Script
 jobs:
   repo-sync:
     env:
@@ -22,7 +22,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: sync NobyDa-Script
+      - name: sync NobyDa/Script
         uses: repo-sync/github-sync@v2
         if: env.PAT
         with:
