@@ -546,6 +546,12 @@ async function injectToRequest(scene = 'cww') {
   return `&validate=${res.validate}`
 }
 
+exports.sleep = sleep;
+
+exports. injectToRequest = injectToRequest;
+
+exports. injectToRequest2 = injectToRequest2;
+
 module.exports = {
   sleep,
   injectToRequest,
