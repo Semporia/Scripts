@@ -70,7 +70,7 @@ message = ""
       console.log('如需加购请设置环境变量[guaopencard_addSku8]为"true"')
     }
   }
-  $.shareUuid = ''
+  $.shareUuid = 'fd2ade3d24334bbf895f3345047f77ab'
   $.activityId = '33d9ae00c1904c20bd8a4488fc5d6f33'
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/797702?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   for (let i = 0; i < cookiesArr.length; i++) {
