@@ -121,11 +121,10 @@ async function main() {
   } else {
     $.LKYLToken = $.isNode() ? (process.env.JOY_RUN_TOKEN ? process.env.JOY_RUN_TOKEN : jdJoyRunToken) : ($.getdata('jdJoyRunToken') || jdJoyRunToken);
   }
-  $.LKYLToken='673237e3520878e2e17c0c5fb69e23da';
   console.log(`打印token：${$.LKYLToken ? $.LKYLToken : '暂无token'}\n`)
   if (!$.LKYLToken) {
-    $.msg($.name, '【提示】请先获取来客有礼宠汪汪token', "iOS用户微信搜索'来客有礼'小程序\n点击底部的'发现'Tab\n即可获取Token");
-    // return;
+    $.msg($.name, '【提示】请先获取来客有礼宠汪汪token', "1、开启使用抓包工具\n2、微信搜索'来客有礼'小程序，点击底部的'发现'\n3、在抓包工具中搜索（请求头）“LKYLToken”\n4、填入环境变量：JOY_RUN_TOKEN");
+    return;
   }
   await getFriendPins();
   for (let i = 0; i < cookiesArr.length; i++) {
