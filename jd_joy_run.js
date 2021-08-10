@@ -50,12 +50,12 @@ const JD_BASE_API = `https://draw.jdfcloud.com//pet`;
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : {};
 //下面给出好友邀请助力的示例填写规则
-let invite_pins = ["jd_4d72a07e446a5", "jd_xSwGGPGahqma", "15622795740_p", "200520006_m", "xkk_0714"];
+let invite_pins = ["jd_4d72a07e446a5", "jd_xSwGGPGahqma", "15622795740_p", "200520006_m"];
 
 //下面给出好友赛跑助力的示例填写规则
-let run_pins = ["jd_4d72a07e446a5", "jd_xSwGGPGahqma", "15622795740_p", "200520006_m", "xkk_0714"];
+let run_pins = ["jd_4d72a07e446a5", "jd_xSwGGPGahqma", "15622795740_p", "200520006_m"];
 //friendsArr内置太多会导致IOS端部分软件重启,可PR过来(此处目的:帮别人助力可得30g狗粮)
-let friendsArr = ["jd_4d72a07e446a5", "jd_xSwGGPGahqma", "15622795740_p", "200520006_m", "xkk_0714"];
+let friendsArr = ["jd_4d72a07e446a5", "jd_xSwGGPGahqma", "15622795740_p", "200520006_m"];
 
 
 //IOS等用户直接用NobyDa的jd cookie
@@ -115,7 +115,7 @@ async function main() {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  const readTokenRes = await readToken();
+  //const readTokenRes = await readToken();
   if (readTokenRes && readTokenRes.code === 200) {
     $.LKYLToken = readTokenRes.data[0] || ($.isNode() ? (process.env.JOY_RUN_TOKEN ? process.env.JOY_RUN_TOKEN : jdJoyRunToken) : ($.getdata('jdJoyRunToken') || jdJoyRunToken));
   } else {
@@ -134,7 +134,7 @@ async function main() {
       // $.validate = await zooFaker.injectToRequest()
       if ($.isNode()) {
         if (process.env.JOY_RUN_HELP_MYSELF) {
-          console.log(`\n赛跑会先给账号内部助力,如您当前账户有剩下助力机会则为lx0301作者助力\n`)
+          console.log(`\n赛跑会先给账号内部助力,如您当前账户有剩下助力机会则为作者助力\n`)
           let my_run_pins = [];
           Object.values(jdCookieNode).filter(item => item.match(/pt_pin=([^; ]+)(?=;?)/)).map(item => my_run_pins.push(decodeURIComponent(item.match(/pt_pin=([^; ]+)(?=;?)/)[1])))
           run_pins = [...new Set(my_run_pins), [...getRandomArrayElements([...run_pins[0].split(',')], [...run_pins[0].split(',')].length)]];
@@ -145,8 +145,8 @@ async function main() {
           run_pins = run_pins[0].split(',')
           Object.values(jdCookieNode).filter(item => item.match(/pt_pin=([^; ]+)(?=;?)/)).map(item => run_pins.push(decodeURIComponent(item.match(/pt_pin=([^; ]+)(?=;?)/)[1])))
           run_pins = [...new Set(run_pins)];
-          let fixPins = run_pins.splice(run_pins.indexOf('被折叠的记忆33'), 1);
-          fixPins.push(...run_pins.splice(run_pins.indexOf('jd_6cd93e613b0e5'), 1));
+          let fixPins = run_pins.splice(run_pins.indexOf('吃薪-望饷'), 1);
+          fixPins.push(...run_pins.splice(run_pins.indexOf('jd_4d72a07e446a5'), 1));
           const randomPins = getRandomArrayElements(run_pins, run_pins.length);
           run_pins = [[...fixPins, ...randomPins].join(',')];
           invite_pins = run_pins;
@@ -192,26 +192,26 @@ async function getToken() {
       $.log(`${$.name} token\n${LKYLToken}\n`);
       $.msg($.name, '更新Token: 成功🎉', ``);
       console.log(`\nToken，${LKYLToken}\n`)
-      $.http.post({
-        url: `http://share.turinglabs.net/api/v3/create/sharecode/`,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          "activity_name": "joy",
-          "share_code": LKYLToken,
-        }),
-        timeout: 30000
-      }).then((resp) => {
-        if (resp.statusCode === 200) {
-          try {
-            let { body } = resp;
-            console.log(`Token提交结果:${body}\n`)
-            body = JSON.parse(body);
-            console.log(`${body.message}`)
-          } catch (e) {
-            console.log(`提交Token异常:${e}`)
-          }
-        }
-      }).catch((e) => console.log(`catch 宠汪汪TOKEN提交异常:${e}`));
+//       $.http.post({
+//         url: `http://share.turinglabs.net/api/v3/create/sharecode/`,
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({
+//           "activity_name": "joy",
+//           "share_code": LKYLToken,
+//         }),
+//         timeout: 30000
+//       }).then((resp) => {
+//         if (resp.statusCode === 200) {
+//           try {
+//             let { body } = resp;
+//             console.log(`Token提交结果:${body}\n`)
+//             body = JSON.parse(body);
+//             console.log(`${body.message}`)
+//           } catch (e) {
+//             console.log(`提交Token异常:${e}`)
+//           }
+//         }
+//       }).catch((e) => console.log(`catch 宠汪汪TOKEN提交异常:${e}`));
       // count = $.getdata('countFlag') ? $.getdata('countFlag') * 1 : 0;
       // count ++;
       // console.log(`count: ${count}`)
