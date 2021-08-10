@@ -575,13 +575,13 @@ async function injectToRequest(scene = 'cww') {
   return `&validate=${res.validate}`
 }
 
-exports.sleep = sleep;
+// exports.sleep = sleep;
 
-exports.injectToRequest = injectToRequest;
+// exports.injectToRequest = injectToRequest;
 
-exports.injectToRequest2 = injectToRequest2;
+// exports.injectToRequest2 = injectToRequest2;
 
-exports.injectToRequest3 = injectToRequest3;
+// exports.injectToRequest3 = injectToRequest3;
 
 module.exports = {
   sleep,
