@@ -27,7 +27,7 @@ cron "21 0,10 * * *" script-path=jd_opencard_eat_open_opencard.js,tag=7.24-8.15 
 */
 const $ = new Env('7.24-8.15 嗨皮一下 食力全开');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-let UA = require('./USER_AGENTS.js').USER_AGENT;
+let UA = $.isNode() ? require('./USER_AGENTS.js').USER_AGENT : getUA();
 const notify = $.isNode() ? require('./sendNotify') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [],
@@ -570,6 +570,16 @@ function taskPostUrl(url, body, referer) {
     }
 }
 
+function getUA(){
+  $.UA = `jdapp;iPhone;10.0.10;14.3;${randomString(40)};network/wifi;model/iPhone12,1;addressid/4199175193;appBuild/167741;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`
+}
+function randomString(e) {
+  e = e || 32;
+  let t = "abcdefhijkmnprstwxyz2345678", a = t.length, n = "";
+  for (i = 0; i < e; i++)
+    n += t.charAt(Math.floor(Math.random() * a));
+  return n
+}
 
 function jsonParse(str) {
     if (typeof str == "string") {
