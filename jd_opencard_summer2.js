@@ -47,7 +47,7 @@ if ($.isNode()) {
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
-let guaopencard_addSku = false
+let guaopencard_addSku = true
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
 !(async () => {
@@ -63,10 +63,13 @@ message = ""
 //       return
 //     }
 //   }
-  guaopencard_addSku = process.env.guaopencard_addSku5
-  if (!process.env.guaopencard_addSku5 || process.env.guaopencard_addSku5 == "false") {
-    console.log('如需加购请设置环境变量[guaopencard_addSku5]为"true"')
+  if ($.isNode()) {
+    guaopencard_addSku = process.env.guaopencard_addSku5
+    if (!process.env.guaopencard_addSku5 || process.env.guaopencard_addSku5 == "false") {
+        console.log('如需加购请设置环境变量[guaopencard_addSku5]为"true"')
+    }
   }
+  
   $.shareUuid = '91e3fa1aa1f14f1e886a8fdb7fcc7370'
   $.activityId = '5a1b7bc1f22e4bc5b5686bb54749de2e'
   console.log(`入口:\n23.0复制整段话 Https:/JKXl9xOXGoN7jl 速来瓜分千万京豆，赢取豪华礼包#U8jYRAjUVb%dakai鯨·=·岽A P/P`)
