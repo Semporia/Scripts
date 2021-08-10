@@ -585,5 +585,7 @@ exports.injectToRequest3 = injectToRequest3;
 module.exports = {
   sleep,
   injectToRequest,
-  injectToRequest2
+  injectToRequest2,
+  injectToRequest3
+
 }
