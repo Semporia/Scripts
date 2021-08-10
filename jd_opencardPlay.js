@@ -18,7 +18,8 @@ guaopencard8="true"
 若是手机用户(不是nodejs环境) 是默认直接执行脚本的
 没有适配加购变量 所以是不加购
 ————————————————
-入口：[8.10-8.15 头号玩家 一起热8 (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/797702?activityId=33d9ae00c1904c20bd8a4488fc5d6f33)]
+入口：[8.10-8.15 头号玩家 一起热8 
+24.0复制整段话 https:/JPYFm9KXnk5Mcw 大牌联合送福利，免费领京豆￥j7IAI7AIUb￥--》亰#栋A/PP
 
 ============Quantumultx===============
 [task_local]
@@ -72,7 +73,7 @@ message = ""
   }
   $.shareUuid = 'fd2ade3d24334bbf895f3345047f77ab'
   $.activityId = '33d9ae00c1904c20bd8a4488fc5d6f33'
-  console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/797702?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
+  console.log(`入口:\n24.0复制整段话 https:/JPYFm9KXnk5Mcw 大牌联合送福利，免费领京豆￥j7IAI7AIUb￥--》亰#栋A/PP`)
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     if (cookie) {
