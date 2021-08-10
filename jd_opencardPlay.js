@@ -23,17 +23,17 @@ guaopencard8="true"
 ============Quantumultx===============
 [task_local]
 #8.10-8.15 头号玩家 一起热8
-28 0,22 8-14 8 * jd_opencardPlay.js, tag=8.10-8.15 头号玩家 一起热8, enabled=true
+18 0,22 8-14 8 * jd_opencardPlay.js, tag=8.10-8.15 头号玩家 一起热8, enabled=true
 
 ================Loon==============
 [Script]
-cron "28 0,22 8-14 8 *" script-path=jd_opencardPlay.js,tag=8.10-8.15 头号玩家 一起热8
+cron "18 0,22 8-14 8 *" script-path=jd_opencardPlay.js,tag=8.10-8.15 头号玩家 一起热8
 
 ===============Surge=================
-8.10-8.15 头号玩家 一起热8 = type=cron,cronexp="28 0,22 8-14 8 *",wake-system=1,timeout=3600,script-path=jd_opencardPlay.js
+8.10-8.15 头号玩家 一起热8 = type=cron,cronexp="18 0,22 8-14 8 *",wake-system=1,timeout=3600,script-path=jd_opencardPlay.js
 
 ============小火箭=========
-8.10-8.15 头号玩家 一起热8 = type=cron,script-path=jd_opencardPlay.js, cronexpr="28 0,22 8-14 8 *", timeout=3600, enable=true
+8.10-8.15 头号玩家 一起热8 = type=cron,script-path=jd_opencardPlay.js, cronexpr="18 0,22 8-14 8 *", timeout=3600, enable=true
 */
 const $ = new Env('8.10-8.15 头号玩家 一起热8');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
