@@ -82,6 +82,9 @@ async function main() {
     }else{
         console.log(`已参团`)
     }
+    if($.index === 1){
+        $.authorCode = $.useInfo.code
+    }
     $.needVoteList = $.homeInfo.hard_list;
     await doVote();
     $.needVoteList = $.homeInfo.soft_list;
