@@ -548,9 +548,9 @@ async function injectToRequest(scene = 'cww') {
 
 exports.sleep = sleep;
 
-exports. injectToRequest = injectToRequest;
+exports.injectToRequest = injectToRequest;
 
-exports. injectToRequest2 = injectToRequest2;
+exports.injectToRequest2 = injectToRequest2;
 
 module.exports = {
   sleep,
