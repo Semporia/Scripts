@@ -22,17 +22,17 @@ guaopencard9="true"
 ============Quantumultx===============
 [task_local]
 #8.11-8.15 星动七夕 纵享丝滑
-39 0,22 8-15 8 * jd_opencard_qixi3.js, tag=8.11-8.15 星动七夕 纵享丝滑, enabled=true
+19 0,9,22 8-15 8 * jd_opencard_qixi3.js, tag=8.11-8.15 星动七夕 纵享丝滑, enabled=true
 
 ================Loon==============
 [Script]
-cron "39 0,22 8-15 8 *" script-path=jd_opencard_qixi3.js,tag=8.11-8.15 星动七夕 纵享丝滑
+cron "19 0,9,22 8-15 8 *" script-path=jd_opencard_qixi3.js,tag=8.11-8.15 星动七夕 纵享丝滑
 
 ===============Surge=================
-8.11-8.15 星动七夕 纵享丝滑 = type=cron,cronexp="39 0,22 8-15 8 *",wake-system=1,timeout=3600,script-path=jd_opencard_qixi3.js
+8.11-8.15 星动七夕 纵享丝滑 = type=cron,cronexp="19 0,9,22 8-15 8 *",wake-system=1,timeout=3600,script-path=jd_opencard_qixi3.js
 
 ============小火箭=========
-8.11-8.15 星动七夕 纵享丝滑 = type=cron,script-path=jd_opencard_qixi3.js, cronexpr="39 0,22 8-15 8 *", timeout=3600, enable=true
+8.11-8.15 星动七夕 纵享丝滑 = type=cron,script-path=jd_opencard_qixi3.js, cronexpr="19 0,9,22 8-15 8 *", timeout=3600, enable=true
 */
 const $ = new Env('8.11-8.15 星动七夕 纵享丝滑');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
