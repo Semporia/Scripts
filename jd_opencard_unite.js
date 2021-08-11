@@ -18,7 +18,7 @@ guaopencard10="true"
 若是手机用户(不是nodejs环境) 是默认直接执行脚本的
 没有适配加购变量 所以是不加购
 ————————————————
-入口：[8.11-8.18 大牌联合 约惠一夏 (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/4768159?activityId=b856fb097683415facd1ae733672de9e&shareUuid=)]
+入口：[8.11-8.18 大牌联合 约惠一夏 (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/4768159?activityId=b856fb097683415facd1ae733672de9e&shareUuid=d985f4b3234d4d55a83d5876bfa98fd1)]
 ============Quantumultx===============
 [task_local]
 #8.11-8.18 大牌联合 约惠一夏
@@ -68,7 +68,7 @@ message = ""
       console.log('如需加购请设置环境变量[guaopencard_addSku10]为"true"')
     }
   }
-  $.shareUuid = ''
+  $.shareUuid = 'd985f4b3234d4d55a83d5876bfa98fd1'
   $.activityId = 'b856fb097683415facd1ae733672de9e'
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/4768159?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   for (let i = 0; i < cookiesArr.length; i++) {
