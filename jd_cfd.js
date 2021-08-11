@@ -1228,7 +1228,7 @@ function getUserInfo(showInvite = true) {
             console.log(`财富岛好友互助码每次运行都变化,旧的可继续使用`);
             console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${strMyShareId}\n\n`);
             $.shareCodes.push(strMyShareId)
-            submitCode(strMyShareId);
+            submitCode(strMyShareId, $.UserName);
           }
           $.info = {
             ...$.info,
@@ -1586,9 +1586,9 @@ function showMsg() {
 }
 
 //提交互助码
-function submitCode(myInviteCode) {
+function submitCode(myInviteCode, user) {
     return new Promise(async resolve => {
-    $.get({url: `http://www.helpu.cf/jdcodes/submit.php?code=${myInviteCode}&type=jxcfd`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `http://www.helpu.cf/jdcodes/submit.php?code=${myInviteCode}&type=jxcfd&user=${user}`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
