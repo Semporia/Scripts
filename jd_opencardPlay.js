@@ -508,7 +508,6 @@ function adLog() {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
-          //  data = JSON.parse(data);
           let setcookies = resp['headers']['set-cookie'] || resp['headers']['Set-Cookie'] || ''
           let setcookie = ''
           if(setcookies){
