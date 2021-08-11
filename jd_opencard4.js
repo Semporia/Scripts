@@ -15,7 +15,7 @@
 如需执行脚本请设置环境变量
 guaopencard4="true"
 
-入口：23.0复制整段话 http:/J6jSbEyA8HknJO 速来瓜分千万京豆，赢取万元豪礼！#39fi2ArBIa@扌丁开→鯨咚A/P P
+入口：https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/832865?activityId=c225ad5922cf4ac8b4a68fd37f486088&shareUuid=930faf33cd2f42e399e8ad605e437546
 
 ============Quantumultx===============
 [task_local]
@@ -71,7 +71,7 @@ message = ""
   } 
    
   $.shareUuid = '930faf33cd2f42e399e8ad605e437546'
-  console.log(`入口:\n23.0复制整段话 http:/J6jSbEyA8HknJO 速来瓜分千万京豆，赢取万元豪礼！#39fi2ArBIa@扌丁开→鯨咚A/P P`)
+  console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/832865?activityId=c225ad5922cf4ac8b4a68fd37f486088&shareUuid=${$.shareUuid}`)
   // 134
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
