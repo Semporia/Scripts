@@ -115,7 +115,7 @@ async function main() {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  let readTokenRes = await getToken('https://raw.githubusercontent.com/he1pu/JDHelp/main/joy_run_token.json');
+  let readTokenRes = await getNetToken('https://raw.githubusercontent.com/he1pu/JDHelp/main/joy_run_token.json');
   if (readTokenRes && readTokenRes.code === 200) {
     $.LKYLToken = readTokenRes.data[0] || ($.isNode() ? (process.env.JOY_RUN_TOKEN ? process.env.JOY_RUN_TOKEN : jdJoyRunToken) : ($.getdata('jdJoyRunToken') || jdJoyRunToken));
   } else {
@@ -662,7 +662,7 @@ function taroRequest(e) {
   return _a
 }
 
-function getToken(url) {
+function getNetToken(url) {
     return new Promise(async resolve => {
         const options = {
             "url": `${url}`,
