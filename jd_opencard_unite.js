@@ -59,10 +59,10 @@ message = ""
     return;
   }
   if ($.isNode()) {
-    if (!process.env.guaopencard10 || process.env.guaopencard10 == "false") {
-      console.log('如需执行脚本请设置环境变量[guaopencard10]为"true"')
-      return
-    }
+//     if (!process.env.guaopencard10 || process.env.guaopencard10 == "false") {
+//       console.log('如需执行脚本请设置环境变量[guaopencard10]为"true"')
+//       return
+//     }
     guaopencard_addSku = process.env.guaopencard_addSku10
     if (!process.env.guaopencard_addSku10 || process.env.guaopencard_addSku10 == "false") {
       console.log('如需加购请设置环境变量[guaopencard_addSku10]为"true"')
