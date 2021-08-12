@@ -13,7 +13,7 @@ hostname = account.huami.com
 Surge
 [Script]
 小米运动 = type=cron,cronexp="15 17 * * *",wake-system=1,timeout=3600,script-path=https://cdn.jsdelivr.net/gh/Semporia/Scripts/main/Mi-Sports/Mi-Sports.js
-小米运动获取Token = type=http-response,pattern=^https:\/\/account\.huami\.com\/v2\/client\/login, requires-body=1, max-size=0, script-path=backUp/xmbs.js
+小米运动获取Token = type=http-response,pattern=^https:\/\/account\.huami\.com\/v2\/client\/login, requires-body=1, max-size=0, script-path=backUp/Mi-Sports.js
 圈X
 [task_local]
 # 小米运动
