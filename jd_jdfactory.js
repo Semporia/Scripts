@@ -1,5 +1,4 @@
 /*
-自动提交助力码，删除内置助力码
 Last Modified time: 2020-12-26 22:58:02
 东东工厂，不是京喜工厂
 活动入口：京东APP首页-数码电器-东东工厂
@@ -13,21 +12,19 @@ Last Modified time: 2020-12-26 22:58:02
 ============Quantumultx===============
 [task_local]
 #东东工厂
-10 * * * * jd_jdfactory.js, tag=东东工厂, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png, enabled=true
+10 * * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js, tag=东东工厂, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_factory.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "10 * * * *" script-path=jd_jdfactory.js,tag=东东工厂
+cron "10 * * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js,tag=东东工厂
 
 ===============Surge=================
-东东工厂 = type=cron,cronexp="10 * * * *",wake-system=1,timeout=3600,script-path=jd_jdfactory.js
+东东工厂 = type=cron,cronexp="10 * * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js
 
 ============小火箭=========
-东东工厂 = type=cron,script-path=jd_jdfactory.js, cronexpr="10 * * * *", timeout=3600, enable=true
+东东工厂 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_jdfactory.js, cronexpr="10 * * * *", timeout=3600, enable=true
  */
 const $ = new Env('东东工厂');
-
-console.log('\n====================Hello World====================\n')
 
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -47,7 +44,7 @@ if ($.isNode()) {
 }
 let wantProduct = ``;//心仪商品名称
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
-const inviteCodes = [];
+const inviteCodes = [``];
 let myInviteCode;
 !(async () => {
   await requireConfig();
@@ -446,7 +443,7 @@ function jdfactory_getTaskDetail() {
             data = JSON.parse(data);
             if (data.data.bizCode === 0) {
               $.taskVos = data.data.result.taskVos;//任务列表
-              $.taskVos.map(async item => {
+              $.taskVos.map(item => {
                 if (item.taskType === 14) {
                   console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${item.assistTaskDetailVo.taskToken}\n`)
                   myInviteCode = item.assistTaskDetailVo.taskToken;
