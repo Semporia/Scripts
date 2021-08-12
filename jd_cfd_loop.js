@@ -1,7 +1,7 @@
 /*
 京喜财富岛热气球挂机
 
-更新时间：2021-7-21
+更新时间：2021-8-10
 活动入口：京喜APP-我的-京喜财富岛
 */
 !function (t, r) { "object" == typeof exports ? module.exports = exports = r() : "function" == typeof define && define.amd ? define([], r) : t.CryptoJS = r() }(this, function () {
