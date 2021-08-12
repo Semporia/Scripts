@@ -23,6 +23,5 @@ ql repo https://github.com/he1pu/JDHelp.git "jd_|jx_|getJDCookie" "activity|back
 ### 带助力功能的脚本要使用本仓库的，其他仓库的没有适配新助力池
 ### iOS三件套（很多不支持）在仓库内有订阅配置文件
 ### Node和Docker拉取使用本仓库地址
-### 部分脚本第一个账号会给内置账号助力，介意勿用！
 
 
