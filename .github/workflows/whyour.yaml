@@ -1,16 +1,22 @@
+# 工作流名称
 name: whyour-sync
+# 触发工作流事件
 on:
   push:
       branches:
         - master
   schedule:
-    #  每三小时的01分开始执行
+    #  格林威治时间 (GMT) 每三小时的01分开始执行
     - cron: '1 */3 * * *'
+  # 手动触发
   workflow_dispatch:
   watch:
+    # started触发
     types: started
   repository_dispatch:
+    # 上游作者库名
     types: sync-whyour/hundun
+# 工作流运行由可以顺序或并行运行的一个或多个作业组成
 jobs:
   repo-sync:
     env:
@@ -26,7 +32,10 @@ jobs:
         uses: repo-sync/github-sync@v2
         if: env.PAT
         with:
+          # 需要 clone 的上游仓库地址
           source_repo: "https://github.com/whyour/hundun.git"
+          # 需要clone上游作者的分支名
           source_branch: "master"
+          # 需要clone到自己项目的分支名
           destination_branch: "whyour"
           github_token: ${{ secrets.PAT }}
