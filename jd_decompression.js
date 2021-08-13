@@ -9,7 +9,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [];
 $.activityID = 'dz2107100008586804';
 $.shopid = '1000085868';
-const inCode= [''];
+const inCode= ['0ae7d1b2e4384ca7878c0b5f7e424a44'];
 $.shareUuid = getRandomArrayElements(inCode,1)[0];
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
@@ -87,7 +87,7 @@ async function main() {
         console.log(`获取活动详情失败`);return;
     }
     console.log(`获取活动详情成功`);
-    console.log(`助力码：${$.activityData.actorUuid}`);
+    //console.log(`助力码：${$.activityData.actorUuid}`);
     await doTask();
     await $.wait(3000);
     await takePostRequest('activityContent');
