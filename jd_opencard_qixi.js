@@ -19,7 +19,7 @@
 
 ————————————————
 因需要加载依赖文件
-所有不支持手机软件(Quantumultx、Loon、Surge、小火箭等
+所以不支持手机软件(Quantumultx、Loon、Surge、小火箭等
 ————————————————
 入口：[七夕告白季-开卡 (https://3.cn/-1ie6CsW)]
 
