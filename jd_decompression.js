@@ -87,7 +87,7 @@ async function main() {
         console.log(`获取活动详情失败`);return;
     }
     console.log(`获取活动详情成功`);
-    //console.log(`助力码：${$.activityData.actorUuid}`);
+    console.log(`助力码：${$.activityData.actorUuid}`);
     await doTask();
     await $.wait(3000);
     await takePostRequest('activityContent');
