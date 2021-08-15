@@ -1,7 +1,7 @@
 /**
  明星小店
- cron 10 9,18 9-25 8 * jd_star_shop.js
- cron "10 9,18 9-25 8 *" jd_star_shop.js
+ cron 10 9,18 9-25 8 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_star_shop.js
+ cron "10 9,18 9-25 8 *" https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_star_shop.js
  蚊子腿，欧皇可以中实物
  */
 const $ = new Env('明星小店');
@@ -54,15 +54,11 @@ if ($.isNode()) {
         }
         await main();
     }
-//     try{res = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/starShop.json');}catch (e) {}
-//     if(!res){
-//         try{res = await getAuthorShareCode('https://gitee.com/star267/share-code/raw/master/starShop.json');}catch (e) {}
-//         if(!res){res = [];}
-//     }
-//     if(res && res.length > 0){
-//         $.authorCodeList = getRandomArrayElements(res,1)[0];
-//     }
-//     $.inviteCodeList.push(...getRandomArrayElements($.authorCodeList, 1));
+    try{res = await getAuthorShareCode('https://raw.githubusercontent.com/he1pu/JDHelp/main/starShop.json');}catch (e) {}
+    if(res && res.length > 0){
+        $.authorCodeList = getRandomArrayElements(res,1)[0];
+    }
+    $.inviteCodeList.push(...getRandomArrayElements($.authorCodeList, 1));
     cookiesArr = getRandomArrayElements(cookiesArr,cookiesArr.length);
     for (let i = 0; i < cookiesArr.length; i++) {
         $.cookie = cookiesArr[i];
