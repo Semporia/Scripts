@@ -126,7 +126,7 @@ async function main() {
     $.msg($.name, '【提示】请先获取来客有礼宠汪汪token', "1、开启使用抓包工具\n2、微信搜索'来客有礼'小程序，点击底部的'发现'\n3、在抓包工具中搜索（请求头）“LKYLToken”\n4、填入环境变量：JOY_RUN_TOKEN");
     return;
   }
-  await getFriendPins();
+  //await getFriendPins();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       $.validate = '';
