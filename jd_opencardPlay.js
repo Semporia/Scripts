@@ -18,7 +18,7 @@ guaopencard8="true"
 若是手机用户(不是nodejs环境) 是默认直接执行脚本的
 没有适配加购变量 所以是不加购
 ————————————————
-入口：https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/4768159?activityId=078b967203634b208aaf65085d91a970&shareUuid=548f4297e15b43d7a2dd95c07011e914
+入口：https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/797702?activityId=33d9ae00c1904c20bd8a4488fc5d6f33&shareUuid=548f4297e15b43d7a2dd95c07011e914
 ============Quantumultx===============
 [task_local]
 #8.10-8.15 头号玩家 一起热8
@@ -68,8 +68,8 @@ message = ""
     }
   }
   $.shareUuid = '548f4297e15b43d7a2dd95c07011e914'
-  $.activityId = '078b967203634b208aaf65085d91a970'
-  console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/1760960?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
+  $.activityId = '33d9ae00c1904c20bd8a4488fc5d6f33'
+  console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/797702?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
     if (cookie) {
