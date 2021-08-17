@@ -62,7 +62,7 @@ message = ""
     });
     return;
   }
-  $.shareUuid = '635b2c7e02624c0ab249ce33b9bbbab2'
+  $.shareUuid = '298856c4183841979195908b6c7a85ed'
   $.activityId = 'dz2108100000412302'
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/xiaomi/gameupd/activity/1272964?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   console.log(`设置第${stopIndex}个账号停止\n`)
@@ -118,7 +118,7 @@ async function run(){
     await $.wait(1000)
     await getShareRecord()
     $.log($.shareUuid)
-    if ($.index === 4) {
+    if ($.index === 1) {
       if($.actorUuid){
         $.shareUuid = $.actorUuid;
         console.log(`后面的号都会助力:${$.shareUuid}`)
