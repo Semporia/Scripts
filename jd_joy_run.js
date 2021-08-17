@@ -145,8 +145,8 @@ async function main() {
           run_pins = run_pins[0].split(',')
           Object.values(jdCookieNode).filter(item => item.match(/pt_pin=([^; ]+)(?=;?)/)).map(item => run_pins.push(decodeURIComponent(item.match(/pt_pin=([^; ]+)(?=;?)/)[1])))
           run_pins = [...new Set(run_pins)];
-          let fixPins = run_pins.splice(run_pins.indexOf('吃薪-望饷'), 1);
-          fixPins.push(...run_pins.splice(run_pins.indexOf('jd_4d72a07e446a5'), 1));
+          let fixPins = run_pins.splice(run_pins.indexOf('jd_4d72a07e446a5'), 1);
+          fixPins.push(...run_pins.splice(run_pins.indexOf('jd_xSwGGPGahqma'), 1));
           const randomPins = getRandomArrayElements(run_pins, run_pins.length);
           run_pins = [[...fixPins, ...randomPins].join(',')];
           invite_pins = run_pins;
