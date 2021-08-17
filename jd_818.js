@@ -1,7 +1,7 @@
 /*
 京东手机狂欢城活动
 活动时间: 2021-8-9至2021-8-28
-活动入口：21.0复制整段话 https:/J4OdHn0gIrkVLF 京东手机818狂撒海量手机，瓜分1亿京豆#AB2NvF3Nvb@达kai→亰栋{a※pp}
+活动入口：https://carnivalcity.m.jd.com/
 
 往期奖励：
 a、第1名可获得实物手机一部
@@ -33,7 +33,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 
-console.log(`入口：\n21.0复制整段话 https:/J4OdHn0gIrkVLF 京东手机818狂撒海量手机，瓜分1亿京豆#AB2NvF3Nvb@达kai→亰栋{a※pp}\n`)
+console.log(`入口：\nhttps://carnivalcity.m.jd.com/\n`)
 
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
