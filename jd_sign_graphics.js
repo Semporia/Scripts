@@ -49,8 +49,8 @@ const turnTableId = [
   { "name": "京东超市", "id": 1204, "url": "https://pro.m.jd.com/mall/active/QPwDgLSops2bcsYqQ57hENGrjgj/index.html" },
 ]
 $.UA = $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1")
-$.get = validator.injectToRequest($.get.bind($), 'channelSign', $.UA)
-$.post = validator.injectToRequest($.post.bind($), 'channelSign', $.UA)
+$.get = validator.injectToRequest3($.get.bind($), 'channelSign', $.UA)
+$.post = validator.injectToRequest3($.post.bind($), 'channelSign', $.UA)
 
 !(async () => {
   if (!cookiesArr[0]) {
