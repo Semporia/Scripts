@@ -1,9 +1,9 @@
 /* 
-cron 14 10 * * * https://raw.githubusercontent.com/smiek2221/scripts/master/jd_sign_graphics.js
+cron 14 10 * * * jd_sign_graphics.js
 只支持nodejs环境
 需要安装依赖 
 npm i png-js 或者 npm i png-js -S
-
+from：https://github.com/smiek2221/scripts/
 如果 read ECONNRESET 错误 可以试试
 环境变量 JOY_HOST
 修改域名 https://jdjoy.jd.com 可以改成ip https://49.7.27.236
@@ -33,6 +33,7 @@ let signFlag = false
 let successNum = 0
 let errorNum = 0
 let JD_API_HOST = 'https://jdjoy.jd.com'
+$.invokeKey = "ztmFUCxcPMNyUq0P"
 if(process.env.JOY_HOST){
   JD_API_HOST = process.env.JOY_HOST
 }
@@ -48,8 +49,8 @@ const turnTableId = [
   { "name": "京东超市", "id": 1204, "url": "https://pro.m.jd.com/mall/active/QPwDgLSops2bcsYqQ57hENGrjgj/index.html" },
 ]
 $.UA = $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1")
-$.get = validator.injectToRequest3($.get.bind($), 'channelSign', $.UA)
-$.post = validator.injectToRequest3($.post.bind($), 'channelSign', $.UA)
+$.get = validator.injectToRequest($.get.bind($), 'channelSign', $.UA)
+$.post = validator.injectToRequest($.post.bind($), 'channelSign', $.UA)
 
 !(async () => {
   if (!cookiesArr[0]) {
@@ -98,6 +99,7 @@ async function signRun() {
     }else{
       errorNum++;
     }
+    await $.wait(1000)
   }
 }
 
@@ -228,7 +230,7 @@ function getEid(arr) {
 }
 
 function taskUrl(turnTableId) {
-  const url = `${JD_API_HOST}/api/turncard/channel/detail?turnTableId=${turnTableId}&invokeKey=qRKHmL4sna8ZOP9F`
+  const url = `${JD_API_HOST}/api/turncard/channel/detail?turnTableId=${turnTableId}&invokeKey=${$.invokeKey}`
   return {
     url,
     headers: {
@@ -246,7 +248,7 @@ function taskUrl(turnTableId) {
 }
 
 function tasPostkUrl(turnTableId) {
-  const url = `${JD_API_HOST}/api/turncard/channel/sign?turnTableId=${turnTableId}&fp=${fp}&eid=${eid}&invokeKey=qRKHmL4sna8ZOP9F`
+  const url = `${JD_API_HOST}/api/turncard/channel/sign?turnTableId=${turnTableId}&fp=${fp}&eid=${eid}&invokeKey=${$.invokeKey}`
   return {
     url,
     headers: {
@@ -260,6 +262,18 @@ function tasPostkUrl(turnTableId) {
       "Origin": "https://prodev.m.jd.com",
       "Referer": "https://prodev.m.jd.com/",
       "User-Agent": $.UA,
+    }
+  }
+}
+
+function jsonParse(str) {
+  if (typeof str == "string") {
+    try {
+      return JSON.parse(str);
+    } catch (e) {
+      console.log(e);
+      $.msg($.name, '', '请勿随意在BoxJs输入框修改内容\n建议通过脚本去获取cookie')
+      return [];
     }
   }
 }
