@@ -1,7 +1,7 @@
 /*
 
 入口：首页-领京豆-升级赚京豆
-21 9 * * * jd_upgrade.js, tag=升级赚京豆, enabled=true
+cron 21 9 * * * jd_upgrade.js, tag=升级赚京豆, enabled=true
 
 */
 
