@@ -118,7 +118,7 @@ async function run(){
     await $.wait(1000)
     await getShareRecord()
     $.log($.shareUuid)
-    if ($.index === 1) {
+    if ($.index === 4) {
       if($.actorUuid){
         $.shareUuid = $.actorUuid;
         console.log(`后面的号都会助力:${$.shareUuid}`)
