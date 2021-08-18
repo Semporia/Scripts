@@ -16,17 +16,17 @@
 ============Quantumultx===============
 [task_local]
 #8.18-8.26 全民发一发 大牌狂欢趴
-30 9,21 18-26 8 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818b.js, tag=8.18-8.26 全民发一发 大牌狂欢趴, enabled=true
+30 8,20 18-26 8 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818b.js, tag=8.18-8.26 全民发一发 大牌狂欢趴, enabled=true
 
 ================Loon==============
 [Script]
-cron "30 9,21 18-26 8 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818b.js,tag=8.18-8.26 全民发一发 大牌狂欢趴
+cron "30 8,20 18-26 8 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818b.js,tag=8.18-8.26 全民发一发 大牌狂欢趴
 
 ===============Surge=================
-8.18-8.26 全民发一发 大牌狂欢趴 = type=cron,cronexp="30 9,21 18-26 8 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818b.js
+8.18-8.26 全民发一发 大牌狂欢趴 = type=cron,cronexp="30 8,20 18-26 8 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818b.js
 
 ============小火箭=========
-8.18-8.26 全民发一发 大牌狂欢趴 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818b.js, cronexpr="30 9,21 18-26 8 *", timeout=3600, enable=true
+8.18-8.26 全民发一发 大牌狂欢趴 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818b.js, cronexpr="30 8,20 18-26 8 *", timeout=3600, enable=true
 */
 const $ = new Env('8.18-8.26 全民发一发 大牌狂欢趴');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
