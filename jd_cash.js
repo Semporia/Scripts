@@ -34,8 +34,8 @@ let allMessage = '';
     return;
   }
   await requireConfig()
-  //await getAuthorShareCode();
-  //await getAuthorShareCode2();
+  await getAuthorShareCode();
+  await getAuthorShareCode2();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
