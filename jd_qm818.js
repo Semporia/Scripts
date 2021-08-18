@@ -1,5 +1,6 @@
 /*
 8.18-8.25 全民818 一“促”即发" [jd_qm818.js]
+cron "40 8,20 18-25 8 *" jd_qm818.js
 新增开卡脚本
 一次性脚本
 
@@ -16,17 +17,17 @@
 ============Quantumultx===============
 [task_local]
 #8.18-8.25 全民818 一“促”即发"
-30 9,21 18-25 8 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818.js, tag=8.18-8.25 全民818 一“促”即发", enabled=true
+40 8,20 18-25 8 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818.js, tag=8.18-8.25 全民818 一“促”即发", enabled=true
 
 ================Loon==============
 [Script]
-cron "30 9,21 18-25 8 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818.js,tag=8.18-8.25 全民818 一“促”即发"
+cron "40 8,20 18-25 8 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818.js,tag=8.18-8.25 全民818 一“促”即发"
 
 ===============Surge=================
-8.18-8.25 全民818 一“促”即发" = type=cron,cronexp="30 9,21 18-25 8 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818.js
+8.18-8.25 全民818 一“促”即发" = type=cron,cronexp="40 8,20 18-25 8 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818.js
 
 ============小火箭=========
-8.18-8.25 全民818 一“促”即发" = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818.js, cronexpr="30 9,21 18-25 8 *", timeout=3600, enable=true
+8.18-8.25 全民818 一“促”即发" = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818.js, cronexpr="40 8,20 18-25 8 *", timeout=3600, enable=true
 */
 const $ = new Env('8.18-8.25 全民818 一“促”即发"');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
