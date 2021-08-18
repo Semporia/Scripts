@@ -12,7 +12,7 @@
 第一个CK失效会退出脚本
 
 ————————————————
-入口：[8.18-8.31 冰爽来袭 玩撞一夏 (https://lzdz1-isv.isvjcloud.com/lzclient/dz/2021jan/eliminateGame/0816eliminate/?activityId=8461aaca3fd24c66a3674da99c5342eb&shareUuid=)]
+入口：[8.18-8.31 冰爽来袭 玩撞一夏 (https://lzdz1-isv.isvjcloud.com/lzclient/dz/2021jan/eliminateGame/0816eliminate/?activityId=8461aaca3fd24c66a3674da99c5342eb&shareUuid=1c465fce06de477e8dc9feaf801ad3ae)]
 ============Quantumultx===============
 [task_local]
 #8.18-8.31 冰爽来袭 玩撞一夏
@@ -43,7 +43,7 @@ if ($.isNode()) {
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
-let opencardIce_addSku = true
+let opencardIce_addSku = false
 opencardIce_addSku = $.isNode() ? (process.env.opencard_ice_addSku ? process.env.opencard_ice_addSku : `${opencardIce_addSku}`) : ($.getdata('opencard_ice_addSku') ? $.getdata('opencard_ice_addSku') : `${opencardIce_addSku}`);
 message = ""
 !(async () => {
@@ -54,7 +54,7 @@ message = ""
     return;
   }
   
-  $.shareUuid = ''
+  $.shareUuid = '1c465fce06de477e8dc9feaf801ad3ae'
   $.activityId = '8461aaca3fd24c66a3674da99c5342eb'
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/lzclient/dz/2021jan/eliminateGame/0816eliminate/?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   for (let i = 0; i < cookiesArr.length; i++) {
