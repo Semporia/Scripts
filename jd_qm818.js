@@ -29,7 +29,7 @@ cron "40 8,20 18-25 8 *" script-path=https://raw.githubusercontent.com/he1pu/JDH
 ============小火箭=========
 8.18-8.25 全民818 一“促”即发" = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_qm818.js, cronexpr="40 8,20 18-25 8 *", timeout=3600, enable=true
 */
-const $ = new Env('8.18-8.25 全民818 一“促”即发"');
+const $ = new Env('8.18-8.25 全民818 一促即发');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
