@@ -13,7 +13,7 @@ cron "40 8,20 18-25 8 *" jd_qm818.js
 第一个CK失效会退出脚本
 
 ————————————————
-入口：[8.18-8.25 全民818 一“促”即发" (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/7768835?activityId=02d54511202b4d1781088b66b9e07b9c&shareUuid=)]
+入口：[8.18-8.25 全民818 一“促”即发" (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/7768835?activityId=02d54511202b4d1781088b66b9e07b9c&shareUuid=5943af5902344cc3aab543dac227b0f0)]
 ============Quantumultx===============
 [task_local]
 #8.18-8.25 全民818 一“促”即发"
@@ -60,7 +60,7 @@ message = ""
 //      return
 //    }
 //  }
-  $.shareUuid = ''
+  $.shareUuid = '5943af5902344cc3aab543dac227b0f0'
   $.activityId = '02d54511202b4d1781088b66b9e07b9c'
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/7768835?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   for (let i = 0; i < cookiesArr.length; i++) {
