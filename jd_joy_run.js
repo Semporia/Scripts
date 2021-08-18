@@ -123,7 +123,7 @@ async function main() {
   }
   console.log(`打印token：${$.LKYLToken ? $.LKYLToken : '暂无token'}\n`)
   if (!$.LKYLToken) {
-    $.msg($.name, '【提示】请先获取来客有礼宠汪汪token', "1、开启使用抓包工具\n2、微信搜索'来客有礼'小程序，点击底部的'发现'\n3、在抓包工具中搜索（请求头）“LKYLToken”\n4、填入环境变量：JOY_RUN_TOKEN");
+    $.msg($.name, '【提示】请先获取来客有礼宠汪汪token', "1、开启抓包工具(iOS免费工具商店搜索stream)\n2、微信搜索'来客有礼'小程序\n3、在抓包工具中搜索（请求头）“LKYLToken”\n4、填入环境变量：JOY_RUN_TOKEN");
     return;
   }
   await getFriendPins();
