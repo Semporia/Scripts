@@ -71,7 +71,7 @@ let allMessage = '';
 async function jdCash() {
   $.signMoney = 0;
   await index()
-  await shareCodesFormat()
+  //await shareCodesFormat()
   //await helpFriends()
   await getReward()
   await getReward('2');
