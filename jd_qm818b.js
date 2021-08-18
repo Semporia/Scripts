@@ -11,11 +11,8 @@
 第一个账号助力作者 其他依次助力CK1
 第一个CK失效会退出脚本
 
-默认脚本不执行
-如需执行脚本请设置环境变量
-qm818b="true"
 ————————————————
-入口：[8.18-8.26 全民发一发 大牌狂欢趴 (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/3542672?activityId=375dbaa9e32c4c70bb8357836956ed2e&shareUuid=)]
+入口：[8.18-8.26 全民发一发 大牌狂欢趴 (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/3542672?activityId=375dbaa9e32c4c70bb8357836956ed2e&shareUuid=22fa6e5144804a69a6cf80cbe5cdc9fb)]
 ============Quantumultx===============
 [task_local]
 #8.18-8.26 全民发一发 大牌狂欢趴
@@ -62,7 +59,7 @@ message = ""
 //      return
 //    }
 //  }
-  $.shareUuid = ''
+  $.shareUuid = '22fa6e5144804a69a6cf80cbe5cdc9fb'
   $.activityId = '375dbaa9e32c4c70bb8357836956ed2e'
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/3542672?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   for (let i = 0; i < cookiesArr.length; i++) {
