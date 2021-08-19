@@ -1,6 +1,6 @@
 /*
 京东工业品抽奖
-cron "10 5 17,18 8 *" jd_industryLottery.js
+cron "10 5,10 * * *" jd_industryLottery.js
  */
 const $ = new Env('工业品抽奖机');
 const notify = $.isNode() ? require('./sendNotify') : '';
