@@ -18,6 +18,7 @@ let helpAuthor = false;
 const randomCount = $.isNode() ? 5 : 5;
 let cash_exchange = false;//是否消耗2元红包兑换200京豆，默认否
 const inviteCodes = ['']
+$.newShareCodes = []
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -128,6 +129,7 @@ function index(info=false) {
                 'inviteCode': data.data.result.inviteCode,
                 'shareDate': data.data.result.shareDate
               }
+              $.newShareCodes.push(helpInfo)
               $.shareDate = data.data.result.shareDate;
               // $.log(`shareDate: ${$.shareDate}`)
               // console.log(helpInfo)
@@ -167,6 +169,7 @@ function index(info=false) {
 }
 async function helpFriends() {
   $.canHelp = true
+  console.log(`开始账号内互助\n`)
   for (let code of $.newShareCodes) {
     console.log(`去帮助好友${code['inviteCode']}`)
     await helpFriend(code)
