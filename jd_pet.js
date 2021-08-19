@@ -473,8 +473,10 @@ function readShareCode() {
         $.logErr(e, resp)
       } finally {
         if(data.hasOwnProperty('code')) {
+          console.log(data)
           resolve(data);
         }else {
+          console.log(`==>${data}`)
           resolve({"code":500})
         }
       }
