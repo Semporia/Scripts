@@ -473,7 +473,7 @@ function readShareCode() {
         $.logErr(e, resp)
       } finally {
         if(data.hasOwnProperty('code')) {
-          resolve(data || {"code":500});
+          resolve(data);
         }else {
           resolve({"code":500})
         }
@@ -501,7 +501,7 @@ function submitCode() {
         $.logErr(e, resp)
       } finally {
         if(data.hasOwnProperty('code')) {
-          resolve(data || {"code":500});
+          resolve(data);
         }else {
           resolve({"code":500})
         }
