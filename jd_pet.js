@@ -473,16 +473,9 @@ function readShareCode() {
         $.logErr(e, resp)
       } finally {
         resolve(data || {"code":500})
-//         if(data.hasOwnProperty('code')) {
-//           console.log(data)
-//           resolve(data);
-//         }else {
-//           console.log(`==>${data}`)
-//           resolve({"code":500})
-//         }
       }
     })
-    await $.wait(6000);
+    //await $.wait(6000);
     resolve({"code":500})
   })
 }
@@ -503,14 +496,10 @@ function submitCode() {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        if(data.hasOwnProperty('code')) {
-          resolve(data);
-        }else {
-          resolve({"code":500})
-        }
+        resolve(data || {"code":500})
       }
     })
-    await $.wait(6000);
+    //await $.wait(6000);
     resolve({"code":500})
   })
 }
