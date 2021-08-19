@@ -766,11 +766,11 @@ function submitCode(myInviteCode, userName) {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve(data);
+        resolve(data || {"code":500});
       }
     })
     //await $.wait(15000);
-    resolve()
+    resolve({"code":500})
   })
 }
 function readShareCode() {
@@ -798,11 +798,11 @@ function readShareCode() {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve(data);
+        resolve(data || {"code":500});
       }
     })
     //await $.wait(2000);
-    resolve()
+    resolve({"code":500})
   })
 }
 
