@@ -472,7 +472,11 @@ function readShareCode() {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve(data || {"code":500});
+        if(data.hasOwnProperty('code')) {
+          resolve(data || {"code":500});
+        }else {
+          resolve({"code":500})
+        }
       }
     })
     //await $.wait(6000);
@@ -496,7 +500,11 @@ function submitCode() {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve(data || {"code":500});
+        if(data.hasOwnProperty('code')) {
+          resolve(data || {"code":500});
+        }else {
+          resolve({"code":500})
+        }
       }
     })
     //await $.wait(6000);
