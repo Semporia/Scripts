@@ -1,7 +1,7 @@
 /*
 京喜财富岛
 cron 5 * * * * jd_cfd.js
-更新时间：2021-7-13
+更新时间：2021-8-19
 活动入口：京喜APP-我的-京喜财富岛
 from：https://github.com/Aaron-lv/sync/tree/jd_scripts
 已支持IOS双京东账号,Node.js支持N个京东账号
@@ -1601,11 +1601,11 @@ function submitCode(myInviteCode, user) {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve(data);
+        resolve(data || {"code":500});
       }
     })
     //await $.wait(15000);
-    resolve()
+    resolve({"code":500})
   })
 }
 function readShareCode() {
@@ -1630,11 +1630,11 @@ function readShareCode() {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve(data);
+        resolve(data || {"code":500});
       }
     })
     //await $.wait(2000);
-    resolve()
+    resolve({"code":500})
   })
 }
 //格式化助力码
