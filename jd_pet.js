@@ -475,7 +475,7 @@ function readShareCode() {
         resolve(data || {"code":500});
       }
     })
-    await $.wait(6000);
+    //await $.wait(6000);
     resolve({"code":500})
   })
 }
@@ -499,7 +499,7 @@ function submitCode() {
         resolve(data || {"code":500});
       }
     })
-    await $.wait(6000);
+    //await $.wait(6000);
     resolve({"code":500})
   })
 }
