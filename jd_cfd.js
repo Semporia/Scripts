@@ -1604,7 +1604,7 @@ function submitCode(myInviteCode, user) {
         resolve(data || {"code":500});
       }
     })
-    //await $.wait(15000);
+    await $.wait(10000);
     resolve({"code":500})
   })
 }
@@ -1633,7 +1633,7 @@ function readShareCode() {
         resolve(data || {"code":500});
       }
     })
-    //await $.wait(2000);
+    await $.wait(10000);
     resolve({"code":500})
   })
 }
