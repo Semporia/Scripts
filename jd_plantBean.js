@@ -575,11 +575,11 @@ function readShareCode() {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve(data);
+        resolve(data || {"code":500});
       }
     })
-    await $.wait(15000);
-    resolve()
+    await $.wait(6000);
+    resolve({"code":500})
   })
 }
 //提交互助码
@@ -599,11 +599,11 @@ function submitCode() {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve(data);
+        resolve(data || {"code":500});
       }
     })
-    await $.wait(15000);
-    resolve()
+    await $.wait(6000);
+    resolve({"code":500})
   })
 }
 //格式化助力码
