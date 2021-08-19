@@ -1,5 +1,5 @@
 /*
-Last Modified time: 2020-12-26 22:58:02
+Last Modified time: 2021-8-19
 东东工厂，不是京喜工厂
 活动入口：京东APP首页-数码电器-东东工厂
 免费产生的电量(10秒1个电量，500个电量满，5000秒到上限不生产，算起来是84分钟达到上限)
@@ -639,11 +639,11 @@ function readShareCode() {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve(data);
+        resolve(data || {"code":500});
       }
     })
-    await $.wait(10000);
-    resolve()
+    //await $.wait(10000);
+    resolve({"code":500})
   })
 }
 //提交互助码
@@ -663,11 +663,11 @@ function submitCode() {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve(data);
+        resolve(data || {"code":500});
       }
     })
-    await $.wait(15000);
-    resolve()
+    //await $.wait(15000);
+    resolve({"code":500})
   })
 }
 //格式化助力码
