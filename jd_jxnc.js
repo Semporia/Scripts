@@ -314,24 +314,24 @@ async function jdJXNC() {
         await $.wait(500);
         const endInfo = await getTaskList();
         getMessage(endInfo, startInfo);
-        await submitInviteId($.UserName);
+        //await submitInviteId($.UserName);
         await $.wait(500);
         let next = await helpFriends();
-        if (next) {
-          while ($.helpNum < $.maxHelpNum) {
-            $.helpNum++;
-            assistUserShareCodeJson = await getAssistUser();
-            if (assistUserShareCodeJson) {
-              await $.wait(500);
-              next = await helpShareCode(assistUserShareCodeJson['smp'], assistUserShareCodeJson['active'], assistUserShareCodeJson['joinnum']);
-              if (next) {
-                await $.wait(1000);
-                continue;
-              }
-            }
-            break;
-          }
-        }
+//         if (next) {
+//           while ($.helpNum < $.maxHelpNum) {
+//             $.helpNum++;
+//             assistUserShareCodeJson = await getAssistUser();
+//             if (assistUserShareCodeJson) {
+//               await $.wait(500);
+//               next = await helpShareCode(assistUserShareCodeJson['smp'], assistUserShareCodeJson['active'], assistUserShareCodeJson['joinnum']);
+//               if (next) {
+//                 await $.wait(1000);
+//                 continue;
+//               }
+//             }
+//             break;
+//           }
+//         }
       }
     }
   }
