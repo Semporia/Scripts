@@ -659,11 +659,11 @@ function getAuthorShareCode(url="https://raw.githubusercontent.com/he1pu/JDHelp/
             } catch (e) {
                 // $.logErr(e, resp)
             } finally {
-                resolve(data || []);
+                resolve(data || '');
             }
         })
         await $.wait(10000)
-        resolve([]);
+        resolve('');
     })
 }
 
