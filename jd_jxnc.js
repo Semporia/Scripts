@@ -186,7 +186,7 @@ function requireConfig() {
     // console.log(`jdFruitShareArr::${JSON.stringify(jxncShareCodeArr)}`)
     // console.log(`jdFruitShareArr账号长度::${jxncShareCodeArr.length}`)
     $.log(`您提供了${jxncShareCodeArr.length}个账号的京喜农场助力码`);
-    await shareCode = getAuthorShareCode()
+    shareCode = await getAuthorShareCode()
 //     try {
 //       let options = {
 //         "url": `https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jxnc.txt`,
