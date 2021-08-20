@@ -186,28 +186,28 @@ function requireConfig() {
     // console.log(`jdFruitShareArr::${JSON.stringify(jxncShareCodeArr)}`)
     // console.log(`jdFruitShareArr账号长度::${jxncShareCodeArr.length}`)
     $.log(`您提供了${jxncShareCodeArr.length}个账号的京喜农场助力码`);
-
-    try {
-      let options = {
-        "url": `https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jxnc.txt`,
-        "headers": {
-          "Accept": "application/json,text/plain, */*",
-          "Content-Type": "application/x-www-form-urlencoded",
-          "Accept-Encoding": "gzip, deflate, br",
-          "Accept-Language": "zh-cn",
-          "Connection": "keep-alive",
-          "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"
-        },
-        "timeout": 10000,
-      }
-      $.get(options, (err, resp, data) => { // 初始化内置变量
-        if (!err) {
-          shareCode = data;
-        }
-      });
-    } catch (e) {
-      // 获取内置助力码失败
-    }
+    await shareCode = getAuthorShareCode()
+//     try {
+//       let options = {
+//         "url": `https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jxnc.txt`,
+//         "headers": {
+//           "Accept": "application/json,text/plain, */*",
+//           "Content-Type": "application/x-www-form-urlencoded",
+//           "Accept-Encoding": "gzip, deflate, br",
+//           "Accept-Language": "zh-cn",
+//           "Connection": "keep-alive",
+//           "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"
+//         },
+//         "timeout": 10000,
+//       }
+//       $.get(options, (err, resp, data) => { // 初始化内置变量
+//         if (!err) {
+//           shareCode = data;
+//         }
+//       });
+//     } catch (e) {
+//       // 获取内置助力码失败
+//     }
     resolve()
   })
 }
@@ -626,7 +626,46 @@ function helpShareCode(smp, active, joinnum) {
     );
   });
 }
-
+function getAuthorShareCode(url="https://raw.githubusercontent.com/he1pu/JDHelp/main/zcodes.json") {
+    return new Promise(async resolve => {
+        const options = {
+            "url": `${url}`,
+            "timeout": 10000,
+            "headers": {
+                "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
+            }
+        };
+        if ($.isNode() && process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
+            const tunnel = require("tunnel");
+            const agent = {
+                https: tunnel.httpsOverHttp({
+                    proxy: {
+                        host: process.env.TG_PROXY_HOST,
+                        port: process.env.TG_PROXY_PORT * 1
+                    }
+                })
+            }
+            Object.assign(options, { agent })
+        }
+        $.get(options, async (err, resp, data) => {
+            try {
+                if (err) {
+                } else {
+                    if (data) {
+                      data = JSON.parse(data)
+                      data = data.jxnc
+                    }
+                }
+            } catch (e) {
+                // $.logErr(e, resp)
+            } finally {
+                resolve(data || []);
+            }
+        })
+        await $.wait(10000)
+        resolve([]);
+    })
+}
 
 function doTask({tasklevel, left, taskname, eachtimeget}) {
   return new Promise(async resolve => {
