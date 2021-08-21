@@ -26,7 +26,7 @@ opencarCollecte="true"
 30 10,19 * 8 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencarCollecte.js, tag=大牌集合 宠粉狂欢, enabled=true
 */
 const $ = new Env('大牌集合 宠粉狂欢');
-const Faker=require('./sign_graphics_validate.js')
+const Faker=require('./utils/sign_graphics_validate.js')
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 const notify = $.isNode() ? require('./sendNotify') : '';
