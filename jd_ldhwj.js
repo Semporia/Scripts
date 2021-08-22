@@ -243,7 +243,8 @@ async function getlist(){
     $.post(MyRequest,async(error, response, data) =>{
     try{
         const result = JSON.parse(data)
-        if(logs)$.log(data)
+        //if(logs)
+		$.log(data)
         if(result.code == 0){
        console.log("查看任务列表\n")
        let list1 = result.data.result.taskVos.find(item => item.taskId == 1)
