@@ -243,8 +243,7 @@ async function getlist(){
     $.post(MyRequest,async(error, response, data) =>{
     try{
         const result = JSON.parse(data)
-        //if(logs)
-		$.log(data)
+        if(logs)$.log(data)
         if(result.code == 0){
        console.log("查看任务列表\n")
        let list1 = result.data.result.taskVos.find(item => item.taskId == 1)
@@ -260,6 +259,7 @@ list2tokenArr.push(list2.shoppingActivityVos[i].taskToken)
        }
        
          let list6 = result.data.result.taskVos.find(item => item.taskId == 3)
+	 $.log(list6)
        for(let i = 0; i < list6.shoppingActivityVos.length; i ++){
        listtokenArr.push(6+list6.shoppingActivityVos[i].taskToken)
 list2tokenArr.push(list6.shoppingActivityVos[i].taskToken)
