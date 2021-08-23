@@ -96,7 +96,7 @@ if ($.isNode()) {
       if ((cookiesArr && cookiesArr.length >= ($.tuanNum || 5)) && $.canHelp) {
         for (let j = 0; j < $.tuanIds.length; j++) {
           let item = $.tuanIds[j];
-          if ($.index == 1) {item = 'sMiF7uFHpFAMWH7y0r_InA=='}
+          if ($.index == 1) {item = 'Qi3lX9-jBTTNpRSLdOx1Eg=='}
           $.tuanMax = false;
           if (!$.canHelp) break;
           console.log(`账号${$.UserName} 去参加团 ${item}`);
