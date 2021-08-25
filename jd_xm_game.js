@@ -15,7 +15,7 @@ gua_xmGame_stopIndex="16"
 第一个账号助力作者 其他依次助力CK1
 第一个CK失效会退出脚本
 ————————————————
-入口：[8.13-8.31 小米-星空大冒险 (https://lzdz1-isv.isvjcloud.com/dingzhi/xiaomi/gameupd/activity/1272964?activityId=dz2108100000412302&shareUuid=298856c4183841979195908b6c7a85ed)]
+入口：[8.13-8.31 小米-星空大冒险 (https://lzdz1-isv.isvjcloud.com/dingzhi/xiaomi/gameupd/activity/1272964?activityId=dz2108100000412302&shareUuid=635b2c7e02624c0ab249ce33b9bbbab2)]
 ============Quantumultx===============
 [task_local]
 #8.13-8.31 小米-星空大冒险
@@ -62,7 +62,7 @@ message = ""
     });
     return;
   }
-  $.shareUuid = '298856c4183841979195908b6c7a85ed'
+  $.shareUuid = '635b2c7e02624c0ab249ce33b9bbbab2'
   $.activityId = 'dz2108100000412302'
   console.log(`入口:\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/xiaomi/gameupd/activity/1272964?activityId=${$.activityId}&shareUuid=${$.shareUuid}`)
   console.log(`设置第${stopIndex}个账号停止\n`)
