@@ -109,10 +109,6 @@ async function run() {
         for (let i = 0; i < $.taskList.length; i++) {
           $.oneTask = $.taskList[i];
           if($.task.showOrder == 1){
-            if(guaopencard+"" != "true"){
-              console.log('如需开卡请设置环境变量[guaopencard17]为"true"')
-              break
-            }
             if($.oneTask.cardName.indexOf('马克华') > -1) continue
             console.log(`${$.oneTask.cardName} ${0 == $.oneTask.result ? "开卡得" + $.oneTask.rewardQuantity + "京豆" : 1 == $.oneTask.result ? "领取" + $.oneTask.rewardQuantity + "京豆" : 3 == $.oneTask.result ? "其他渠道入会" : "已入会"}`)
             if($.oneTask.result == 0) await statistic(`{"activityType":"module_task","groupType":7,"configCode":"${item.configCode}","itemId":${$.oneTask.cardId}}`)
@@ -120,10 +116,6 @@ async function run() {
             await $.wait(parseInt(Math.random() * 1000 + 500, 10))
             if($.oneTask.result == 1 || $.oneTask.result == 0) await getReward(`{"configCode":"${item.configCode}","groupType":7,"itemId":${$.oneTask.cardId},"eid":"${$.eid}","fp":"${$.fp}"}`)
           }else if($.task.showOrder == 2){
-            if(guaopencardRun+"" != "true"){
-              console.log('如需做任务请设置环境变量[guaopencardRun17]为"true"')
-              break
-            }
             $.cacheNum = 0
             $.doTask = false
             $.outActivity = false
