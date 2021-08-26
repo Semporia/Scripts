@@ -96,7 +96,7 @@ const BASE_URL = 'https://wq.jd.com/cubeactive/steprewardv3'
     }
     if ($.canHelp) {
       console.log(`\n【${$.UserName}】有剩余助力机会，开始助力作者\n`)
-      for (let item of $.authorMyShareIds) {
+      for (let item of ['m0LuttwFQMorELxcDKqZaYk5v2x0585aHwbhbBwxEd5ttJ9_HhlMMSLWcTAbmXiN']) {
         if (!item) continue;
         console.log(`【${$.UserName}】去助力作者的邀请码：${item}`);
         await enrollFriend(item);
