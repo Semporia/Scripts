@@ -74,7 +74,7 @@ const JD_API_HOST = `https://api.m.jd.com`;
                     $.inviter = dyjStr[1]
                 }
             }
-            await help('e83886265ab9477eb4206ba94764e4b520721628474935213', 'TcRo9GSFphN6X-DAuLLTzkXJgjiVoUJzlYLUvgszEh0', 1, true) //用你开包的号给我助力一次
+            await help('86cbd9c76a2841af964b39f6e408815216941629907262240', 'TcRo9GSFphN6X-DAuLLTzkXJgjiVoUJzlYLUvgszEh0', 1, true) //用你开包的号给我助力一次
         }
     }
 
