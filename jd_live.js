@@ -104,10 +104,9 @@ function getTaskList() {
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (safeGet(data)) {
-console.log(data);
             data = JSON.parse(data);
-            if(data.data)｛
-              for (let key of Object.keys(data.data.starLiveList)) {
+            if(data.data.starLiveList) {
+                for (let key of Object.keys(data.data.starLiveList)) {
                 let vo = data.data.starLiveList[key]
                 if (vo.state !== 3) {
                   let authorId = (await getauthorId(vo.extra.liveId)).data.author.authorId
@@ -115,7 +114,7 @@ console.log(data);
                   await awardTask("starViewTask", vo.extra.liveId)
                 }
               }
-            ｝
+            }  
             console.log(`去做分享直播间任务`)
             await shareTask()
             await awardTask()
