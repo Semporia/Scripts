@@ -105,7 +105,7 @@ function getTaskList() {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-            if(data.data.starLiveList)｛
+            if(data.data)｛
               for (let key of Object.keys(data.data.starLiveList)) {
                 let vo = data.data.starLiveList[key]
                 if (vo.state !== 3) {
