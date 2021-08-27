@@ -21,7 +21,6 @@ if ($.isNode()) {
   packetId = process.env.tt_packetId;
   }else {
     console.log(`您当前未设置环境变量：tt_packetId。将使用默认id。`);
-    await $.wait(3000)
   }
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
