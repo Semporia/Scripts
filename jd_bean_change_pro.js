@@ -77,7 +77,7 @@ if ($.isNode()) {
     }
 
     if ($.isNode() && allMessage) {
-        await notify.sendNotify(`${$.name}`, `${allMessage}`, { url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean` })
+        await notify.sendNotify(`${$.name}`, `${allMessage}`, {url: `https://bean.m.jd.com/beanDetail/index.action?resourceValue=bean`}, '\n\n本通知 By：https://github.com/he1pu/JDHelp')
     }
 })()
     .catch((e) => {
