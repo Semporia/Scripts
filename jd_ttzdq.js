@@ -7,7 +7,7 @@ export tt_packetId="邀请码"
 #推推赚大钱
 0 0,2,22 * * * jd_ttzdq.js, tag=推推赚大钱, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 */
-const $ = new Env('推赚大钱');
+const $ = new Env('推推赚大钱');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
