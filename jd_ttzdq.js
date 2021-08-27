@@ -1,9 +1,9 @@
 /*
 入口：极速版-->百元生活费-->赚金币-->推推赚大钱
 分享到QQ可查看邀请码packetId
-#自定义变量
-export packetId=""
- [task_local]
+！！！！！！多账号务必自定义变量！！！！！
+export tt_packetId="邀请码"
+[task_local]
 #推推赚大钱
 0 0,2,22 * * * jd_ttzdq.js, tag=推推赚大钱, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 */
@@ -18,7 +18,7 @@ let packetId = '';
 
 if ($.isNode()) {
   if (process.env.tt_packetId) {
-  packetId = process.env.tt_packetId;
+    packetId = process.env.tt_packetId;
   }else {
     console.log(`您当前未设置环境变量：tt_packetId。将使用默认id。`);
   }
