@@ -121,6 +121,16 @@ async function main() {
     let date = new Date($.activityData.actInfo.endTime)
     let endtime = date.getFullYear() + "-" + (date.getMonth() < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + "-" + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate())
     console.log(`${$.actinfo.actName},${$.actinfo.shopName},当前积分：${$.nowUseValue},结束时间：${endtime}，${$.activityData.actInfo.endTime}`);
+    let gitList = [];
+    let gitTypeList = ['One','Two','Three'];
+    for (let i = 0; i < gitTypeList.length; i++) {
+      let gitInfo = $.activityData.actInfo['giftLevel'+ gitTypeList[i]] || '';
+      if(gitInfo){
+        gitInfo = JSON.parse(gitInfo);
+        gitList.push(gitInfo[0].name);
+      }
+    }
+    console.log(`奖品列表：` + gitList.toString());
     if($.actorInfo.prizeOneStatus && $.actorInfo.prizeTwoStatus && $.actorInfo.prizeThreeStatus){
         console.log(`已抽过所有奖品`);return;
     }
