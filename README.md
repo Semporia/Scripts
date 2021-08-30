@@ -26,4 +26,4 @@ ql repo https://github.com/he1pu/JDHelp.git "jd_|jx_|getJDCookie" "activity|back
 ### iOS三件套（很多不支持）在仓库内有订阅配置文件
 ### Node和Docker拉取使用本仓库地址
 
-#### 红包记得用，在“京东极速版”或“京喜”上搜索“包邮”，不知道买啥选纸巾就完事了..
+#### 🧧部分红包会过期，记得用，在“京东极速版”或“京喜”上搜索“包邮”，不知道买啥选纸巾就完事了..
