@@ -133,6 +133,20 @@ async function cfd() {
         return
       }
     }
+    
+     // 寻宝
+    console.log(`寻宝`)
+    let XBDetail = beginInfo.XbStatus.XBDetail.filter((x) => x.ddwColdEndTm === 0 && x.dwRemainCnt === 3)
+    if (XBDetail.length !== 0) {
+      console.log(`开始寻宝`)
+      for (let key of Object.keys(beginInfo.XbStatus.XBDetail)) {
+        let vo = beginInfo.XbStatus.XBDetail[key]
+        await $.wait(2000)
+        await TreasureHunt(vo.strIndex)
+      }
+    } else {
+      console.log(`暂无宝物`)
+    }
 
     //每日签到
     await $.wait(2000)
@@ -270,6 +284,37 @@ async function cfd() {
     $.logErr(e)
   }
 }
+
+// 寻宝
+function TreasureHunt(strIndex) {
+   return new Promise((resolve) => {
+     $.get(taskUrl(`user/TreasureHunt`, `strIndex=${strIndex}`), (err, resp, data) => {
+       try {
+         if (err) {
+           console.log(`${JSON.stringify(err)}`)
+           console.log(`${$.name} TreasureHunt API请求失败，请检查网路重试`)
+         } else {
+           data = JSON.parse(data);
+           if (data.iRet === 0) {
+             if (data.AwardInfo.dwAwardType === 0) {
+               console.log(`${data.strAwardDesc}，获得 ${data.AwardInfo.ddwValue} 金币`)
+             } else if (data.AwardInfo.dwAwardType === 1) {
+               console.log(`${data.strAwardDesc}，获得 ${data.AwardInfo.ddwValue} 财富`)
+             } else {
+               console.log(JSON.stringify(data))
+             }
+           } else {
+             console.log(`寻宝失败：${data.sErrMsg}`)
+           }
+         }
+       } catch (e) {
+         $.logErr(e, resp);
+       } finally {
+         resolve();
+       }
+     })
+   })
+ }
 
 // 合成珍珠
 async function composeGameState(type = true) {
@@ -570,7 +615,7 @@ async function getTakeAggrPage(type) {
               console.log(`${$.name} GetTakeAggrPage API请求失败，请检查网路重试`)
             } else {
               data = JSON.parse(data);
-              console.log(`每日签到`)
+              console.log(`\n每日签到`)
               for (let key of Object.keys(data.Data.Sign.SignList)) {
                 let vo = data.Data.Sign.SignList[key]
                 if (vo.dwDayId === data.Data.Sign.dwTodayId) {
@@ -1212,7 +1257,8 @@ function getUserInfo(showInvite = true) {
             dwLandLvl,
             LeadInfo = {},
             StoryInfo = {},
-            Business = {}
+            Business = {},
+            XbStatus = {}
           } = data;
           if (showInvite) {
             console.log(`\n获取用户信息：${sErrMsg}\n${$.showLog ? data : ""}`);
@@ -1232,7 +1278,8 @@ function getUserInfo(showInvite = true) {
             strMyShareId,
             dwLandLvl,
             LeadInfo,
-            StoryInfo
+            StoryInfo,
+            XbStatus
           };
           resolve({
             buildInfo,
@@ -1240,7 +1287,8 @@ function getUserInfo(showInvite = true) {
             ddwCoinBalance,
             strMyShareId,
             LeadInfo,
-            StoryInfo
+            StoryInfo,
+            XbStatus
           });
         }
       } catch (e) {
