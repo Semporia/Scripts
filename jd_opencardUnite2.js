@@ -14,7 +14,7 @@
 第一个CK失效会退出脚本
 
 ————————————————
-
+26.0复制整段话 https:/J6JyFJ3BJukldO 来京东，更超值#g3qmAACJDmso8r@咑k鯨·=·鮗Ap/ρ
 ============Quantumultx===============
 [task_local]
 #9.1-9.6 联合开卡
