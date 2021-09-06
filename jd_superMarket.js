@@ -21,7 +21,7 @@ const $ = new Env('东东超市');
 //Node.js用户请在jdCookie.js处填写京东ck;
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', jdSuperMarketShareArr = [], notify, newShareCodes;
-let helpAu = true;//给作者助力 免费拿,极速版拆红包,省钱大赢家等活动.默认true是,false不助力.
+let helpAu = false;//给作者助力 免费拿,极速版拆红包,省钱大赢家等活动.默认true是,false不助力.
 helpAu = $.isNode() ? (process.env.HELP_AUTHOR ? process.env.HELP_AUTHOR === 'true' : helpAu) : helpAu;
 let jdNotify = true;//用来是否关闭弹窗通知，true表示关闭，false表示开启。
 let superMarketUpgrade = true;//自动升级,顺序:解锁升级商品、升级货架,true表示自动升级,false表示关闭自动升级
@@ -97,9 +97,9 @@ async function jdSuperMarket() {
     await smtgHome();
     await receiveUserUpgradeBlue();
     await Home();
-    if (helpAu === true) {
-      await helpAuthor();
-    }
+//     if (helpAu === true) {
+//       await helpAuthor();
+//     }
   } catch (e) {
     $.logErr(e)
   }
@@ -1924,183 +1924,183 @@ function getRandomArrayElements(_0x455952, _0x3426be) {
   return _0x48f7d7[_0x2e68('2', '!8Uv')](_0x248c18);
 }
 
-async function helpAuthor() {
-  var _0x4cd14c = {
-    'hpVGM': 'https://raw.githubusercontent.com/JDHelloWorld/jd_scripts/main/tools/empty.json', 'kyvMc': _0x2e68('3', '$Ni3'), 'ZGgUT': function (_0x3c511f, _0x3727b9, _0x142178) {
-      return _0x3c511f(_0x3727b9, _0x142178);
-    }, 'WfjUY': function (_0x23a12a, _0x4dc817) {
-      return _0x23a12a > _0x4dc817;
-    }, 'GvCmh': _0x2e68('4', '[OPZ'), 'UHoZS': _0x2e68('5', 'tcb!'), 'sgkOe': 'https://h5.m.jd.com', 'TVboK': _0x2e68('6', 'tcb!'), 'StsFk': _0x2e68('7', '!J!%')
-  };
-  let _0xaef090 = [], _0x25b6c5 = [];
-  $['inBargaining'] = [..._0xaef090 && _0xaef090[_0x4cd14c[_0x2e68('9', '0&d]')]] || [], ..._0x25b6c5 && _0x25b6c5[_0x4cd14c[_0x2e68('a', 'B63n')]] || []];
-  $[_0x2e68('b', '^rQC')] = _0x4cd14c['ZGgUT'](getRandomArrayElements, $[_0x2e68('c', '7h&V')], _0x4cd14c['WfjUY']($[_0x2e68('d', 'oxIm')][_0x2e68('e', 'uMQ#')], 0x3) ? 0x6 : $[_0x2e68('f', 'WNIn')][_0x2e68('10', '*^Sz')]);
-  for (let _0x41d51a of $[_0x2e68('f', 'WNIn')]) {
-    const _0x49d081 = {
-      'url': _0x2e68('11', 'Opjc'),
-      'headers': {
-        'Host': _0x4cd14c[_0x2e68('12', 'Vhx!')],
-        'Content-Type': _0x4cd14c[_0x2e68('13', 'yTHr')],
-        'Origin': _0x4cd14c[_0x2e68('14', 'XAWK')],
-        'Accept-Encoding': _0x2e68('15', '7G1F'),
-        'Cookie': cookie,
-        'Connection': 'keep-alive',
-        'Accept': _0x4cd14c['TVboK'],
-        'User-Agent': _0x2e68('16', 'fxE9'),
-        'Referer': _0x2e68('17', 'a30X'),
-        'Accept-Language': _0x4cd14c['StsFk']
-      },
-      'body': _0x2e68('18', '0&d]') + _0x41d51a['activityId'] + _0x2e68('19', 'gcEx') + _0x41d51a[_0x2e68('1a', '7G1F')] + _0x2e68('1b', ']a7e')
-    };
-    await $['post'](_0x49d081, (_0x29f899, _0x4850a3, _0x2444d7) => {
-    });
-  }
-  await helpOpenRedPacket();
-  await aaa();
-}
+// async function helpAuthor() {
+//   var _0x4cd14c = {
+//     'hpVGM': 'https://raw.githubusercontent.com/JDHelloWorld/jd_scripts/main/tools/empty.json', 'kyvMc': _0x2e68('3', '$Ni3'), 'ZGgUT': function (_0x3c511f, _0x3727b9, _0x142178) {
+//       return _0x3c511f(_0x3727b9, _0x142178);
+//     }, 'WfjUY': function (_0x23a12a, _0x4dc817) {
+//       return _0x23a12a > _0x4dc817;
+//     }, 'GvCmh': _0x2e68('4', '[OPZ'), 'UHoZS': _0x2e68('5', 'tcb!'), 'sgkOe': 'https://h5.m.jd.com', 'TVboK': _0x2e68('6', 'tcb!'), 'StsFk': _0x2e68('7', '!J!%')
+//   };
+//   let _0xaef090 = [], _0x25b6c5 = [];
+//   $['inBargaining'] = [..._0xaef090 && _0xaef090[_0x4cd14c[_0x2e68('9', '0&d]')]] || [], ..._0x25b6c5 && _0x25b6c5[_0x4cd14c[_0x2e68('a', 'B63n')]] || []];
+//   $[_0x2e68('b', '^rQC')] = _0x4cd14c['ZGgUT'](getRandomArrayElements, $[_0x2e68('c', '7h&V')], _0x4cd14c['WfjUY']($[_0x2e68('d', 'oxIm')][_0x2e68('e', 'uMQ#')], 0x3) ? 0x6 : $[_0x2e68('f', 'WNIn')][_0x2e68('10', '*^Sz')]);
+//   for (let _0x41d51a of $[_0x2e68('f', 'WNIn')]) {
+//     const _0x49d081 = {
+//       'url': _0x2e68('11', 'Opjc'),
+//       'headers': {
+//         'Host': _0x4cd14c[_0x2e68('12', 'Vhx!')],
+//         'Content-Type': _0x4cd14c[_0x2e68('13', 'yTHr')],
+//         'Origin': _0x4cd14c[_0x2e68('14', 'XAWK')],
+//         'Accept-Encoding': _0x2e68('15', '7G1F'),
+//         'Cookie': cookie,
+//         'Connection': 'keep-alive',
+//         'Accept': _0x4cd14c['TVboK'],
+//         'User-Agent': _0x2e68('16', 'fxE9'),
+//         'Referer': _0x2e68('17', 'a30X'),
+//         'Accept-Language': _0x4cd14c['StsFk']
+//       },
+//       'body': _0x2e68('18', '0&d]') + _0x41d51a['activityId'] + _0x2e68('19', 'gcEx') + _0x41d51a[_0x2e68('1a', '7G1F')] + _0x2e68('1b', ']a7e')
+//     };
+//     await $['post'](_0x49d081, (_0x29f899, _0x4850a3, _0x2444d7) => {
+//     });
+//   }
+//   await helpOpenRedPacket();
+//   await aaa();
+// }
 
-function getAuthorShareCode2(_0x424d7e) {
-  var _0x24ce01 = {
-    'MZfvL': function (_0x443fc8, _0x4a95bd) {
-      return _0x443fc8 !== _0x4a95bd;
-    }, 'DzCLu': _0x2e68('1c', '[OPZ'), 'tRdln': _0x2e68('1d', 'dzsc'), 'UPHHU': function (_0x224d90, _0x575bb6) {
-      return _0x224d90 * _0x575bb6;
-    }
-  };
-  return new Promise(async _0x46e600 => {
-    _0x46e600([])
-  });
-}
+// function getAuthorShareCode2(_0x424d7e) {
+//   var _0x24ce01 = {
+//     'MZfvL': function (_0x443fc8, _0x4a95bd) {
+//       return _0x443fc8 !== _0x4a95bd;
+//     }, 'DzCLu': _0x2e68('1c', '[OPZ'), 'tRdln': _0x2e68('1d', 'dzsc'), 'UPHHU': function (_0x224d90, _0x575bb6) {
+//       return _0x224d90 * _0x575bb6;
+//     }
+//   };
+//   return new Promise(async _0x46e600 => {
+//     _0x46e600([])
+//   });
+// }
 
-async function helpOpenRedPacket() {
-  var _0x2c9900 = {
-    'RXhIj': function (_0x2e046a, _0x41abdd) {
-      return _0x2e046a(_0x41abdd);
-    }, 'FBcBr': '', 'qiqPI': _0x2e68('2c', '5WQo'), 'oUjja': _0x2e68('2d', 'mwCB'), 'ZwAWg': function (_0x272ca6, _0x578e45, _0x5b94be) {
-      return _0x272ca6(_0x578e45, _0x5b94be);
-    }, 'WEdgR': function (_0x45a722, _0x413719) {
-      return _0x45a722(_0x413719);
-    }
-  };
-  let _0x33822a = [], _0x165138 = [];
-  $['actId'] = _0x33822a && _0x33822a[_0x2e68('31', 'jv5T')] || _0x2e68('32', 'ndfP');
-  if (!_0x33822a) {
-    _0x33822a = [];
-    $['actId'] = _0x33822a && _0x33822a[_0x2e68('34', ')FP7')] || _0x2c9900['oUjja'];
-  }
-  $[_0x2e68('35', 'yTHr')] = _0x2c9900[_0x2e68('36', '0&d]')](getRandomArrayElements, [..._0x165138 || [], ..._0x33822a && _0x33822a[_0x2e68('37', '[OPZ')] || []], [..._0x165138 || [], ..._0x33822a && _0x33822a[_0x2e68('38', '8E$M')] || []][_0x2e68('39', '7h&V')]);
-  for (let _0x33c7a5 of $[_0x2e68('3a', '5WQo')]) {
-    if (!_0x33c7a5) continue;
-    await _0x2c9900[_0x2e68('3b', 'jv5T')](dismantleRedEnvelope, _0x33c7a5);
-  }
-}
+// async function helpOpenRedPacket() {
+//   var _0x2c9900 = {
+//     'RXhIj': function (_0x2e046a, _0x41abdd) {
+//       return _0x2e046a(_0x41abdd);
+//     }, 'FBcBr': '', 'qiqPI': _0x2e68('2c', '5WQo'), 'oUjja': _0x2e68('2d', 'mwCB'), 'ZwAWg': function (_0x272ca6, _0x578e45, _0x5b94be) {
+//       return _0x272ca6(_0x578e45, _0x5b94be);
+//     }, 'WEdgR': function (_0x45a722, _0x413719) {
+//       return _0x45a722(_0x413719);
+//     }
+//   };
+//   let _0x33822a = [], _0x165138 = [];
+//   $['actId'] = _0x33822a && _0x33822a[_0x2e68('31', 'jv5T')] || _0x2e68('32', 'ndfP');
+//   if (!_0x33822a) {
+//     _0x33822a = [];
+//     $['actId'] = _0x33822a && _0x33822a[_0x2e68('34', ')FP7')] || _0x2c9900['oUjja'];
+//   }
+//   $[_0x2e68('35', 'yTHr')] = _0x2c9900[_0x2e68('36', '0&d]')](getRandomArrayElements, [..._0x165138 || [], ..._0x33822a && _0x33822a[_0x2e68('37', '[OPZ')] || []], [..._0x165138 || [], ..._0x33822a && _0x33822a[_0x2e68('38', '8E$M')] || []][_0x2e68('39', '7h&V')]);
+//   for (let _0x33c7a5 of $[_0x2e68('3a', '5WQo')]) {
+//     if (!_0x33c7a5) continue;
+//     await _0x2c9900[_0x2e68('3b', 'jv5T')](dismantleRedEnvelope, _0x33c7a5);
+//   }
+// }
 
-function dismantleRedEnvelope(_0x32628b) {
-  var _0x2715f8 = {
-    'SIfgq': function (_0xf1745e) {
-      return _0xf1745e();
-    },
-    'RVGKN': _0x2e68('3c', 'vdM@'),
-    'FEsQe': 'application/json,\x20text/plain,\x20*/*',
-    'RQrwA': 'jdltapp;iPhone;3.3.2;14.4.1;network/wifi;hasUPPay/0;pushNoticeIsOpen/0;lang/zh_CN;model/iPhone13,2;addressid/137923973;hasOCPay/0;appBuild/1047;supportBestPay/0;pv/268.36;apprpd/MyJD_Main;ref/https%3A%2F%2Fopenredpacket-jdlite.jd.com%2F%3Flng%3D118.762833%26lat%3D32.242491%26sid%3D8add69d8890bc7f4919f99fb3190f87w%26un_area%3D12_904_908_57903%23%2Fdemolished%3FactId%3Dfa03b421fc63499f8e7cd2a3434a6934;psq/22;ads/;psn/2618472e6e237c0252a67dffefc09de587946e87|680;jdv/0|kong|t_2008333145_|jingfen|7e4ac355e0dc416a99409fff0461a396|1617205187;adk/;app_device/IOS;pap/JA2020_3112531|3.3.2|IOS\x2014.4.1;Mozilla/5.0\x20(iPhone;\x20CPU\x20iPhone\x20OS\x2014_4_1\x20like\x20Mac\x20OS\x20X)\x20AppleWebKit/605.1.15\x20(KHTML,\x20like\x20Gecko)\x20Mobile/15E148;supportJDSHWK/1',
-    'GhxEJ': 'https://openredpacket-jdlite.jd.com/',
-    'IwEJi': 'zh-cn',
-    'yMvRN': _0x2e68('3d', 'uMQ#'),
-    'tTbJb': function (_0x4733f8, _0x3efd46) {
-      return _0x4733f8(_0x3efd46);
-    },
-    'qRHCD': _0x2e68('3e', 'Z#H#')
-  };
-  const _0x5c5114 = {
-    'Host': _0x2e68('3f', 'Vhx!'),
-    'Origin': _0x2715f8[_0x2e68('40', 'h#i3')],
-    'Accept': _0x2715f8[_0x2e68('41', 'ndfP')],
-    'User-Agent': _0x2715f8[_0x2e68('42', '%W8O')],
-    'Referer': _0x2715f8['GhxEJ'],
-    'Accept-Language': _0x2715f8[_0x2e68('43', '5)7E')],
-    'Cookie': cookie
-  };
-  const _0x1d2632 = Date[_0x2e68('44', '#i4u')]();
-  const _0x190960 = {'packetId': '' + _0x32628b['toString'](), 'actId': $[_0x2e68('45', '5WQo')], 'frontendInitStatus': 's', 'antiToken': _0x2715f8[_0x2e68('46', 'tcb!')], 'platform': 0x3};
-  const _0x5ca1cb = _0x2e68('47', 'gcEx') + _0x2715f8[_0x2e68('48', 'dzsc')](escape, JSON[_0x2e68('49', 'tsE!')](_0x190960)) + _0x2e68('4a', 'Vhx!') + _0x1d2632 + _0x2e68('4b', 'Opjc') + _0x1d2632;
-  const _0x4d361b = {'url': _0x2e68('4c', 'bl@!') + _0x1d2632, 'method': _0x2715f8['qRHCD'], 'headers': _0x5c5114, 'body': _0x5ca1cb};
-  return new Promise(_0x572e01 => {
-    $['post'](_0x4d361b, (_0x30599a, _0x3589ec, _0xc8bbfe) => {
-      _0x2715f8['SIfgq'](_0x572e01);
-    });
-  });
-}
+// function dismantleRedEnvelope(_0x32628b) {
+//   var _0x2715f8 = {
+//     'SIfgq': function (_0xf1745e) {
+//       return _0xf1745e();
+//     },
+//     'RVGKN': _0x2e68('3c', 'vdM@'),
+//     'FEsQe': 'application/json,\x20text/plain,\x20*/*',
+//     'RQrwA': 'jdltapp;iPhone;3.3.2;14.4.1;network/wifi;hasUPPay/0;pushNoticeIsOpen/0;lang/zh_CN;model/iPhone13,2;addressid/137923973;hasOCPay/0;appBuild/1047;supportBestPay/0;pv/268.36;apprpd/MyJD_Main;ref/https%3A%2F%2Fopenredpacket-jdlite.jd.com%2F%3Flng%3D118.762833%26lat%3D32.242491%26sid%3D8add69d8890bc7f4919f99fb3190f87w%26un_area%3D12_904_908_57903%23%2Fdemolished%3FactId%3Dfa03b421fc63499f8e7cd2a3434a6934;psq/22;ads/;psn/2618472e6e237c0252a67dffefc09de587946e87|680;jdv/0|kong|t_2008333145_|jingfen|7e4ac355e0dc416a99409fff0461a396|1617205187;adk/;app_device/IOS;pap/JA2020_3112531|3.3.2|IOS\x2014.4.1;Mozilla/5.0\x20(iPhone;\x20CPU\x20iPhone\x20OS\x2014_4_1\x20like\x20Mac\x20OS\x20X)\x20AppleWebKit/605.1.15\x20(KHTML,\x20like\x20Gecko)\x20Mobile/15E148;supportJDSHWK/1',
+//     'GhxEJ': 'https://openredpacket-jdlite.jd.com/',
+//     'IwEJi': 'zh-cn',
+//     'yMvRN': _0x2e68('3d', 'uMQ#'),
+//     'tTbJb': function (_0x4733f8, _0x3efd46) {
+//       return _0x4733f8(_0x3efd46);
+//     },
+//     'qRHCD': _0x2e68('3e', 'Z#H#')
+//   };
+//   const _0x5c5114 = {
+//     'Host': _0x2e68('3f', 'Vhx!'),
+//     'Origin': _0x2715f8[_0x2e68('40', 'h#i3')],
+//     'Accept': _0x2715f8[_0x2e68('41', 'ndfP')],
+//     'User-Agent': _0x2715f8[_0x2e68('42', '%W8O')],
+//     'Referer': _0x2715f8['GhxEJ'],
+//     'Accept-Language': _0x2715f8[_0x2e68('43', '5)7E')],
+//     'Cookie': cookie
+//   };
+//   const _0x1d2632 = Date[_0x2e68('44', '#i4u')]();
+//   const _0x190960 = {'packetId': '' + _0x32628b['toString'](), 'actId': $[_0x2e68('45', '5WQo')], 'frontendInitStatus': 's', 'antiToken': _0x2715f8[_0x2e68('46', 'tcb!')], 'platform': 0x3};
+//   const _0x5ca1cb = _0x2e68('47', 'gcEx') + _0x2715f8[_0x2e68('48', 'dzsc')](escape, JSON[_0x2e68('49', 'tsE!')](_0x190960)) + _0x2e68('4a', 'Vhx!') + _0x1d2632 + _0x2e68('4b', 'Opjc') + _0x1d2632;
+//   const _0x4d361b = {'url': _0x2e68('4c', 'bl@!') + _0x1d2632, 'method': _0x2715f8['qRHCD'], 'headers': _0x5c5114, 'body': _0x5ca1cb};
+//   return new Promise(_0x572e01 => {
+//     $['post'](_0x4d361b, (_0x30599a, _0x3589ec, _0xc8bbfe) => {
+//       _0x2715f8['SIfgq'](_0x572e01);
+//     });
+//   });
+// }
 
-async function aaa() {
-  var _0x23e4e9 = {
-    'cCmfO': function (_0x1c3613, _0x295c24) {
-      return _0x1c3613(_0x295c24);
-    }, 'tfqVM': _0x2e68('4d', 'fxE9'), 'hwOsZ': function (_0x3b3e35, _0xac9a4e) {
-      return _0x3b3e35(_0xac9a4e);
-    }, 'LvEen': _0x2e68('4e', '*^Sz'), 'zrLZW': function (_0x538ef2, _0x193fca) {
-      return _0x538ef2 !== _0x193fca;
-    }, 'pROUD': _0x2e68('4f', 'jv5T'), 'gOmhr': _0x2e68('50', '!8Uv'), 'PHhBT': function (_0x34352f, _0x28c1df) {
-      return _0x34352f(_0x28c1df);
-    }, 'KePDl': 'https://raw.githubusercontent.com/JDHelloWorld/jd_scripts/main/tools/empty.json', 'SDREf': function (_0xe348aa, _0x439d0e, _0x3a4d9d) {
-      return _0xe348aa(_0x439d0e, _0x3a4d9d);
-    }, 'dkEjF': _0x2e68('51', 'vdM@')
-  };
-  let _0x259e3f = [], _0x1a2c84 = [];
-  if (!_0x259e3f) {
-    if (_0x23e4e9[_0x2e68('54', 'bl@!')](_0x23e4e9['pROUD'], _0x23e4e9[_0x2e68('55', 'kkj%')])) {
-      _0x259e3f = []
-    } else {
-      if (data) data = [];
-    }
-  }
-  $[_0x2e68('57', '6lP7')] = getRandomArrayElements([..._0x1a2c84 || [], ..._0x259e3f || []], [..._0x1a2c84 || [], ..._0x259e3f || []][_0x2e68('58', 'tcb!')]);
-  for (let _0x25d08c of $[_0x2e68('59', '0&d]')]) {
-    if (!_0x25d08c['inviter']) continue;
-    await _0x23e4e9[_0x2e68('5a', 'XAWK')](_618, _0x25d08c[_0x2e68('5b', 'sKj5')], _0x25d08c[_0x23e4e9[_0x2e68('5c', 'sKj5')]]);
-  }
-}
+// async function aaa() {
+//   var _0x23e4e9 = {
+//     'cCmfO': function (_0x1c3613, _0x295c24) {
+//       return _0x1c3613(_0x295c24);
+//     }, 'tfqVM': _0x2e68('4d', 'fxE9'), 'hwOsZ': function (_0x3b3e35, _0xac9a4e) {
+//       return _0x3b3e35(_0xac9a4e);
+//     }, 'LvEen': _0x2e68('4e', '*^Sz'), 'zrLZW': function (_0x538ef2, _0x193fca) {
+//       return _0x538ef2 !== _0x193fca;
+//     }, 'pROUD': _0x2e68('4f', 'jv5T'), 'gOmhr': _0x2e68('50', '!8Uv'), 'PHhBT': function (_0x34352f, _0x28c1df) {
+//       return _0x34352f(_0x28c1df);
+//     }, 'KePDl': 'https://raw.githubusercontent.com/JDHelloWorld/jd_scripts/main/tools/empty.json', 'SDREf': function (_0xe348aa, _0x439d0e, _0x3a4d9d) {
+//       return _0xe348aa(_0x439d0e, _0x3a4d9d);
+//     }, 'dkEjF': _0x2e68('51', 'vdM@')
+//   };
+//   let _0x259e3f = [], _0x1a2c84 = [];
+//   if (!_0x259e3f) {
+//     if (_0x23e4e9[_0x2e68('54', 'bl@!')](_0x23e4e9['pROUD'], _0x23e4e9[_0x2e68('55', 'kkj%')])) {
+//       _0x259e3f = []
+//     } else {
+//       if (data) data = [];
+//     }
+//   }
+//   $[_0x2e68('57', '6lP7')] = getRandomArrayElements([..._0x1a2c84 || [], ..._0x259e3f || []], [..._0x1a2c84 || [], ..._0x259e3f || []][_0x2e68('58', 'tcb!')]);
+//   for (let _0x25d08c of $[_0x2e68('59', '0&d]')]) {
+//     if (!_0x25d08c['inviter']) continue;
+//     await _0x23e4e9[_0x2e68('5a', 'XAWK')](_618, _0x25d08c[_0x2e68('5b', 'sKj5')], _0x25d08c[_0x23e4e9[_0x2e68('5c', 'sKj5')]]);
+//   }
+// }
 
-function _618(_0xce999c, _0x1f93d4, _0xa95934 = _0x2e68('5d', 'THJ&')) {
-  var _0x57dca3 = {
-    'NoURO': function (_0x1dac56, _0x4c3f0b) {
-      return _0x1dac56 * _0x4c3f0b;
-    }, 'MRJEY': function (_0x5010ce, _0x247c9c) {
-      return _0x5010ce + _0x247c9c;
-    }, 'oTCBl': function (_0x246c0e, _0x2962e1) {
-      return _0x246c0e === _0x2962e1;
-    }, 'fBTso': _0x2e68('5e', 'o&TS'), 'qAkiN': _0x2e68('5f', 'Z#H#'), 'LBkoa': _0x2e68('60', '$Ni3')
-  };
-  return new Promise(_0x3fc8e5 => {
-    var _0x52ac30 = {
-      'mlwMu': function (_0x17c032, _0x4fceea) {
-        return _0x57dca3[_0x2e68('61', '!J!%')](_0x17c032, _0x4fceea);
-      }, 'gpIxS': function (_0x202e9a, _0x1f0cd4) {
-        return _0x57dca3[_0x2e68('62', '^rQC')](_0x202e9a, _0x1f0cd4);
-      }
-    };
-    if (_0x57dca3[_0x2e68('63', 'Vhx!')](_0x57dca3[_0x2e68('64', 'o&TS')], _0x57dca3['qAkiN'])) {
-      index = Math['floor'](_0x52ac30['mlwMu'](_0x52ac30['gpIxS'](i, 0x1), Math[_0x2e68('65', '8E$M')]()));
-      temp = shuffled[index];
-      shuffled[index] = shuffled[i];
-      shuffled[i] = temp;
-    } else {
-      $[_0x2e68('66', '!8Uv')]({
-        'url': _0x2e68('67', ']a7e') + _0xa95934 + _0x2e68('68', '^rQC') + _0xce999c + _0x2e68('69', 'N1sQ') + _0x1f93d4 + _0x2e68('6a', 'vdM@') + +new Date() + _0x2e68('6b', 'fYl9'),
-        'headers': {
-          'Host': _0x2e68('6c', 'gCec'),
-          'accept': _0x2e68('6d', 'vdM@'),
-          'origin': _0x57dca3[_0x2e68('6e', 'Z#H#')],
-          'user-agent': 'jdltapp;iPhone;3.5.0;14.2;network/wifi;hasUPPay/0;pushNoticeIsOpen/0;lang/zh_CN;model/iPhone10,2;hasOCPay/0;appBuild/1066;supportBestPay/0;pv/7.0;apprpd/;Mozilla/5.0\x20(iPhone;\x20CPU\x20iPhone\x20OS\x2014_2\x20like\x20Mac\x20OS\x20X)\x20AppleWebKit/605.1.15\x20(KHTML,\x20like\x20Gecko)\x20Mobile/15E148;supportJDSHWK/1',
-          'accept-language': _0x2e68('6f', 'THJ&'),
-          'referer': 'https://618redpacket.jd.com/?activityId=DA4SkG7NXupA9sksI00L0g&redEnvelopeId=' + _0xce999c + _0x2e68('70', 'Opjc') + _0x1f93d4 + '&helpType=1&lng=&lat=&sid=',
-          'Cookie': cookie
-        }
-      }, (_0x33eaca, _0x4d59c3, _0x4c619c) => {
-        _0x3fc8e5();
-      });
-    }
-  });
-};_0xod8 = 'jsjiami.com.v6';
+// function _618(_0xce999c, _0x1f93d4, _0xa95934 = _0x2e68('5d', 'THJ&')) {
+//   var _0x57dca3 = {
+//     'NoURO': function (_0x1dac56, _0x4c3f0b) {
+//       return _0x1dac56 * _0x4c3f0b;
+//     }, 'MRJEY': function (_0x5010ce, _0x247c9c) {
+//       return _0x5010ce + _0x247c9c;
+//     }, 'oTCBl': function (_0x246c0e, _0x2962e1) {
+//       return _0x246c0e === _0x2962e1;
+//     }, 'fBTso': _0x2e68('5e', 'o&TS'), 'qAkiN': _0x2e68('5f', 'Z#H#'), 'LBkoa': _0x2e68('60', '$Ni3')
+//   };
+//   return new Promise(_0x3fc8e5 => {
+//     var _0x52ac30 = {
+//       'mlwMu': function (_0x17c032, _0x4fceea) {
+//         return _0x57dca3[_0x2e68('61', '!J!%')](_0x17c032, _0x4fceea);
+//       }, 'gpIxS': function (_0x202e9a, _0x1f0cd4) {
+//         return _0x57dca3[_0x2e68('62', '^rQC')](_0x202e9a, _0x1f0cd4);
+//       }
+//     };
+//     if (_0x57dca3[_0x2e68('63', 'Vhx!')](_0x57dca3[_0x2e68('64', 'o&TS')], _0x57dca3['qAkiN'])) {
+//       index = Math['floor'](_0x52ac30['mlwMu'](_0x52ac30['gpIxS'](i, 0x1), Math[_0x2e68('65', '8E$M')]()));
+//       temp = shuffled[index];
+//       shuffled[index] = shuffled[i];
+//       shuffled[i] = temp;
+//     } else {
+//       $[_0x2e68('66', '!8Uv')]({
+//         'url': _0x2e68('67', ']a7e') + _0xa95934 + _0x2e68('68', '^rQC') + _0xce999c + _0x2e68('69', 'N1sQ') + _0x1f93d4 + _0x2e68('6a', 'vdM@') + +new Date() + _0x2e68('6b', 'fYl9'),
+//         'headers': {
+//           'Host': _0x2e68('6c', 'gCec'),
+//           'accept': _0x2e68('6d', 'vdM@'),
+//           'origin': _0x57dca3[_0x2e68('6e', 'Z#H#')],
+//           'user-agent': 'jdltapp;iPhone;3.5.0;14.2;network/wifi;hasUPPay/0;pushNoticeIsOpen/0;lang/zh_CN;model/iPhone10,2;hasOCPay/0;appBuild/1066;supportBestPay/0;pv/7.0;apprpd/;Mozilla/5.0\x20(iPhone;\x20CPU\x20iPhone\x20OS\x2014_2\x20like\x20Mac\x20OS\x20X)\x20AppleWebKit/605.1.15\x20(KHTML,\x20like\x20Gecko)\x20Mobile/15E148;supportJDSHWK/1',
+//           'accept-language': _0x2e68('6f', 'THJ&'),
+//           'referer': 'https://618redpacket.jd.com/?activityId=DA4SkG7NXupA9sksI00L0g&redEnvelopeId=' + _0xce999c + _0x2e68('70', 'Opjc') + _0x1f93d4 + '&helpType=1&lng=&lat=&sid=',
+//           'Cookie': cookie
+//         }
+//       }, (_0x33eaca, _0x4d59c3, _0x4c619c) => {
+//         _0x3fc8e5();
+//       });
+//     }
+//   });
+// };_0xod8 = 'jsjiami.com.v6';
 
 // prettier-ignore
 function Env(t, e) {
