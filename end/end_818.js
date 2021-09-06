@@ -1,7 +1,7 @@
 /*
 京东手机狂欢城活动
 活动时间: 2021-8-9至2021-8-28
-活动入口：https://carnivalcity.m.jd.com/
+活动入口：https://carnivalcity.m.jd.com/ 
 
 往期奖励：
 a、第1名可获得实物手机一部
