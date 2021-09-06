@@ -9,7 +9,7 @@
 博饼 (有可能是空气💨 默认博饼 如不需博饼请设置环境变量[opencardMidAutumn_draw]为"0"
 100积分抽1次
 填写要博饼的次数 不足已自身次数为准
-opencardMidAutumn_draw="3"
+opencardMidAutumn_draw="3" 
 填非数字会全都抽奖
 
 第一个账号助力作者 其他依次助力CK1
