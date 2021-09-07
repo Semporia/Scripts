@@ -29,7 +29,7 @@ const zooFaker = require('./utils/JDJRValidator_Pure');
 let invoke_key = 'RtKLB8euDo7KwsO0'
 try{
   let hConfig = require('./utils/HConfig.js')
-  $.invokeKey = hConfig.invokeKey
+  invoke_key = hConfig.invokeKey
 }catch(e){}
 let allMessage = '';
 let joyRewardName = 500;//是否兑换京豆，默认0不兑换京豆，其中20为兑换20京豆,500为兑换500京豆，0为不兑换京豆.数量有限先到先得
