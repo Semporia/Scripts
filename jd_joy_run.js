@@ -45,6 +45,10 @@ $.post = zooFaker.injectToRequest2($.post.bind($));
 //需自行抓包，宠汪汪小程序获取token，点击`发现`或`我的`，寻找`^https:\/\/draw\.jdfcloud\.com(\/mirror)?\/\/api\/user\/user\/detail\?openId=`获取token
 let jdJoyRunToken = '';
 let invoke_key = "RtKLB8euDo7KwsO0";
+try{
+  let hConfig = require('./utils/HConfig.js')
+  invoke_key = hConfig.invokeKey
+}catch(e){}
 const isRequest = typeof $request != "undefined"
 const JD_BASE_API = `https://draw.jdfcloud.com//pet`;
 //Node.js用户请在jdCookie.js处填写京东ck;
