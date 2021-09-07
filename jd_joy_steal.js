@@ -31,6 +31,10 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000);
 let invoke_key =  "RtKLB8euDo7KwsO0";
+try{
+  let hConfig = require('./utils/HConfig.js')
+  invoke_key = hConfig.invokeKey
+}catch(e){}
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 if ($.isNode()) {
