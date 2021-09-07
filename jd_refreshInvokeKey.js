@@ -66,7 +66,7 @@ function refreshKey(jsStr) {
                             resolve(`刷新invokeKey失败`)
                             throw err;
                         }else {
-                            resolve(`\n刷新invokeKey成功：${invokeKey}\n读取：\ntry{\nlet hConfig = require('./utils/HConfig.js')\ninvokeKey = hConfig.invokeKey\n}catch(e){}`)
+                            resolve(`\n刷新invokeKey成功：${invokeKey}\n读取：\ntry{\n    let hConfig = require('./utils/HConfig.js')\n    invokeKey = hConfig.invokeKey\n}catch(e){}`)
                         }
                     })
                 }else {
