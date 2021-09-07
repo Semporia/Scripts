@@ -13,13 +13,11 @@ __2021年8月18日 22:50后若脚本报错，请更新青龙拉取命令后重�
 随机从数据库中选取助力码互助
 
 
-其他未修改，用法与原版相同
-
-
 __青龙拉取__
 ```
 ql repo https://github.com/he1pu/JDHelp.git "jd_|jx_|getJDCookie" "activity|backUp|jd_delCoupon" "^jd[^_]|USER|utils"
 ```
+[退会：JDMemberCloseAccount](https://github.com/yqchilde/JDMemberCloseAccount)
 
 # Warning
 ### 带助力功能的脚本要使用本仓库的，其他仓库的没有适配新助力池
