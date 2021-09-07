@@ -1,5 +1,6 @@
 /*
 cron 0 0,12 * * *  jd_refreshInvokeKey.js, tag=宠汪汪invokeKey刷新
+转载请注明出处：https://github.com/he1pu/JDHelp
 */
 
 let $ = new Env('宠汪汪invokeKey刷新');
