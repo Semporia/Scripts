@@ -10,7 +10,7 @@
 请求太频繁会被黑ip，号多的会被限制ip，过10分钟再执行
 入口：https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity?activityId=9ef833504aaf436ebd84a3b762c32ead&shareUuid=27b6ab5739094bb694ff7c65c5f2ce49
 */
-const $ = new Env('9.8-30 成家有福,长长久久');
+const obj = new Env('9.8-30 成家有福,长长久久');
 function Env(t, e) {
 	"undefined" != typeof process && JSON.stringify(process.env)
 		.indexOf("GITHUB") > -1 && process.exit(0);
