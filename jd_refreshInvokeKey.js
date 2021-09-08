@@ -66,7 +66,7 @@ function refreshKey(jsStr) {
                             resolve(`刷新invokeKey失败`)
                             throw err;
                         }else {
-                            resolve(`\n刷新invokeKey成功：${invokeKey}\n读取：\ntry{\n    let hConfig = require('./utils/HConfig.js')\n    invokeKey = hConfig.invokeKey\n}catch(e){}`)
+                            resolve(`刷新invokeKey成功：${invokeKey}\n读取：\ntry{\n    let hConfig = require('./utils/HConfig.js')\n    invokeKey = hConfig.invokeKey\n}catch(e){}`)
                         }
                     })
                 }else {
@@ -76,7 +76,6 @@ function refreshKey(jsStr) {
         })
     })
 }
-
 
 function getOptions(url) {
     return {
@@ -88,7 +87,6 @@ function getOptions(url) {
         }
     }
 }
-
 
 function getUA(){
   $.UA = `jdapp;iPhone;10.1.0;14.3;${randomString(40)};network/wifi;model/iPhone12,1;addressid/4199175193;appBuild/167774;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`
