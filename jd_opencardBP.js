@@ -19,7 +19,6 @@ const $ = new Env("9.9-9.19 大聚惠");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
-let ownCode = null;
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
         cookiesArr.push(jdCookieNode[item])
@@ -183,9 +182,8 @@ function task(function_id, body, isCommon = 0, own = 0) {
                                         $.log(`开启【${data.data.activityName}】活动`)
                                         $.log("-------------------")
                                         if (own) {
-                                            ownCode = data.data.actorUuid
                                             $.authorCode = data.data.actorUuid
-                                            console.log(ownCode)
+                                            console.log(data.data.actorUuid)
                                         }
                                         $.actorUuid = data.data.actorUuid;
                                         $.skuTask = data.data.addSku;
