@@ -1,5 +1,6 @@
 /*
 9.9-9.19 大聚惠 [jd_opencardBP.js]
+邀请及被邀请均有机会获得20豆🥔
 ————————————————
 入口：[9.9-9.19 大聚惠 (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/45670?activityId=f7e4d75f22c84cdeba92bf594b02b910)]
 ============Quantumultx===============
