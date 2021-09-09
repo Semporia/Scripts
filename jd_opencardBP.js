@@ -62,7 +62,7 @@ if ($.isNode()) {
             }
             
             $.bean = 0;
-            
+            $.attrTouXiang = 'https://img10.360buyimg.com/imgzone/jfs/t1/7020/27/13511/6142/5c5138d8E4df2e764/5a1216a3a5043c5d.png'
             $.authorNum = `${random(1000000, 9999999)}`
             $.activityUrl = `https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/${$.authorNum}?activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=null&shopid=${$.activityShopId}&lng=00.000000&lat=00.000000&sid=&un_area=`
             await member();
@@ -101,9 +101,9 @@ async function member() {
             await task('common/accessLogWithAD', `venderId=${$.activityShopId}&code=99&pin=${encodeURIComponent($.secretPin)}&activityId=${$.activityId}&pageUrl=${$.activityUrl}&subType=app&adSource=null`, 1);
             await task('wxActionCommon/getUserInfo', `pin=${encodeURIComponent($.secretPin)}`, 1)
             if ($.index === 1) {
-                await task('dz/openCard/activityContent', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&pinImg=&nick=${encodeURIComponent($.pin)}&cjyxPin=&cjhyPin=&shareUuid=${encodeURIComponent($.authorCode)}`, 0, 1)
+                await task('dz/openCard/activityContent', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&pinImg=${$.attrTouXiang}&nick=${encodeURIComponent($.pin)}&cjyxPin=&cjhyPin=&shareUuid=${encodeURIComponent($.authorCode)}`, 0, 1)
             } else {
-                await task('dz/openCard/activityContent', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&pinImg=&nick=${encodeURIComponent($.pin)}&cjyxPin=&cjhyPin=&shareUuid=${encodeURIComponent($.authorCode)}`)
+                await task('dz/openCard/activityContent', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&pinImg=${$.attrTouXiang}&nick=${encodeURIComponent($.pin)}&cjyxPin=&cjhyPin=&shareUuid=${encodeURIComponent($.authorCode)}`)
             }
             await task('dz/openCard/checkOpenCard', `activityId=${$.activityId}&actorUuid=${$.actorUuid}&shareUuid=${$.authorCode}&pin=${encodeURIComponent($.secretPin)}`)
             $.log("关注店铺")
@@ -173,6 +173,9 @@ function task(function_id, body, isCommon = 0, own = 0) {
                         if (data.result) {
                             switch (function_id) {
                                 case 'wxActionCommon/getUserInfo':
+                                    if (data.data.yunMidImageUrl && data.data.yunMidImageUrl.length) {
+                                        $.attrTouXiang = data.data.yunMidImageUrl
+                                    }
                                     break;
                                 case 'dz/openCard/activityContent':
                                     if (!data.data.hasEnd) {
@@ -191,6 +194,7 @@ function task(function_id, body, isCommon = 0, own = 0) {
                                     break;
                                 case 'dz/openCard/checkOpenCard':
                                     $.openCardStatus = data.data;
+                                    console.log(`已邀请人数:${data.data.score}`)
                                     break;
                                 case 'dz/openCard/saveTask':
                                     if (data.data) {
