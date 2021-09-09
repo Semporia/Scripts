@@ -25,3 +25,4 @@ ql repo https://github.com/he1pu/JDHelp.git "jd_|jx_|getJDCookie" "activity|back
 ### Node和Docker拉取使用本仓库地址
 
 #### 🧧部分红包会过期，记得用，在“京东极速版”或“京喜”上搜索“包邮”，不知道买啥选纸巾就完事了..
+### 部分脚本主要自用，第一个账号会给我助力其他助力第一个账号，若介意可仅使用上述有助力池的脚本。
