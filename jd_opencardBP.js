@@ -184,6 +184,7 @@ function task(function_id, body, isCommon = 0, own = 0) {
                                         $.log("-------------------")
                                         if (own) {
                                             ownCode = data.data.actorUuid
+                                            $.authorCode = data.data.actorUuid
                                             console.log(ownCode)
                                         }
                                         $.actorUuid = data.data.actorUuid;
