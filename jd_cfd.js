@@ -1,7 +1,7 @@
 /*
 京喜财富岛
 cron 5 * * * * jd_cfd.js
-更新时间：2021-8-19
+更新时间：2021-9-10
 活动入口：京喜APP-我的-京喜财富岛
 from：https://github.com/Aaron-lv/sync/tree/jd_scripts
 已支持IOS双京东账号,Node.js支持N个京东账号
