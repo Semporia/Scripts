@@ -187,7 +187,7 @@ async function getTaskInfo(type, projectId, assignmentId, ofn, helpType = '1', i
               if (data.code === "0" && data.data) {
                 if (data.data[0].status !== "2") {
                   await sign_interactive_done(type, data.data[0].projectId, data.data[0].assignmentId)
-                  await $.wait(2000)
+                  await $.wait(10000)
                   await interactive_reward(type, data.data[0].projectId, data.data[0].assignmentId)
                 } else {
                   console.log(`任务已完成`)
@@ -394,7 +394,10 @@ async function getshareCode() {
       "Content-Type": "application/x-www-form-urlencoded",
       "Origin": "https://prodev.m.jd.com",
       "Accept-Language": "zh-cn",
-      "Accept-Encoding": "gzip, deflate, br"
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+      "Referer": "https://prodev.m.jd.com/mall/active/2y1S9xVYdTud2VmFqhHbkcoAYhJT/index.html",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Cookie": cookie
     }
   }
   return new Promise(async resolve => {
@@ -554,9 +557,9 @@ function getAuthorShareCode(url) {
 function TotalBean() {
   return new Promise(async resolve => {
     const options = {
-      url: "https://me-api.jd.com/user_new/info/GetJDUserInfoUnion",
+      url: "https://wq.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2",
       headers: {
-        Host: "me-api.jd.com",
+        Host: "wq.jd.com",
         Accept: "*/*",
         Connection: "keep-alive",
         Cookie: cookie,
@@ -573,11 +576,11 @@ function TotalBean() {
         } else {
           if (data) {
             data = JSON.parse(data);
-            if (data['retcode'] === "1001") {
+            if (data['retcode'] === 1001) {
               $.isLogin = false; //cookie过期
               return;
             }
-            if (data['retcode'] === "0" && data.data && data.data.hasOwnProperty("userInfo")) {
+            if (data['retcode'] === 0 && data.data && data.data.hasOwnProperty("userInfo")) {
               $.nickName = data.data.userInfo.baseInfo.nickname;
             }
           } else {
