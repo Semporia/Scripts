@@ -136,7 +136,7 @@ async function cfd() {
     
      // 寻宝
     console.log(`寻宝`)
-    let XBDetail = beginInfo.XbStatus.XBDetail.filter((x) => x.ddwColdEndTm === 0 && x.dwRemainCnt === 3)
+    let XBDetail = beginInfo.XbStatus.XBDetail.filter((x) => x.dwRemainCnt !== 0)
     if (XBDetail.length !== 0) {
       console.log(`开始寻宝`)
       for (let key of Object.keys(beginInfo.XbStatus.XBDetail)) {
@@ -175,10 +175,10 @@ async function cfd() {
     }
 
     //合成珍珠
-    if (nowTimes.getHours() >= 5) {
-      await $.wait(2000)
-      await composeGameState()
-    }
+//     if (nowTimes.getHours() >= 5) {
+//       await $.wait(2000)
+//       await composeGameState()
+//     }
 
     //接待贵宾
     console.log(`接待贵宾`)
