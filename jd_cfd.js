@@ -326,7 +326,7 @@ async function composeGameState(type = true) {
           console.log(`${$.name} ComposeGameState API请求失败，请检查网路重试`)
         } else {
           $.ComposeGameState = JSON.parse(data);
-          
+          console.log(`当前已合成${$.ComposeGameState.dwCurProgress}颗月饼，总计获得${$.ComposeGameState.ddwVirHb / 100}元红包\n`);
           if ($.ComposeGameState.dayDrawInfo.dwIsDraw == 0) {
             let res = await getPearlDailyReward();
             if (res && res.iRet == 0 && res.strToken) {
@@ -374,7 +374,6 @@ async function composeGameState(type = true) {
                     console.log(JSON.stringify(res))
                 }
                 $.ComposeGameState = await checkPearl();  
-                console.log(`当前已合成${$.ComposeGameState.dwCurProgress}颗月饼，总计获得${$.ComposeGameState.ddwVirHb / 100}元红包\n`);
             }
           }else {
             console.log(`今日已完成\n`)
