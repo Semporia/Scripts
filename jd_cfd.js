@@ -174,11 +174,11 @@ async function cfd() {
       await $.wait(2000)
     }
 
-    //合成珍珠
-    if (nowTimes.getHours() >= 5) {
+    //合成月饼
+    //if (nowTimes.getHours() >= 5) {
       await $.wait(2000)
       await composeGameState()
-    }
+    //}
 
     //接待贵宾
     console.log(`接待贵宾`)
@@ -316,7 +316,7 @@ function TreasureHunt(strIndex) {
    })
  }
 
-// 合成珍珠
+// 合成月饼
 async function composeGameState(type = true) {
   return new Promise(async (resolve) => {
     $.get(taskUrl(`user/ComposePearlState`, ``, `&dwGetType=0`), async (err, resp, data) => {
@@ -328,6 +328,7 @@ async function composeGameState(type = true) {
           $.ComposeGameState = JSON.parse(data);
 
           if ($.ComposeGameState.dayDrawInfo.dwIsDraw == 0) {
+            console.log(`当前已合成${$.ComposeGameState.dwCurProgress}颗月饼，总计获得${$.ComposeGameState.ddwVirHb / 100}元红包\n`)
             let res = await getPearlDailyReward();
             if (res && res.iRet == 0 && res.strToken) {
                 let res1 = await pearlDailyDraw(res);
@@ -343,7 +344,7 @@ async function composeGameState(type = true) {
             }
           }
 
-          if (($.ComposeGameState.dwCurProgress < 8 || true) && $.ComposeGameState.strDT) {
+          if ($.ComposeGameState.strDT) {
             let b = 1;
             console.log(`合月饼${b}次 `)
             for(i=1;b--;i++){
@@ -375,6 +376,8 @@ async function composeGameState(type = true) {
                 }
                 $.ComposeGameState = await checkPearl();  
             }
+          }else {
+            console.log(`今日已完成\n`)
           }
         for (let i of $.ComposeGameState.stagelist || []) {
             if (i.dwIsAward == 0 && $.ComposeGameState.dwCurProgress >= i.dwCurStageEndCnt) {
