@@ -152,9 +152,14 @@ async function cfd() {
     await $.wait(2000)
     await composePearlState(2)
 
-    // 合成月饼
-    await $.wait(2000)
-    await composePearlState(3)
+    //合成月饼
+     let count = $.isNode() ? (process.env.JD_CFD_RUNNUM ? process.env.JD_CFD_RUNNUM * 1 : Math.floor((Math.random() * 2)) + 3) : ($.getdata('JD_CFD_RUNNUM') ? $.getdata('JD_CFD_RUNNUM') * 1 : Math.floor((Math.random() * 2)) + 3);
+     console.log(`\n合成月饼`)
+     console.log(`合成月饼运行次数为：${count}\n`)
+     for (let j = 0; j < count; j++) {
+       await $.wait(2000)
+       await composePearlState(3)
+     }
   
   } catch (e) {
     $.logErr(e)
@@ -198,43 +203,52 @@ async function composePearlState(type) {
               break
             case 3:
               data = JSON.parse(data);
-              console.log(`\n合成月饼`)
               if (data.iRet === 0) {
                 console.log(`当前已合成${data.dwCurProgress}颗月饼，总计获得${data.ddwVirHb / 100}元红包`)
-                if (data.dayDrawInfo.dwIsDraw === 0) {
-                  await $.wait(2000)
-                  let strToken = await getPearlDailyReward().strToken
-                  await pearlDailyDraw(data.ddwSeasonStartTm, strToken)
-                }
                 if (data.strDT) {
-                  let count = $.isNode() ? (process.env.JD_CFD_RUNNUM ? process.env.JD_CFD_RUNNUM * 1 : Math.floor((Math.random() * 5)) + 5) : ($.getdata('JD_CFD_RUNNUM') ? $.getdata('JD_CFD_RUNNUM') * 1 : Math.floor((Math.random() * 5)) + 5);
-                  console.log(`合成月饼运行次数为：${count}\n`)
-                  for (let j = 0; j < count; j++) {
-                    let num = Math.ceil(Math.random() * 12 + 12)
-                    console.log(`合成月饼：模拟操作${num}次`)
-                    for (let v = 0; v < num; v++) {
-                      console.log(`模拟操作进度：${v + 1}/${num}`)
-                      await $.wait(2000)
-                      await realTmReport(data.strMyShareId)
-                      let s = Math.floor((Math.random() * 3))
-                      if (s === 1) {
-                        await composePearlAward(data.strDT)
+                  let beacon = data.PearlList[0]
+                  data.PearlList.shift()
+                  let beaconType = beacon.type
+                  let num = Math.ceil(Math.random() * 12 + 8)
+                  console.log(`合成月饼：模拟操作${num}次`)
+                  for (let v = 0; v < num; v++) {
+                    console.log(`模拟操作进度：${v + 1}/${num}`)
+                    await $.wait(2000)
+                    await realTmReport(data.strMyShareId)
+                    if (beacon.rbf) {
+                      let size = 1
+                      for (let key of Object.keys(data.PearlList)) {
+                        let vo = data.PearlList[key]
+                        if (vo.rbf && vo.type === beaconType) {
+                          size = 2
+                          vo.rbf = 0
+                          break
+                        }
                       }
+                      await composePearlAward(data.strDT, beaconType, size)
                     }
-                    let strLT = data.oPT[data.ddwCurTime % data.oPT.length]
-                    let res = await composePearlAddProcess(data.strDT, strLT)
-                    if (res.iRet === 0) {
-                      console.log(`\n合成月饼成功：进度${j + 1}/${count},获得${res.ddwAwardHb / 100}元红包\n`)
-                    } else {
-                      console.log(`\n合成月饼失败：${res.sErrMsg}\n`)
-                    }
-                    data = await composePearlState(1)
+                  }
+                  let strLT = data.oPT[data.ddwCurTime % data.oPT.length]
+                  let res = await composePearlAddProcess(data.strDT, strLT)
+                  if (res.iRet === 0) {
+                    console.log(`\n合成月饼成功：获得${res.ddwAwardHb / 100}元红包\n`)
+                  } else {
+                    console.log(`\n合成月饼失败：${res.sErrMsg}\n`)
                   }
                 } else {
                   console.log(`今日已完成\n`)
                 }
               }
               break
+            case 4:
+              data = JSON.parse(data);
+              if (data.iRet === 0) {
+                if (data.dayDrawInfo.dwIsDraw === 0) {
+                  await $.wait(2000)
+                  let strToken = await getPearlDailyReward().strToken
+                  await pearlDailyDraw(data.ddwSeasonStartTm, strToken)
+                }
+              }
             default:
               break;
           }
@@ -247,6 +261,7 @@ async function composePearlState(type) {
     })
   })
 }
+
 function realTmReport(strMyShareId) {
   return new Promise((resolve) => {
     $.get(taskUrl(`user/RealTmReport`, `__t=${Date.now()}&dwIdentityType=0&strBussKey=composegame&strMyShareId=${strMyShareId}&ddwCount=10`), (err, resp, data) => {
@@ -324,9 +339,9 @@ function pearlDailyDraw(ddwSeasonStartTm, strToken) {
     })
   })
 }
-function composePearlAward(strDT) {
+function composePearlAward(strDT, type, size) {
   return new Promise((resolve) => {
-    $.get(taskUrl(`user/ComposePearlAward`, `__t=${Date.now()}&type=4&size=1&strBT=${strDT}`), (err, resp, data) => {
+    $.get(taskUrl(`user/ComposePearlAward`, `__t=${Date.now()}&type=${type}&size=${size}&strBT=${strDT}`), (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
