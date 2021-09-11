@@ -176,8 +176,8 @@ async function cfd() {
 
     //合成月饼
     //if (nowTimes.getHours() >= 5) {
-      await $.wait(2000)
-      await composeGameState()
+    //  await $.wait(2000)
+    //  await composeGameState()
     //}
 
     //接待贵宾
