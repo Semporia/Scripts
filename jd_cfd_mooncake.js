@@ -229,10 +229,10 @@ async function composeGameState(type = true) {
                             if(res1.strPrizeName){
                                 console.log(`抽奖获得:${res.strPrizeName || $.toObj(res,res)}`)
                             }else{
-                                console.log(`抽奖获得:${$.toObj(res,res)}`)
+                                console.log(`抽奖获得:${JSON.stringify(res)}`)
                             }
                         }else{
-                            console.log("抽奖失败\n"+$.toObj(res,res))
+                            console.log("抽奖失败\n"+JSON.stringify(res))
                         }
                     }
                 }
@@ -254,7 +254,7 @@ async function composeGameState(type = true) {
                                 if(res && res.iRet == 0){
                                     console.log(`上报得红包:${res.ddwAwardHb && '获得'+res.ddwAwardHb/100+"红包" || ''}${res.ddwVirHb && ' 当前有'+res.ddwVirHb/100+"红包" || ''}`)
                                 }else {
-                                    console.log($.toObj(res,res))
+                                    console.log(JSON.stringify(res));
                                 }
                             }
                         }
