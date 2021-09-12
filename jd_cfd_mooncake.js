@@ -1,5 +1,8 @@
 /*
 京喜财富岛合月饼🥮已加入互助池（助力次数和财富岛共用）
+
+如需挂机，设置环境变量：cfd_mooncake_loop="true"
+
 cron 5 * * * * jd_cfd_mooncake.js
 更新时间：2021-9-11
 活动入口：京喜APP-我的-京喜财富岛
@@ -36,6 +39,7 @@ $.showLog = $.getdata("cfd_showLog") ? $.getdata("cfd_showLog") === "true" : fal
 $.notifyTime = $.getdata("cfd_notifyTime");
 $.result = [];
 $.shareCodes = [];
+$.canHelp = true; $.needSubmit = true; $.submitAll = false;
 let cookiesArr = [], cookie = '', token = '';
 let UA, UAInfo = {}, num
 let nowTimes, codePool=[];
@@ -60,76 +64,104 @@ $.appId = 10028;
   $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
   await requestAlgo();
   await $.wait(1000)
-
-  for (let i = 0; i < cookiesArr.length; i++) {
-    if (cookiesArr[i]) {
-      cookie = cookiesArr[i];
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
-      $.index = i + 1;
-      $.nickName = '';
-      $.isLogin = true;
-      await TotalBean();
-      console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-      if (!$.isLogin) {
-        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
-
-        if ($.isNode()) {
-          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+  if (process.env.cfd_mooncake_loop && process.env.cfd_mooncake_loop == "true") {
+      while(true) {
+        $.submitAll = !$.needSubmit;
+        await run();
+        if (!$.canHelp) {
+            continue;
         }
-        continue
-      }
-      $.allTask = []
-      $.info = {}
-      UA = `jdpingou;iPhone;4.13.0;14.4.2;${randomString(40)};network/wifi;model/iPhone10,2;appBuild/100609;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/1;hasOCPay/0;supportBestPay/0;session/${Math.random * 98 + 1};pap/JA2019_3111789;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`
-      token = await getJxToken()
-      await shareCodesFormat()
-      await cfd();
-      await $.wait(2000);
-      UAInfo[$.UserName] = UA
+        await helpLoop();
     }
+  }else {
+      await run();
+      await helpLoop();
   }
-  for (let i = 0; i < cookiesArr.length; i++) {
-    cookie = cookiesArr[i];
-    $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-    $.canHelp = true
-    UA = UAInfo[$.UserName]
-    num = 0
-    if ($.shareCodes && $.shareCodes.length) {
-      console.log(`\n自己账号内部循环互助\n`);
-      for (let j = 0; j < $.shareCodes.length && $.canHelp; j++) {
-        console.log(`账号${$.UserName} 去助力 ${$.shareCodes[j]}`)
-        $.delcode = false
-        await helpByStage($.shareCodes[j])
-        await $.wait(2000)
-        if ($.delcode) {
-          $.shareCodes.splice(j, 1)
-          j--
-          continue
-        }
-      }
-    }
-    if ($.canHelp) {
-      await readShareCode();
-    }
-    if ($.canHelp && codePool && codePool.length) {
-      console.log(`\n****助力池互助****\n`);
-      for (let j = 0; j < codePool.length && $.canHelp; j++) {
-        console.log(`账号${$.UserName} 去助力 ${codePool[j]}`)
-        $.delcode = false
-        await helpByStage(codePool[j])
-        await $.wait(2000)
-        if ($.delcode) {
-          codePool.splice(j, 1)
-          j--
-          continue
-        }
-      }
-    }
-  }
-  await showMsg();
+  
+  //await showMsg();
 })()
     .catch((e) => $.logErr(e))
     .finally(() => $.done());
+
+async function run() {
+    try{
+        for (let i = 0; i < cookiesArr.length; i++) {
+            if (cookiesArr[i]) {
+                cookie = cookiesArr[i];
+                $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
+                $.index = i + 1;
+                $.nickName = '';
+                $.isLogin = true;
+                await TotalBean();
+                console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
+                if (!$.isLogin) {
+                    $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
+
+                    if ($.isNode()) {
+                        await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+                    }
+                    continue
+                }
+                $.needSubmit = true;
+                $.allTask = []
+                $.info = {}
+                UA = `jdpingou;iPhone;4.13.0;14.4.2;${randomString(40)};network/wifi;model/iPhone10,2;appBuild/100609;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/1;hasOCPay/0;supportBestPay/0;session/${Math.random * 98 + 1};pap/JA2019_3111789;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148`
+                token = await getJxToken()
+                await shareCodesFormat()
+                await cfd();
+                await $.wait(2000);
+                UAInfo[$.UserName] = UA
+            }
+        }
+    }catch(e) {
+        $.logErr(e)
+    }
+}
+
+async function helpLoop() {
+    try {
+        for (let i = 0; i < cookiesArr.length; i++) {
+            cookie = cookiesArr[i];
+            $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+            $.canHelp = true
+            UA = UAInfo[$.UserName]
+            num = 0
+            if ($.shareCodes && $.shareCodes.length) {
+                console.log(`\n自己账号内部循环互助\n`);
+                for (let j = 0; j < $.shareCodes.length && $.canHelp; j++) {
+                    console.log(`账号${$.UserName} 去助力 ${$.shareCodes[j]}`)
+                    $.delcode = false
+                    await helpByStage($.shareCodes[j])
+                    await $.wait(2000)
+                    if ($.delcode) {
+                        $.shareCodes.splice(j, 1)
+                        j--
+                        continue
+                    }
+                }
+            }
+            if ($.canHelp) {
+                await readShareCode();
+            }
+            if ($.canHelp && codePool && codePool.length) {
+                console.log(`\n****助力池互助****\n`);
+                for (let j = 0; j < codePool.length && $.canHelp; j++) {
+                    console.log(`账号${$.UserName} 去助力 ${codePool[j]}`)
+                    $.delcode = false
+                    await helpByStage(codePool[j])
+                    await $.wait(2000)
+                    if ($.delcode) {
+                        codePool.splice(j, 1)
+                        j--
+                        continue
+                    }
+                }
+            }
+        }
+    }catch(e) {
+        $.logErr(e)
+    }
+}
 
 async function cfd() {
   try {
@@ -150,108 +182,103 @@ async function cfd() {
 
     //助力奖励
     await $.wait(2000)
-    await composePearlState(2)
-
+    await composeGameState(2)
+    
     //合成月饼
-      let count = $.isNode() ? (process.env.JD_CFD_RUNNUM ? process.env.JD_CFD_RUNNUM * 1 : Math.floor((Math.random() * 2)) + 3) : ($.getdata('JD_CFD_RUNNUM') ? $.getdata('JD_CFD_RUNNUM') * 1 : Math.floor((Math.random() * 2)) + 3);
-      console.log(`\n合成月饼`)
-      console.log(`合成月饼运行次数为：${count}\n`)
-      for (let j = 0; j < count; j++) {
-        await $.wait(2000)
-        await composePearlState(3)
-      }
-  
+    await $.wait(2000)
+    await composeGameState(3)
+      
   } catch (e) {
     $.logErr(e)
   }
 }
 
 // 合成月饼
-async function composePearlState(type) {
+async function composeGameState(type = true) {
   return new Promise(async (resolve) => {
-    $.get(taskUrl(`user/ComposePearlState`, `__t=${Date.now()}&dwGetType=0`), async (err, resp, data) => {
+    $.get(taskUrl(`user/ComposePearlState`, ``, `&dwGetType=0`), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} ComposePearlState API请求失败，请检查网路重试`)
+          console.log(`${$.name} ComposeGameState API请求失败，请检查网路重试`)
         } else {
-          switch (type) {
-            case 1:
-              data = JSON.parse(data);
-              break
-            case 2:
-              data = JSON.parse(data);
-              console.log(`领助力奖励`)
-              if (data.iRet === 0) {
+            $.ComposeGameState = JSON.parse(data);
+            if (type == 2 && $.ComposeGameState.iRet === 0) {
                 let helpNum = []
-                for (let key of Object.keys(data.helpInfo.HelpList)) {
-                  let vo = data.helpInfo.HelpList[key]
-                  if (vo.dwStatus !== 1 && vo.dwIsHasAward === 1 && vo.dwIsHelp === 1) {
-                    helpNum.push(vo.dwId)
-                  }
+                for (let key of Object.keys($.ComposeGameState.helpInfo.HelpList)) {
+                    let vo = $.ComposeGameState.helpInfo.HelpList[key]
+                    if (vo.dwStatus !== 1 && vo.dwIsHasAward === 1 && vo.dwIsHelp === 1) {
+                        helpNum.push(vo.dwId)
+                    }
                 }
                 if (helpNum.length !== 0) {
-                  for (let j = 0; j < helpNum.length; j++) {
-                    await pearlHelpDraw(data.ddwSeasonStartTm, helpNum[j])
-                    await $.wait(2000)
-                    data = await composePearlState(1)
-                  }
-                } else {
-                  console.log(`暂无可领助力奖励`)
-                }
-              }
-              break
-            case 3:
-              data = JSON.parse(data);
-              if (data.iRet === 0) {
-                console.log(`当前已合成${data.dwCurProgress}颗月饼，总计获得${data.ddwVirHb / 100}元红包`)
-                if (data.strDT) {
-                  let beacon = data.PearlList[0]
-                  data.PearlList.shift()
-                  let beaconType = beacon.type
-                  let num = Math.ceil(Math.random() * 12 + 8)
-                  console.log(`合成月饼：模拟操作${num}次`)
-                  for (let v = 0; v < num; v++) {
-                    console.log(`模拟操作进度：${v + 1}/${num}`)
-                    await $.wait(2000)
-                    await realTmReport(data.strMyShareId)
-                    if (beacon.rbf) {
-                      let size = 1
-                      for (let key of Object.keys(data.PearlList)) {
-                        let vo = data.PearlList[key]
-                        if (vo.rbf && vo.type === beaconType) {
-                          size = 2
-                          vo.rbf = 0
-                          break
-                        }
-                      }
-                      await composePearlAward(data.strDT, beaconType, size)
+                    for (let j = 0; j < helpNum.length; j++) {
+                        await pearlHelpDraw($.ComposeGameState.ddwSeasonStartTm, helpNum[j])
+                        await $.wait(2000)
                     }
-                  }
-                  let strLT = data.oPT[data.ddwCurTime % data.oPT.length]
-                   let res = await composePearlAddProcess(data.strDT, strLT)
-                   if (res.iRet === 0) {
-                     console.log(`\n合成月饼成功：获得${res.ddwAwardHb / 100}元红包\n`)
-                   } else {
-                     console.log(`\n合成月饼失败：${res.sErrMsg}\n`)
-                   }
                 } else {
-                  console.log(`今日已完成\n`)
+                    console.log(`暂无可领助力奖励`)
                 }
-              }
-               break
-             case 4:
-               data = JSON.parse(data);
-               if (data.iRet === 0) {
-                 if (data.dayDrawInfo.dwIsDraw === 0) {
-                   await $.wait(2000)
-                   let strToken = await getPearlDailyReward().strToken
-                   await pearlDailyDraw(data.ddwSeasonStartTm, strToken)
-                 }
-               }
-             default:
-              break;
-          }
+            }else {
+                console.log(`当前已合成${$.ComposeGameState.dwCurProgress}颗月饼，总计获得${$.ComposeGameState.ddwVirHb / 100}元红包\n`);
+                if ($.ComposeGameState.dayDrawInfo.dwIsDraw == 0) {
+                    let res = await getPearlDailyReward();
+                    if (res && res.iRet == 0 && res.strToken) {
+                        let res1 = await pearlDailyDraw(res);
+                        if(res1 && res1.iRet == 0){
+                            if(res1.strPrizeName){
+                                console.log(`抽奖获得:${res.strPrizeName || $.toObj(res,res)}`)
+                            }else{
+                                console.log(`抽奖获得:${$.toObj(res,res)}`)
+                            }
+                        }else{
+                            console.log("抽奖失败\n"+$.toObj(res,res))
+                        }
+                    }
+                }
+                if ($.ComposeGameState.strDT) {
+                    let b = 1;
+                    console.log(`合月饼${b}次 `)
+                    for(i=1;b--;i++){
+                        let n = Math.ceil(Math.random()*12+12)
+                        console.log(`上报次数${n}`)
+                        for(m=1;n--;m++){
+                            console.log(`上报第${m}次`)
+                            await $.wait(5000);
+                            await pearlRealTmReport();
+                            let s = Math.floor((Math.random()*3))
+                            let n = 0
+                            if(s == 1) n = 1
+                            if(n === 1){
+                                let res = await pearlComposePearlAward();
+                                if(res && res.iRet == 0){
+                                    console.log(`上报得红包:${res.ddwAwardHb && '获得'+res.ddwAwardHb/100+"红包" || ''}${res.ddwVirHb && ' 当前有'+res.ddwVirHb/100+"红包" || ''}`)
+                                }else {
+                                    console.log($.toObj(res,res))
+                                }
+                            }
+                        }
+                        console.log("合成月饼")
+                        let strLT = ($.ComposeGameState.oPT || [])[$.ComposeGameState.ddwCurTime % ($.ComposeGameState.oPT || []).length]
+                        let res = await pearlComposePearlAddProcess(strLT);
+                        if(res && res.iRet == 0){
+                            console.log(`合成成功:${res.ddwAwardHb && '获得'+res.ddwAwardHb/100+"红包 " || ''}当前有${res.dwCurProgress}个月饼${res.ddwVirHb && ' '+res.ddwVirHb/100+"红包" || ''}`)
+                        }else{
+                            console.log(JSON.stringify(res))
+                        }
+                        $.ComposeGameState = await checkPearl();  
+                    }
+                }else {
+                    console.log(`今日已完成\n`)
+                }
+                for (let i of $.ComposeGameState.stagelist || []) {
+                    if (i.dwIsAward == 0 && $.ComposeGameState.dwCurProgress >= i.dwCurStageEndCnt) {
+                        await $.wait(2000)
+                        let res = await pearlComposeGameAward();
+                        printRes(res,'月饼领奖')
+                    }
+                }
+            }
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -262,108 +289,160 @@ async function composePearlState(type) {
   })
 }
 
-function realTmReport(strMyShareId) {
-  return new Promise((resolve) => {
-    $.get(taskUrl(`user/RealTmReport`, `__t=${Date.now()}&dwIdentityType=0&strBussKey=composegame&strMyShareId=${strMyShareId}&ddwCount=10`), (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} RealTmReport API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
-      }
+function checkPearl() {
+    return new Promise((resolve) => {
+        $.get(taskUrl(`user/ComposePearlState`, ``, `&dwGetType=0`), (err, resp, data) => {
+            try {
+                if (err) {
+                  console.log(`${JSON.stringify(err)}`)
+                  console.log(`${$.name} GetPearlDailyReward API请求失败，请检查网路重试`)
+                } else {
+                  data = JSON.parse(data);
+                }
+            } catch (e) {
+                $.logErr(e, resp);
+            } finally {
+                resolve(data || null);
+            }
+        })
     })
-  })
 }
-function composePearlAddProcess(strDT, strLT) {
-  return new Promise((resolve) => {
-    $.get(taskUrl(`user/ComposePearlAddProcess`, `strBT=${strDT}&strLT=${strLT}`), (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} ComposePearlAddProcess API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
-  })
-}
+
 function getPearlDailyReward() {
-  return new Promise((resolve) => {
-    $.get(taskUrl(`user/GetPearlDailyReward`, `__t=${Date.now()}`), (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} GetPearlDailyReward API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
+    return new Promise((resolve) => {
+        $.get(taskUrl(`user/GetPearlDailyReward`, '__t,strZone', ``), (err, resp, data) => {
+            try {
+                if (err) {
+                  console.log(`${JSON.stringify(err)}`)
+                  console.log(`${$.name} GetPearlDailyReward API请求失败，请检查网路重试`)
+                } else {
+                  data = JSON.parse(data);
+                }
+            } catch (e) {
+                $.logErr(e, resp);
+            } finally {
+                resolve(data || null);
+            }
+        })
     })
-  })
-}
-function pearlDailyDraw(ddwSeasonStartTm, strToken) {
-   return new Promise((resolve) => {
-     $.get(taskUrl(`user/PearlDailyDraw`, `ddwSeaonStart=${ddwSeasonStartTm}&strToken=${strToken}`), (err, resp, data) => {
-       try {
-         if (err) {
-           console.log(`${JSON.stringify(err)}`)
-           console.log(`${$.name} PearlDailyDraw API请求失败，请检查网路重试`)
-         } else {
-           data = JSON.parse(data);
-           if (data.iRet === 0) {
-             console.log(`抽奖成功：获得${data.strPrizeName || JSON.stringify(data)}`)
-           } else {
-             console.log(`抽奖失败：${data.sErrMsg}`)
-           }
-         }
-       } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-     })
-   })
- }
-
-function composePearlAward(strDT, type, size) {
-  return new Promise((resolve) => {
-    $.get(taskUrl(`user/ComposePearlAward`, `__t=${Date.now()}&type=${type}&size=${size}&strBT=${strDT}`), (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} ComposePearlAward API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          if (data.iRet === 0) {
-            console.log(`模拟操作中奖：获得${data.ddwAwardHb / 100}元红包，总计获得${data.ddwVirHb / 100}元红包`)
-          } else {
-            console.log(`模拟操作未中奖：${data.sErrMsg}`)
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
-  })
 }
 
+function pearlComposePearlAward() {
+    return new Promise((resolve) => {
+        $.get(taskUrl(`user/ComposePearlAward`, '__t,size,strBT,strZone,type', `__t=${Date.now()}&type=4&size=1&strBT=${$.ComposeGameState.strDT}`), (err, resp, data) => {
+            try {
+                if (err) {
+                  console.log(`${JSON.stringify(err)}`)
+                  console.log(`${$.name} GetPearlDailyReward API请求失败，请检查网路重试`)
+                } else {
+                  data = JSON.parse(data);
+                }
+            } catch (e) {
+                $.logErr(e, resp);
+            } finally {
+                resolve(data || null);
+            }
+        })
+    })
+}
+
+function pearlDailyDraw(res) {
+    return new Promise((resolve) => {
+        $.get(taskUrl(`user/PearlDailyDraw`, '__t,ddwSeaonStart,strToken,strZone', `&ddwSeaonStart=${$.ComposeGameState.ddwSeasonStartTm}&strToken=${res.strToken}`), (err, resp, data) => {
+            try {
+                if (err) {
+                  console.log(`${JSON.stringify(err)}`)
+                  console.log(`${$.name} GetPearlDailyReward API请求失败，请检查网路重试`)
+                } else {
+                  data = JSON.parse(data);
+                }
+            } catch (e) {
+                $.logErr(e, resp);
+            } finally {
+                resolve(data || null);
+            }
+        })
+    })
+}
+
+function pearlRealTmReport() {
+    return new Promise((resolve) => {
+        $.get(taskUrl(`user/RealTmReport`, '', `&dwIdentityType=0&strBussKey=composegame&strMyShareId=${$.ComposeGameState.strMyShareId}&ddwCount=10`), (err, resp, data) => {
+            try {
+                if (err) {
+                  console.log(`${JSON.stringify(err)}`)
+                  console.log(`${$.name} GetPearlDailyReward API请求失败，请检查网路重试`)
+                } else {
+                  data = JSON.parse(data);
+                }
+            } catch (e) {
+                $.logErr(e, resp);
+            } finally {
+                resolve(data || null);
+            }
+        })
+    })
+}
+
+function pearlComposePearlAddProcess(strLT) {
+    return new Promise((resolve) => {
+        $.get(taskUrl(`user/ComposePearlAddProcess`, '__t,strBT,strLT,strZone', `&strBT=${$.ComposeGameState.strDT}&strLT=${strLT}`), (err, resp, data) => {
+            try {
+                if (err) {
+                  console.log(`${JSON.stringify(err)}`)
+                  console.log(`${$.name} GetPearlDailyReward API请求失败，请检查网路重试`)
+                } else {
+                  data = JSON.parse(data);
+                }
+            } catch (e) {
+                $.logErr(e, resp);
+            } finally {
+                resolve(data || null);
+            }
+        })
+    })
+}
+
+function pearlComposeGameAward() {
+    return new Promise((resolve) => {
+        $.get(taskUrl(`user/ComposeGameAward`, '__t,dwCurStageEndCnt,strZone', `&dwCurStageEndCnt=${i.dwCurStageEndCnt}`), (err, resp, data) => {
+            try {
+                if (err) {
+                  console.log(`${JSON.stringify(err)}`)
+                  console.log(`${$.name} GetPearlDailyReward API请求失败，请检查网路重试`)
+                } else {
+                  data = JSON.parse(data);
+                }
+            } catch (e) {
+                $.logErr(e, resp);
+            } finally {
+                resolve(data || null);
+            }
+        })
+    })
+}
+function printRes(res, msg=''){
+  if(res.iRet == 0 && (res.Data || res.ddwCoin || res.ddwMoney || res.strPrizeName)){
+    let result = res
+    if(res.Data){
+      result = res.Data
+    }
+    if(result.ddwCoin || result.ddwMoney || result.strPrizeName || result.StagePrizeInfo && result.StagePrizeInfo.strPrizeName){
+      console.log(`${msg}获得:${result.ddwCoin && ' '+result.ddwCoin+'金币' || ''}${result.ddwMoney && ' '+result.ddwMoney+'财富' || ''}${result.strPrizeName && ' '+result.strPrizeName+'红包' || ''}${result.StagePrizeInfo && result.StagePrizeInfo.strPrizeName && ' '+result.StagePrizeInfo.strPrizeName || ''}`)
+    }else if(result.Prize){
+      console.log(`${msg}获得: ${result.Prize.strPrizeName && '优惠券 '+result.Prize.strPrizeName || ''}`)
+    }else if(res && res.sErrMsg){
+      console.log(res.sErrMsg)
+    }else{
+      console.log(`${msg}完成`, JSON.stringify(res))
+      // console.log(`完成`)
+    }
+  }else if(res && res.sErrMsg){
+    console.log(`${msg}失败:${res.sErrMsg}`)
+  }else{
+    console.log(`${msg}失败:${JSON.stringify(res)}`)
+  }
+}
 // 助力奖励
 function pearlHelpDraw(ddwSeasonStartTm, dwUserId) {
   return new Promise((resolve) => {
@@ -454,7 +533,11 @@ function getUserInfo(showInvite = true) {
             console.log(`财富岛好友互助码每次运行都变化,旧的可继续使用`);
             console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${strMyShareId}\n\n`);
             $.shareCodes.push(strMyShareId)
-            submitCode(strMyShareId, $.UserName);
+            if(!$.submitAll){
+                submitCode(strMyShareId, $.UserName);
+            } else {
+                console.log("🏝*互助码已提交*🏝");
+            }
           }
           $.info = {
             ...$.info,
@@ -551,8 +634,21 @@ function biz(contents){
 }
 
 function taskUrl(function_path, body = '', dwEnv = 7) {
-  let url = `${JD_API_HOST}jxbfd/${function_path}?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=${dwEnv}&_cfd_t=${Date.now()}&ptag=138631.26.55&${body}&_stk=_cfd_t%2CbizCode%2CddwTaskId%2CdwEnv%2Cptag%2Csource%2CstrShareId%2CstrZone&_ste=1`;
-  url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&g_ty=ls`;
+  let url = '';
+  if (function_path == 'user/ComposePearlState') {
+    url = `https://m.jingxi.com/jxbfd/${function_path}?__t=${Date.now()}&strZone=jxbfd${dwEnv}&_=${Date.now()+9}&sceneval=2`
+  }else if (function_path == 'user/GetPearlDailyReward') {
+    url = `https://m.jingxi.com/jxbfd/${function_path}?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=${Date.now()}&ptag=${dwEnv}${body}&_=${Date.now()+9}&sceneval=2`;
+    url += `&h5st=${decrypt(Date.now(), body, '', url)}`;
+  }else if(function_path == 'user/RealTmReport'){
+    url = `https://m.jingxi.com/jxbfd/${function_path}?__t=${Date.now()}${dwEnv}&_=${Date.now()+9}&sceneval=2`
+  }else if(function_path == 'user/ComposeGameAward'){
+    url = `https://m.jingxi.com/jxbfd/${type}?strZone=jxbfd&__t=${Date.now()}${dwEnv}${body}&_=${Date.now()+9}&sceneval=2`;
+  }
+  else {
+    url = `${JD_API_HOST}jxbfd/${function_path}?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=${dwEnv}&_cfd_t=${Date.now()}&ptag=138631.26.55&${body}&_stk=_cfd_t%2CbizCode%2CddwTaskId%2CdwEnv%2Cptag%2Csource%2CstrShareId%2CstrZone&_ste=1`;
+    url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&g_ty=ls`;
+  }
   return {
     url,
     headers: {
@@ -612,8 +708,10 @@ function submitCode(myInviteCode, user) {
             //console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
             data = JSON.parse(data);
             if (data.code === 300) {
+                $.needSubmit = false;
               console.log("🏝互助码已提交🏝");
             }else if (data.code === 200) {
+                $.needSubmit = false;
               console.log("🏝互助码提交成功🏝");
             }
           }
