@@ -64,7 +64,7 @@ $.appId = 10028;
   $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
   await requestAlgo();
   await $.wait(1000)
-  if (process.env.cfd_mooncake_loop && process.env.cfd_mooncake_loop == "true") {
+  if ($.isNode() && process.env.cfd_mooncake_loop && process.env.cfd_mooncake_loop == "true") {
       while(true) {
         $.submitAll = !$.needSubmit;
         await run();
