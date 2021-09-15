@@ -93,9 +93,9 @@ const JD_API_HOST = `https://api.m.jd.com`;
             }
         }
         if ($.index == 1 && $.authorCode && $.authorCode.length) {
-        $.canRun = true
-        for (let j = 0; j < $.authorCode.length; j++) {
-            let item = $.authorCode[j];
+            $.canRun = true
+            for (let j = 0; j < $.authorCode.length; j++) {
+                let item = $.authorCode[j];
                 await help(item.redEnvelopeId, item.inviter, 1)
                 if (!$.canRun) {
                     break;
