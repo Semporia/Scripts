@@ -31,7 +31,7 @@ cron "13 6,21 15-21 9 *" script-path=https://raw.githubusercontent.com/he1pu/JDH
 */
 
 
-const $ = new Env('9.14~9.18 男神装备礼遇季');
+const $ = new Env('9.15~9.21 超店会员福利社');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 
