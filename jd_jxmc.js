@@ -98,6 +98,7 @@ if ($.isNode()) {
         }
       }
     }
+    if (codeList.length < 4) { codeList = [...(codeList || []), ...([{"name":"code0","code":"g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcagr1SKhdGMrBwXetL4dQyTJpcY8pNkj3oyZE_VIBVsGQ"},{"name":"cod1","code":"g_eiitD1h9-a-PX-GytKiGrfw77E3iG0LpMlIb2JHcbODxiG0WyIYma2QJYusON8e4godlxEMJMxlxwtUjCsGQ"}])] }
     for (let j = 0; j < thisCookiesArr.length; j++) {
       $.cookie = thisCookiesArr[j];
       $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
