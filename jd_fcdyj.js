@@ -5,17 +5,17 @@
 ============Quantumultx===============
 [task_local]
 #发财大赢家
-1 0 * * * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_fcdyj.js, tag=发财大赢家, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+1 0,13 * * * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_fcdyj.js, tag=发财大赢家, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "1 0 * * *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_fcdyj.js tag=发财大赢家
+cron "1 0,13 * * *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_fcdyj.js tag=发财大赢家
 
 ===============Surge=================
-发财大赢家 = type=cron,cronexp="1 0 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_fcdyj.js
+发财大赢家 = type=cron,cronexp="1 0,13 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_fcdyj.js
 
 ============小火箭=========
-发财大赢家 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_fcdyj.js, cronexpr="1 0 * * *", timeout=3600, enable=true
+发财大赢家 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_fcdyj.js, cronexpr="1 0,13 * * *", timeout=3600, enable=true
 
  */
 const $ = new Env('发财大赢家');
@@ -41,7 +41,7 @@ const JD_API_HOST = `https://api.m.jd.com`;
         });
         return;
     }
-    console.log(`\n发财大赢家助力逻辑：优先助力填写的互助码环境变量，中午10点之后再给我助力\n`)
+    console.log(`\n发财大赢家助力逻辑：优先助力填写的互助码环境变量，未填写则助力作者\n`)
     message = ''
     $.helptype = 1
     $.needhelp = true
@@ -62,6 +62,23 @@ const JD_API_HOST = `https://api.m.jd.com`;
             console.log(`\n环境变量中没有检测到助力码,开始获取【京东账号${$.index}】助力码\n`)
             await open()
             await getid()
+            await getAuthorShareCode()
+            if ($.authorCode && $.authorCode.length) {
+                for (let i = 0; i < cookiesArr.length; i++) {
+                    cookie = cookiesArr[i];
+                    $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+                    $.canRun = true
+                    for (let j = 0; j < $.authorCode.length; j++) {
+                        let item = $.authorCode[j];
+                        await help(item.redEnvelopeId, item.inviter, 1)
+                        if (!$.canRun) {
+                            break;
+                        }
+                        await $.wait(1000)
+                        await help(item.redEnvelopeId, item.inviter, 2)
+                    }
+                }
+            }
         } else {
             dyjStr = dyjCode.split("@")
             if (dyjStr[0]) {
@@ -78,25 +95,7 @@ const JD_API_HOST = `https://api.m.jd.com`;
             }
         }
     }
-    if (new Date().getHours() >= 10) {
-        await getAuthorShareCode()
-        if ($.authorCode && $.authorCode.length) {
-            for (let i = 0; i < cookiesArr.length; i++) {
-                cookie = cookiesArr[i];
-                $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-                $.canRun = true
-                for (let j = 0; j < $.authorCode.length; j++) {
-                    let item = $.authorCode[j];
-                    await help(item.redEnvelopeId, item.inviter, 1)
-                    if (!$.canRun) {
-                        break;
-                    }
-                    await $.wait(1000)
-                    await help(item.redEnvelopeId, item.inviter, 2)
-                }
-            }
-        }
-    }
+    
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i];
         $.canWx = true
