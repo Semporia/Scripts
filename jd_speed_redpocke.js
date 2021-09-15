@@ -224,6 +224,7 @@ function getPacketList() {
                   console.log(`去提现${item.amount}微信现金`)
                   message += `提现${item.amount}微信现金，`
                   await cashOut(item.id,item.poolBaseId,item.prizeGroupId,item.prizeBaseId)
+                  await $.wait(3000);
                 }
               }
             } else {
@@ -273,6 +274,7 @@ function signPrizeDetailList() {
                   console.log(`极速版签到提现，去提现${code['prizeValue']}现金\n`);
                   message += `极速版签到提现，去提现${code['prizeValue']}微信现金，`
                   await apCashWithDraw(code['id'], code['poolBaseId'], code['prizeGroupId'], code['prizeBaseId']);
+                  await $.wait(3000);
                 }
               } else {
                 console.log(`极速版签到查询奖品：失败:${JSON.stringify(data)}\n`);
