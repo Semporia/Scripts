@@ -80,7 +80,6 @@ const JD_API_HOST = `https://api.m.jd.com`;
     }
     if (new Date().getHours() >= 10) {
         await getAuthorShareCode()
-        console.log($.authorCode);
         if ($.authorCode && $.authorCode.length) {
             for (let i = 0; i < cookiesArr.length; i++) {
                 cookie = cookiesArr[i];
@@ -315,7 +314,6 @@ function getAuthorShareCode() {
                     console.log(`${JSON.stringify(err)}`);
                     console.log(`${$.name} API请求失败，请检查网路重试`);
                 } else {
-                    console.log(data);
                     $.authorCode = JSON.parse(data).dyj;
                 }
             } catch (e) {
