@@ -64,21 +64,19 @@ const JD_API_HOST = `https://api.m.jd.com`;
             await getid()
             await getAuthorShareCode()
             if ($.authorCode && $.authorCode.length) {
-                for (let i = 0; i < cookiesArr.length; i++) {
-                    cookie = cookiesArr[i];
-                    $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-                    $.canRun = true
-                    for (let j = 0; j < $.authorCode.length; j++) {
-                        let item = $.authorCode[j];
-                        await help(item.redEnvelopeId, item.inviter, 1)
-                        if (!$.canRun) {
-                            break;
-                        }
-                        await $.wait(1000)
-                        await help(item.redEnvelopeId, item.inviter, 2)
+                $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+                $.canRun = true
+                for (let j = 0; j < $.authorCode.length; j++) {
+                    let item = $.authorCode[j];
+                    await help(item.redEnvelopeId, item.inviter, 1)
+                    if (!$.canRun) {
+                        break;
                     }
+                    await $.wait(1000)
+                    await help(item.redEnvelopeId, item.inviter, 2)
                 }
             }
+            
         } else {
             dyjStr = dyjCode.split("@")
             if (dyjStr[0]) {
@@ -94,7 +92,20 @@ const JD_API_HOST = `https://api.m.jd.com`;
                 await help($.rid, $.inviter, 2)
             }
         }
+        if ($.index == 1 && $.authorCode && $.authorCode.length) {
+        $.canRun = true
+        for (let j = 0; j < $.authorCode.length; j++) {
+            let item = $.authorCode[j];
+                await help(item.redEnvelopeId, item.inviter, 1)
+                if (!$.canRun) {
+                    break;
+                }
+                await $.wait(1000)
+                await help(item.redEnvelopeId, item.inviter, 2)
+            }
+        }
     }
+    
     
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i];
