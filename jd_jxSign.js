@@ -72,6 +72,7 @@ if ($.isNode()) {
       UAInfo[$.UserName] = UA
     }
   }
+  
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -185,6 +186,7 @@ function signhb(type = 1) {
                   'num': helpNum || 0,
                   'max': max
                 })
+                if ($.index==cookiesArr.length) $.shareCodes.push({'use': 'zero205','smp': '60a620f96e505406586b8e249eda3ad8','num': 0,'max': false})
               }
               break
             case 2:
