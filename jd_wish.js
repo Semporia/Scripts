@@ -114,7 +114,7 @@ async function jd_wish() {
 
     let getHomeDataRes = (await healthyDay_getHomeData(false)).data.result.userInfo
     let forNum = Math.floor(getHomeDataRes.userScore / getHomeDataRes.scorePerLottery)
-    await $.wait(2000)
+    await $.wait(5000)
 
     if (forNum === 0) {
       console.log(`没有抽奖机会\n\n`)
