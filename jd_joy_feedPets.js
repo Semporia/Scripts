@@ -26,7 +26,12 @@ $.get = zooFaker.injectToRequest2($.get.bind($));
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const invoke_key = "RtKLB8euDo7KwsO0";
+let invoke_key = "RtKLB8euDo7KwsO0";
+try{
+    let hConfig = require('./utils/HConfig.js')
+    invoke_key = hConfig.invokeKey
+}catch(e){}
+
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 if ($.isNode()) {
