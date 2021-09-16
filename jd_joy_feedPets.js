@@ -182,7 +182,7 @@ function feedPets(feedNum) {
 function ThreeMeals() {
   return new Promise(resolve => {
     let opt = {
-      url: "//jdjoy.jd.com/common/pet/getFood?taskType=ThreeMeals&reqSource=h5&invokeKey=${invoke_key}",
+      url: `//jdjoy.jd.com/common/pet/getFood?taskType=ThreeMeals&reqSource=h5&invokeKey=${invoke_key}`,
       // url: "//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5&invokeKey=${invoke_key}",
       method: "GET",
       data: {},
