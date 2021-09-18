@@ -74,6 +74,7 @@ if ($.isNode()) {
             $.attrTouXiang = 'https://img10.360buyimg.com/imgzone/jfs/t1/7020/27/13511/6142/5c5138d8E4df2e764/5a1216a3a5043c5d.png'
             $.activityUrl = `https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/${random(1000000, 9999999)}?activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=null&shopid=${$.activityShopId}&lng=00.000000&lat=00.000000&sid=&un_area=`
             await marry();
+            await $.wait(3000)
             if ($.bean > 0) {
                 message += `\n【京东账号${$.index}】${$.nickName || $.UserName} \n       └ 获得 ${$.bean} 京豆。`
             }
@@ -119,6 +120,7 @@ async function marry() {
                     await task('dz/openCard/followShop', `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}&actorUuid=${encodeURIComponent($.actorUuid)}&taskType=23&taskValue=1000002520`)
                 } else {
                     $.log(">>>已经关注过了\n")
+                    return;
                 }
             } else {
                 $.log("没有获取到对应的任务。\n")
@@ -142,7 +144,7 @@ async function marry() {
                         $.log(`>>>去加入${vo.name}`)
                         await getShopOpenCardInfo({ "venderId": `${vo.value}`, "channel": "401" }, vo.value)
                         await bindWithVender({ "venderId": `${vo.value}`, "bindByVerifyCodeFlag": 1, "registerExtend": {}, "writeChildFlag": 0, "activityId": $.openCardActivityId, "channel": 401 }, vo.value)
-                        await $.wait(500)
+                        await $.wait(2000)
                     }
                     for (const vo of t2TaskList) {
                         $.log(`>>>${vo.name}`)
@@ -153,8 +155,11 @@ async function marry() {
                 }
 
                 await task("taskact/openCardcommon/drawContent", `activityId=${$.activityId}&pin=${encodeURIComponent($.secretPin)}`)
+                await $.wait(2000)
                 await task('dz/openCard/checkOpenCard', `activityId=${$.activityId}&actorUuid=${$.actorUuid}&shareUuid=${$.authorCode}&pin=${encodeURIComponent($.secretPin)}`)
+                await $.wait(2000)
                 await task("dz/openCard/startDraw", `activityId=${$.activityId}&actorUuid=${$.actorUuid}&type=1&pin=${encodeURIComponent($.secretPin)}`)
+                await $.wait(2000)
                 await task("dz/openCard/startDraw", `activityId=${$.activityId}&actorUuid=${$.actorUuid}&type=2&pin=${encodeURIComponent($.secretPin)}`)
 
             } else {
