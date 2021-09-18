@@ -68,7 +68,7 @@ if ($.isNode()) {
             }
             
             $.bean = 0;
-            $.authorCode = '1e3cf03cdb82470ea3ad0d3b0640ed93'
+            $.authorCode = ownCode ? ownCode : '1e3cf03cdb82470ea3ad0d3b0640ed93';
             $.activityId = 'dsfsgffg78dgfd8gfdfe9re8rt8r9ew9'
             $.activityShopId = '1000004065'
             $.attrTouXiang = 'https://img10.360buyimg.com/imgzone/jfs/t1/7020/27/13511/6142/5c5138d8E4df2e764/5a1216a3a5043c5d.png'
