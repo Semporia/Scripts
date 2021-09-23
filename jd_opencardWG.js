@@ -4,7 +4,7 @@
  开卡 抽奖可能获得30京豆(有可能有抽到空气💨
  关注10京豆 (有可能是空气💨
  第一个账号助力作者 其他依次助力CK1
- 入口：https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/6531736?activityId=fids98g8f798sd787f7gf0g9d8sd9f8s&shareUuid=90ba0f4937e74181a134a75acfad5758
+ 入口：(https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/6531736?activityId=fids98g8f798sd787f7gf0g9d8sd9f8s&shareUuid=90ba0f4937e74181a134a75acfad5758)
  IOS等用户直接用NobyDa的jd cookie
  ============Quantumultx===============
  [task_local]
