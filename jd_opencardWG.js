@@ -19,7 +19,7 @@
  9月 女神狂欢 大牌盛典 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js, cronexpr="40 5,21 * 9 *", timeout=3600, enable=true
 
 */
-const $ = new Env('9月 女神狂欢 大牌盛典');
+const $ = new Env('女神狂欢 大牌盛典');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
@@ -43,7 +43,7 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
-    $.log(`入口：\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/6531736?activityId=fids98g8f798sd787f7gf0g9d8sd9f8s&shareUuid=90ba0f4937e74181a134a75acfad5758`);
+    $.log(`9.22-9.30 女神狂欢 大牌盛典 入口：\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity/6531736?activityId=fids98g8f798sd787f7gf0g9d8sd9f8s&shareUuid=90ba0f4937e74181a134a75acfad5758`);
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i]
