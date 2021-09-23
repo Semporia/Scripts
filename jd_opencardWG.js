@@ -1,5 +1,5 @@
 /*
- 9.22~30 女神狂欢 大牌盛典 [jd_opencardWG.js]
+ 9.22~9.30 女神狂欢 大牌盛典 [jd_opencardWG.js]
  邀请一人20豆 被邀请也有20豆(有可能没有豆
  开卡 抽奖可能获得30京豆(有可能有抽到空气💨
  关注10京豆 (有可能是空气💨
@@ -8,15 +8,15 @@
  IOS等用户直接用NobyDa的jd cookie
  ============Quantumultx===============
  [task_local]
- #9.22-30 女神狂欢 大牌盛典
- 40 5,21 22-30 9 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js, tag=9.22~30 女神狂欢 大牌盛典, enabled=true
+ #9.22~9.30 女神狂欢 大牌盛典
+ 40 5,21 22-30 9 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js, tag=9.22~9.30 女神狂欢 大牌盛典, enabled=true
  ================Loon==============
  [Script]
  cron "40 5,21 22-30 9 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js,tag=9.22~30 女神狂欢 大牌盛典
  ===============Surge=================
- 9.22~30 女神狂欢 大牌盛典 = type=cron,cronexp="40 5,21 22-30 9 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js
+ 9.22~9.30 女神狂欢 大牌盛典 = type=cron,cronexp="40 5,21 22-30 9 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js
  ============小火箭=========
- 9.22~30 女神狂欢 大牌盛典 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js, cronexpr="40 5,21 22-30 9 *", timeout=3600, enable=true
+ 9.22~9.30 女神狂欢 大牌盛典 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js, cronexpr="40 5,21 22-30 9 *", timeout=3600, enable=true
 
 */
 const $ = new Env("9.22~30 女神狂欢 大牌盛典");
