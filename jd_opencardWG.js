@@ -19,7 +19,7 @@
  9.22~9.30 女神狂欢 大牌盛典 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardWG.js, cronexpr="40 5,21 22-30 9 *", timeout=3600, enable=true
 
 */
-const $ = new Env("9.22~30 女神狂欢 大牌盛典");
+const $ = new Env("9.22~9.30 女神狂欢 大牌盛典");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
