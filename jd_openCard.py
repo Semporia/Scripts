@@ -1,12 +1,12 @@
 #!/bin/env python3
 # -*- coding: utf-8 -*
 '''
-项目名称: jd_openCard.py
-
+项目名称: JD_OpenCard
+Author: Curtin
 功能：JD入会开卡领取京豆
 CreateDate: 2021/5/4 下午1:47
 UpdateTime: 2021/6/19
-建议cron: 2 8,15 * * *  python3 jd_openCard.py
+建议cron: 2 8,15 * * *  python3 jd_OpenCard.py
 new Env('开卡有礼');
 '''
 version = 'v1.2.2'
@@ -148,7 +148,7 @@ readmes = """
 
     @Last Time: 2021-06-19 13:55
 
-    @Author: h
+    @Author: Curtin
 #### **仅以学习交流为主，请勿商业用途、禁止违反国家法律 ，转载请留个名字，谢谢!** 
 
 # End.
@@ -173,7 +173,7 @@ scriptHeader = """
 ║                                      ║
 ════════════════════════════════════════
 @Version: {}""".format(version)
-remarks = '\n\n'
+remarks = '\n\n\tTG交流 : https://t.me/topstyle996\n\n\tTG频道 : https://t.me/TopStyle2021\n\n\t公众号 : TopStyle\n\n\t\t\t--By Curtin\n'
 
 timestamp = int(round(time.time() * 1000))
 today = datetime.datetime.now().strftime('%Y-%m-%d')
@@ -182,7 +182,7 @@ pwd = os.path.dirname(os.path.abspath(__file__)) + os.sep
 
 ######
 openCardBean = 0
-sleepNum = 0.0
+sleepNum = 0.8
 record = True
 onlyRecord = False
 memory = True
