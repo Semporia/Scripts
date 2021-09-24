@@ -693,9 +693,9 @@ def isUpdate():
         info = result['info']
         readme1 = result['readme1']
         readme2 = result['readme2']
-        readme3 = result['readme3']
+        readme3 = "\n[Info]: \n目前每天07:30和14:30 更新远程shopid，08,15点后跑一次即可。"
         pError = result['m']
-        footer = result['footer']
+        footer = ""
         getWait = result['s']
         if isEnable > 50 and isEnable < 150:
             if version != uPversion:
