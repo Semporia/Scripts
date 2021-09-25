@@ -890,7 +890,7 @@ def isMemory(memorylabel, startNum1, startNum2, midNum, endNum, pinNameList):
                             f"\n上次已完成所有shopid。\n\n请输入 0 或 1\n0 : 退出。\n1 : 重新跑一次，以防有漏\n")
                         if "JD_COOKIE" in os.environ:
                             print("当前Env环境，即将退出")
-                             exit(0)
+                            exit(0)
                         try:
                             getyourNum = int(input("正在等待您的选择："))
                             if getyourNum == 1:
