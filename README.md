@@ -17,6 +17,14 @@ __青龙拉取__
 ```
 ql repo https://github.com/he1pu/JDHelp.git "jd_|jx_|getJDCookie" "activity|backUp|jd_delCoupon" "^jd[^_]|USER|utils"
 ```
+
+__进入容器执行以下命令安装依赖__<br>
+
+```
+npm install -g png-js
+npm install -g jsdom
+```
+
 [退会：JDMemberCloseAccount](https://github.com/yqchilde/JDMemberCloseAccount)
 
 # Warning
