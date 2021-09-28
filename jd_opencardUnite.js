@@ -20,17 +20,17 @@
 ============Quantumultx===============
 [task_local]
 #大牌联合 瓜分京豆 5.18~12.31
-47 9 * 9-12 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardUnite.js, tag=大牌联合 瓜分京豆 5.18~12.31, enabled=true
+47 7,21 * 9-12 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardUnite.js, tag=大牌联合 瓜分京豆 5.18~12.31, enabled=true
 
 ================Loon==============
 [Script]
-cron "47 9 * 9-12 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardUnite.js,tag=大牌联合 瓜分京豆 5.18~12.31
+cron "47 7,21 * 9-12 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardUnite.js,tag=大牌联合 瓜分京豆 5.18~12.31
 
 ===============Surge=================
-大牌联合 瓜分京豆 5.18~12.31 = type=cron,cronexp="47 9 * 9-12 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardUnite.js
+大牌联合 瓜分京豆 5.18~12.31 = type=cron,cronexp="47 7,21 * 9-12 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardUnite.js
 
 ============小火箭=========
-大牌联合 瓜分京豆 5.18~12.31 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardUnite.js, cronexpr="47 9 * 9-12 *", timeout=3600, enable=true
+大牌联合 瓜分京豆 5.18~12.31 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardUnite.js, cronexpr="47 7,21 * 9-12 *", timeout=3600, enable=true
 
 */
 
