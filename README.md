@@ -26,7 +26,7 @@ npm install -g png-js
 npm install -g jsdom
 ```
 
-[退会：JDMemberCloseAccount](https://github.com/yqchilde/JDMemberCloseAccount)
+[退会：JDMemberCloseAccount](https://github.com/yqchilde/JDMemberCloseAccount)<br>
 [哔哩哔哩签到](https://github.com/he1pu/signin)
 
 # Warning
