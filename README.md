@@ -27,6 +27,7 @@ npm install -g jsdom
 ```
 
 [退会：JDMemberCloseAccount](https://github.com/yqchilde/JDMemberCloseAccount)
+[哔哩哔哩签到](https://github.com/he1pu/signin)
 
 # Warning
 ### 带助力功能的脚本要使用本仓库的，其他仓库的没有适配新助力池
