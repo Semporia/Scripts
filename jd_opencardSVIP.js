@@ -1,5 +1,5 @@
 /*
-10.8~10.14 超店会员福利社 [jd_opencardSVIP1.js]
+10.8~10.14 超店会员福利社 [jd_opencardSVIP.js]
 一次性脚本
 1.邀请一人30豆
 2.开21张卡 成功开1个 获得1次抽奖
@@ -15,17 +15,17 @@
 ============Quantumultx===============
 [task_local]
 #10.8~10.14 超店会员福利社
-47 0,20 8-14 10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP1.js, tag=10.8~10.14 超店会员福利社, enabled=true
+47 0,20 8-14 10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js, tag=10.8~10.14 超店会员福利社, enabled=true
 ================Loon==============
 [Script]
 cron "47 0,20 8-14 10 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP1.js,tag=10.8~10.14 超店会员福利社
 ===============Surge=================
-10.8~10.14 超店会员福利社 = type=cron,cronexp="47 0,20 8-14 10 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP1.js
+10.8~10.14 超店会员福利社 = type=cron,cronexp="47 0,20 8-14 10 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js
 ============小火箭=========
-10.8~10.14 超店会员福利社 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP1.js, cronexpr="47 0,20 8-14 10 *", timeout=3600, enable=true
+10.8~10.14 超店会员福利社 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js, cronexpr="47 0,20 8-14 10 *", timeout=3600, enable=true
 */
 
-const $ = new Env("10.8~10.14 超店会员福利社");
+const $ = new Env(`10.8~10.14 超店会员福利社`);
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
