@@ -7,7 +7,6 @@
 3.关注15豆
 4.加购3京豆
 第一个账号助力作者 其他依次助力CK1
-new Env('10.8~10.14 超店会员福利社');
 ————————————————
 入口：[ 10.8~10.14 超店会员福利社 (https://lzdz1-isv.isvjcloud.com/dingzhi/shop/league/activity?activityId=dz2109100001616222&shareUuid=6862ef46c9414e9897ebd1cd66a31201)]
 请求太频繁会被黑ip
@@ -23,7 +22,7 @@ cron "47 0,20 8-14 10 *" script-path=https://raw.githubusercontent.com/he1pu/JDH
 10.8~10.14 超店会员福利社 = type=cron,cronexp="47 0,20 8-14 10 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js
 ============小火箭=========
 10.8~10.14 超店会员福利社 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js, cronexpr="47 0,20 8-14 10 *", timeout=3600, enable=true
-*/
+***/
 
 const $ = new Env('10.8~10.14 超店会员福利社');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
