@@ -8,9 +8,8 @@
  第一个账号助力作者 其他依次助力CK1
  ————————————————
  入口：[ 超店会员福利社 10.8-14 (https://lzdz1-isv.isvjcloud.com/dingzhi/shop/league/activity?activityId=dz2109100001616222&shareUuid=6862ef46c9414e9897ebd1cd66a31201)]
- 请求太频繁会被黑ip
- 过10分钟再执行
- ============Quantumultx===============
+
+============Quantumultx===============
  [task_local]
  #超店会员福利社 10.8-14
  47 0,10 8-14 10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js, tag=超店会员福利社 10.8-14, enabled=true
@@ -23,7 +22,7 @@
  超店会员福利社 10.8-14 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js, cronexpr="47 0,10 8-14 10 *", timeout=3600, enable=true
 **/
 
-const $ = new Env("超店会员福利社 10.8-14");
+const $ = new Env('超店会员福利社 10.8-14');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
