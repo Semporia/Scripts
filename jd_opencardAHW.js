@@ -13,7 +13,7 @@
  ============Quantumultx===============
  [task_local]
  #10.8~18 金秋好物盛典
- 47 0,20 8-14 10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardAHW.js, tag=10.8~18 金秋好物盛典, enabled=true
+ 37 0,21 8-18 10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardAHW.js, tag=10.8~18 金秋好物盛典, enabled=true
 
 */
 
