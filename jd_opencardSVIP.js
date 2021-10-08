@@ -1,26 +1,29 @@
 /*
- 10.8~10.14 超店会员福利社 [jd_opencardSVIP.js]
- 一次性脚本
- 邀请、被邀请均有机会获得30豆(有可能没有豆
- 开卡 抽奖可能最高获得888京豆或实物(有可能有抽到空气💨
- 关注15京豆 (有可能是空气💨
- 加购3豆 (有可能是空气💨
- 第一个账号助力作者 其他依次助力CK1
- ————————————————
- 入口：[ 10.8~10.14 超店会员福利社 (https://lzdz1-isv.isvjcloud.com/dingzhi/shop/league/activity?activityId=dz2109100001616222&shareUuid=6862ef46c9414e9897ebd1cd66a31201)]
- 请求太频繁会被黑ip
- 过10分钟再执行
- ============Quantumultx===============
- [task_local]
- #10.8~10.14 超店会员福利社
- 47 0,10 8-14 10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js, tag=10.8~10.14 超店会员福利社, enabled=true
- ================Loon==============
- [Script]
- cron "47 0,10 8-14 10 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js,tag=10.8~10.14 超店会员福利社
- ===============Surge=================
- 10.8~10.14 超店会员福利社 = type=cron,cronexp="47 0,10 8-14 10 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js
- ============小火箭=========
- 10.8~10.14 超店会员福利社 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js, cronexpr="47 0,10 8-14 10 *", timeout=3600, enable=true
+10.8~10.14 超店会员福利社 [jd_opencardSVIP.js]
+一次性脚本
+1.邀请一人30豆
+2.开21张卡 成功开1个 获得1次抽奖
+  抽奖可能获得5/888京豆
+3.关注15豆
+4.加购3京豆
+第一个账号助力作者 其他依次助力CK1
+第一个CK失效会退出脚本
+
+————————————————
+入口：[ 10.8~10.14 超店会员福利社 (https://lzdz1-isv.isvjcloud.com/dingzhi/shop/league/activity?activityId=dz2109100001616222&shareUuid=6862ef46c9414e9897ebd1cd66a31201)]
+请求太频繁会被黑ip
+过10分钟再执行
+============Quantumultx===============
+[task_local]
+#10.8~10.14 超店会员福利社
+47 2 8-14 10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js, tag=10.8~10.14 超店会员福利社, enabled=true
+================Loon==============
+[Script]
+cron "47 2 8-14 10 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js,tag=10.8~10.14 超店会员福利社
+===============Surge=================
+10.8~10.14 超店会员福利社 = type=cron,cronexp="47 2 8-14 10 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js
+============小火箭=========
+10.8~10.14 超店会员福利社 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js, cronexpr="47 2 8-14 10 *", timeout=3600, enable=true
 */
 
 const $ = new Env("10.8~10.14 超店会员福利社");
