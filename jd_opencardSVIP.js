@@ -64,7 +64,7 @@ if ($.isNode()) {
             $.activityShopId = '1000016162'
             $.activityUrl = `https://lzdz1-isv.isvjcloud.com/dingzhi/shop/league/activity?activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=null&shopid=${$.activityShopId}&lng=00.000000&lat=00.000000&sid=&un_area=`
             await superFans();
-            await $.wait(2000);
+            await $.wait(5000);
             if ($.bean > 0) {
                 message += `【京东账号${$.index}】${$.nickName || $.UserName} \n       └ 获得 ${$.bean} 京豆。`
             }
