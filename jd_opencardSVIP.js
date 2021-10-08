@@ -25,7 +25,7 @@ cron "47 2 8-14 10 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp
 10.8~10.14 超店会员福利社 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardSVIP.js, cronexpr="47 2 8-14 10 *", timeout=3600, enable=true
 */
 
-const $ = new Env("超店会员福利社10.8~10.14");
+const $ = new Env("超店会员福利社");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
@@ -49,6 +49,7 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
+    console.log(`入口：\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/shop/league/activity?activityId=dz2109100001616222&shareUuid=6862ef46c9414e9897ebd1cd66a31201`)
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i]
