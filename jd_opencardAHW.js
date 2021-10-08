@@ -7,7 +7,7 @@
  3.加购5京豆
  第一个账号助力作者 其他依次助力CK1
  ————————————————
- 入口：[ 10.8~10.14 超店会员福利社 (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity?activityId=dz20210929skcnurdk34jkkl3dsf4awqw&shareUuid=d65438b1f1ee42f6bbd36b1650729c13)]
+ 入口：[10.8~18 金秋好物盛典 (https://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity?activityId=dz20210929skcnurdk34jkkl3dsf4awqw&shareUuid=d65438b1f1ee42f6bbd36b1650729c13)]
  请求太频繁会被黑ip
  过10分钟再执行
  ============Quantumultx===============
@@ -41,6 +41,7 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
+    console.log(`入口：\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity?activityId=dz20210929skcnurdk34jkkl3dsf4awqw&shareUuid=d65438b1f1ee42f6bbd36b1650729c13`)
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i]
