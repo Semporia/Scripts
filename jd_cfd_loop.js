@@ -30,12 +30,13 @@ $.appId = 10028;
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
+  console.log(`\n若捡贝壳报错，可设置环境变量:CFD_LOOP_SHELL='false',暂时关闭捡贝壳\n`);
   let count = 0
   $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
   await requestAlgo();
   await $.wait(1000)
   console.log('\n')
-  while (true) {
+  do {
     count++
     console.log(`============开始第${count}次挂机=============`)
     for (let i = 0; i < cookiesArr.length; i++) {
@@ -59,7 +60,7 @@ $.appId = 10028;
         UAInfo[$.UserName] = UA
       }
     }
-  }
+  } while (count < 25)
 })()
     .catch((e) => $.logErr(e))
     .finally(() => $.done());
@@ -77,8 +78,11 @@ async function cfd() {
     } else {
       console.log(`热气球接客已达上限，跳过执行\n`)
     }
-    await $.wait(3000)
-    await queryshell()
+    let shell = process.env.CFD_LOOP_SHELL ? (process.env.CFD_LOOP_SHELL=='true') : true
+    if (shell) {
+      await $.wait(3000)
+      await queryshell()
+    }
   } catch (e) {
     $.logErr(e)
   }
