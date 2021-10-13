@@ -50,6 +50,7 @@ let tokenInfo = {}, hotInfo = {}
       $.isLogin = true;
       $.nickName = '';
       message = '';
+      $.hotFlag = false;
       await TotalBean();
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
       if (!$.isLogin) {
@@ -96,6 +97,13 @@ let tokenInfo = {}, hotInfo = {}
       }
     }
   }
+  await $.wait(2500);
+  for (let i = 0; i < cookiesArr.length; i++) {
+    $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+    console.log(`\n\n**********账号${$.UserName}开始兑换**********`)
+    await exchange();
+    await $.wait(2000);
+  }
 })()
     .catch((e) => {
       $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -111,6 +119,92 @@ async function jdWorld() {
   await get_user_info()
   if ($.hot) return
   await get_task()
+}
+//兑换
+async function exchange() {
+    if ($.token2 && $.access_token) {
+        await task('get_exchange');
+        if (!$.hotFlag) {
+            if ($.exchangeList) {
+                for (const vo of $.exchangeList.reverse()) {
+                    $.log(`去兑换：${vo.name}`)
+                    await taskExchangePost('do_exchange', `id=${vo.id}`);
+                }
+            } else {
+                $.log("没有获取到兑换列表！")
+            }
+        } else {
+            $.log("风险用户，快去买买买吧！！！")
+        }
+       
+    } else {
+        $.log('获取Token失败')
+    }
+}
+
+async function task(function_id, body) {
+    return new Promise(async resolve => {
+        $.get(taskUrl(function_id, body), async (err, resp, data) => {
+            try {
+                if (data) {
+                    data = JSON.parse(data);
+                    switch (function_id) {
+                        case 'get_exchange':
+                            $.exchangeList = data;
+                            if (data.status_code === 403) {
+                                $.hotFlag = true;
+                            }
+                            break;
+                        default:
+                            $.log(JSON.stringify(data))
+                            break;
+                    }
+                } else {
+                    $.log(JSON.stringify(data))
+                }
+            } catch (e) {
+                $.logErr(e, resp)
+            } finally {
+                resolve();
+            }
+        })
+    })
+}
+
+function taskExchangePost(function_id, body) {
+    return new Promise(async resolve => {
+        $.post(taskPostUrl(function_id, body), async (err, resp, data) => {
+            try {
+                if (data) {
+                    data = JSON.parse(data);
+                    if (data) {
+                        switch (function_id) {
+                            case 'jd-user-info':
+                                $.accessToken = data.access_token;
+                                $.tokenType = data.token_type;
+                                break;
+                            case 'do_exchange':
+                                if (data.prize) {
+                                    console.log(`兑换成功：数量${data.prize.setting.beans_count}`)
+                                } else {
+                                    console.log(JSON.stringify(data))
+                                }
+                                break;
+                            default:
+                                $.log(JSON.stringify(data))
+                                break;
+                        }
+                    } else {
+                        $.log(JSON.stringify(data))
+                    }
+                }
+            } catch (error) {
+                $.log(error)
+            } finally {
+                resolve();
+            }
+        })
+    })
 }
 
 // 获得IsvToken
