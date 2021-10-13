@@ -99,7 +99,7 @@ let tokenInfo = {}, hotInfo = {}
   }
   await $.wait(2500);
   for (let i = 0; i < cookiesArr.length; i++) {
-    $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+    $.UserName = decodeURIComponent(cookiesArr[i].match(/pt_pin=([^; ]+)(?=;?)/) && cookiesArr[i].match(/pt_pin=([^; ]+)(?=;?)/)[1])
     console.log(`\n\n**********账号${$.UserName}开始兑换**********`)
     await exchange();
     await $.wait(2000);
