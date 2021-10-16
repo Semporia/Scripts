@@ -19,7 +19,7 @@
 ============Quantumultx===============
 [task_local]
 #10.15~31 惠聚京东 好物连连
-460 0,19 15-31 10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardLL2.js, tag=10.15~31 惠聚京东 好物连连, enabled=true
+46 0,19 15-31 10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardLL2.js, tag=10.15~31 惠聚京东 好物连连, enabled=true
 
 */
 const $ = new Env("10.15~31 惠聚京东 好物连连");
