@@ -13,7 +13,7 @@
 第一个CK失效会退出脚本
 
 ————————————————
-
+入口：（打开京东APP扫码）https://raw.githubusercontent.com/he1pu/JDHelp/main/images/opencard0.png
 请求太频繁会被黑ip
 过10分钟再执行
 
