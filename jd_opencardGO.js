@@ -123,7 +123,7 @@ async function marry() {
                 } else {
                     $.log("已经关注过了\n")
                     await $.wait(2000)
-                    return
+                    //return
                 }
             } else {
                 $.log("没有获取到对应的任务。\n")
