@@ -1,6 +1,7 @@
 /*
 城城领现金
 入口==>京东App首页搜索：城城分现金
+助力顺序：CK1助力作者，其它先内部互助，若有剩余次数再互助池
 =================================Quantumultx=========================
 [task_local]
 #城城领现金
@@ -36,6 +37,7 @@ $.shareCodesArr = [];
     return;
   }
   // await requireConfig();
+  console.log(`助力顺序：CK1助力作者，其它先内部互助，若有剩余次数再互助池\n`);
   if (exchangeFlag+"" == "true") {
     console.log(`脚本自动抽奖`)
   } else {
