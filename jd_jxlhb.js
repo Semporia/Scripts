@@ -96,7 +96,7 @@ const BASE_URL = 'https://m.jingxi.com/cubeactive/steprewardv3'
         await enrollFriend($.codePool[j]);
         await $.wait(5000);
         if ($.max) {
-          $.authorMyShareIds.splice(j, 1)
+          codePool.splice(j, 1)
           j--
           continue
         }
