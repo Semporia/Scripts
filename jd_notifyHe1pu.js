@@ -1,29 +1,25 @@
-
-
 /*
 he1pu仓库通知
 
-cron "0 0,12 * * *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/notify_he1pu.js,tag=he1pu仓库通知
+cron "0 0,12 * * *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_notifyHe1pu.js,tag=he1pu仓库通知
 
 */
-
-
 
 const $ = new Env('he1pu仓库通知');
 const notify = $.isNode() ? require('./sendNotify') : '';
 
 
 !(async () => {
-	let param = await getParams();
-	if (param.show == '1') {
-		console.log(param.msg);
-		let allMessage = param.msg;
-		if ($.isNode()) {
-			await notify.sendNotify(`${$.name}`, allMessage, {}, `\n\n本通知 By：https://github.com/he1pu`);
-		}else {
-			$.msg($.name, allMessage, `本通知 By：https://github.com/he1pu` , {"open-url": "https://github.com/he1pu"});
-		}
-	}
+  let param = await getParams();
+  if (param.show == '1') {
+    console.log(param.msg);
+    let allMessage = param.msg;
+    if ($.isNode()) {
+	await notify.sendNotify(`${$.name}`, allMessage, {}, `\n\n本通知 By：https://github.com/he1pu`);
+    }else {
+	$.msg($.name, allMessage, `本通知 By：https://github.com/he1pu` , {"open-url": "https://github.com/he1pu"});
+    }
+  }
 	
 })()
   .catch((e) => {
