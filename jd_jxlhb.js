@@ -93,7 +93,7 @@ const BASE_URL = 'https://m.jingxi.com/cubeactive/steprewardv3'
       for (let j = 0; j < codePool.length && $.canHelp; j++) {
         console.log(`【${$.UserName}】去助力：${codePool[j]}`);
         $.max = false;
-        await enrollFriend($.codePool[j]);
+        await enrollFriend(codePool[j]);
         await $.wait(5000);
         if ($.max) {
           codePool.splice(j, 1)
