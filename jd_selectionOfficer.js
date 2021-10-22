@@ -174,7 +174,7 @@ async function doTask(){
                 await $.wait(1000);
             }
         }
-        if($.oneTask.type === 8 && ["card","car"].includes(process.env.FS_LEVEL)){
+        if($.oneTask.type === 8){
             let subList = $.oneTask.info;
             for (let j = 0; j < subList.length; j++) {
                 $.subListInfo = subList[j];
