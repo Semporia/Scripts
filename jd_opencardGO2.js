@@ -19,7 +19,7 @@
 ============Quantumultx===============
 [task_local]
 #10.23~29 大牌联合 狂欢抢先GO
-27 0,9 23-29 10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardGO2.js, tag=10.23~29 大牌联合 狂欢抢先GO, enabled=true
+27 0,22 23-29 10 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardGO2.js, tag=10.23~29 大牌联合 狂欢抢先GO, enabled=true
 
 */
 
