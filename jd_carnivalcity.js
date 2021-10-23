@@ -41,7 +41,7 @@ if ($.isNode()) {
 } else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
-let inviteCodes = [];
+//let inviteCodes = [];
 const JD_API_HOST = 'https://api.m.jd.com/api';
 const activeEndTime = '2021/11/14 00:00:00+08:00';//活动结束时间
 let nowTime = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
@@ -674,7 +674,7 @@ function requireConfig() {
         }
       })
     }
-    console.log(`您提供了${$.shareCodesArr.length}个账号的${$.name}助力码\n`);
+    //console.log(`您提供了${$.shareCodesArr.length}个账号的${$.name}助力码\n`);
     resolve()
   })
 }
