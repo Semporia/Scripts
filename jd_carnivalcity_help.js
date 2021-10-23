@@ -271,7 +271,8 @@ function getAuthorShareCode(url='https://raw.githubusercontent.com/he1pu/params/
 function shareCodesFormat() {
   return new Promise(async resolve => {
     // console.log(`第${$.index}个京东账号的助力码:::${$.shareCodesArr[$.index - 1]}`)
-    $.updatePkActivityIdRes = await readShareCode();
+    let code = await readShareCode();
+    $.updatePkActivityIdRes = code.data;
     $.newShareCodes = [];
     if ($.shareCodesArr[$.index - 1]) {
       $.newShareCodes = $.shareCodesArr[$.index - 1].split('@');
