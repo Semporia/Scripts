@@ -551,6 +551,8 @@ function help(inId) {
 }
 
 async function toHelpPk() {
+  let pkCodes = await readShareCode('hyjpk');
+  let pkPool = pkCodes.data || [];
   console.log(`\n+++++++ 组队：内部组CK1 +++++++`)
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
@@ -568,9 +570,6 @@ async function toHelpPk() {
         await $.wait(2000);
       }
       console.log(`\n+++++++ 组队：互助池 +++++++`)
-      let pkCodes = await readShareCode('hyjpk');
-      let pkPool = pkCodes.data || [];
-      
       for (var j = 0; j < pkPool.length; j++) {
         let res = await helpPk(pkPool[j]);
         if (res && res.code == 0 && res.data) {
