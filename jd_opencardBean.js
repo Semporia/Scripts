@@ -13,7 +13,7 @@
 ============Quantumultx===============
 [task_local]
 #10.25~11.12 立即入会 瓜分百万京豆
-37 0,2 1-12,25-31 10,11 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardBean.js, tag=10.25~11.12 立即入会 瓜分百万京豆, enabled=true
+37 0,21 1-12,25-31 10,11 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardBean.js, tag=10.25~11.12 立即入会 瓜分百万京豆, enabled=true
 
 */
 
