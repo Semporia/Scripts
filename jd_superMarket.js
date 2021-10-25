@@ -1618,7 +1618,7 @@ async function bigWinner() {
   }
 }
 
-function _618(redEnvelopeId, inviter, helpType = '1', linkId = 'yMVR-_QKRd2Mq27xguJG-w') {
+function _618(redEnvelopeId, inviter, helpType = '1', linkId = 'PFbUR7wtwUcQ860Sn8WRfw') {
   return new Promise(resolve => {
     $.get({
       url: `https://api.m.jd.com/?functionId=openRedEnvelopeInteract&body={%22linkId%22:%22${linkId}%22,%22redEnvelopeId%22:%22${redEnvelopeId}%22,%22inviter%22:%22${inviter}%22,%22helpType%22:%22${helpType}%22}&t=${+new Date()}&appid=activities_platform&clientVersion=3.5.0`,
