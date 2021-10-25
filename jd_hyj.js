@@ -562,7 +562,7 @@ async function toHelpPk() {
         if (res && res.code == 0 && res.data) {
           console.log(`组队：${res.data.bizMsg}`)
           if (res.data.bizCode == -5 || res.data.bizMsg == '啊哦，活动太火爆了~') {
-            break;
+            continue;
           }
         }else {
           console.log(res);
