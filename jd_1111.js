@@ -114,7 +114,7 @@ async function run(){
 function getCoupons(shareId = '') {
   return new Promise(resolve => {
     let opts = {
-      url: `https://api.m.jd.com/api?functionId=getCoupons&appid=u&_=${Date.now()}&loginType=2&body={%22platform%22:4,%22unionActId%22:%2231134%22,%22actId%22:%22${$.actId}%22,%22d%22:%223C7eCOr%22,%22unionShareId%22:%22${$.index==1?'gPahx':shareId}%22,%22type%22:1,%22eid%22:%22${$.eid}%22}&client=apple&clientVersion=8.3.6&h5st=undefined`,
+      url: `https://api.m.jd.com/api?functionId=getCoupons&appid=u&_=${Date.now()}&loginType=2&body={%22platform%22:4,%22unionActId%22:%2231134%22,%22actId%22:%22${$.actId}%22,%22d%22:%223CX5iMK%22,%22unionShareId%22:%22${$.index==1?'gPahx':shareId}%22,%22type%22:1,%22eid%22:%22${$.eid}%22}&client=apple&clientVersion=8.3.6&h5st=undefined`,
       headers: {
         "Accept-Language": "zh-cn",
         "Accept-Encoding": "gzip, deflate, br",
@@ -189,7 +189,7 @@ function shareUnionCoupon() {
           let res = $.toObj(data,data);
           if(typeof res == 'object'){
             if(res.code == 0 && res.data && res.data.shareUrl){
-              $.shareCode = res.data.shareUrl.match(/3C7eCOr\?s=([^&]+)/) && res.data.shareUrl.match(/3C7eCOr\?s=([^&]+)/)[1] || ''
+              $.shareCode = res.data.shareUrl.match(/3CX5iMK\?s=([^&]+)/) && res.data.shareUrl.match(/3CX5iMK\?s=([^&]+)/)[1] || ''
               console.log('分享码:'+$.shareCode)
               if($.shareCode) console.log(`以下账号会助力【京东账号${$.index}】${$.nickName || $.UserName}`)
             }
@@ -236,7 +236,7 @@ function getUrl() {
   return new Promise(resolve => {
   	if($.index==1)$.shareCode = 'gPahx';
     const options = {
-      url: `https://u.jd.com/3C7eCOr?s=${$.shareCode}`,
+      url: `https://u.jd.com/3CX5iMK?s=${$.shareCode}`,
       followRedirect:false,
       headers: {
         'Cookie': `${cookie} ${newCookie}`,
