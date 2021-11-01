@@ -2,7 +2,7 @@
 组队分豆-安佳 [jd_teamAnJia.js]
 
 ————————————————
-入口：[组队分豆-安佳 (https://lzkjdz-isv.isvjcloud.com/pool/captain/1313?activityId=e30b75bc00ce40b394da416c921fea66&shareUuid=decb7c8696cc403f9392fa9ecc2af02a)]
+入口：[组队分豆-安佳 (https://lzkjdz-isv.isvjcloud.com/pool/captain/12314?activityId=f88dd152fdc049f3b92aa58339b26345&shareUuid=e13a745fbef04053bbe277dd34ce5f79)]
 IOS等用户直接用NobyDa的jd cookie
 ============Quantumultx===============
 [task_local]
@@ -40,7 +40,8 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
-    console.log(`入口:\nhttps://lzkjdz-isv.isvjcloud.com/pool/captain/1313?activityId=e30b75bc00ce40b394da416c921fea66&shareUuid=decb7c8696cc403f9392fa9ecc2af02a`)
+    console.log(`若之前做过该活动，则无法重复入队。\n入口:\nhttps://lzkjdz-isv.isvjcloud.com/pool/captain/12314?activityId=f88dd152fdc049f3b92aa58339b26345&shareUuid=e13a745fbef04053bbe277dd34ce5f79`)
+    
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i]
@@ -59,10 +60,10 @@ if ($.isNode()) {
                 }
                 continue
             }
-            authorCodeList = ['decb7c8696cc403f9392fa9ecc2af02a']
+            authorCodeList = ['e13a745fbef04053bbe277dd34ce5f79']
             $.bean = 0;
             $.authorCode = ownCode ? ownCode : authorCodeList[random(0, authorCodeList.length)]
-            $.activityId = 'e30b75bc00ce40b394da416c921fea66'
+            $.activityId = 'f88dd152fdc049f3b92aa58339b26345'
             $.activityShopId = '1000014486'
             $.activityUrl = `https://lzkjdz-isv.isvjcloud.com/pool/captain/${random(1000000, 9999999)}?activityId=${$.activityId}&signUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=null&shopid=${$.activityShopId}&lng=00.000000&lat=00.000000&sid=&un_area=`
             await anjia();
