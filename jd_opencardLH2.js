@@ -1,15 +1,15 @@
 
 /*
-大牌联合2 [jd_opencardLH2.js]
+11.1~11 大牌联合2 [jd_opencardLH2.js]
 一次性开卡脚本
 第一个账号助力作者 其他依次助力CK1
 ============Quantumultx===============
 [task_local]
-#大牌联合
-21 6,16 * 11 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardLH2.js, tag=大牌联合2, enabled=true
+#11.1~11 大牌联合2
+21 6,16 1-11 11 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardLH2.js, tag=11.1~11 大牌联合2, enabled=true
 */
 
-const $ = new Env("大牌联合2");
+const $ = new Env("11.1~11 大牌联合2");
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
