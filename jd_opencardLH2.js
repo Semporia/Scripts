@@ -3,6 +3,8 @@
 11.1~11 大牌联合2 [jd_opencardLH2.js]
 一次性开卡脚本
 第一个账号助力作者 其他依次助力CK1
+
+https://jinggengjcq-isv.isvjcloud.com/fronth5/#/pages/unitedCardNew2021110103/unitedCardNew2021110103?actId=2c5156ff82714_11013
 ============Quantumultx===============
 [task_local]
 #11.1~11 大牌联合2
