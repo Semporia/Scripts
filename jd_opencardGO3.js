@@ -47,6 +47,7 @@ if ($.isNode()) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
     }
+    console.log(`入口：\nhttps://lzdz1-isv.isvjcloud.com/dingzhi/dz/openCard/activity?activityId=946hf38m5d4vqjgs5ctfuickj65s69l528&shareUuid=c727521bfb634a28a67307ac3821ee38`)
     authorCodeList = ['c727521bfb634a28a67307ac3821ee38']
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
