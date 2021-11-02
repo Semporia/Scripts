@@ -314,7 +314,7 @@ function help(rid, inviter, type) {
 function getAuthorShareCode() {
     return new Promise(resolve => {
         $.get({
-            url: "https://raw.githubusercontent.com/he1pu/JDHelp/main/zcodes.json",
+            url: "https://raw.githubusercontent.com/he1pu/params/main/codes.json",
             headers: {
                 "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
             }
@@ -324,7 +324,8 @@ function getAuthorShareCode() {
                     console.log(`${JSON.stringify(err)}`);
                     console.log(`${$.name} API请求失败，请检查网路重试`);
                 } else {
-                    $.authorCode = JSON.parse(data).dyj;
+                    $.authorCodes = JSON.parse(data).bigWinner;
+                    $.authorCode = $.authorCodes[0];
                 }
             } catch (e) {
                 $.logErr(e, resp)
