@@ -324,8 +324,7 @@ function getAuthorShareCode() {
                     console.log(`${JSON.stringify(err)}`);
                     console.log(`${$.name} API请求失败，请检查网路重试`);
                 } else {
-                    $.authorCodes = JSON.parse(data).bigWinner;
-                    $.authorCode = $.authorCodes[0];
+                    $.authorCode = JSON.parse(data).bigWinner;
                 }
             } catch (e) {
                 $.logErr(e, resp)
