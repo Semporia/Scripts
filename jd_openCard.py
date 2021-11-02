@@ -715,26 +715,24 @@ def isUpdate():
         message("请检查您的环境/版本是否正常！")
         time.sleep(10)
         exit(666)
-
+        
 def getUserInfo(ck, pinName, userNum):
-    return ck, pinName
-    """
-    url = 'https://me-api.jd.com/user_new/info/GetJDUserInfoUnion?orgFlag=JD_PinGou_New&callSource=mainorder&channel=4&isHomewhite=0&sceneval=2&sceneval=2&callback=GetJDUserInfoUnion'
+    url = 'https://wq.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2'
     headers = {
         'Cookie': ck,
         'Accept': '*/*',
-        'Connection': 'close',
-        'Referer': 'https://home.m.jd.com/myJd/home.action',
+        'Connection': 'keep-alive',
+        'Referer': 'https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&',
         'Accept-Encoding': 'gzip, deflate, br',
-        'Host': 'me-api.jd.com',
+        'Host': 'wq.jd.com',
         'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Mobile/15E148 Safari/604.1',
         'Accept-Language': 'zh-cn'
     }
     try:
         resp = requests.get(url=url, verify=False, headers=headers, timeout=60).text
-        r = re.compile(r'GetJDUserInfoUnion.*?\((.*?)\)')
-        result = r.findall(resp)
-        userInfo = json.loads(result[0])
+        #r = re.compile(r'GetJDUserInfoUnion.*?\((.*?)\)')
+        #result = r.findall(resp)
+        userInfo = json.loads(resp)
         nickname = userInfo['data']['userInfo']['baseInfo']['nickname']
         return ck, nickname
     except Exception:
@@ -742,7 +740,7 @@ def getUserInfo(ck, pinName, userNum):
         message(context)
         send("【JD入会领豆】Cookie 已失效！", context)
         return ck, False
-    """
+    
 # 设置Headers
 def setHeaders(cookie, intype):
     if intype == 'mall':
