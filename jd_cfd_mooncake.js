@@ -86,13 +86,8 @@ if ($.isNode()) {
       await $.wait(2000);
     }
   }
-  let res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/cfd.json')
-  if (!res) {
-    $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/cfd.json'}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
-    await $.wait(1000)
-    res = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/cfd.json')
-  }
-  $.strMyShareIds = [...(res && res.shareId || [])]
+  let res = await readShareCode()
+  $.strMyShareIds = [...(res && res.data || [])]
   await shareCodesFormat()
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
@@ -490,6 +485,7 @@ function getUserInfo(showInvite = true) {
             console.log(`财富岛好友互助码每次运行都变化,旧的当天有效`);
             console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${strMyShareId}\n`);
             $.shareCodes.push(strMyShareId)
+            submitCode(strMyShareId, $.UserName)
           }
           $.info = {
             ...$.info,
@@ -635,11 +631,39 @@ function showMsg() {
     resolve();
   });
 }
-
+//提交互助码
+function submitCode(myInviteCode, user) {
+    return new Promise(async resolve => {
+    $.get({url: `http://www.helpu.cf/jdcodes/submit.php?code=${myInviteCode}&type=jxcfdm&user=${user}`, timeout: 10000}, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} 提交助力码 API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            //console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
+            data = JSON.parse(data);
+            if (data.code === 300) {
+              console.log("🏝互助码已提交🏝");
+            }else if (data.code === 200) {
+              console.log("🏝互助码提交成功🏝");
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data || {"code":500});
+      }
+    })
+    await $.wait(10000);
+    resolve({"code":500})
+  })
+}
 function readShareCode() {
   return new Promise(async resolve => {
     $.get({
-      url: `http://www.helpu.cf/jdcodes/getcode.php?type=jxcfd&num=30`,
+      url: `http://www.helpu.cf/jdcodes/getcode.php?type=jxcfdm&num=30`,
       'timeout': 10000
     }, (err, resp, data) => {
       try {
