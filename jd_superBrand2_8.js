@@ -7,17 +7,7 @@
 [task_local]
 #11.2-11.8特务Z
 4 0-23/4 2-8 11 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_superBrand2_8.js, tag=11.2-11.8特务Z, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
-
-================Loon==============
-[Script]
-cron "4 0-23/4 2-8 11 *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_superBrand2_8.js,tag=11.2-11.8特务Z
-
-===============Surge=================
-11.2-11.8特务Z = type=cron,cronexp="4 0-23/4 2-8 11 *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_superBrand2_8.js
-
-============小火箭=========
-11.2-11.8特务Z = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_superBrand2_8.js, cronexpr="4 0-23/4 2-8 11 *", timeout=3600, enable=true
- */
+*/
 
 const $ = new Env('11.2-11.8特务Z');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
