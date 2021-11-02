@@ -67,7 +67,6 @@ let shareList = [];
     }
     await getShareCode()
     allShareList = [...new Set([...allShareList, ...($.shareCode || [])])]
-    console.log(allShareList);
     console.log(`\n-----------------------互助----------------------\n`)
     for (let i = 0; i < cookiesArr.length; i++) {
         let cookie = cookiesArr[i];
