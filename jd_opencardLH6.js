@@ -28,16 +28,6 @@
 const $ = new Env('10.29~11.3 联合开卡');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
-let cleanCart = ''
-if($.isNode()){
-  try{
-    const fs = require('fs');
-    if (fs.existsSync('./cleancart_activity.js')) {
-      cleanCart = require('./cleancart_activity');
-    }
-  }catch(e){
-  }
-}
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [],
     cookie = '';
