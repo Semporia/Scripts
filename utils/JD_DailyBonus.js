@@ -40,7 +40,11 @@ var KEY = '';
 const Faker = require('./JDSignValidator')
 const zooFaker = require('./JDJRValidator_Pure')
 let fp = '', eid = '', md5
-
+let invoke_key = 'q8DNJdpcfRQ69gIx';
+try{
+  let hConfig = require('./HConfig.js')
+  invoke_key = hConfig.invokeKey
+}catch(e){}
 $nobyda.get = zooFaker.injectToRequest2($nobyda.get.bind($nobyda), 'channelSign')
 $nobyda.post = zooFaker.injectToRequest2($nobyda.post.bind($nobyda), 'channelSign')
 
@@ -754,9 +758,9 @@ function JDUserSign1(s, key, title, body) {
 async function JDUserSign2(s, key, title, tid, acData) {
   await new Promise(resolve => {
     let lkt = new Date().getTime()
-    let lks = md5('' + 'q8DNJdpcfRQ69gIx' + lkt).toString()
+    let lks = md5('' + invoke_key + lkt).toString()
     $nobyda.get({
-      url: `https://jdjoy.jd.com/api/turncard/channel/detail?turnTableId=${tid}&invokeKey=q8DNJdpcfRQ69gIx`,
+      url: `https://jdjoy.jd.com/api/turncard/channel/detail?turnTableId=${tid}&invokeKey=${invoke_key}`,
       headers: {
         Cookie: KEY,
         'lkt': lkt,
@@ -786,9 +790,9 @@ async function JDUserSign2(s, key, title, tid, acData) {
   return new Promise(resolve => {
     setTimeout(() => {
       let lkt = new Date().getTime()
-      let lks = md5('' + 'q8DNJdpcfRQ69gIx' + lkt).toString()
+      let lks = md5('' + invoke_key + lkt).toString()
       const JDUrl = {
-        url: 'https://jdjoy.jd.com/api/turncard/channel/sign?invokeKey=q8DNJdpcfRQ69gIx',
+        url: `https://jdjoy.jd.com/api/turncard/channel/sign?invokeKey=${invoke_key}`,
         headers: {
           Cookie: KEY,
           'lkt': lkt,
