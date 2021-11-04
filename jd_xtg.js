@@ -5,7 +5,7 @@
  ============Quantumultx===============
 [task_local]
 #11.4~11.11 大牌联合 赢大额京豆
-12 3,4 1-11 11 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_xtg.js, tag=星推官, enabled=true
+12 3,6 1-11 11 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_xtg.js, tag=星推官, enabled=true
 
 */
 const $ = new Env('星推官');
