@@ -27,7 +27,7 @@ if (process.env.FRUITSHARECODES) {
     FruitShareCodes = process.env.FRUITSHARECODES.split();
   }
 } else {
-  console.log(`由于您环境变量(FRUITSHARECODES)里面未提供助力码，故此处运行将会给脚本内置的码进行助力，请知晓！`)
+  console.log(`由于您环境变量(FRUITSHARECODES)里面未设置助力码，故此次运行将互助池随机互助，请知晓！`)
 }
 for (let i = 0; i < FruitShareCodes.length; i++) {
   const index = (i + 1 === 1) ? '' : (i + 1);
