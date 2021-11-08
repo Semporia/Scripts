@@ -7,7 +7,7 @@
 ============Quantumultx===============
 [task_local]
 #以物之名
-10 9,13,15,16,19,20 * * * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_superBrand2_8.js, tag=以物之名, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
+10 9-20 * * * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_superBrand2_8.js, tag=以物之名, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
 */
 const $ = new Env('以物之名');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
