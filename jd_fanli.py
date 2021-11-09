@@ -107,6 +107,7 @@ if __name__ == '__main__':
                     tasks = getTaskList(ck)
                     for i in tasks:
                         if i["statusName"] != "活动结束":
+                            printf("开始做任务: " + i["taskName"])
                             uid, tt = saveTaskRecord(ck, i["taskId"])
                             time.sleep(10)
                             saveTaskRecord1(ck, i["taskId"], uid, tt)
