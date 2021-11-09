@@ -106,7 +106,7 @@ if __name__ == '__main__':
                 for times in range(count["maxTaskCount"] - count["finishCount"]):
                     tasks = getTaskList(ck)
                     for i in tasks:
-                        if i["taskType"] == 2:
+                        if i["statusName"] != "活动结束":
                             uid, tt = saveTaskRecord(ck, i["taskId"])
                             time.sleep(10)
                             saveTaskRecord1(ck, i["taskId"], uid, tt)
