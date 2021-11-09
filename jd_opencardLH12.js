@@ -197,6 +197,9 @@ function task(function_id, body, isCommon = 0, own = 0) {
                         if (data.result) {
                             switch (function_id) {
                                 case 'wxActionCommon/getUserInfo':
+                                    if (data.data.yunMidImageUrl && data.data.yunMidImageUrl.length) {
+                                        $.attrTouXiang = data.data.yunMidImageUrl
+                                    }
                                     break;
                                 case 'dz/openCard/activityContent':
                                     if (!data.data.hasEnd) {
