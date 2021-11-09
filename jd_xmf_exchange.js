@@ -36,12 +36,16 @@ const JD_API_HOST = `https://api.m.jd.com/client.action?functionId=doInteractive
         $.msg($.name, '【提示】请先获取cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
         return;
     }
+    console.log('！先手动打开一下活动：京东APP，底部“新品”，右侧悬浮窗')
+    console.log('！先手动打开一下活动：京东APP，底部“新品”，右侧悬浮窗')
+    console.log('！先手动打开一下活动：京东APP，底部“新品”，右侧悬浮窗')
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i];
         if (cookie) {
+            
             $.index = i + 1;
             await  QueryJDUserInfo();
-            if (i+1) console.log(`\n***************开始京东账号${i + 1}【${$.nickname}】***************`)
+            if (i+1) console.log(`\n***************开始京东账号${i + 1}【${$.nickName}】***************`)
             //initial();
             if (!$.isLogin)  //cookie不可用
             {
@@ -50,9 +54,11 @@ const JD_API_HOST = `https://api.m.jd.com/client.action?functionId=doInteractive
                 continue;
             }
             else{
-                await exchange_redpocket();
-                await msgShow();
-                await $.wait(5000)
+                $.canEx = true;
+                do{
+                    await exchange_redpocket();
+                    await $.wait(5000)
+                }while($.canEx);  
             }
         }
     }
@@ -68,12 +74,14 @@ function exchange_redpocket(){
                     data = JSON.parse(resp.body);
                     console.log(`Error：${JSON.stringify(data)}`);
                 } else {
+                    $.canEx = false;
                     if (safeGet(data)) {
                         data = JSON.parse(data);
-                        console.log(`Result：${JSON.stringify(data)}`);
+                        console.log(`${JSON.stringify(data)}\n\n`);
                         if(data.subCode==0){
                             //$.message = data.data.result.shareRewardTip;
                             $.message = '成功！';
+                            $.canEx = true;
                         }
                         else{
                             $.message = '兑换积分不足';
@@ -91,9 +99,9 @@ function exchange_redpocket(){
 async function msgShow() {
     if ($.message == '成功！') {
         if ($.isNode()) {
-            await notify.sendNotify(`${$.name}`, `【京东账号${$.index}】${$.nickname}\n${$.message}`);
+            await notify.sendNotify(`${$.name}`, `【京东账号${$.index}】${$.nickName}\n${$.message}`);
         }else {
-            $.msg($.name, '', `【京东账号${$.index}】${$.nickname}\n${$.message}`);
+            $.msg($.name, '', `【京东账号${$.index}】${$.nickName}\n${$.message}`);
         }
     }
 }
