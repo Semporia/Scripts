@@ -28,10 +28,10 @@ from urllib.parse import quote, unquote
 import threading
 requests.packages.urllib3.disable_warnings()
 try:
-    from utils.jd_cookie import getJDCookie
+    from utils.JDCookie import getJDCookie
     getCk = getJDCookie()
 except:
-    print("请先下载依赖脚本，放至utils文件夹内，\n下载链接：https://raw.githubusercontent.com/he1pu/JDHelp/main/utils/jd_cookie.py")
+    print("请先下载依赖脚本，放至utils文件夹内，\n下载链接：https://raw.githubusercontent.com/he1pu/JDHelp/main/utils/JDCookie.py")
     sys.exit(3)
 
 pwd = os.path.dirname(os.path.abspath(__file__)) + os.sep
