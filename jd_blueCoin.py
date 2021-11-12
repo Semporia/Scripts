@@ -5,18 +5,16 @@
 Author: Curtin
 功能: 东东超市商品兑换
 Date: 2021/4/17 上午11:22
-update: 2021/7/24 18:30
-TG交流 https://t.me/topstyle996
-TG频道 https://t.me/TopStyle2021
+update: 2021/11/08 20:30
 建议cron: 59 23 * * *  python3 jd_blueCoin.py
-new Env('东东超市商品兑换并发版');
+new Env('东东超市商品兑换');
 '''
 ################【参数】######################
 # ck 优先读取【JDCookies.txt】 文件内的ck  再到 ENV的 变量 JD_COOKIE='ck1&ck2' 最后才到脚本内 cookies=ck
 #ENV设置：export JD_COOKIE='cookie1&cookie2'
 cookies = ''
 #【填写您要兑换的商品】ENV设置： export coinToBeans='京豆包'
-coinToBeans = '京豆包'
+coinToBeans = ''
 
 #多账号并发，默认关闭 ENV设置开启： export blueCoin_Cc=True
 blueCoin_Cc = False
@@ -29,6 +27,13 @@ import requests, re, json
 from urllib.parse import quote, unquote
 import threading
 requests.packages.urllib3.disable_warnings()
+try:
+    from utils.jd_cookie import getJDCookie
+    getCk = getJDCookie()
+except:
+    print("请先下载依赖脚本，放至utils文件夹内，\n下载链接：https://raw.githubusercontent.com/he1pu/JDHelp/main/utils/jd_cookie.py")
+    sys.exit(3)
+
 pwd = os.path.dirname(os.path.abspath(__file__)) + os.sep
 # timestamp = int(round(time.time() * 1000))
 script_name = '东东超市商品兑换'
@@ -46,7 +51,7 @@ tomorrow = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%
 starttime = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d 00:00:00.00000000')
 
 
-def printT(s):
+def printf(s):
     print("[{0}]: {1}".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), s))
     sys.stdout.flush()
 
@@ -70,167 +75,21 @@ def getEnvs(label):
     except:
         return label
 
-class getJDCookie(object):
-    # 适配各种平台环境ck
-    def getckfile(self):
-        global v4f
-        curf = pwd + 'JDCookies.txt'
-        v4f = '/jd/config/config.sh'
-        ql_new = '/ql/config/env.sh'
-        ql_old = '/ql/config/cookie.sh'
-        if os.path.exists(curf):
-            with open(curf, "r", encoding="utf-8") as f:
-                cks = f.read()
-                f.close()
-            r = re.compile(r"pt_key=.*?pt_pin=.*?;", re.M | re.S | re.I)
-            cks = r.findall(cks)
-            if len(cks) > 0:
-                return curf
-            else:
-                pass
-        if os.path.exists(ql_new):
-            printT("当前环境青龙面板新版")
-            return ql_new
-        elif os.path.exists(ql_old):
-            printT("当前环境青龙面板旧版")
-            return ql_old
-        elif os.path.exists(v4f):
-            printT("当前环境V4")
-            return v4f
-        return curf
 
-    # 获取cookie
-    def getCookie(self):
-        global cookies
-        ckfile = self.getckfile()
-        try:
-            if os.path.exists(ckfile):
-                with open(ckfile, "r", encoding="utf-8") as f:
-                    cks = f.read()
-                    f.close()
-                if 'pt_key=' in cks and 'pt_pin=' in cks:
-                    r = re.compile(r"pt_key=.*?pt_pin=.*?;", re.M | re.S | re.I)
-                    cks = r.findall(cks)
-                    if len(cks) > 0:
-                        if 'JDCookies.txt' in ckfile:
-                            printT("当前获取使用 JDCookies.txt 的cookie")
-                        cookies = ''
-                        for i in cks:
-                            if 'pt_key=xxxx' in i:
-                                pass
-                            else:
-                                cookies += i
-                        return
-            else:
-                with open(pwd + 'JDCookies.txt', "w", encoding="utf-8") as f:
-                    cks = "#多账号换行，以下示例：（通过正则获取此文件的ck，理论上可以自定义名字标记ck，也可以随意摆放ck）\n账号1【Curtinlv】cookie1;\n账号2【TopStyle】cookie2;"
-                    f.write(cks)
-                    f.close()
-            if "JD_COOKIE" in os.environ:
-                if len(os.environ["JD_COOKIE"]) > 10:
-                    cookies = os.environ["JD_COOKIE"]
-                    printT("已获取并使用Env环境 Cookie")
-        except Exception as e:
-            printT(f"【getCookie Error】{e}")
 
-        # 检测cookie格式是否正确
-    def getUserInfo(self, ck, pinName, userNum):
-        url = 'https://me-api.jd.com/user_new/info/GetJDUserInfoUnion?orgFlag=JD_PinGou_New&callSource=mainorder&channel=4&isHomewhite=0&sceneval=2&sceneval=2&callback='
-        headers = {
-            'Cookie': ck,
-            'Accept': '*/*',
-            'Connection': 'close',
-            'Referer': 'https://home.m.jd.com/myJd/home.action',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Host': 'me-api.jd.com',
-            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.2 Mobile/15E148 Safari/604.1',
-            'Accept-Language': 'zh-cn'
-        }
-        try:
-            if sys.platform == 'ios':
-                resp = requests.get(url=url, verify=False, headers=headers, timeout=60).json()
-            else:
-                resp = requests.get(url=url, headers=headers, timeout=60).json()
-            if resp['retcode'] == "0":
-                nickname = resp['data']['userInfo']['baseInfo']['nickname']
-                return ck, nickname
-            else:
-                context = f"账号{userNum}【{pinName}】Cookie 已失效！请重新获取。"
-                print(context)
-                return ck, False
-        except Exception:
-            context = f"账号{userNum}【{pinName}】Cookie 已失效！请重新获取。"
-            print(context)
-            return ck, False
-
-    def iscookie(self):
-        """
-        :return: cookiesList,userNameList,pinNameList
-        """
-        cookiesList = []
-        userNameList = []
-        pinNameList = []
-        if 'pt_key=' in cookies and 'pt_pin=' in cookies:
-            r = re.compile(r"pt_key=.*?pt_pin=.*?;", re.M | re.S | re.I)
-            result = r.findall(cookies)
-            if len(result) >= 1:
-                printT("您已配置{}个账号".format(len(result)))
-                u = 1
-                for i in result:
-                    r = re.compile(r"pt_pin=(.*?);")
-                    pinName = r.findall(i)
-                    pinName = unquote(pinName[0])
-                    # 获取账号名
-                    ck, nickname = self.getUserInfo(i, pinName, u)
-                    if nickname != False:
-                        cookiesList.append(ck)
-                        userNameList.append(nickname)
-                        pinNameList.append(pinName)
-                    else:
-                        u += 1
-                        continue
-                    u += 1
-                if len(cookiesList) > 0 and len(userNameList) > 0:
-                    return cookiesList, userNameList, pinNameList
-                else:
-                    printT("没有可用Cookie，已退出")
-                    exit(3)
-            else:
-                printT("cookie 格式错误！...本次操作已退出")
-                exit(4)
-        else:
-            printT("cookie 格式错误！...本次操作已退出")
-            exit(4)
-getCk = getJDCookie()
-getCk.getCookie()
-
-# 获取v4环境 特殊处理
-if os.path.exists(v4f):
-    try:
-        with open(v4f, 'r', encoding='utf-8') as f:
-            curenv = locals()
-            for i in f.readlines():
-                r = re.compile(r'^export\s(.*?)=[\'\"]?([\w\.\-@#!&=_,\[\]\{\}\(\)]{1,})+[\'\"]{0,1}$', re.M | re.S | re.I)
-                r = r.findall(i)
-                if len(r) > 0:
-                    for i in r:
-                        if i[0] != 'JD_COOKIE':
-                            curenv[i[0]] = getEnvs(i[1])
-    except:
-        pass
 
 if "coinToBeans" in os.environ:
     if len(os.environ["coinToBeans"]) > 1:
         coinToBeans = os.environ["coinToBeans"]
-        printT(f"已获取并使用Env环境 coinToBeans:{coinToBeans}")
+        printf(f"已获取并使用Env环境 coinToBeans:{coinToBeans}")
 if "blueCoin_Cc" in os.environ:
     if len(os.environ["blueCoin_Cc"]) > 1:
         blueCoin_Cc = getEnvs(os.environ["blueCoin_Cc"])
-        printT(f"已获取并使用Env环境 blueCoin_Cc:{blueCoin_Cc}")
+        printf(f"已获取并使用Env环境 blueCoin_Cc:{blueCoin_Cc}")
 if "dd_thread" in os.environ:
     if len(os.environ["dd_thread"]) > 1:
         dd_thread = getEnvs(os.environ["dd_thread"])
-        printT(f"已获取并使用Env环境 dd_thread:{dd_thread}")
+        printf(f"已获取并使用Env环境 dd_thread:{dd_thread}")
 class TaskThread(threading.Thread):
     """
     处理task相关的线程类
@@ -242,7 +101,7 @@ class TaskThread(threading.Thread):
 
     def run(self):
         # 线程类实例调用start()方法将执行run()方法,这里定义具体要做的异步任务
-        # printT("start func {}".format(self.func.__name__))  # 打印task名字　用方法名.__name__
+        # printf("start func {}".format(self.func.__name__))  # 打印task名字　用方法名.__name__
         self.result = self.func(*self.args)  # 将任务执行结果赋值给self.result变量
 
     def get_result(self):
@@ -250,7 +109,7 @@ class TaskThread(threading.Thread):
         try:
             return self.result
         except Exception as ex:
-            printT(ex)
+            printf(ex)
             return "ERROR"
 
 def userAgent():
@@ -279,7 +138,7 @@ class msg(object):
         self.message()
     def message(self):
         global msg_info
-        printT(self.str_msg)
+        printf(self.str_msg)
         try:
             msg_info = "{}\n{}".format(msg_info, self.str_msg)
         except:
@@ -318,13 +177,13 @@ class msg(object):
                 try:
                     from sendNotify import send
                 except:
-                    printT("加载通知服务失败~")
+                    printf("加载通知服务失败~")
         else:
             self.getsendNotify()
             try:
                 from sendNotify import send
             except:
-                printT("加载通知服务失败~")
+                printf("加载通知服务失败~")
         ###################
 msg().main()
 
@@ -358,7 +217,7 @@ def getBlueCoinInfo(headers):
             shopName = result['data']['bizMsg']
             return totalBlue, shopName
     except Exception as e:
-        printT(e)
+        printf(e)
 
 
 #查询所有用户蓝币、等级
@@ -372,10 +231,10 @@ def getAllUserInfo(userName):
             respon = requests.get(url=url, verify=False,  headers=headers)
             result = respon.json()
             level = result['data']['result']['level']
-            printT("【用户{4}:{5}】: {0} {3}\n【等级】: {1}\n【蓝币】: {2}万\n------------------".format(shopName, level, totalBlue / 10000,totalBlue, id_num,userName))
+            printf("【用户{4}:{5}】: {0} {3}\n【等级】: {1}\n【蓝币】: {2}万\n------------------".format(shopName, level, totalBlue / 10000,totalBlue, id_num,userName))
         except Exception as e:
-            # printT(e)
-            printT(f"账号{id_num}【{userName}】异常请检查ck是否正常~")
+            # printf(e)
+            printf(f"账号{id_num}【{userName}】异常请检查ck是否正常~")
         id_num += 1
 #查询商品
 def smtg_queryPrize(headers, coinToBeans):
@@ -398,10 +257,10 @@ def smtg_queryPrize(headers, coinToBeans):
                     blueCost = x['cost']
                     status = x['status']
                     return title, prizeId, blueCost, status, skuId, areaId, periodId
-        # printT("请检查设置的兑换商品名称是否正确？")
+        # printf("请检查设置的兑换商品名称是否正确？")
         # return 0, 0, 0, 0, 0
     except Exception as e:
-        printT(e)
+        printf(e)
 
 
 #判断设置的商品是否存在 存在则返回 商品标题、prizeId、蓝币价格、是否有货
@@ -411,10 +270,10 @@ def isCoinToBeans(coinToBeans,headers):
             title, prizeId, blueCost, status, skuId, areaId, periodId = smtg_queryPrize(headers,coinToBeans)
             return title, prizeId, blueCost, status, skuId, areaId, periodId
         except Exception as e:
-            printT(e)
+            printf(e)
             pass
     else:
-        printT("1.请检查设置的兑换商品名称是否正确?")
+        printf("1.请检查设置的兑换商品名称是否正确?")
         exit(0)
 #抢兑换
 def smtg_obtainPrize(prizeId, areaId, periodId, headers, username):
@@ -441,17 +300,17 @@ def smtg_obtainPrize(prizeId, areaId, periodId, headers, username):
     try:
         respon = requests.post(url=url, verify=False, headers=headers)
         result = respon.json()
-        printT(result)
+        printf(result)
         success = result['data']['success']
         bizMsg = result['data']['bizMsg']
         if success:
-            printT(f"【{username}】{bizMsg}...恭喜兑换成功！")
+            printf(f"【{username}】{bizMsg}...恭喜兑换成功！")
             return 0
         else:
-            printT(f"【{username}】{bizMsg}")
+            printf(f"【{username}】{bizMsg}")
             return 999
     except Exception as e:
-        printT(e)
+        printf(e)
         return 999
 
 
@@ -475,7 +334,7 @@ def issmtg_obtainPrize(ck, user_num, prizeId, areaId, periodId, title):
         if nowtime > qgendtime:
             title, prizeId, blueCost, status, skuId, areaId, periodId = isCoinToBeans(coinToBeans, setHeaders(ck))
             if status == 2:
-                printT("{1}, 你好呀~【{0}】 当前没货了......".format(title, userName))
+                printf("{1}, 你好呀~【{0}】 当前没货了......".format(title, userName))
                 return 2
             else:
                 return 0
@@ -484,7 +343,7 @@ def issmtg_obtainPrize(ck, user_num, prizeId, areaId, periodId, title):
 
 
     except Exception as e:
-        printT(e)
+        printf(e)
         return 1
 
 def checkUser(cookies,): #返回符合条件的ck list
@@ -503,37 +362,37 @@ def checkUser(cookies,): #返回符合条件的ck list
                     title, prizeId, blueCost, status, skuId, areaId, periodId = isCoinToBeans(coinToBeans,headers)
             totalBlueW = totalBlue / 10000
             if user_num == 1:
-                printT("您已设置兑换的商品：【{0}】 需要{1}w蓝币".format(title, blueCost / 10000))
-                printT("********** 首先检测您是否有钱呀 ********** ")
+                printf("您已设置兑换的商品：【{0}】 需要{1}w蓝币".format(title, blueCost / 10000))
+                printf("********** 首先检测您是否有钱呀 ********** ")
             if totalBlue > blueCost:
                 cookieList.append(i)
-                printT(f"账号{user_num}:【{userName}】蓝币:{totalBlueW}万...yes")
+                printf(f"账号{user_num}:【{userName}】蓝币:{totalBlueW}万...yes")
             else:
-                printT(f"账号{user_num}:【{userName}】蓝币:{totalBlueW}万...no")
+                printf(f"账号{user_num}:【{userName}】蓝币:{totalBlueW}万...no")
         except Exception as e:
-            printT(f"账号{user_num}:【{userName}】，该用户异常，查不到商品关键词【{coinToBeans}】")
+            printf(f"账号{user_num}:【{userName}】，该用户异常，查不到商品关键词【{coinToBeans}】")
         user_num += 1
 
     if len(cookieList) >0:
-        printT("共有{0}个账号符合兑换条件".format(len(cookieList)))
+        printf("共有{0}个账号符合兑换条件".format(len(cookieList)))
         return cookieList
     else:
-        printT("共有{0}个账号符合兑换条件...已退出，请继续加油赚够钱再来~".format(len(cookieList)))
+        printf("共有{0}个账号符合兑换条件...已退出，请继续加油赚够钱再来~".format(len(cookieList)))
         exit(0)
 
 #Start
 def start():
     try:
-        global cookiesList, userNameList, pinNameList, cookies, qgendtime
-        printT("{} Start".format(script_name))
-        cookiesList, userNameList, pinNameList = getCk.iscookie()
+        global cookiesList, userNameList, cookies, qgendtime
+        printf("{} Start".format(script_name))
+        cookiesList, userNameList = getCk.iscookie()
         cookies = checkUser(cookiesList)
         qgendtime = '{} {}'.format(tomorrow, endtime)
         if blueCoin_Cc:
             msg("并发模式：多账号")
         else:
             msg("并发模式：单账号")
-        printT(f"开始抢兑时间[{starttime}]")
+        printf(f"开始抢兑时间[{starttime}]")
         a = 0
         while True:
             nowtime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f8')
@@ -565,15 +424,15 @@ def start():
             elif nowtime > qgendtime:
                 break
             elif nowtime < unstartTime:
-                printT("Sorry，还没到时间。")
-                printT("【皮卡丘】建议cron: 59 23 * * *  python3 jd_blueCoin.py")
+                printf("Sorry，还没到时间。")
+                printf("建议cron: 59 23 * * *  python3 jd_blueCoin.py")
                 break
             else:
                 if a == 0:
                     a = 1
-                    printT(f"正在等待，请勿终止退出...")
+                    printf(f"正在等待，请勿终止退出...")
     except Exception as e:
-        printT(e)
+        printf(e)
 if __name__ == '__main__':
     start()
     try:
