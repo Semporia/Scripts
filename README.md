@@ -17,9 +17,14 @@ __上述脚本请尽量改一下默认定时，多运行几次。__<br>
 随机从数据库中选取助力码互助（建议多跑几次）
 
 
-__青龙拉取__
+__青龙拉取__<br>
+(版本小于2.10.3)
 ```
 ql repo https://github.com/he1pu/JDHelp.git "jd_|jx_|getJDCookie" "activity|backUp|jd_delCoupon" "^jd[^_]|USER|utils"
+```
+(版本大于等于2.10.3)
+```
+ql repo https://github.com/he1pu/JDHelp.git "jd_|jx_|getJDCookie" "activity|backUp|jd_delCoupon" "^jd[^_]|USER|utils|sendNotify|ZooFaker_Necklace.js|JDJRValidator_|sign_graphics_validate"
 ```
 
 __进入容器执行以下命令安装依赖__<br>
