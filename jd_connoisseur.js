@@ -42,7 +42,7 @@ let allMessage = '';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  let res = [{"use":"code1","code":"S5KkcREoe9wXXJ0_wkPFbcQ"},{"use":"code2","code":"S5KkcCH1egiO3V0us1apb"}];
+  
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -65,33 +65,35 @@ let allMessage = '';
       await jdConnoisseur()
     }
   }
-  $.shareCodes = [...$.shareCodes, ...(res || [])]
-  for (let i = 0; i < cookiesArr.length; i++) {
-    if (cookiesArr[i]) {
-      cookie = cookiesArr[i];
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-      if (!isLoginInfo[$.UserName]) continue
-      $.canHelp = true
-      if ($.shareCodes && $.shareCodes.length) {
-        console.log(`\n开始互助\n`)
-        for (let j = 0; j < $.shareCodes.length && $.canHelp; j++) {
-          console.log(`账号${$.UserName} 去助力 ${$.shareCodes[j].use} 的助力码 ${$.shareCodes[j].code}`)
-          if ($.UserName === $.shareCodes[j].use) {
-            console.log(`助力失败：不能助力自己`)
-            continue
-          }
-          $.delcode = false
-          await getTaskInfo("2", $.projectCode, $.taskCode, $.helpType, "2", $.shareCodes[j].code)
-          await $.wait(2000)
-          if ($.delcode) {
-            $.shareCodes.splice(j, 1)
-            j--
-            continue
-          }
-        }
-      }
-    }
-  }
+  // $.shareCodes = [...new Set([...$.shareCodes, ...(res || [])])]
+  // for (let i = 0; i < cookiesArr.length; i++) {
+  //   if (cookiesArr[i]) {
+  //     cookie = cookiesArr[i];
+  //     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+  //     if (!isLoginInfo[$.UserName]) continue
+  //     $.canHelp = true
+  //     if ($.shareCodes && $.shareCodes.length) {
+  //       console.log(`\n开始互助\n`)
+  //       for (let j = 0; j < $.shareCodes.length && $.canHelp; j++) {
+  //         console.log(`账号${$.UserName} 去助力 ${$.shareCodes[j].use} 的助力码 ${$.shareCodes[j].code}`)
+  //         if ($.UserName === $.shareCodes[j].use) {
+  //           console.log(`助力失败：不能助力自己`)
+  //           continue
+  //         }
+  //         $.delcode = false
+  //         await getTaskInfo("2", $.projectCode, $.taskCode, "2", $.shareCodes[j].code)
+  //         await $.wait(2000)
+  //         if ($.delcode) {
+  //           $.shareCodes.splice(j, 1)
+  //           j--
+  //           continue
+  //         }
+  //       }
+  //     } else {
+  //       break
+  //     }
+  //   }
+  // }
 })()
     .catch((e) => {
       $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -113,16 +115,16 @@ async function getActiveInfo(url = 'https://prodev.m.jd.com/mall/active/2y1S9xVY
       "Host": "prodev.m.jd.com",
       "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
       "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-      "Accept-Language": "zh-cn",
+      "Accept-Language": "zh-CN,zh-Hans;q=0.9",
       "Accept-Encoding": "gzip, deflate, br",
-      "Cookie": cookie,
+      "Cookie": cookie
     }
   }
   return new Promise(async resolve => {
     $.get(options, async (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${JSON.stringify(err)}`)
+          console.log(JSON.stringify(err))
           console.log(`${$.name} getActiveInfo API请求失败，请检查网路重试`)
         } else {
           if (data) {
@@ -134,17 +136,28 @@ async function getActiveInfo(url = 'https://prodev.m.jd.com/mall/active/2y1S9xVY
             activityId = data.activityInfo.activityId
             for (let key of Object.keys(data.codeFloors)) {
               let vo = data.codeFloors[key]
-              if (vo.boardParams && vo.boardParams.taskCode === "2PbAu1BAT79RxrM5V7c2VAPUQDSd") {
+              if (vo.boardParams && vo.boardParams.taskCode === "2CCbSBbVWkFZzRDngs4F6q3YZ62o") {
+                agid = []
+                agid.push(vo.materialParams.advIdVideo[0].advGrpId)
+                console.log(`去做【${vo.boardParams.titleText}】`)
+                await getTaskInfo("11", vo.boardParams.projectCode, vo.boardParams.taskCode)
+              } else if (vo.boardParams && vo.boardParams.taskCode === "4JHmm8nEpyuKgc3z9wkGArXDtEdh") {
+                agid = []
+                agid.push(vo.materialParams.advIdKOC[0].advGrpId)
+                console.log(`去做【${vo.boardParams.titleText}】`)
+                await getTaskInfo("10", vo.boardParams.projectCode, vo.boardParams.taskCode)
+              } else if (vo.boardParams && vo.boardParams.taskCode === "2PbAu1BAT79RxrM5V7c2VAPUQDSd") {
+                agid = []
                 agid.push(vo.materialParams.advIdKOC[0].advGrpId)
                 agid.push(vo.materialParams.advIdVideo[0].advGrpId)
                 console.log(`去做【${vo.boardParams.btnText}】`)
                 await getTaskInfo("5", vo.boardParams.projectCode, vo.boardParams.taskCode)
                 await $.wait(2000)
-              } else if (vo.boardParams && (vo.boardParams.taskCode === "XTXNrKoUP5QK1LSU8LbTJpFwtbj" || vo.boardParams.taskCode === "2bpKT3LMaEjaGyVQRr2dR8zzc9UU")) {
+              } else if (vo.boardParams && (vo.boardParams.taskCode === "485y3NEBCKGJg6L4brNg6PHhuM9d" || vo.boardParams.taskCode === "2bpKT3LMaEjaGyVQRr2dR8zzc9UU")) {
                 console.log(`去做【${vo.boardParams.titleText}】`)
                 await getTaskInfo("9", vo.boardParams.projectCode, vo.boardParams.taskCode)
                 await $.wait(2000)
-              } else if (vo.boardParams && (vo.boardParams.taskCode === "3dw9N5yB18RaN9T1p5dKHLrWrsX" || vo.boardParams.taskCode === "CtXTxzkh4ExFCrGf8si3ePxGnPy")) {
+              } else if (vo.boardParams && (vo.boardParams.taskCode === "3dw9N5yB18RaN9T1p5dKHLrWrsX" || vo.boardParams.taskCode === "CtXTxzkh4ExFCrGf8si3ePxGnPy" || vo.boardParams.taskCode === "Hys8nCmAaqKmv1G3Y3a5LJEk36Y" || vo.boardParams.taskCode === "2wPBGptSUXNs3fxqgAtrV5MwkYEa")) {
                 await getTaskInfo("1", vo.boardParams.projectCode, vo.boardParams.taskCode)
                 await $.wait(2000)
               }
@@ -162,6 +175,7 @@ async function getActiveInfo(url = 'https://prodev.m.jd.com/mall/active/2y1S9xVY
 async function getTaskInfo(type, projectId, assignmentId, helpType = '1', itemId = '') {
   let body = {"type":type,"projectId":projectId,"assignmentId":assignmentId,"doneHide":false}
   if (assignmentId === $.taskCode) body['itemId'] = itemId, body['helpType'] = helpType
+  if (assignmentId === "2CCbSBbVWkFZzRDngs4F6q3YZ62o") body['agid'] = agid
   return new Promise(async resolve => {
     $.post(taskUrl('interactive_info', body), async (err, resp, data) => {
       try {
@@ -171,7 +185,64 @@ async function getTaskInfo(type, projectId, assignmentId, helpType = '1', itemId
         } else {
           if (data) {
             data = JSON.parse(data)
-            if ((assignmentId === "2PbAu1BAT79RxrM5V7c2VAPUQDSd" || assignmentId === "3dw9N5yB18RaN9T1p5dKHLrWrsX" || assignmentId === "2gWnJADG8JXMpp1WXiNHgSy4xUSv" || assignmentId === "CtXTxzkh4ExFCrGf8si3ePxGnPy" || assignmentId === "26KhtkXmoaj6f37bE43W5kF8a9EL" || assignmentId === "bWE8RTJm5XnooFr4wwdDM5EYcKP") && !body['helpType']) {
+            if (assignmentId === "2CCbSBbVWkFZzRDngs4F6q3YZ62o") {
+              if (data.code === "0" && data.data) {
+                if (data.data[0]) {
+                  if (data.data[0].status !== "2") {
+                    let num = 0;
+                    for (let i = data.data[0].viewedNum; i < data.data[0].viewNum; i++) {
+                      let vo = data.data[0].videoDtoPageResult.list[num]
+                      await interactive_done(type, data.data[0].projectId, data.data[0].assignmentId, vo.articleDto.jump.id, 1)
+                      await $.wait((data.data[0].waitDuration * 1000) || 2000)
+                      num++
+                    }
+                    num = 0;
+                    for (let i = data.data[0].evaluatedNum; i < data.data[0].evaluateNum; i++) {
+                      let vo = data.data[0].videoDtoPageResult.list[num]
+                      await interactive_done(type, data.data[0].projectId, data.data[0].assignmentId, vo.articleDto.jump.id, 2)
+                      await $.wait((data.data[0].waitDuration * 1000) || 2000)
+                      num++
+                    }
+                    await interactive_reward(type, data.data[0].projectId, data.data[0].assignmentId)
+                  } else {
+                    console.log(`任务已完成`)
+                  }
+                } else {
+                  console.log(`无当前任务`)
+                }
+              } else {
+                console.log(data.message)
+              }
+            } else if (assignmentId === "4JHmm8nEpyuKgc3z9wkGArXDtEdh") {
+              if (data.code === "0" && data.data) {
+                if (data.data[0]) {
+                  if (data.data[0].status !== "2") {
+                    let res = await aha_card_list(type, data.data[0].projectId, data.data[0].assignmentId)
+                    let num = 0;
+                    for (let i = data.data[0].watchAlreadyCount; i < data.data[0].watchTotalCount; i++) {
+                      let vo = res.data.cardList[num]
+                      await interactive_done(type, data.data[0].projectId, data.data[0].assignmentId, vo.id, 1)
+                      await $.wait((data.data[0].waitDuration * 1000) || 2000)
+                      num++
+                    }
+                    num = 0;
+                    for (let i = data.data[0].likeAlreadyCount; i < data.data[0].likeTotalCount; i++) {
+                      let vo = res.data.cardList[num]
+                      await interactive_done(type, data.data[0].projectId, data.data[0].assignmentId, vo.id, 2)
+                      await $.wait((data.data[0].waitDuration * 1000) || 2000)
+                      num++
+                    }
+                    await interactive_reward(type, data.data[0].projectId, data.data[0].assignmentId)
+                  } else {
+                    console.log(`任务已完成`)
+                  }
+                } else {
+                  console.log(`无当前任务`)
+                }
+              } else {
+                console.log(data.message)
+              }
+            } else if (assignmentId === "2PbAu1BAT79RxrM5V7c2VAPUQDSd" || assignmentId === "3dw9N5yB18RaN9T1p5dKHLrWrsX" || assignmentId === "2gWnJADG8JXMpp1WXiNHgSy4xUSv" || assignmentId === "CtXTxzkh4ExFCrGf8si3ePxGnPy" || assignmentId === "2wPBGptSUXNs3fxqgAtrV5MwkYEa" || assignmentId === "u4eyHS91t3fV6HRyBCg9k5NTUid" || assignmentId === "4WHSXEqKZeGQZeP9SvqxePQpBkpS" || assignmentId === "4PCdWdiKNwRw1PmLaFzJmTqRBq4v" || assignmentId === "4JcMwRmGJUXptBYzAfUDkKTtgeUs" || assignmentId === "4ZmB6jqmJjRWPWxjuq22Uf17CuUQ" || assignmentId === "QGPPJyQPhSBJ57QcU8PdMwWwwCR" || assignmentId === "tBLY4YL4LkBwWj9KKq9BevHHvcP" || assignmentId === "4UFHr2rSLyS912riDWih6B8gMXkf") {
               if (assignmentId !== "2PbAu1BAT79RxrM5V7c2VAPUQDSd") console.log(`去做【${data.data[0].title}】`)
               if (data.code === "0" && data.data) {
                 if (data.data[0]) {
@@ -187,7 +258,7 @@ async function getTaskInfo(type, projectId, assignmentId, helpType = '1', itemId
               } else {
                 console.log(data.message)
               }
-            } else if ((assignmentId === "XTXNrKoUP5QK1LSU8LbTJpFwtbj" || assignmentId === "2bpKT3LMaEjaGyVQRr2dR8zzc9UU") && !body['helpType']) {
+            } else if (assignmentId === "485y3NEBCKGJg6L4brNg6PHhuM9d" || assignmentId === "2bpKT3LMaEjaGyVQRr2dR8zzc9UU") {
               if (data.code === "0" && data.data) {
                 if (data.data[0].status !== "2") {
                   await sign_interactive_done(type, data.data[0].projectId, data.data[0].assignmentId)
@@ -199,7 +270,7 @@ async function getTaskInfo(type, projectId, assignmentId, helpType = '1', itemId
               } else {
                 console.log(data.message)
               }
-            } else if (assignmentId === "Hys8nCmAaqKmv1G3Y3a5LJEk36Y" && !body['helpType']) {
+            } else if (assignmentId === "Hys8nCmAaqKmv1G3Y3a5LJEk36Y") {
               if (data.code === "0" && data.data) {
                 console.log(`去做【${data.data[0].title}】`)
                 if (data.data[0].status !== "2") {
@@ -212,7 +283,7 @@ async function getTaskInfo(type, projectId, assignmentId, helpType = '1', itemId
               } else {
                 console.log(data.message)
               }
-            } else if (assignmentId === $.taskCode && body['helpType']) {
+            } else if (assignmentId === $.taskCode) {
               if (helpType === '1') {
                 if (data.code === "0" && data.data) {
                   if (data.data[0].status !== "2") {
@@ -255,9 +326,10 @@ async function getTaskInfo(type, projectId, assignmentId, helpType = '1', itemId
     })
   })
 }
-function interactive_done(type, projectId, assignmentId, itemId) {
+function interactive_done(type, projectId, assignmentId, itemId, actionType = '') {
   let body = {"projectId":projectId,"assignmentId":assignmentId,"itemId":itemId,"type":type}
   if (type === "5" || type === "2") body['agid'] = agid
+  if (type === "10" || type === "11") delete body["itemId"], body["actionType"] = actionType, body["contentId"] = itemId
   return new Promise(resolve => {
     $.post(taskUrl('interactive_done', body), (err, resp, data) => {
       try {
@@ -268,15 +340,15 @@ function interactive_done(type, projectId, assignmentId, itemId) {
           if (data) {
             data = JSON.parse(data)
             if (type === "2") {
-              if (data.code === "0") {
+              if (data.code === "0" && data.busiCode === "0") {
                 console.log(data.data.msg)
                 if (!data.data.success) $.canHelp = false
               } else {
                 console.log(data.message)
               }
             } else {
-              if (data.code === "0") {
-                console.log(data.data.rewardMsg)
+              if (data.code === "0" && data.busiCode === "0") {
+                if (type !== "10" && type !== "11") console.log(data.data.rewardMsg)
               } else {
                 console.log(data.message)
               }
@@ -294,7 +366,7 @@ function interactive_done(type, projectId, assignmentId, itemId) {
 async function sign_interactive_done(type, projectId, assignmentId) {
   let functionId = 'interactive_done'
   let body = JSON.stringify({"assignmentId":assignmentId,"type":type,"projectId":projectId})
-  let uuid = randomString(16)
+  let uuid = randomString(40)
   let sign = await getSign(functionId, body, uuid)
   let url = `${JD_API_HOST}client.action?functionId=${functionId}&client=apple&clientVersion=10.1.0&uuid=${uuid}&${sign}`
   return new Promise(resolve => {
@@ -326,7 +398,7 @@ function interactive_reward(type, projectId, assignmentId) {
         } else {
           if (data) {
             data = JSON.parse(data)
-            if (data.code === "0") {
+            if (data.code === "0" && data.busiCode === "0") {
               console.log(data.data.rewardMsg)
             } else {
               console.log(data.message)
@@ -364,7 +436,7 @@ function interactive_accept(type, projectId, assignmentId, itemId) {
 async function qryViewkitCallbackResult(encryptProjectId, encryptAssignmentId, itemId) {
   let functionId = 'qryViewkitCallbackResult'
   let body = JSON.stringify({"dataSource":"babelInteractive","method":"customDoInteractiveAssignmentForBabel","reqParams":`{\"itemId\":\"${itemId}\",\"encryptProjectId\":\"${encryptProjectId}\",\"encryptAssignmentId\":\"${encryptAssignmentId}\"}`})
-  let uuid = randomString(16)
+  let uuid = randomString(40)
   let sign = await getSign(functionId, body, uuid)
   let url = `${JD_API_HOST}client.action?functionId=${functionId}&client=apple&clientVersion=10.1.0&uuid=${uuid}&${sign}`
   return new Promise(resolve => {
@@ -376,7 +448,9 @@ async function qryViewkitCallbackResult(encryptProjectId, encryptAssignmentId, i
         } else {
           if (data) {
             data = JSON.parse(data)
-            console.log(`恭喜获得2个京豆`)
+            if (data.code === "0" || data.msg === "query success!") {
+              console.log(`恭喜获得2个京豆`)
+            }
           }
         }
       } catch (e) {
@@ -388,18 +462,19 @@ async function qryViewkitCallbackResult(encryptProjectId, encryptAssignmentId, i
   })
 }
 async function getshareCode() {
-  let body = JSON.stringify({"activityId":encodeActivityId,"pageNum":"-1","innerAnchor":"","innerExtId":"","hideTopFoot":"","innerLinkBase64":"","innerIndex":"0","focus":"","forceTop":"","addressId":"","posLng":"","posLat":"","homeLng":"","homeLat":"","headId":"","headArea":"","warehouseId":"","dcId":"","babelChannel":"ttt3","mitemAddrId":"","geo":{"lng":"","lat":""},"flt":"","jda":"168871293.16308322604432132666501.1630832260.1631174347.1631180687.40","topNavStyle":"","url":`https://prodev.m.jd.com/mall/active/${encodeActivityId}/index.html?babelChannel=ttt3&tttparams=eisYm3eyJnTG5nIjoiMTE3LjAxMDA3MSIsImdMYXQiOiI0MC4xODk5My6J9&lng=&lat=&sid=&un_area=1_2953_54044_0`,"fullUrl":`https://prodev.m.jd.com/mall/active/${encodeActivityId}/index.html?babelChannel=ttt3&tttparams=eisYm3eyJnTG5nIjoiMTE3LjAxMDA3MSIsImdMYXQiOiI0MC4xODk5My6J9&lng=&lat=&sid=&un_area=1_2953_54044_0`,"autoSkipEmptyPage":false,"paginationParam":"2","paginationFlrs":paginationFlrs,"transParam":`{\"bsessionId\":\"\",\"babelChannel\":\"ttt3\",\"actId\":\"${activityId}\",\"enActId\":\"${encodeActivityId}\",\"pageId\":\"${pageId}\",\"encryptCouponFlag\":\"1\",\"sc\":\"apple\",\"scv\":\"10.1.2\",\"requestChannel\":\"h5\",\"jdAtHomePage\":\"0\"}`,"siteClient":"apple","siteClientVersion":"10.1.2","matProExt":{"unpl":"V2_ZzNtbUBSS0dzARMEfhxYDGIEGl9LUBBHclgVUyxJWgBuVhAPclRCFnUUR1xnGFUUZAEZXUNcQBFFCEZkexhdBG4KFV9FUXMldglHGXsYXWtlTiJeQmdCJXUPR1NzH1oGYAsaXEFXShJ8CENRcxxbNVcDG15yV0IUdwlGVHkaXAFhBRFtclZzFEUJdhUVGV0EYQMRXUAaQxJ0D05SfRpbDW8CEV1LUEoVcA1OUXwpXTVk"},"userInterest":{"whiteNote":"0_0_0","payment":"0_0_0","plusNew":"0_0_0","plusRenew":"0_0_0"}})
+  let sid = randomString(40)
+  let body = JSON.stringify({"activityId":encodeActivityId,"pageNum":"-1","innerAnchor":"","innerExtId":"","hideTopFoot":"","innerLinkBase64":"","innerIndex":"0","focus":"","forceTop":"","addressId":"4091160336","posLng":"","posLat":"","homeLng":"","homeLat":"","gps_area":"","headId":"","headArea":"","warehouseId":"","dcId":"","babelChannel":"ttt1","mitemAddrId":"","geo":{"lng":"","lat":""},"flt":"","jda":"168871293.1632069151379637759921.1632069151.1634449233.1634455108.187","topNavStyle":"","url":`https://prodev.m.jd.com/mall/active/${encodeActivityId}/index.html?babelChannel=ttt1&tttparams=s1AJNojeyJsbmciOiIxMTcuMDA2NTYzIiwiZ0xhdCI6IjQwLjE4OTkzIiwibGF0IjoiNDAuMTgxOTM0IiwiZ0xuZyI6IjExNy4wMTAwNzEiLCJncHNfYXJlYSI6IjFfMjk1M181NDA0NF8wIiwidW5fYXJlYSI6IjFfMjk1M181NDA0NF8wIn70%3D&lng=&lat=&sid=${sid}&un_area=`,"fullUrl":`https://prodev.m.jd.com/mall/active/${encodeActivityId}/index.html?babelChannel=ttt1&tttparams=s1AJNojeyJsbmciOiIxMTcuMDA2NTYzIiwiZ0xhdCI6IjQwLjE4OTkzIiwibGF0IjoiNDAuMTgxOTM0IiwiZ0xuZyI6IjExNy4wMTAwNzEiLCJncHNfYXJlYSI6IjFfMjk1M181NDA0NF8wIiwidW5fYXJlYSI6IjFfMjk1M181NDA0NF8wIn70%3D&lng=&lat=&sid=${sid}&un_area=`,"autoSkipEmptyPage":false,"paginationParam":"2","paginationFlrs":paginationFlrs,"transParam":`{\"bsessionId\":\"\",\"babelChannel\":\"ttt1\",\"actId\":\"${activityId}\",\"enActId\":\"${encodeActivityId}\",\"pageId\":\"${pageId}\",\"encryptCouponFlag\":\"1\",\"sc\":\"apple\",\"scv\":\"10.1.6\",\"requestChannel\":\"h5\",\"jdAtHomePage\":\"0\"}`,"siteClient":"apple","siteClientVersion":"10.1.6","matProExt":{"unpl":"V2_ZzNtbUEAR0B1CUBWeRkLVWIGF1pKX0IXIVpOUi8eWFJkBxpbclRCFnUURlVnGVgUZwMZWEtcRxBFCEZkexhdBmIKFFxGXnMlfQAoVDYZMgYJAF8QD2dAFUUJdlR8G1wBZwAXXENRRhFxCU9QextZBWQzIl1EZ3MldDhHZHopF2tmThJaQFdHFXYNR1V9HFgBZgoWXUBSQxZFCXZX|V2_ZzNtbRYEREB1X0VTfU5fAGIHEwhLUUZCfVgVAX0aCVJlVhUPclRCFnUURlVnGV0UZwYZXkVcRxdFCEJkexhdBW8KF1xGVnMlfGZFV38dXwFiBREzQlZCe0ULRmR6KVUBYgoSXEUHShJ2X0YDLx8PADQKFwhAB0MSIg4RAy5LCwBhARpcFwNzJXwJdlJ5EV0DYAEiCBwIFVAlUB0MK0YKWD8DIlxyVnMURV4oVHoYXQVmAxRcRBpKEXABRlV8SVUCZFQSChZREBAmAUMBeUlcAjAFRQoXBRQQcwpOVS5NbARXAw%3d%3d"},"userInterest":{"whiteNote":"0_0_0","payment":"0_0_0","plusNew":"0_0_0","plusRenew":"0_0_0"}})
   let options = {
     url: `${JD_API_HOST}?client=wh5&clientVersion=1.0.0&functionId=qryH5BabelFloors`,
-    body: `body=${escape(body)}`,
+    body: `body=${encodeURIComponent(body)}&screen=1242*2208&sid=${sid}&uuid=${randomString(40)}&area=&osVersion=15.0.1&d_model=iphone11,2`,
     headers: {
       "Host": "api.m.jd.com",
       "Accept": "*/*",
       "Content-Type": "application/x-www-form-urlencoded",
       "Origin": "https://prodev.m.jd.com",
-      "Accept-Language": "zh-cn",
+      "Accept-Language": "zh-CN,zh-Hans;q=0.9",
       "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-      "Referer": "https://prodev.m.jd.com/mall/active/2y1S9xVYdTud2VmFqhHbkcoAYhJT/index.html",
+      "Referer": "https://prodev.m.jd.com/",
       "Accept-Encoding": "gzip, deflate, br",
       "Cookie": cookie
     }
@@ -415,7 +490,7 @@ async function getshareCode() {
             data = JSON.parse(data)
             for (let key of Object.keys(data.floorList)) {
               let vo = data.floorList[key]
-              if (vo.boardParams && (vo.boardParams.taskCode === "2gWnJADG8JXMpp1WXiNHgSy4xUSv" || vo.boardParams.taskCode === "26KhtkXmoaj6f37bE43W5kF8a9EL" || vo.boardParams.taskCode === "bWE8RTJm5XnooFr4wwdDM5EYcKP" || vo.boardParams.taskCode === "Hys8nCmAaqKmv1G3Y3a5LJEk36Y")) {
+              if (vo.boardParams && (vo.boardParams.taskCode === "2gWnJADG8JXMpp1WXiNHgSy4xUSv" || vo.boardParams.taskCode === "2wPBGptSUXNs3fxqgAtrV5MwkYEa" || vo.boardParams.taskCode === "u4eyHS91t3fV6HRyBCg9k5NTUid" || vo.boardParams.taskCode === "Hys8nCmAaqKmv1G3Y3a5LJEk36Y" || vo.boardParams.taskCode === "4WHSXEqKZeGQZeP9SvqxePQpBkpS" || vo.boardParams.taskCode === "4PCdWdiKNwRw1PmLaFzJmTqRBq4v" || vo.boardParams.taskCode === "4JcMwRmGJUXptBYzAfUDkKTtgeUs" || vo.boardParams.taskCode === "4ZmB6jqmJjRWPWxjuq22Uf17CuUQ" || vo.boardParams.taskCode === "QGPPJyQPhSBJ57QcU8PdMwWwwCR" || vo.boardParams.taskCode === "tBLY4YL4LkBwWj9KKq9BevHHvcP" || vo.boardParams.taskCode === "4UFHr2rSLyS912riDWih6B8gMXkf" || vo.boardParams.taskCode === "3dw9N5yB18RaN9T1p5dKHLrWrsX")) {
                 await getTaskInfo("1", vo.boardParams.projectCode, vo.boardParams.taskCode)
                 await $.wait(2000)
               } else if (vo.boardParams && vo.boardParams.taskCode === "3PX8SPeYoQMgo1aJBZYVkeC7QzD3") {
@@ -423,13 +498,34 @@ async function getshareCode() {
                 $.taskCode = vo.boardParams.taskCode
               }
             }
-            await getTaskInfo("2", $.projectCode, $.taskCode)
+            // await getTaskInfo("2", $.projectCode, $.taskCode)
           }
         }
       } catch (e) {
         $.logErr(e, resp)
       } finally {
         resolve();
+      }
+    })
+  })
+}
+
+function aha_card_list(type, projectId, assignmentId) {
+  return new Promise(resolve => {
+    $.post(taskUrl('browse_aha_task/aha_card_list', {"type":type,"projectId":projectId,"assignmentId":assignmentId,"agid":agid,"firstStart":1}), (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} aha_card_list API请求失败，请检查网路重试`)
+        } else {
+          if (data) {
+            data = JSON.parse(data)
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
       }
     })
   })
@@ -448,38 +544,46 @@ function showMsg() {
 
 function taskUrl(functionId, body) {
   if (functionId === "interactive_info") {
-    body = `[${escape(JSON.stringify(body))}]`
+    body = `[${encodeURIComponent(JSON.stringify(body))}]`
   } else {
-    body = escape(JSON.stringify(body))
+    body = encodeURIComponent(JSON.stringify(body))
+  }
+  let function_Id;
+  if (functionId.indexOf("/") > -1) {
+    function_Id = functionId.split("/")[1]
+  } else {
+    function_Id = functionId
   }
   return {
-    url: `${JD_API_HOST}${functionId}?functionId=${functionId}&appid=contenth5_common&body=${body}&client=wh5`,
+    url: `${JD_API_HOST}${functionId}?functionId=${function_Id}&appid=contenth5_common&body=${body}&client=wh5`,
     headers: {
       "Host": "api.m.jd.com",
       "Accept": "application/json, text/plain, */*",
       "Content-Type": "application/x-www-form-urlencoded",
       "Origin": "https://prodev.m.jd.com",
-      "Accept-Language": "zh-cn",
+      "Accept-Language": "zh-CN,zh-Hans;q=0.9",
       "Accept-Encoding": "gzip, deflate, br",
       "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
-      "Referer": "https://prodev.m.jd.com/mall/active/2y1S9xVYdTud2VmFqhHbkcoAYhJT/index.html",
-      "Cookie": cookie,
+      "Referer": "https://prodev.m.jd.com/",
+      "Cookie": cookie
     }
   }
 }
 function taskPostUrl(url, body) {
   return {
     url,
-    body: `body=${escape(body)}`,
+    body: `body=${encodeURIComponent(body)}`,
     headers: {
-      'Cookie': cookie,
-      'Host': 'api.m.jd.com',
-      'Connection': 'keep-alive',
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Referer': '',
-      'User-Agent': 'JD4iPhone/167774 (iPhone; iOS 14.7.1; Scale/3.00)',
-      'Accept-Language': 'zh-Hans-CN;q=1',
-      'Accept-Encoding': 'gzip, deflate, br',
+      "Host": "api.m.jd.com",
+      "Content-Type": "application/x-www-form-urlencoded",
+      "j-e-c": "",
+      "Accept": "*/*",
+      "j-e-h": "",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Accept-Language": "zh-Hans-CN;q=1",
+      "User-Agent": "JD4iPhone/167841 (iPhone; iOS; Scale/3.00)",
+      "Referer": "",
+      "Cookie": cookie
     }
   }
 }
@@ -521,7 +625,7 @@ function getSign(functionid, body, uuid) {
 }
 function randomString(e) {
   e = e || 32;
-  let t = "abcdefghijklmnopqrstuvwxyz0123456789", a = t.length, n = "";
+  let t = "abcdef0123456789", a = t.length, n = "";
   for (let i = 0; i < e; i++)
     n += t.charAt(Math.floor(Math.random() * a));
   return n
@@ -625,5 +729,6 @@ function jsonParse(str) {
 }
 // prettier-ignore
 function Env(t,e){"undefined"!=typeof process&&JSON.stringify(process.env).indexOf("GITHUB")>-1&&process.exit(0);class s{constructor(t){this.env=t}send(t,e="GET"){t="string"==typeof t?{url:t}:t;let s=this.get;return"POST"===e&&(s=this.post),new Promise((e,i)=>{s.call(this,t,(t,s,r)=>{t?i(t):e(s)})})}get(t){return this.send.call(this.env,t)}post(t){return this.send.call(this.env,t,"POST")}}return new class{constructor(t,e){this.name=t,this.http=new s(this),this.data=null,this.dataFile="box.dat",this.logs=[],this.isMute=!1,this.isNeedRewrite=!1,this.logSeparator="\n",this.startTime=(new Date).getTime(),Object.assign(this,e),this.log("",`🔔${this.name}, 开始!`)}isNode(){return"undefined"!=typeof module&&!!module.exports}isQuanX(){return"undefined"!=typeof $task}isSurge(){return"undefined"!=typeof $httpClient&&"undefined"==typeof $loon}isLoon(){return"undefined"!=typeof $loon}toObj(t,e=null){try{return JSON.parse(t)}catch{return e}}toStr(t,e=null){try{return JSON.stringify(t)}catch{return e}}getjson(t,e){let s=e;const i=this.getdata(t);if(i)try{s=JSON.parse(this.getdata(t))}catch{}return s}setjson(t,e){try{return this.setdata(JSON.stringify(t),e)}catch{return!1}}getScript(t){return new Promise(e=>{this.get({url:t},(t,s,i)=>e(i))})}runScript(t,e){return new Promise(s=>{let i=this.getdata("@chavy_boxjs_userCfgs.httpapi");i=i?i.replace(/\n/g,"").trim():i;let r=this.getdata("@chavy_boxjs_userCfgs.httpapi_timeout");r=r?1*r:20,r=e&&e.timeout?e.timeout:r;const[o,h]=i.split("@"),n={url:`http://${h}/v1/scripting/evaluate`,body:{script_text:t,mock_type:"cron",timeout:r},headers:{"X-Key":o,Accept:"*/*"}};this.post(n,(t,e,i)=>s(i))}).catch(t=>this.logErr(t))}loaddata(){if(!this.isNode())return{};{this.fs=this.fs?this.fs:require("fs"),this.path=this.path?this.path:require("path");const t=this.path.resolve(this.dataFile),e=this.path.resolve(process.cwd(),this.dataFile),s=this.fs.existsSync(t),i=!s&&this.fs.existsSync(e);if(!s&&!i)return{};{const i=s?t:e;try{return JSON.parse(this.fs.readFileSync(i))}catch(t){return{}}}}}writedata(){if(this.isNode()){this.fs=this.fs?this.fs:require("fs"),this.path=this.path?this.path:require("path");const t=this.path.resolve(this.dataFile),e=this.path.resolve(process.cwd(),this.dataFile),s=this.fs.existsSync(t),i=!s&&this.fs.existsSync(e),r=JSON.stringify(this.data);s?this.fs.writeFileSync(t,r):i?this.fs.writeFileSync(e,r):this.fs.writeFileSync(t,r)}}lodash_get(t,e,s){const i=e.replace(/\[(\d+)\]/g,".$1").split(".");let r=t;for(const t of i)if(r=Object(r)[t],void 0===r)return s;return r}lodash_set(t,e,s){return Object(t)!==t?t:(Array.isArray(e)||(e=e.toString().match(/[^.[\]]+/g)||[]),e.slice(0,-1).reduce((t,s,i)=>Object(t[s])===t[s]?t[s]:t[s]=Math.abs(e[i+1])>>0==+e[i+1]?[]:{},t)[e[e.length-1]]=s,t)}getdata(t){let e=this.getval(t);if(/^@/.test(t)){const[,s,i]=/^@(.*?)\.(.*?)$/.exec(t),r=s?this.getval(s):"";if(r)try{const t=JSON.parse(r);e=t?this.lodash_get(t,i,""):e}catch(t){e=""}}return e}setdata(t,e){let s=!1;if(/^@/.test(e)){const[,i,r]=/^@(.*?)\.(.*?)$/.exec(e),o=this.getval(i),h=i?"null"===o?null:o||"{}":"{}";try{const e=JSON.parse(h);this.lodash_set(e,r,t),s=this.setval(JSON.stringify(e),i)}catch(e){const o={};this.lodash_set(o,r,t),s=this.setval(JSON.stringify(o),i)}}else s=this.setval(t,e);return s}getval(t){return this.isSurge()||this.isLoon()?$persistentStore.read(t):this.isQuanX()?$prefs.valueForKey(t):this.isNode()?(this.data=this.loaddata(),this.data[t]):this.data&&this.data[t]||null}setval(t,e){return this.isSurge()||this.isLoon()?$persistentStore.write(t,e):this.isQuanX()?$prefs.setValueForKey(t,e):this.isNode()?(this.data=this.loaddata(),this.data[e]=t,this.writedata(),!0):this.data&&this.data[e]||null}initGotEnv(t){this.got=this.got?this.got:require("got"),this.cktough=this.cktough?this.cktough:require("tough-cookie"),this.ckjar=this.ckjar?this.ckjar:new this.cktough.CookieJar,t&&(t.headers=t.headers?t.headers:{},void 0===t.headers.Cookie&&void 0===t.cookieJar&&(t.cookieJar=this.ckjar))}get(t,e=(()=>{})){t.headers&&(delete t.headers["Content-Type"],delete t.headers["Content-Length"]),this.isSurge()||this.isLoon()?(this.isSurge()&&this.isNeedRewrite&&(t.headers=t.headers||{},Object.assign(t.headers,{"X-Surge-Skip-Scripting":!1})),$httpClient.get(t,(t,s,i)=>{!t&&s&&(s.body=i,s.statusCode=s.status),e(t,s,i)})):this.isQuanX()?(this.isNeedRewrite&&(t.opts=t.opts||{},Object.assign(t.opts,{hints:!1})),$task.fetch(t).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>e(t))):this.isNode()&&(this.initGotEnv(t),this.got(t).on("redirect",(t,e)=>{try{if(t.headers["set-cookie"]){const s=t.headers["set-cookie"].map(this.cktough.Cookie.parse).toString();s&&this.ckjar.setCookieSync(s,null),e.cookieJar=this.ckjar}}catch(t){this.logErr(t)}}).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>{const{message:s,response:i}=t;e(s,i,i&&i.body)}))}post(t,e=(()=>{})){if(t.body&&t.headers&&!t.headers["Content-Type"]&&(t.headers["Content-Type"]="application/x-www-form-urlencoded"),t.headers&&delete t.headers["Content-Length"],this.isSurge()||this.isLoon())this.isSurge()&&this.isNeedRewrite&&(t.headers=t.headers||{},Object.assign(t.headers,{"X-Surge-Skip-Scripting":!1})),$httpClient.post(t,(t,s,i)=>{!t&&s&&(s.body=i,s.statusCode=s.status),e(t,s,i)});else if(this.isQuanX())t.method="POST",this.isNeedRewrite&&(t.opts=t.opts||{},Object.assign(t.opts,{hints:!1})),$task.fetch(t).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>e(t));else if(this.isNode()){this.initGotEnv(t);const{url:s,...i}=t;this.got.post(s,i).then(t=>{const{statusCode:s,statusCode:i,headers:r,body:o}=t;e(null,{status:s,statusCode:i,headers:r,body:o},o)},t=>{const{message:s,response:i}=t;e(s,i,i&&i.body)})}}time(t,e=null){const s=e?new Date(e):new Date;let i={"M+":s.getMonth()+1,"d+":s.getDate(),"H+":s.getHours(),"m+":s.getMinutes(),"s+":s.getSeconds(),"q+":Math.floor((s.getMonth()+3)/3),S:s.getMilliseconds()};/(y+)/.test(t)&&(t=t.replace(RegExp.$1,(s.getFullYear()+"").substr(4-RegExp.$1.length)));for(let e in i)new RegExp("("+e+")").test(t)&&(t=t.replace(RegExp.$1,1==RegExp.$1.length?i[e]:("00"+i[e]).substr((""+i[e]).length)));return t}msg(e=t,s="",i="",r){const o=t=>{if(!t)return t;if("string"==typeof t)return this.isLoon()?t:this.isQuanX()?{"open-url":t}:this.isSurge()?{url:t}:void 0;if("object"==typeof t){if(this.isLoon()){let e=t.openUrl||t.url||t["open-url"],s=t.mediaUrl||t["media-url"];return{openUrl:e,mediaUrl:s}}if(this.isQuanX()){let e=t["open-url"]||t.url||t.openUrl,s=t["media-url"]||t.mediaUrl;return{"open-url":e,"media-url":s}}if(this.isSurge()){let e=t.url||t.openUrl||t["open-url"];return{url:e}}}};if(this.isMute||(this.isSurge()||this.isLoon()?$notification.post(e,s,i,o(r)):this.isQuanX()&&$notify(e,s,i,o(r))),!this.isMuteLog){let t=["","==============📣系统通知📣=============="];t.push(e),s&&t.push(s),i&&t.push(i),console.log(t.join("\n")),this.logs=this.logs.concat(t)}}log(...t){t.length>0&&(this.logs=[...this.logs,...t]),console.log(t.join(this.logSeparator))}logErr(t,e){const s=!this.isSurge()&&!this.isQuanX()&&!this.isLoon();s?this.log("",`❗️${this.name}, 错误!`,t.stack):this.log("",`❗️${this.name}, 错误!`,t)}wait(t){return new Promise(e=>setTimeout(e,t))}done(t={}){const e=(new Date).getTime(),s=(e-this.startTime)/1e3;this.log("",`🔔${this.name}, 结束! 🕛 ${s} 秒`),this.log(),(this.isSurge()||this.isQuanX()||this.isLoon())&&$done(t)}}(t,e)}
+
 
 
