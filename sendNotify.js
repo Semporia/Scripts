@@ -808,6 +808,39 @@ function pushPlusNotify(text, desp) {
   });
 }
 
+function GetDateTime(date) {
+
+	var timeString = "";
+
+	var timeString = date.getFullYear() + "-";
+	if ((date.getMonth() + 1) < 10)
+		timeString += "0" + (date.getMonth() + 1) + "-";
+	else
+		timeString += (date.getMonth() + 1) + "-";
+
+	if ((date.getDate()) < 10)
+		timeString += "0" + date.getDate() + " ";
+	else
+		timeString += date.getDate() + " ";
+
+	if ((date.getHours()) < 10)
+		timeString += "0" + date.getHours() + ":";
+	else
+		timeString += date.getHours() + ":";
+
+	if ((date.getMinutes()) < 10)
+		timeString += "0" + date.getMinutes() + ":";
+	else
+		timeString += date.getMinutes() + ":";
+
+	if ((date.getSeconds()) < 10)
+		timeString += "0" + date.getSeconds();
+	else
+		timeString += date.getSeconds();
+
+	return timeString;
+}
+
 module.exports = {
   sendNotify,
   BARK_PUSH,
