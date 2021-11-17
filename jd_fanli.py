@@ -2,7 +2,6 @@
 const $ = new Env("京东饭粒");
 京东饭粒任务
 活动入口：https://u.jd.com/ywEoeYu
-每天90豆
 
 cron:
 47 7,17 * * * jd_fanli.py
@@ -75,20 +74,20 @@ def getTaskFinishCount(ck):
     return r.json()["content"]
 
 
-def saveTaskRecord(ck, taskId):
+def saveTaskRecord(ck, taskId, businessId, taskType):
     url = "https://ifanli.m.jd.com/rebateapi/task/saveTaskRecord"
     headers = getheader(ck)
-    data = '{"taskId":%s,"taskType":1}' % taskId
+    data = '{"taskId":%s,"businessId":%s,"taskType":%s}' % (taskId, businessId, taskType)
     r = requests.post(url, headers=headers, data=data, proxies=proxies)
     # printf(r.text)
     return r.json()["content"]["uid"], r.json()["content"]["tt"]
 
 
-def saveTaskRecord1(ck, taskId, uid, tt):
+def saveTaskRecord1(ck, taskId, businessId, taskType, uid, tt):
     # tt=int(time.time()*1000)
     url = "https://ifanli.m.jd.com/rebateapi/task/saveTaskRecord"
     headers = getheader(ck)
-    data = '{"taskId":%s,"taskType":1,"uid":"%s","tt":%s}' % (taskId, uid, tt)
+    data = '{"taskId":%s,"businessId":%s,"taskType":%s,"uid":"%s","tt":%s}' % (taskId, businessId, taskType, uid, tt)
     # printf(data)
     r = requests.post(url, headers=headers, data=data, proxies=proxies)
     printf(r.json()["content"]["msg"])
@@ -108,8 +107,8 @@ if __name__ == '__main__':
                     for i in tasks:
                         if i["statusName"] != "活动结束":
                             printf("开始做任务: " + i["taskName"])
-                            uid, tt = saveTaskRecord(ck, i["taskId"])
+                            uid, tt = saveTaskRecord(ck, i["taskId"], i["businessId"], i["taskType"])
                             time.sleep(10)
-                            saveTaskRecord1(ck, i["taskId"], uid, tt)
+                            saveTaskRecord1(ck, i["taskId"], i["businessId"], i["taskType"], uid, tt)
         except:
             printf("发生异常错误")
