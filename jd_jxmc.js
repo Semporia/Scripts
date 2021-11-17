@@ -7,17 +7,17 @@
 ============Quantumultx===============
 [task_local]
 #京喜牧场
-20 0-23/3 * * * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_jxmc.js, tag=京喜牧场, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
+20 * * * * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_jxmc.js, tag=京喜牧场, img-url=https://github.com/58xinian/icon/raw/master/jdgc.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "20 0-23/3 * * *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_jxmc.js,tag=京喜牧场
+cron "20 * * * *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_jxmc.js,tag=京喜牧场
 
 ===============Surge=================
-京喜牧场 = type=cron,cronexp="20 0-23/3 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_jxmc.js
+京喜牧场 = type=cron,cronexp="20 * * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_jxmc.js
 
 ============小火箭=========
-京喜牧场 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_jxmc.js, cronexpr="20 0-23/3 * * *", timeout=3600, enable=true
+京喜牧场 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_jxmc.js, cronexpr="20 * * * *", timeout=3600, enable=true
  */
 
 !function (t, r) { "object" == typeof exports ? module.exports = exports = r() : "function" == typeof define && define.amd ? define([], r) : t.CryptoJS = r() }(this, function () {
@@ -184,7 +184,7 @@ async function pasture() {
           if (vo.completedTimes >= vo.configTargetTimes) {
             console.log(`助力已满，不上传助力码`)
           } else {
-            await uploadShareCode($.homeInfo.sharekey)
+            //await uploadShareCode($.homeInfo.sharekey)
             $.inviteCodeList.push($.homeInfo.sharekey);
             await $.wait(2000)
           }
@@ -894,7 +894,7 @@ function getAuthorShareCode(url='https://raw.githubusercontent.com/he1pu/params/
 function shareCodesFormat() {
   return new Promise(async resolve => {
     $.newShareCodes = []
-    const readShareCodeRes = await readShareCode();
+    const readShareCodeRes = [];//await readShareCode();
     if (readShareCodeRes && readShareCodeRes.code === 200) {
       $.newShareCodes = [...new Set([...$.inviteCodeList, ...($.res || []), ...(readShareCodeRes.data || [])])];
     } else {
