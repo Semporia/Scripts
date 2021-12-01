@@ -43,7 +43,7 @@ if ($.isNode()) {
   }
   console.log('女装盲盒\n' +
       '活动时间：2021-10-31至2021-11-30\n' +
-      '活动地址：https://anmp.jd.com/babelDiy/Zeus/4DYrdEbbkinoufRCg9LXnRxJKEZS/index.html');
+      '活动地址：https://anmp.jd.com/babelDiy/Zeus/2x36jyruNVDWxUiAiGAgHRrkqVX2/index.html');
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
