@@ -10,7 +10,7 @@
 第一个账号助力作者 其他依次助力CK1
 第一个CK失效会退出脚本
 ————————————————
-入口：[ 12.10~12.25 狂欢日联合盛典 (https://lzdz1-isv.isvjcloud.com/dingzhi/customized/common/activity?activityId=dd20211210xgdby3zem7vp5y&shareUuid=48dd839b69f6432db11e5310af604282)]
+入口：[ 12.10~12.25 狂欢日联合盛典 (https://lzdz1-isv.isvjcloud.com/dingzhi/customized/common/activity?activityId=dd20211210xgdby3zem7vp5y&shareUuid=de99327d808e4f0385250cb64ca1d557)]
 
 请求太频繁会被黑ip
 过10分钟再执行
