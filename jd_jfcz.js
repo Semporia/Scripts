@@ -77,7 +77,7 @@ if ($.isNode()) {
         }
     }
     if ($.isNode() && allMessage) {
-        await notify.sendNotify(`${$.name}`, `${allMessage}`,{ url: 'https://t.me/joinchat/DrHGFt-CvcE2ZmU1' })
+        await notify.sendNotify(`${$.name}`, `${allMessage}`,{})
     }
 })()
     .catch((e) => {
