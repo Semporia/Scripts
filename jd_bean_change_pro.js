@@ -213,9 +213,9 @@ async function bean() {
 function TotalBean() {
     return new Promise(async resolve => {
         const options = {
-            url: "https://wq.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2",
+            url: "https://me-api.jd.com/user_new/info/GetJDUserInfoUnion",
             headers: {
-                Host: "wq.jd.com",
+                Host: "me-api.jd.com",
                 Accept: "*/*",
                 Connection: "keep-alive",
                 Cookie: cookie,
