@@ -183,7 +183,7 @@ async function run() {
       await takePostRequest('activityContent');
     }
     await takePostRequest('getCardInfo');
-    if($.drawCardNum && $.compositeCard+"" == "true"){
+    if($.drawCardNum){
       let count = $.drawCardNum
       for(m=1;count--;m++){
         console.log(`第${m}次集卡`)
