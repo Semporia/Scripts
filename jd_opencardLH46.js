@@ -20,11 +20,11 @@
 请求太频繁会被黑ip
 过10分钟再执行
 
-cron:0 0 21-31/3 3 *
+cron:0 0,22 21-31/3 3 *
 ============Quantumultx===============
 [task_local]
 #雅诗兰黛奢雅邀请入会有礼
-0 0 21-31/3 3 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardLH46.js, tag=雅诗兰黛奢雅邀请入会有礼, enabled=true
+0 0,22 21-31/3 3 * https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_opencardLH46.js, tag=雅诗兰黛奢雅邀请入会有礼, enabled=true
 
 */
 
