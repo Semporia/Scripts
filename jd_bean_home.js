@@ -20,6 +20,8 @@ cron "10 7 * * *" script-path=jd_bean_home.js, tag=领京豆额外奖励
 ============小火箭=========
 领京豆额外奖励 = type=cron,script-path=jd_bean_home.js, cronexpr="10 7 * * *", timeout=3600, enable=true
  */
+const $ = new Env('领京豆额外奖励');
+
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
