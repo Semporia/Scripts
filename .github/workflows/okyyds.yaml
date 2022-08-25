@@ -35,7 +35,7 @@ jobs:
           # 需要 clone 的上游仓库地址
           source_repo: "https://github.com/okyyds/yyds.git"
           # 需要clone上游作者的分支名
-          source_branch: "main"
+          source_branch: "master"
           # 需要clone到自己项目的分支名
           destination_branch: "okyyds"
           github_token: ${{ secrets.PAT }}
