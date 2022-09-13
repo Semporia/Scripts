@@ -1,5 +1,5 @@
 /*
-10 * * * * jd_hwj_sb.js
+10 0-22/4 * * * jd_hwj_sb.js
 平行时空 刷金币
 */
 const $ = new Env('平行时空-金币');
