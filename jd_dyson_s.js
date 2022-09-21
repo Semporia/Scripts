@@ -3,7 +3,9 @@
 手动写入活动id和助力码子
 环境变量
 
-
+export jd_dyson_activityId="" 活动id
+export jd_dyson_member_id="" 助力码
+export jd_dyson_helpNum="" 助力人数,默认18
 
 7 7 7 7 7 jd_dyson_s.js
 */
