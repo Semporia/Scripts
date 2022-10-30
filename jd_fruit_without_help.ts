@@ -124,15 +124,17 @@ class Jd_fruit extends JDHelloWorld {
       res = await this.api('taskInitForFarm', {"version": 18, "channel": 1, "babelChannel": "10"})
 
       if (!res['treasureBoxInit-getBean']?.f) {
-        this.h5stTool = new H5ST('67dfc', this.user.UserAgent, this.fp)
-        await this.h5stTool.__genAlgo()
-        data = await this.api('ddnc_getTreasureBoxAward', {"type": 1, "babelChannel": "10", "line": "getBean", "version": 18, "channel": 1})
-        await this.wait(2000)
-        data = await this.api('farmMarkStatus', {"version": 18, "channel": 1, "babelChannel": "98"})
-        data = await this.api('ddnc_getTreasureBoxAward', {"type": 2, "babelChannel": "98", "line": "getBean", "version": 18, "channel": 1})
-        this.o2s(data)
-        data.code === '0' && console.log('ddnc_getTreasureBoxAward 💧', data.waterGram)
+
       }
+      //   this.h5stTool = new H5ST('67dfc', this.user.UserAgent, this.fp)
+      //   await this.h5stTool.__genAlgo()
+      //   data = await this.api('ddnc_getTreasureBoxAward', {"type": 1, "babelChannel": "10", "line": "getBean", "version": 18, "channel": 1})
+      //   await this.wait(2000)
+      //   data = await this.api('farmMarkStatus', {"version": 18, "channel": 1, "babelChannel": "98"})
+      //   data = await this.api('ddnc_getTreasureBoxAward', {"type": 2, "babelChannel": "98", "line": "getBean", "version": 18, "channel": 1})
+      //   this.o2s(data)
+      //   data.code === '0' && console.log('ddnc_getTreasureBoxAward 💧', data.waterGram)
+      // }
 
       if (!res.totalWaterTaskInit.f) {
         this.h5stTool = new H5ST('0c010', this.user.UserAgent, this.fp)
@@ -197,24 +199,25 @@ class Jd_fruit extends JDHelloWorld {
 
       if (!res.waterFriendTaskInit.f) {
         let friendList = await this.friendListInitForFarm()
-        for (let i = 0; i < 2 - res.waterFriendTaskInit.waterFriendCountKey; i++) {
-          for (let t of friendList.friends) {
-            if (t.friendState === 1) {
-              console.log(`帮好友 ${t.nickName} ${t.shareCode} 浇水`)
-              this.h5stTool = new H5ST('a5a9c', this.user.UserAgent, this.fp)
-              await this.h5stTool.__genAlgo()
-              await this.api('friendInitForFarm', {"shareCode": t.shareCode, "version": 18, "channel": 1, "babelChannel": "10"})
-              this.h5stTool = new H5ST('673a0', this.user.UserAgent, this.fp)
-              await this.h5stTool.__genAlgo()
-              data = await this.api('waterFriendForFarm', {"shareCode": t.shareCode, "version": 18, "channel": 1, "babelChannel": "10"})
-              if (data.code === '0') {
-                console.log('帮助成功')
-              } else {
-                this.o2s(data, '帮助失败')
-                break
-              }
-              await this.wait(2000)
+        let finishCount: number = 0
+        for (let t of friendList.friends) {
+          if (t.friendState === 1) {
+            console.log(`帮好友 ${t.nickName} ${t.shareCode} 浇水`)
+            this.h5stTool = new H5ST('a5a9c', this.user.UserAgent, this.fp)
+            await this.h5stTool.__genAlgo()
+            await this.api('friendInitForFarm', {"shareCode": t.shareCode, "version": 18, "channel": 1, "babelChannel": "10"})
+            this.h5stTool = new H5ST('673a0', this.user.UserAgent, this.fp)
+            await this.h5stTool.__genAlgo()
+            data = await this.api('waterFriendForFarm', {"shareCode": t.shareCode, "version": 18, "channel": 1, "babelChannel": "10"})
+            if (data.code === '0') {
+              console.log('帮助成功')
+              finishCount++
+            } else {
+              this.o2s(data, '帮助失败')
+              break
             }
+            await this.wait(2000)
+            if (finishCount === 2) break
           }
         }
         this.h5stTool = new H5ST('d08ff', this.user.UserAgent, this.fp)
@@ -238,6 +241,7 @@ class Jd_fruit extends JDHelloWorld {
           data.code === '0' && console.log('关注成功💧', data.amount)
         }
       }
+
       if (!res.todaySigned) {
         this.h5stTool = new H5ST('32b94', this.user.UserAgent, this.fp)
         await this.h5stTool.__genAlgo()
