@@ -59,7 +59,7 @@ if ($.isNode()) {
             $.activityShopId = '1000077045'
             $.activityUrl = `https://lzdz1-isv.isvjcloud.com/dingzhi/shop/league/activity/${$.authorNum}?activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=${encodeURIComponent($.secretPin)}&shopid=${$.activityShopId}&lng=00.000000&lat=00.000000&sid=&un_area=`
             await league();
-            // await $.wait(2000);
+            await $.wait(2000);
             if ($.bean > 0) {
                 message += `\n【京东账号${$.index}】${$.nickName || $.UserName} \n       └ 获得 ${$.bean} 京豆。`
             }
