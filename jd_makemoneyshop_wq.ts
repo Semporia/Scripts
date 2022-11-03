@@ -1,6 +1,7 @@
 /**
- * 极速-赚钱
- * cron: 35 9,18,23 * * *
+ * 极速版-赚钱大赢家
+ * cron: 2 0,12,18 * * *
+ * CK1优先助力HW.ts
  */
 
 import {User, JDHelloWorld} from "./TS_JDHelloWorld"
@@ -100,8 +101,22 @@ class Jd_makemoneyshop extends JDHelloWorld {
             this.o2s(data, 'Award')
           }
           await this.wait(3000)
+        } else if (t.taskId === 3533) {
+          console.log('收到助力', t.realCompletedTimes)
+          for (let i = t.completedTimes; i < t.realCompletedTimes; i++) {
+            data = await this.task('Award', {taskId: 3533})
+            if (data.ret === 0) {
+              console.log('领取助力奖励', data.data.prizeInfo * 1 / 100)
+              await this.wait(1000)
+            } else {
+              this.o2s(data, '领取助力奖励 error')
+              break
+            }
+          }
         }
       }
+
+
     } catch (e) {
       console.log('error', e.message)
     }
@@ -137,7 +152,7 @@ class Jd_makemoneyshop extends JDHelloWorld {
             break
           }
           res = await this.api('guesthelp', 'activeId,shareId', {activeId: '63526d8f5fe613a6adb48f03', shareId: code})
-          this.o2s(res)
+          console.log('助力结果', res.msg)
           await this.wait(2000)
         }
       } catch (e) {
