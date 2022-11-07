@@ -2,7 +2,7 @@
 京东秋裤节
 [task_local]
 #京东秋裤节
-31 3 * * * jd_qkj.js, tag=京东秋裤节, enabled=true
+31 10 * * * jd_qkj.js, tag=京东秋裤节, enabled=true
 脚本来源 https://raw.githubusercontent.com/KingRan/KR/main/jd_qkj.js
 */
 
