@@ -73,6 +73,8 @@ let helpinfo = {};
 		$.fullhelp = false;
 		let k = 0;
 		let m = cookiesArr.length;
+		$.ADID = getUUID("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", 1);
+		$.UUID = getUUID("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 		for (let j = 0; j < shareId.length; j++) {
 			console.log('\n去助力--> ' + shareId[j]);
 			helpnum = 0;
@@ -85,7 +87,7 @@ let helpinfo = {};
 					$.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
 					$.index = i + 1;
 					helpinfo[$.UserName] = {};
-					UA = require('./USER_AGENTS').UARAM();
+					UA = `jdapp;iPhone;9.5.4;13.6;${$.UUID};network/wifi;ADID/${$.ADID};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`
 					helpinfo[$.UserName].ua = UA;
 					console.log(`\n开始【账号${$.index}】${$.nickName || $.UserName}`);
 					if (helpinfo[$.UserName].nohelp) { console.log('已无助力次数了'); continue };
@@ -111,7 +113,7 @@ let helpinfo = {};
 			try {
 				UA = helpinfo[$.UserName].ua;
 			} catch (e) {
-				UA = require('./USER_AGENTS').UARAM();
+				UA = `jdapp;iPhone;9.5.4;13.6;${$.UUID};network/wifi;ADID/${$.ADID};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`
 			}
 			console.log(`\n开始【账号${$.index}】${$.UserName}`);
 			//if (helpinfo[$.UserName].hot) continue;
@@ -139,7 +141,18 @@ let helpinfo = {};
 	.finally(() => {
 		$.done();
 	})
-
+function getUUID(format = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", UpperCase = 0) {
+	return format.replace(/[xy]/g, function (c) {
+		var r = (Math.random() * 16) | 0,
+		v = c == "x" ? r : (r & 0x3) | 0x8;
+		if (UpperCase) {
+		uuid = v.toString(36).toUpperCase();
+		} else {
+		uuid = v.toString(36);
+		}
+		return uuid;
+	});
+}
 function getinfo(xc) {
 	return new Promise(async (resolve) => {
 		$.get(taskUrl('makemoneyshop/home', 'activeId=63526d8f5fe613a6adb48f03&_stk=activeId&_ste=1'), async (err, resp, data) => {
