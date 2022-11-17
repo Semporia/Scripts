@@ -1,8 +1,6 @@
 /**
 自动评价.
-cron 21 8 * * * jd_comment.js
-author：e
-TG频道：https://t.me/sheeplost
+cron 21 12 * * * jd_comment.js
 */
 const $ = new Env('自动评价');
 const notify = $.isNode() ? require('./sendNotify') : '';
